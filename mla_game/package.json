@@ -1,0 +1,19 @@
+{
+  "name": "MLA_Game",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babelify": "^6.0.2",
+    "browserify": "^9.0.8",
+    "gulp": "^3.8.11",
+    "gulp-ruby-sass": "^1.0.5",
+    "jquery": "^2.1.4",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}

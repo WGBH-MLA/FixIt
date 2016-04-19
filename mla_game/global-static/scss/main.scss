@@ -1,0 +1,19 @@
+@import 'reset';
+
+html{
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body{
+    position: relative;
+}
+
+.clearfix:after{
+    content: "";
+    display: table;
+    clear: both;
+}
