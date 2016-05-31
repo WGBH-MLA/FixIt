@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+    <form action="{% url 'upload-batch' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input name="transcript" type="file" />
+        <input type="submit" name="submit" value="Submit" />
+    </form>
+{% endblock %}

@@ -1,0 +1,5 @@
+Django==1.8.12
+MySQL-python==1.2.5
+popuparchive==1.0.0
+requests==2.10.0
+wsgiref==0.1.2
