@@ -81,7 +81,7 @@ class TranscriptPhrase(models.Model):
     objects = TranscriptPhraseManager()
 
     def __unicode__(self):
-        return self.transcript + '_phrase_' + self.id
+        return str(self.transcript) + '_phrase_' + str(self.id)
 
 
 class TranscriptPhraseCorrection(models.Model):
@@ -93,4 +93,4 @@ class TranscriptPhraseCorrection(models.Model):
     transcript_phrase = models.ForeignKey(TranscriptPhrase, related_name='transcript_phrase_correction')
 
     def __unicode__(self):
-        return self.transcript_phrase + '_correction'
+        return str(self.transcript_phrase) + '_correction'
