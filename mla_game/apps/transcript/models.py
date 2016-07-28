@@ -41,7 +41,7 @@ class Transcript(models.Model):
         return self.name
 
     def process_transcript_data_blob(self):
-        #json_data_blob = json.load(self.transcript_data_blob)
+        # json_data_blob = json.load(self.transcript_data_blob)
         for phrase in self.transcript_data_blob['parts']:
             transcript_phrase = TranscriptPhrase.objects.create_transcript_phrase(phrase, self)
             if transcript_phrase is None:
