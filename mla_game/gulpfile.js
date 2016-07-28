@@ -7,7 +7,7 @@ var browserify = require('browserify'),
         mainJS: './global-static/javascript/main.js',
         watchJS: './global-static/javascript/*',
         mainScss: './global-static/scss/main.scss',
-        watchScss: './global-static/sass/**'
+        watchScss: './global-static/scss/**'
     };
 
 gulp.task('js', [], function () {
