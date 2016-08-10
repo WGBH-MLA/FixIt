@@ -1,4 +1,3 @@
-import json
 from django.db import models
 
 
@@ -41,7 +40,6 @@ class Transcript(models.Model):
         return self.name
 
     def process_transcript_data_blob(self):
-        # json_data_blob = json.load(self.transcript_data_blob)
         for phrase in self.transcript_data_blob['parts']:
             transcript_phrase = TranscriptPhrase.objects.create_transcript_phrase(phrase, self)
             if transcript_phrase is None:
@@ -94,3 +92,19 @@ class TranscriptPhraseCorrection(models.Model):
 
     def __unicode__(self):
         return str(self.transcript_phrase) + '_correction'
+
+
+class TranscriptMetadata(models.Model):
+    transcript = models.OneToOneField(Transcript)
+    sony_ci_asset = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+
+
+class Topic(models.Model):
+    topic = models.CharField(max_length=255)
+    transcripts = models.ManyToManyField(Transcript)
+
+
+class Genre(models.Model):
+    genre = models.CharField(max_length=255)
+    transcripts = models.ManyToManyField(Transcript)
