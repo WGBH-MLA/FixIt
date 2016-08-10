@@ -30,6 +30,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mla_game.apps.transcript',
+    'mla_game.apps.accounts',
 )
 
 MIDDLEWARE_CLASSES = (
