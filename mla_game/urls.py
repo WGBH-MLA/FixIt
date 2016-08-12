@@ -16,6 +16,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 urlpatterns = [
+    url(r'', include('mla_game.prototype.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^transcript/', include('mla_game.apps.transcript.urls')),
     url('', include('social.apps.django_app.urls', namespace='social'))

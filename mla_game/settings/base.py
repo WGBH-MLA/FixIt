@@ -28,6 +28,8 @@ AUTHENTICATION_BACKENDS = [
 SOCIAL_AUTH_FACEBOOK_KEY = '1082767555145707'
 SOCIAL_AUTH_FACEBOOK_SECRET = '7e4a8ddc24c21bb036824f70570c69ef'
 
+DJANGO_BOOTSTRAP_UI_THEME = 'bootswatch-superhero'
+
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,6 +40,8 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     'mla_game.apps.transcript',
     'mla_game.apps.accounts',
+    'mla_game.prototype',
+    'bootstrap_ui',
 )
 
 MIDDLEWARE_CLASSES = (
