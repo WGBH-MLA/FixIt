@@ -20,7 +20,13 @@ ALLOWED_HOSTS = []
 
 LOGIN_URL = '/admin/login/'
 
-# Application definition
+AUTHENTICATION_BACKENDS = [
+    'social.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+SOCIAL_AUTH_FACEBOOK_KEY = '1082767555145707'
+SOCIAL_AUTH_FACEBOOK_SECRET = '7e4a8ddc24c21bb036824f70570c69ef'
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -29,6 +35,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social.apps.django_app.default',
     'mla_game.apps.transcript',
     'mla_game.apps.accounts',
 )
@@ -57,6 +64,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social.apps.django_app.context_processors.backends',
+                'social.apps.django_app.context_processors.login_redirect',
             ],
         },
     },
