@@ -19,8 +19,11 @@ class Command(BaseCommand):
             settings.PUA_SECRET,
         )
         for collection in client.get_collections():
-            logger.info('collection id: ' + str(collection['id']))
+            logger.info('processing collection id: ' + str(collection['id']))
             for item_id in collection['item_ids']:
-                logger.info('item id: ' + str(item_id))
-                item = client.get_item(collection['id'], item_id)
-                process_transcript(item)
+                logger.info('processing item id: ' + str(item_id))
+                try:
+                    Transcript.objects.get(id_number=item_id)
+                except Transcript.DoesNotExist:
+                    item = client.get_item(collection['id'], item_id)
+                    process_transcript(item)
