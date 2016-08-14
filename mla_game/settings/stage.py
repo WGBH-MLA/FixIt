@@ -5,7 +5,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 
 DEBUG = True
 
-LOG_DIRECTORY = '/home/vagrant/logs'
+LOG_DIRECTORY = '/home/wgbh/logs'
 
 DATABASES = {
     'default': {
