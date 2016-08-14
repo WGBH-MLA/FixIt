@@ -1,4 +1,8 @@
 from django.db import models
+import logging
+import json
+
+logger = logging.getLogger('pua_scraper')
 
 
 class TranscriptManager(models.Manager):
@@ -12,7 +16,7 @@ class TranscriptManager(models.Manager):
         id_number = data_blob['id']
         collection_id = data_blob['collection_id']
         url = audio_file['url']
-        transcript_data_blob = audio_file['transcript']
+        transcript_data_blob = json.dumps(audio_file['transcript'])
         try:
             transcript = Transcript.objects.get(id_number=id_number)
             transcript.transcript_data_blob = transcript_data_blob
@@ -33,6 +37,9 @@ class Transcript(models.Model):
     name = models.TextField()
     url = models.URLField(max_length=1000)
     transcript_data_blob = models.TextField()
+    data_blob_processesed = models.BooleanField(
+        default=False
+    )
 
     objects = TranscriptManager()
 
@@ -40,11 +47,21 @@ class Transcript(models.Model):
         return self.name
 
     def process_transcript_data_blob(self):
-        for phrase in self.transcript_data_blob['parts']:
-            transcript_phrase = TranscriptPhrase.objects.create_transcript_phrase(phrase, self)
-            if transcript_phrase is None:
-                continue
-            transcript_phrase.save()
+        new_phrases = [
+            TranscriptPhrase(
+                id_number=phrase['id'],
+                start_time=phrase['start_time'],
+                end_time=phrase['end_time'],
+                text=phrase['text'],
+                speaker_id=phrase['speaker_id'],
+                transcript=self
+            )
+            for phrase in json.loads(
+                self.transcript_data_blob
+            )['parts']
+            if phrase is not None
+        ]
+        TranscriptPhrase.objects.bulk_create(new_phrases)
 
 
 class TranscriptPhraseManager(models.Manager):
