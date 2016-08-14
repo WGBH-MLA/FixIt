@@ -34,18 +34,19 @@ def create_process_blob_tasks():
     unprocessed_transcripts = Transcript.objects.filter(
         data_blob_processesed=False
     )
-    logger.info(
-        'bulk processing {} transcript blobs'.format(
-            unprocessed_transcripts.count()
-        )
-    )
-    for transcript in unprocessed_transcripts:
+    if unprocessed_transcripts:
         logger.info(
-            'adding transcript {} to the queue'.format(
-                transcript.name
+            'bulk processing {} transcript blobs'.format(
+                unprocessed_transcripts.count()
             )
         )
-        process_blob(transcript)
-        transcript.data_blob_processesed = True
-        transcript.save()
+        for transcript in unprocessed_transcripts:
+            logger.info(
+                'adding transcript {} to the queue'.format(
+                    transcript.name
+                )
+            )
+            process_blob(transcript)
+            transcript.data_blob_processesed = True
+            transcript.save()
     return None
