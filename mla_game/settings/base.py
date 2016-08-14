@@ -25,8 +25,16 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-SOCIAL_AUTH_FACEBOOK_KEY = '1082767555145707'
-SOCIAL_AUTH_FACEBOOK_SECRET = '7e4a8ddc24c21bb036824f70570c69ef'
+SOCIAL_AUTH_FACEBOOK_KEY = os.environ['SOCIAL_AUTH_FACEBOOK_KEY']
+SOCIAL_AUTH_FACEBOOK_SECRET = os.environ['SOCIAL_AUTH_FACEBOOK_SECRET']
+
+PUA_KEY = os.environ['PUA_KEY']
+PUA_SECRET = os.environ['PUA_SECRET']
+
+HUEY = {
+    'name': 'mla',
+    'consumer': {'workers': 16},
+}
 
 DJANGO_BOOTSTRAP_UI_THEME = 'bootswatch-superhero'
 
@@ -41,6 +49,7 @@ INSTALLED_APPS = (
     'mla_game.apps.transcript',
     'mla_game.apps.accounts',
     'mla_game.prototype',
+    'huey.contrib.djhuey',
     'bootstrap_ui',
 )
 
