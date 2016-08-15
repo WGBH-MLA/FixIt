@@ -1,0 +1,12 @@
+{% extends "bootstrap_ui/bootstrap-skeleton.html" %}
+
+{% block head-title %}
+    MLA Game Prototype
+{% endblock %}
+
+{% block body-content %}
+    <h1>MLA Game Prototype</h1>
+    {% for phrase in phrases %}
+        <p>{{ phrase.text }}</p>
+    {% endfor %}
+{% endblock %}
