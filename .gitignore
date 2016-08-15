@@ -1,5 +1,5 @@
 *.pyc
-.sass-cache/**
+**/.sass-cache/**
 settings_local.py
 **/node_modules/**
 .DS_Store
