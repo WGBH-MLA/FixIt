@@ -13,7 +13,8 @@
     </p>
     {% else %}
     <p>
-        Welcome, {{ user.first_name }}
+        Welcome, {{ user.first_name }} </br>
+        <a href="{% url 'logout' %}">Log Out</a> </br>
         <a href="{% url 'prototype:game' %}">Play the game</a>
     </p>
     {% endif %}
