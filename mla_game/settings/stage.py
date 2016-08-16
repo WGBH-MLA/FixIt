@@ -7,6 +7,8 @@ DEBUG = True
 
 LOG_DIRECTORY = '/home/wgbh/logs'
 
+STATIC_ROOT = '/home/wgbh/webroot/static'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',

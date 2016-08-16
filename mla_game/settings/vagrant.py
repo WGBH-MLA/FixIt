@@ -7,6 +7,8 @@ DEBUG = True
 
 LOG_DIRECTORY = '/home/vagrant/logs'
 
+STATIC_ROOT = '/var/nginx/webroot/static'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
