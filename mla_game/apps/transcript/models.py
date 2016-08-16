@@ -1,6 +1,9 @@
-from django.db import models
-import logging
 import json
+import logging
+
+import requests
+from django.db import models
+
 
 logger = logging.getLogger('pua_scraper')
 
@@ -40,6 +43,22 @@ class Transcript(models.Model):
     data_blob_processesed = models.BooleanField(
         default=False
     )
+
+    @property
+    def asset_name(self):
+        return self.name.replace(
+                'AA1677L5/cpb-aacip-', 'cpb-aacip_'
+            ).replace(
+                '.mp3', ''
+            )
+
+    @property
+    def aapb_xml(self):
+        xml_url = 'http://americanarchive.org/api/{}.xml'.format(
+            self.asset_name
+        )
+        print(xml_url)
+        return requests.get(xml_url).text
 
     objects = TranscriptManager()
 
@@ -113,7 +132,7 @@ class TranscriptPhraseCorrection(models.Model):
 
 class TranscriptMetadata(models.Model):
     transcript = models.OneToOneField(Transcript)
-    sony_ci_asset = models.CharField(max_length=255)
+    station = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(blank=True)
 
 
