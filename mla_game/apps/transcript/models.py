@@ -43,7 +43,7 @@ class Transcript(models.Model):
 
     objects = TranscriptManager()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def process_transcript_data_blob(self):
@@ -95,7 +95,7 @@ class TranscriptPhrase(models.Model):
 
     objects = TranscriptPhraseManager()
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.transcript) + '_phrase_' + str(self.id)
 
 
