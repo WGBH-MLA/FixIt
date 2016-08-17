@@ -4,10 +4,10 @@ var browserify = require('browserify'),
     sass = require('gulp-ruby-sass'),
     source = require('vinyl-source-stream'),
     paths = {
-        mainJS: './global-static/javascript/main.js',
-        watchJS: './global-static/javascript/*',
-        mainScss: './global-static/scss/main.scss',
-        watchScss: './global-static/scss/**'
+        mainJS: './front-end/javascript/main.js',
+        watchJS: './front-end/javascript/*',
+        mainScss: './front-end/scss/main.scss',
+        watchScss: './front-end/scss/**'
     };
 
 gulp.task('js', [], function () {
@@ -16,7 +16,7 @@ gulp.task('js', [], function () {
     b.add(paths.mainJS);
     return b.bundle()
         .pipe(source('main.js'))
-        .pipe(gulp.dest('./global-static/dist'));
+        .pipe(gulp.dest('./front-end/dist'));
 });
 
 gulp.task('scss', function () {
@@ -27,7 +27,7 @@ gulp.task('scss', function () {
     .on('error', function (err) {
         console.error('Error: ', err.message);
     })
-    .pipe(gulp.dest('./global-static/dist'));
+    .pipe(gulp.dest('./front-end/dist'));
 });
 
 gulp.task('build', ['js', 'scss'], function () {
