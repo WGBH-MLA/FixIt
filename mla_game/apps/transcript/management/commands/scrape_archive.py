@@ -19,7 +19,7 @@ class Command(BaseCommand):
             settings.PUA_KEY,
             settings.PUA_SECRET,
         )
-        for page in range(1, 10):
+        for page in range(1, 50):
             for collection in client.get(
                 '/collections?page={}'.format(page)
             )['collections']:
