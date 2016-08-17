@@ -51,6 +51,7 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     'mla_game.apps.transcript',
     'mla_game.apps.accounts',
+    'mla_game.apps.api',
     'mla_game.prototype',
     'huey.contrib.djhuey',
     'bootstrap_ui',
