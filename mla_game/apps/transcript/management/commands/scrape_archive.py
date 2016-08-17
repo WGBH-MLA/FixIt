@@ -1,6 +1,7 @@
 import logging
-from django.core.management.base import BaseCommand
+
 from django.conf import settings
+from django.core.management.base import BaseCommand
 from popuparchive.client import Client
 
 from ...models import Transcript
@@ -18,12 +19,15 @@ class Command(BaseCommand):
             settings.PUA_KEY,
             settings.PUA_SECRET,
         )
-        for collection in client.get_collections():
-            logger.info('processing collection id: ' + str(collection['id']))
-            for item_id in collection['item_ids']:
-                logger.info('processing item id: ' + str(item_id))
-                try:
-                    Transcript.objects.get(id_number=item_id)
-                except Transcript.DoesNotExist:
-                    item = client.get_item(collection['id'], item_id)
-                    process_transcript(item)
+        for page in range(1, 10):
+            for collection in client.get(
+                '/collections?page={}'.format(page)
+            )['collections']:
+                logger.info('processing collection id: ' + str(collection['id']))
+                for item_id in collection['item_ids']:
+                    logger.info('processing item id: ' + str(item_id))
+                    try:
+                        Transcript.objects.get(id_number=item_id)
+                    except Transcript.DoesNotExist:
+                        item = client.get_item(collection['id'], item_id)
+                        process_transcript(item)

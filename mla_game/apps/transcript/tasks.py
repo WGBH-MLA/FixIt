@@ -1,6 +1,8 @@
-from huey.contrib.djhuey import db_task, db_periodic_task, crontab, periodic_task
-from .models import Transcript
 import logging
+
+from huey.contrib.djhuey import db_task, db_periodic_task, crontab
+
+from .models import Transcript
 
 
 logger = logging.getLogger('pua_scraper')
