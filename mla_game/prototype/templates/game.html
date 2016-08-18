@@ -1,12 +1,19 @@
 {% extends "bootstrap_ui/bootstrap-skeleton.html" %}
+{% load static %}
 
 {% block head-title %}
     MLA Game Prototype
 {% endblock %}
 
+{% block body-javascript %}
+    {{ block.super }}
+    <script src="{% static 'dist/main.js' %}"></script>
+{% endblock %}
+
+
 {% block body-content %}
     <h1>MLA Game Prototype</h1>
-    {% for phrase in phrases %}
-        <p>{{ phrase.text }}</p>
-    {% endfor %}
+    <audio id="player" controls="controls">
+        <source id="mp3src" src="" type="audio/mp3" />
+    </audio>
 {% endblock %}
