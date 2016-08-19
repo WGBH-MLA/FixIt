@@ -7,6 +7,18 @@ function reqListener() {
     console.log(this.responseText);
 }
 
+var swapClass;
+
+document.getElementById("submit").onclick = nextPhraseButtons;
+
+function swapClass() {
+    console.log('doing swap class');
+    document.getElementById("phrase1").classList.remove('list-group-item-success');
+    document.getElementById("phrase1").classList.add('list-group-item-danger');
+}
+
+document.getElementById("phrase1").onclick = swapClass;
+
 var transcriptRequest = new XMLHttpRequest();
 var transcriptData;
 transcriptRequest.open('GET', '/api/transcript/random/');
@@ -15,6 +27,7 @@ transcriptRequest.onreadystatechange = function () {
     if (transcriptRequest.readyState == 4 && transcriptRequest.status == 200) {
         transcriptData = JSON.parse(transcriptRequest.responseText);
         mediaURL(transcriptData.transcript);
+        nextPhraseButtons(transcriptData.phrases);
     }
 };
 
@@ -33,6 +46,23 @@ function mediaURL(transcript_id) {
             player.load();
         }
     };
+}
+
+function nextPhraseButtons(transcriptPhrases) {
+    var target;
+    for (var x = 0; x < 3; x++) {
+        if (x === 0) {
+            target = document.getElementById('phrase1');
+            console.log(target);
+        } else if (x === 1) {
+            target = document.getElementById('phrase2');
+            console.log(target);
+        } else if (x === 2) {
+            target = document.getElementById('phrase3');
+            console.log(target);
+        }
+        target.textContent = transcriptData.phrases.shift().text;
+    }
 }
 
 },{}]},{},[1]);
