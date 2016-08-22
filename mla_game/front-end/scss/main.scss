@@ -1,4 +1,4 @@
-@import 'reset';
+// @import 'reset';
 
 html{
     box-sizing: border-box;
@@ -16,4 +16,8 @@ body{
     content: "";
     display: table;
     clear: both;
+}
+
+audio {
+    width: 900px;
 }
