@@ -2,7 +2,7 @@ import requests
 from random import randint
 from django.http import JsonResponse
 
-from ..transcript.models import Transcript, TranscriptPhrase
+from ..transcript.models import Transcript, TranscriptPhrase, TranscriptMetadata
 
 
 def streaming_source(request, transcript_id):
@@ -24,11 +24,16 @@ def streaming_source(request, transcript_id):
 def random_transcript(request):
     number_of_transcripts = Transcript.objects.count()
     random_transcript = Transcript.objects.all()[randint(0, number_of_transcripts - 1)]
+    transcript_metadata = TranscriptMetadata.objects.get(
+        transcript=random_transcript.pk
+    )
     phrases = TranscriptPhrase.objects.filter(
         transcript=random_transcript
     ).order_by('start_time')
     to_return = {}
     to_return['transcript'] = random_transcript.id_number
+    to_return['series'] = transcript_metadata.series
+    to_return['station'] = transcript_metadata.station
     to_return['phrases'] = [
         {
             'start': phrase.start_time,
