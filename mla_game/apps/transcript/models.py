@@ -60,6 +60,12 @@ class Transcript(models.Model):
         print(xml_url)
         return requests.get(xml_url).text
 
+    @property
+    def aapb_link(self):
+        return 'http://americanarchive.org/catalog/{}'.format(
+            self.asset_name
+        )
+
     objects = TranscriptManager()
 
     def __str__(self):
@@ -133,7 +139,8 @@ class TranscriptPhraseCorrection(models.Model):
 class TranscriptMetadata(models.Model):
     transcript = models.OneToOneField(Transcript)
     station = models.CharField(max_length=255, blank=True, null=True)
-    description = models.TextField(blank=True)
+    description = models.TextField(blank=True, null=True)
+    series = models.CharField(max_length=255, blank=True, null=True)
 
 
 class Topic(models.Model):
