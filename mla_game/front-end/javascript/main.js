@@ -53,6 +53,8 @@ transcriptRequest.onreadystatechange = function () {
         transcriptData = JSON.parse(transcriptRequest.responseText);
         mediaURL (transcriptData.transcript);
         nextPhraseButtons (transcriptData.phrases);
+        document.getElementById('title').textContent = 'Title: ' + transcriptData.series;
+        document.getElementById('station').textContent = 'Station: ' + transcriptData.station;
     }
 };
 
