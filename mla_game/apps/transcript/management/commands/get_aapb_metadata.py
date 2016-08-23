@@ -1,4 +1,3 @@
-import requests
 import xml.etree.ElementTree as ET
 from django.core.management.base import BaseCommand
 
@@ -34,21 +33,41 @@ class Command(BaseCommand):
             return ''
 
     def _description(self, root):
-        for child in root.iter('{http://www.pbcore.org/PBCore/PBCoreNamespace.html}pbcoreDescription'):
-            try:
+        try:
+            for child in root.iter('{http://www.pbcore.org/PBCore/PBCoreNamespace.html}pbcoreDescription'):
                 if child.attrib['descriptionType'] == 'Description':
                     return child.text
-            except:
-                return ''
+        except:
+            return ''
+
+    def _series_title(self, root):
+        try:
+            for child in root.iter('{http://www.pbcore.org/PBCore/PBCoreNamespace.html}pbcoreTitle'):
+                if child.attrib['titleType'] == 'Series':
+                    return child.text
+        except:
+            return ''
+
+    def _broadcast_date(self, root):
+        try:
+            for child in root.iter('{http://www.pbcore.org/PBCore/PBCoreNamespace.html}pbcoreAssetDate'):
+                if child.attrib['dateType'] == 'Broadcast':
+                    return child.text
+        except:
+            return ''
 
     def handle(self, *args, **options):
         for transcript in Transcript.objects.all():
-            tree = ET.ElementTree(ET.fromstringlist(transcript.aapb_xml))
-            root = tree.getroot()
-            self._genres_and_topics(transcript, root)
-            tmd, created = TranscriptMetadata.objects.update_or_create(
-                transcript=transcript,
-                station=self._station(root),
-                description=self._description(root),
-            )
-            tmd.save()
+            try:
+                tree = ET.ElementTree(ET.fromstringlist(transcript.aapb_xml))
+                root = tree.getroot()
+                self._genres_and_topics(transcript, root)
+                tmd, created = TranscriptMetadata.objects.update_or_create(
+                    transcript=transcript,
+                    station=self._station(root),
+                    description=self._description(root),
+                    series=self._series_title(root),
+                )
+                tmd.save()
+            except:
+                pass
