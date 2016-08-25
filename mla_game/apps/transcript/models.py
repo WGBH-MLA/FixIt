@@ -138,9 +138,14 @@ class TranscriptPhraseCorrection(models.Model):
 
 class TranscriptMetadata(models.Model):
     transcript = models.OneToOneField(Transcript)
-    station = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     series = models.CharField(max_length=255, blank=True, null=True)
+    broadcast_date = models.CharField(max_length=255, blank=True, null=True)
+
+
+class Source(models.Model):
+    source = models.CharField(max_length=255)
+    transcripts = models.ManyToManyField(Transcript)
 
 
 class Topic(models.Model):
