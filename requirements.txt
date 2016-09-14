@@ -3,6 +3,5 @@ mysqlclient
 git+https://github.com/popuparchive/pua-sdk-python.git
 requests==2.10.0
 python-social-auth==0.2.20
-django-bootstrap-ui
 huey==1.2.0
 redis==2.10.5

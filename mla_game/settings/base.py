@@ -39,8 +39,6 @@ HUEY = {
     'consumer': {'workers': 16},
 }
 
-DJANGO_BOOTSTRAP_UI_THEME = 'bootswatch-superhero'
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -54,7 +52,7 @@ INSTALLED_APPS = (
     'mla_game.apps.api',
     'mla_game.prototype',
     'huey.contrib.djhuey',
-    'bootstrap_ui',
+    'rest_framework',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -116,3 +114,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = ['{}/front-end'.format(BASE_DIR)]
+
+# REST Framework
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'PAGE_SIZE': 10
+}
