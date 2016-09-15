@@ -14,22 +14,15 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 window.React = _react2['default'];
 window.ReactDOM = _reactDom2['default'];
 
-var mountNode = document.getElementById('target');
+// var mountNode = document.getElementById('target');
 
-var HelloMessage = _react2['default'].createClass({
-    displayName: 'HelloMessage',
+// var HelloMessage = React.createClass({
+//   render: function() {
+//     return <div>React {this.props.name}</div>;
+//   }
+// });
 
-    render: function render() {
-        return _react2['default'].createElement(
-            'div',
-            null,
-            'React ',
-            this.props.name
-        );
-    }
-});
-
-_reactDom2['default'].render(_react2['default'].createElement(HelloMessage, { name: 'Loaded Using NPM' }), mountNode);
+// ReactDOM.render(<HelloMessage name="Loaded Using NPM" />, mountNode);
 
 function reqListener() {
     console.log(this.responseText);
