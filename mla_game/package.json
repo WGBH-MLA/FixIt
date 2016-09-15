@@ -13,7 +13,8 @@
     "browserify": "^9.0.8",
     "gulp": "^3.8.11",
     "gulp-ruby-sass": "^1.0.5",
-    "jquery": "^2.1.4",
+    "react": "^15.3.1",
+    "react-dom": "^15.3.1",
     "vinyl-source-stream": "^1.1.0"
   }
 }
