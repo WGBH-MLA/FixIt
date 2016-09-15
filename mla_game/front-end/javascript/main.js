@@ -3,15 +3,15 @@ import ReactDOM from 'react-dom';
 window.React = React
 window.ReactDOM = ReactDOM
 
-var mountNode = document.getElementById('target');
+// var mountNode = document.getElementById('target');
 
-var HelloMessage = React.createClass({
-  render: function() {
-    return <div>React {this.props.name}</div>;
-  }
-});
+// var HelloMessage = React.createClass({
+//   render: function() {
+//     return <div>React {this.props.name}</div>;
+//   }
+// });
 
-ReactDOM.render(<HelloMessage name="Loaded Using NPM" />, mountNode);
+// ReactDOM.render(<HelloMessage name="Loaded Using NPM" />, mountNode);
 
 function reqListener () {
     console.log(this.responseText);
