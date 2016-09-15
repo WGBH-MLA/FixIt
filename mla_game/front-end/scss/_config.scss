@@ -1,0 +1,55 @@
+// breakpoints
+// 750px
+$screen-sm-min:48.675em;
+// 1120px
+$screen-md-min:70em;
+// 1344px
+$screen-lg-min:84em;
+// 1820px
+$screen-jb-min:113.75em;
+
+
+// vertical rhythm var. used to break up sections based on a scale
+$v-rhythm:1.5em;
+
+// susy base config for smaller screens
+// grid changes based on wrapper class defined in custom.scss
+$susy: (
+  columns:(2),
+  container:120em,
+  gutter-position:inside,
+  math: fluid,
+  output: float,
+  gutters:0,
+  debug:(image:show)
+);
+
+$map-sm: (
+  columns:(4)
+);
+
+$map-md: (
+  columns:(8)
+);
+
+$map-lg: (
+  columns:(12)
+);
+
+
+// grid
+@mixin grid() {
+  @include container();
+
+  @include susy-breakpoint($screen-sm-min, $map-sm) {
+    @include show-grid(4);
+  }
+
+  @include susy-breakpoint($screen-md-min, $map-md) {
+    @include show-grid(8);
+  }
+
+  @include susy-breakpoint($screen-lg-min, $map-lg) {
+    @include show-grid(12);
+  }
+}
