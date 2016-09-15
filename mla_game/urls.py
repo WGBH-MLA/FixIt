@@ -3,7 +3,6 @@ from django.contrib import admin
 from django.contrib.auth.views import logout
 
 urlpatterns = [
-    url(r'', include('mla_game.prototype.urls', namespace='prototype')),
     url(r'^api/', include('mla_game.apps.api.urls')),
     url(r'^transcript/', include('mla_game.apps.transcript.urls')),
     url(r'^admin/', include(admin.site.urls)),
