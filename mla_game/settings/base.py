@@ -50,6 +50,7 @@ INSTALLED_APPS = (
     'mla_game.apps.transcript',
     'mla_game.apps.accounts',
     'mla_game.apps.api',
+    'mla_game.apps.game',
     'huey.contrib.djhuey',
     'rest_framework',
 )
@@ -70,7 +71,7 @@ ROOT_URLCONF = 'mla_game.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [PROJECT_DIR + '/templates'],
+        'DIRS': [BASE_DIR + '/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
