@@ -121,6 +121,10 @@ class TranscriptPhrase(models.Model):
 
     objects = TranscriptPhraseManager()
 
+    @property
+    def downvotes(self):
+        return TranscriptPhraseDownvote.objects.get(transcript_phrase=self.pk).count()
+
     def __str__(self):
         return str(self.transcript) + '_phrase_' + str(self.id)
 

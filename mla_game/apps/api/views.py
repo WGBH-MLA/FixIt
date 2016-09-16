@@ -3,8 +3,8 @@ from random import randint
 from django.http import JsonResponse
 from rest_framework import viewsets
 
-from ..transcript.models import Transcript, TranscriptPhrase, TranscriptMetadata, Source
-from .serializers import TranscriptSerializer
+from ..transcript.models import Transcript, TranscriptPhrase, TranscriptPhraseDownvote, TranscriptMetadata, Source
+from .serializers import TranscriptSerializer, TranscriptPhraseDownvoteSerializer
 
 
 def streaming_source(request, transcript_id):
@@ -55,3 +55,8 @@ def random_transcript(request):
 class TranscriptViewSet(viewsets.ModelViewSet):
     queryset = Transcript.objects.all()
     serializer_class = TranscriptSerializer
+
+
+class TranscriptPhraseDownvoteViewSet(viewsets.ModelViewSet):
+    queryset = TranscriptPhraseDownvote.objects.all()
+    serializer_class = TranscriptPhraseDownvoteSerializer
