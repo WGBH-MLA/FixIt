@@ -3,6 +3,7 @@ import logging
 
 import requests
 from django.db import models
+from django.contrib.auth.models import User
 
 
 logger = logging.getLogger('pua_scraper')
@@ -122,6 +123,11 @@ class TranscriptPhrase(models.Model):
 
     def __str__(self):
         return str(self.transcript) + '_phrase_' + str(self.id)
+
+
+class TranscriptPhraseDownvote(models.Model):
+    transcript_phrase = models.ForeignKey(TranscriptPhrase)
+    user = models.ForeignKey(User)
 
 
 class TranscriptPhraseCorrection(models.Model):
