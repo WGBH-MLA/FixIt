@@ -1,13 +1,14 @@
 var browserify = require('browserify'),
     gulp = require('gulp'),
     babelify = require('babelify'),
-    sass = require('gulp-ruby-sass'),
+    compass = require('gulp-compass');
     source = require('vinyl-source-stream'),
     paths = {
         mainJS: './front-end/javascript/main.js',
         watchJS: './front-end/javascript/*',
         mainScss: './front-end/scss/main.scss',
-        watchScss: './front-end/scss/**'
+        sass: './front-end/scss/',
+        dist: './front-end/dist/'
     };
 
 gulp.task('js', [], function () {
@@ -20,14 +21,18 @@ gulp.task('js', [], function () {
 });
 
 gulp.task('scss', function () {
-    return sass(paths.mainScss, {
+    return gulp.src(paths.mainScss)
+    .pipe(compass({
+        css: paths.dist,
+        sass: paths.sass,
         require: 'breakpoint',
-        compass: true
-    })
+        sourcemap:true
+    }))
     .on('error', function (err) {
-        console.error('Error: ', err.message);
+      console.error('Error: ', err.message);
     })
-    .pipe(gulp.dest('./front-end/dist'));
+    // .pipe(minifyCSS())
+    .pipe(gulp.dest(paths.dist));
 });
 
 gulp.task('build', ['js', 'scss'], function () {
@@ -36,7 +41,7 @@ gulp.task('build', ['js', 'scss'], function () {
 
 gulp.task('watch', [], function () {
     gulp.watch(paths.watchJS, ['js']);
-    gulp.watch(paths.watchScss, ['scss']);
+    gulp.watch(paths.sass + '*', ['scss']);
 });
 
 gulp.task('default', ['build', 'watch'], function () {

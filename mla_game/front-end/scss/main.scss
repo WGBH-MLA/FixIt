@@ -1,7 +1,12 @@
 // @import 'reset';
+@import 'compass';
+@import 'breakpoint';
+@import 'susy';
+@import 'config';
+
 
 html{
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 *, *:before, *:after {
@@ -9,15 +14,10 @@ html{
 }
 
 body{
-    position: relative;
-}
-
-.clearfix:after{
-    content: "";
-    display: table;
-    clear: both;
+  position: relative;
 }
 
 audio {
-    width: 900px;
+  width:100%;
 }
+
