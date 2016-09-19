@@ -1,8 +1,9 @@
 var browserify = require('browserify'),
     gulp = require('gulp'),
     babelify = require('babelify'),
-    compass = require('gulp-compass');
+    compass = require('gulp-compass'),
     source = require('vinyl-source-stream'),
+    jquery = require('gulp-jquery');
     paths = {
         mainJS: './front-end/javascript/main.js',
         watchJS: './front-end/javascript/*',
@@ -18,6 +19,15 @@ gulp.task('js', [], function () {
     return b.bundle()
         .pipe(source('main.js'))
         .pipe(gulp.dest('./front-end/dist'));
+});
+
+gulp.task('jquery', function () {
+    return jquery.src({
+        release: 2,
+         // modules to be excluded
+        flags: ['-sizzle', '-effects', '-event/alias',]
+    })
+    .pipe(gulp.dest('./front-end/dist/lib/'));
 });
 
 gulp.task('scss', function () {
