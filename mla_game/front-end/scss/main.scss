@@ -1,7 +1,8 @@
-// @import 'reset';
+@import 'reset';
 @import 'compass';
 @import 'breakpoint';
 @import 'susy';
+@import 'mixins';
 @import 'config';
 
 
@@ -15,9 +16,47 @@ html{
 
 body{
   position: relative;
+  padding-left:5%;
+  padding-right:5%;
+}
+
+// semantic screen reading helper
+.assistive-text {
+  position:absolute !important;
+  overflow:hidden;
+  clip:rect(1px, 1px, 1px, 1px);
+  width:1px;
+  height:1px;
+}
+.assistive-text:hover, .assistive-text:active, .assistive-text:focus {
+  font-size:.875em;
+  font-weight:bold;
+  line-height:normal;
+  z-index:100000;
+  top:5px;
+  left:5px;
+  display:block;
+  clip:auto !important;
+  width:auto;
+  height:auto;
+  padding:15px 23px 14px;
+  text-decoration:none;
+  color:#21759b;
+  border-radius:3px;
+  background-color:#f1f1f1;
+  box-shadow:0 0 2px 2px rgba(0, 0, 0, .6);
+}
+
+button {
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 audio {
   width:100%;
 }
 
+.app-header, .app-content, {
+  @include grid;
+}

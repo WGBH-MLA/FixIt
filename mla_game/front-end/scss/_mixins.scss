@@ -1,0 +1,79 @@
+// clear fixin
+@mixin clearfix {
+  &:after {
+    display:table;
+    clear:both;
+    content:'';
+  }
+  &:before {
+    display:table;
+    clear:both;
+    content:'';
+  }
+}
+
+// parent should be set to relative
+// https://css-tricks.com/snippets/sass/centering-mixin/
+@mixin center($horizontal:true, $vertical: true) {
+  position:absolute;
+  @if ($horizontal and $vertical) {
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+  } @else if ($horizontal) {
+    left:50%;
+    transform:translate(-50%, 0);
+  } @else if ($vertical) {
+    top:50%;
+    transform:translate(0, -50%);
+  }
+}
+
+// transitions
+@mixin transition($transition-property, $transition-time, $method) {
+  -webkit-transition:$transition-property $transition-time $method;
+      -ms-transition:$transition-property $transition-time $method;
+          transition:$transition-property $transition-time $method;
+}
+
+// gradients
+@mixin linear-gradient($fromColor, $toColor) {
+  background-color:$toColor; /* Fallback Color */
+  background-image:-webkit-gradient(linear, left top, left bottom, from($fromColor), to($toColor)); /* Saf4+, Chrome */
+  background-image:-webkit-linear-gradient(top, $fromColor, $toColor); /* Chrome 10+, Saf5.1+, iOS 5+ */
+  background-image:   -moz-linear-gradient(top, $fromColor, $toColor); /* FF3.6 */
+  background-image:    -ms-linear-gradient(top, $fromColor, $toColor); /* IE10 */
+  background-image:     -o-linear-gradient(top, $fromColor, $toColor); /* Opera 11.10+ */
+  background-image:        linear-gradient(top, $fromColor, $toColor);
+
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#{$fromColor}', EndColorStr='#{$toColor}');
+}
+
+// plain lists
+@mixin plain-list {
+  margin:0;
+  padding:0;
+  li {
+    list-style:none;
+  }
+  dd {
+    margin:0;
+  }
+}
+
+// link reset
+@mixin link-reset {
+  text-decoration:none;
+  &:hover {
+    text-decoration:none;
+  }
+  &:active {
+    text-decoration:none;
+  }
+  &:visited {
+    text-decoration:none;
+  }
+  &:focus {
+    text-decoration:none;
+  }
+}
