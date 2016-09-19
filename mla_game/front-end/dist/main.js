@@ -13,7 +13,7 @@ var _reactDom = require('react-dom');
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
 // still need to decide if we are going to use react-router
-// import { Router, Route, hashHistory } from 'react-router'
+// import { Router, Route, browserHistory } from 'react-router'
 
 var appTarget = document.getElementById('app');
 // component names should always begin with an uppercase letter

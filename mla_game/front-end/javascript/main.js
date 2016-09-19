@@ -3,7 +3,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 // still need to decide if we are going to use react-router
-// import { Router, Route, hashHistory } from 'react-router'
+// import { Router, Route, browserHistory } from 'react-router'
 
 var appTarget = document.getElementById('app');
 // component names should always begin with an uppercase letter
@@ -46,7 +46,7 @@ var ComponentTest = React.createClass({
 
 // render the app
 ReactDOM.render(
-  <ComponentTest name='Loaded Using NPM' />, 
+  <ComponentTest name='Loaded Using NPM' />,
 appTarget);
 
 
