@@ -5,12 +5,14 @@
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
     {% block css %}
+    <link rel="stylesheet" href="{% static 'dist/main.css' %}" type="text/css" media="all" />
     {% endblock %}
 </head>
 <body class="{% block body_class %}{% endblock %}">
 {% block content %}
 {% endblock %}
 {% block javascript %}
+    <script src="{% static 'dist/main.js' %}" type="text/javascript" charset="utf-8"></script>
 {% endblock %}
 </body>
 </html>
