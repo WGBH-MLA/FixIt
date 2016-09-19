@@ -1,8 +1,9 @@
 // imports
 import React from 'react'
-import ReactDOM from 'react-dom';
-window.React = React
-window.ReactDOM = ReactDOM
+import ReactDOM from 'react-dom'
+
+// still need to decide if we are going to use react-router
+// import { Router, Route, hashHistory } from 'react-router'
 
 var appTarget = document.getElementById('app');
 // component names should always begin with an uppercase letter
@@ -27,7 +28,7 @@ var ComponentTest = React.createClass({
   _clickHandler: function(){
     this.setState({
       count:this.state.count + 1,
-    })
+    });
   },
 
   render: function(){
