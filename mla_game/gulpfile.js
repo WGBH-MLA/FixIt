@@ -6,13 +6,13 @@ var browserify = require('browserify'),
     jquery = require('gulp-jquery');
     paths = {
         mainJS: './front-end/javascript/main.js',
-        watchJS: './front-end/javascript/*',
+        watchJS: './front-end/javascript/**/*.js',
         mainScss: './front-end/scss/main.scss',
         sass: './front-end/scss/',
         dist: './front-end/dist/'
     };
 
-gulp.task('js', [], function () {
+gulp.task('js', [], function(){
     var b = browserify();
     b.transform(babelify);
     b.add(paths.mainJS);
@@ -21,7 +21,7 @@ gulp.task('js', [], function () {
         .pipe(gulp.dest('./front-end/dist'));
 });
 
-gulp.task('jquery', function () {
+gulp.task('jquery', function(){
     return jquery.src({
         release: 2,
          // modules to be excluded
@@ -30,7 +30,7 @@ gulp.task('jquery', function () {
     .pipe(gulp.dest('./front-end/dist/lib/'));
 });
 
-gulp.task('scss', function () {
+gulp.task('scss', function(){
     return gulp.src(paths.mainScss)
     .pipe(compass({
         css: paths.dist,
@@ -49,7 +49,7 @@ gulp.task('build', ['js', 'scss'], function () {
 
 });
 
-gulp.task('watch', [], function () {
+gulp.task('watch', [], function(){
     gulp.watch(paths.watchJS, ['js']);
     gulp.watch(paths.sass + '*', ['scss']);
 });
