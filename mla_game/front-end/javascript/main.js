@@ -1,23 +1,42 @@
 // imports
 import React from 'react'
 import ReactDOM from 'react-dom'
-
 // still need to decide if we are going to use react-router
-// import { Router, Route, browserHistory } from 'react-router'
+import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router'
+// random transcript container
+import RandTranscriptContainer from './containers/transcript_random'
 
 var appTarget = document.getElementById('app');
-// component names should always begin with an uppercase letter
+// Component names should always begin with an uppercase letter
 // state = owned by current component
 // props = handed down from parent component
-/* use _ as a prefix for custom functions
+/* use an underscore as a prefix for custom functions
    // custom function
    _clickHandler: function(){} 
-   // native to react    
+   // native method to react    
    getInitialState: function(){}
 */
 
 // test component
-var ComponentTest = React.createClass({
+var App = React.createClass({
+  render: function(){
+    return (
+      <div>
+        <header>
+          <h1><Link to='/'>MLA Game</Link></h1>
+        </header>
+        <ul className='app-navigation'>
+          <li><Link to='/'>Home</Link></li>
+          <li><Link activeClassName="active" to="about">About</Link></li>
+        </ul>
+        {this.props.children}
+      </div>
+    )
+  }
+});
+
+// test component
+var Home = React.createClass({
   getInitialState: function(){
     return {
       key: 'value',
@@ -39,28 +58,46 @@ var ComponentTest = React.createClass({
         <h1>{this.state.count}</h1>
         <h2>State Object Debugger</h2>
         <pre>{JSON.stringify(this.state, null, 2)}</pre>
+        <RandTranscriptContainer />
       </div>
     )
   }
-})
+});
+
+// test component
+var About = React.createClass({
+  render: function(){
+    return (
+      <div>
+        <h2>I am a component only loaded on the about page</h2>
+      </div>
+    )
+  }
+});
+
 
 // render the app
-ReactDOM.render(
-  <ComponentTest name='Loaded Using NPM' />,
+ReactDOM.render((
+  <Router history={browserHistory}>
+    <Route path="/" component={App}>
+      <IndexRoute component={Home} />      
+      <Route path="about" component={About} />
+    </Route>
+  </Router>),
 appTarget);
 
 
 
 // get random transcript. to be moved to it's own container
-var getRandom = function(){
-  $.ajax({
-    url: '/api/transcript/random/',
-  })
-  .done(function(data) {
-    console.log(data);
-  });
-};
-getRandom();
+// var getRandom = function(){
+//   $.ajax({
+//     url: '/api/transcript/random/',
+//   })
+//   .done(function(data) {
+//     console.log(data);
+//   });
+// };
+// getRandom();
 
 
 
