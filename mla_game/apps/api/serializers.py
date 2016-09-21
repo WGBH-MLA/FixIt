@@ -7,7 +7,7 @@ from ..transcript.models import Transcript, TranscriptPhraseDownvote, Transcript
 class TranscriptSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Transcript
-        fields = ('name', 'url', 'aapb_xml')
+        fields = ('name',)
 
 
 class TranscriptPhraseCorrectionSerializer(serializers.ModelSerializer):

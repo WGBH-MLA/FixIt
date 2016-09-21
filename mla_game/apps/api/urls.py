@@ -4,8 +4,8 @@ from rest_framework import routers
 from .views import streaming_source, random_transcript, TranscriptViewSet, TranscriptPhraseDownvoteViewSet
 
 router = routers.DefaultRouter()
-router.register(r'transcripts', TranscriptViewSet)
-router.register(r'transcriptphrasedownvotes', TranscriptPhraseDownvoteViewSet)
+router.register(r'transcript', TranscriptViewSet)
+router.register(r'transcriptphrasedownvote', TranscriptPhraseDownvoteViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),
