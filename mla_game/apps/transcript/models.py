@@ -1,9 +1,10 @@
 import json
 import logging
+from random import randint
 
 import requests
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 
 
 logger = logging.getLogger('pua_scraper')
@@ -34,6 +35,28 @@ class TranscriptManager(models.Manager):
             )
         return transcript
 
+    def for_user(self, user):
+        profile = user.profile
+        if profile.preferred_station is not None:
+            transcripts_to_return = profile.preferred_station.transcripts.all()
+        if profile.preferred_topics:
+            for topic in profile.preferred_topics.all():
+                transcripts_to_return = transcripts_to_return & topic.transcripts.all()
+        all_transcripts = self.all().defer('transcript_data_blob')
+        number_of_transcripts = all_transcripts.count()
+
+        if transcripts_to_return.count() < 10:
+            list_of_random_transcripts = []
+            number_needed = 10 - transcripts_to_return.count()
+            while len(list_of_random_transcripts) < number_needed:
+                random_transcript = Transcript.objects.all()[randint(0, number_of_transcripts - 1)]
+                list_of_random_transcripts.append(random_transcript.pk)
+            transcripts_to_return = transcripts_to_return & Transcript.objects.filter(pk__in=list_of_random_transcripts)
+        elif transcripts_to_return.count() > 10:
+            return transcripts_to_return[0:9]
+
+        return transcripts_to_return
+
 
 class Transcript(models.Model):
     id_number = models.IntegerField()
@@ -44,6 +67,8 @@ class Transcript(models.Model):
     data_blob_processesed = models.BooleanField(
         default=False
     )
+
+    objects = TranscriptManager()
 
     @property
     def asset_name(self):
@@ -67,11 +92,6 @@ class Transcript(models.Model):
             self.asset_name
         )
 
-    objects = TranscriptManager()
-
-    def __str__(self):
-        return self.name
-
     def process_transcript_data_blob(self):
         new_phrases = [
             TranscriptPhrase(
@@ -88,6 +108,9 @@ class Transcript(models.Model):
             if phrase is not None
         ]
         TranscriptPhrase.objects.bulk_create(new_phrases)
+
+    def __str__(self):
+        return self.name
 
 
 class TranscriptPhraseManager(models.Manager):
@@ -157,10 +180,16 @@ class Source(models.Model):
     source = models.CharField(max_length=255)
     transcripts = models.ManyToManyField(Transcript)
 
+    def __str__(self):
+        return self.source
+
 
 class Topic(models.Model):
     topic = models.CharField(max_length=255)
     transcripts = models.ManyToManyField(Transcript)
+
+    def __str__(self):
+        return self.topic
 
 
 class Genre(models.Model):

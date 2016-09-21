@@ -2,9 +2,35 @@ import requests
 from random import randint
 from django.http import JsonResponse
 from rest_framework import viewsets
+from rest_framework.decorators import list_route
+from rest_framework.response import Response
 
-from ..transcript.models import Transcript, TranscriptPhrase, TranscriptPhraseDownvote, TranscriptMetadata, Source
+from ..transcript.models import Transcript, TranscriptPhrase, TranscriptPhraseDownvote, TranscriptMetadata
 from .serializers import TranscriptSerializer, TranscriptPhraseDownvoteSerializer
+
+import logging
+logger = logging.getLogger('django')
+
+"""
+
+what we need for game 1 to work
+
+endpoint to deliver a chunk of transcripts:
+
+each transcript will have:
+ - name
+ - aapb link
+ - source list
+ - media url
+ - topic list
+ - list of phrases
+ - each phrase has:
+   - pk
+   - text
+   - start time
+   - end time
+
+"""
 
 
 def streaming_source(request, transcript_id):
@@ -55,6 +81,16 @@ def random_transcript(request):
 class TranscriptViewSet(viewsets.ModelViewSet):
     queryset = Transcript.objects.all()
     serializer_class = TranscriptSerializer
+
+    @list_route()
+    def user_transcripts(self, request):
+        transcripts = Transcript.objects.for_user(
+            request.user
+        )
+        logger.info(request.user)
+        logger.info(request.user.username)
+        serializer = self.get_serializer(transcripts, many=True)
+        return Response(serializer.data)
 
 
 class TranscriptPhraseDownvoteViewSet(viewsets.ModelViewSet):
