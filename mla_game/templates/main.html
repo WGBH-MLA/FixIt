@@ -1,8 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-<header class="app-header">
-  <h1>MLA Game</h1>
-</header>
-<div id="app" class="app-content"></div>
+  {% if not user.is_authenticated %}
+  <p>
+    <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">Login with Facebook</a>
+    <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">Login with Google</a>
+  </p>
+  {% else %}
+  <p>
+    Welcome, {{user.first_name}}
+    <div id="app" class="app-content"></div>
+  </p>
+  {% endif %}
 {% endblock %}

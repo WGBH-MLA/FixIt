@@ -464,4 +464,44 @@ audio {
   clear: both;
 }
 
+.app-navigation {
+  margin: 0;
+  padding: 0;
+}
+.app-navigation li {
+  list-style: none;
+}
+.app-navigation dd {
+  margin: 0;
+}
+.app-navigation:after {
+  display: table;
+  clear: both;
+  content: '';
+}
+.app-navigation:before {
+  display: table;
+  clear: both;
+  content: '';
+}
+.app-navigation li {
+  float: left;
+  width: 50%;
+  text-align: center;
+  border: 1px solid black;
+}
+.app-navigation li:nth-child(1) {
+  border-right: none;
+}
+.app-navigation li a {
+  color: white;
+  text-decoration: none;
+  background: grey;
+  padding: 1em;
+  display: block;
+}
+.app-navigation li a.active {
+  background: green;
+}
+
 /*# sourceMappingURL=main.css.map */

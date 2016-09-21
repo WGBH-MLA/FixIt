@@ -60,3 +60,26 @@ audio {
 .app-header, .app-content, {
   @include grid;
 }
+.app-navigation {
+  @include plain-list;
+  @include clearfix;
+  li {
+    float:left;
+    width:50%;
+    text-align:center;
+    border:1px solid black;
+    &:nth-child(1) {
+      border-right:none;    
+    }
+    a {
+      color:white;
+      text-decoration:none;
+      background:grey;
+      padding:1em;
+      display:block;
+      &.active {
+        background:green;
+      }
+    }
+  }
+}
