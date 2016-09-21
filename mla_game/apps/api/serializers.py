@@ -1,13 +1,31 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 
-from ..transcript.models import Transcript, TranscriptPhraseDownvote, TranscriptPhraseCorrection
+from ..transcript.models import (
+    Transcript, TranscriptPhrase, TranscriptMetadata,
+    TranscriptPhraseDownvote, TranscriptPhraseCorrection
+)
 
 
-class TranscriptSerializer(serializers.HyperlinkedModelSerializer):
+class TranscriptMetadataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TranscriptMetadata
+        fields = ('description', 'series', 'broadcast_date')
+
+
+class TranscriptPhraseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TranscriptPhrase
+        fields = ('pk', 'start_time', 'end_time', 'text')
+
+
+class TranscriptSerializer(serializers.ModelSerializer):
+    phrases = TranscriptPhraseSerializer(many=True, read_only=True)
+    metadata = TranscriptMetadataSerializer()
+
     class Meta:
         model = Transcript
-        fields = ('name',)
+        fields = ('name', 'phrases', 'metadata')
 
 
 class TranscriptPhraseCorrectionSerializer(serializers.ModelSerializer):

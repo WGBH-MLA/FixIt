@@ -87,8 +87,6 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         transcripts = Transcript.objects.for_user(
             request.user
         )
-        logger.info(request.user)
-        logger.info(request.user.username)
         serializer = self.get_serializer(transcripts, many=True)
         return Response(serializer.data)
 

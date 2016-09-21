@@ -140,7 +140,7 @@ class TranscriptPhrase(models.Model):
     start_time = models.DecimalField(max_digits=12, decimal_places=2)
     end_time = models.DecimalField(max_digits=12, decimal_places=2)
     speaker_id = models.IntegerField()
-    transcript = models.ForeignKey(Transcript, related_name='transcript_phrase')
+    transcript = models.ForeignKey(Transcript, related_name='phrases')
 
     objects = TranscriptPhraseManager()
 
@@ -170,7 +170,7 @@ class TranscriptPhraseCorrection(models.Model):
 
 
 class TranscriptMetadata(models.Model):
-    transcript = models.OneToOneField(Transcript)
+    transcript = models.OneToOneField(Transcript, related_name='metadata')
     description = models.TextField(blank=True, null=True)
     series = models.CharField(max_length=255, blank=True, null=True)
     broadcast_date = models.CharField(max_length=255, blank=True, null=True)
