@@ -57,6 +57,11 @@ class TranscriptManager(models.Manager):
 
         return transcripts_to_return
 
+    def random_transcript(self):
+        all_transcripts = self.all().defer('transcript_data_blob')
+        number_of_transcripts = all_transcripts.count()
+        return self.filter(pk__in=[randint(0, number_of_transcripts - 1)])
+
 
 class Transcript(models.Model):
     id_number = models.IntegerField()
@@ -91,6 +96,19 @@ class Transcript(models.Model):
         return 'http://americanarchive.org/catalog/{}'.format(
             self.asset_name
         )
+
+    @property
+    def media_url(self):
+        media_request = requests.head(
+            'http://americanarchive.org/media/{}?part=1'.format(
+                self.asset_name
+            ),
+            headers={'referer': 'http://americanarchive.org/'}
+        )
+        if media_request.is_redirect:
+            return media_request.headers['Location']
+        else:
+            return None
 
     def process_transcript_data_blob(self):
         new_phrases = [

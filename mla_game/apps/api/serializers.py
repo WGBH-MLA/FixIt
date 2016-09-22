@@ -25,7 +25,7 @@ class TranscriptSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Transcript
-        fields = ('name', 'phrases', 'metadata')
+        fields = ('name', 'aapb_link', 'phrases', 'metadata', 'media_url')
 
 
 class TranscriptPhraseCorrectionSerializer(serializers.ModelSerializer):
