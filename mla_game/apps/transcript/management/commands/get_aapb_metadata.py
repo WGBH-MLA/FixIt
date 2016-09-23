@@ -1,9 +1,10 @@
+import logging
 import xml.etree.ElementTree as ET
 from django.core.management.base import BaseCommand
 
-from ...models import Transcript, TranscriptMetadata, Genre, Topic, Source
+from ...models import Transcript, TranscriptMetadata, Topic, Source
 
-
+logger = logging.getLogger('django')
 aapb_url_prefix = 'http://americanarchive.org/api/'
 
 
@@ -11,14 +12,9 @@ class Command(BaseCommand):
     help = 'Gets the AAPB PBCore information for a given transcript'
 
     def _genres_and_topics(self, transcript, root):
-        genres = []
         topics = []
+        # science, politics/public affairs,
         for child in root.iter('{http://www.pbcore.org/PBCore/PBCoreNamespace.html}pbcoreGenre'):
-            if child.attrib['annotation'] == 'genre':
-                genres.append(child.text)
-                for genre in set(genres):
-                    genre_object, _ = Genre.objects.get_or_create(genre=genre)
-                    genre_object.transcripts.add(transcript)
             if child.attrib['annotation'] == 'topic':
                 topics.append(child.text)
                 for topic in set(topics):
@@ -27,27 +23,18 @@ class Command(BaseCommand):
 
     def _sources(self, transcript, root):
         source_candidates = []
-        useless_sources = [
-            'pbcore XML database UUID',
-            'Sony Ci',
-            'http://americanarchiveinventory.org',
-            'unknown',
-        ]
         try:
-            for child in root.iter('{http://www.pbcore.org/PBCore/PBCoreNamespace.html}creator'):
-                source_candidates.append(child.text)
-        except:
-            pass
-        try:
-            for child in root.iter('{http://www.pbcore.org/PBCore/PBCoreNamespace.html}pbcoreIdentifier'):
-                if 'source' in child.attrib:
-                    source_candidates.append(child.attrib['source'])
+            for child in root.iter('{http://www.pbcore.org/PBCore/PBCoreNamespace.html}pbcoreAnnotation'):
+                if child.attrib['annotationType'] == 'organization':
+                    logger.info('Found source {} for transcript: {}'.format(
+                        child.text, transcript
+                    ))
+                    source_candidates.append(child.text)
         except:
             pass
         for candidate in set(source_candidates):
-            if candidate not in useless_sources:
-                source, created = Source.objects.get_or_create(source=candidate)
-                source.transcripts.add(transcript)
+            source = Source.objects.get(pbcore_source=candidate)
+            source.transcripts.add(transcript)
 
     def _description(self, root):
         try:
@@ -61,7 +48,6 @@ class Command(BaseCommand):
         try:
             for child in root.iter('{http://www.pbcore.org/PBCore/PBCoreNamespace.html}pbcoreTitle'):
                 if child.attrib['titleType'] == 'Series' or child.attrib['titleType'] == 'Program':
-                    print(child.text)
                     return child.text
         except:
             return ''
