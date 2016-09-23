@@ -9,6 +9,7 @@ from ...tasks import process_transcript
 
 
 logger = logging.getLogger('pua_scraper')
+stats = logging.getLogger('pua_stats')
 
 
 class Command(BaseCommand):
@@ -24,6 +25,10 @@ class Command(BaseCommand):
                 '/collections?page={}'.format(page)
             )['collections']:
                 logger.info('processing collection id: ' + str(collection['id']))
+                stats.info('{},{}'.format(
+                    str(collection['id']),
+                    len(collection['item_ids']))
+                )
                 for item_id in collection['item_ids']:
                     logger.info('processing item id: ' + str(item_id))
                     try:
