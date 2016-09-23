@@ -6,13 +6,17 @@ import requests
 from django.contrib.auth.models import User
 from django.db import models
 
+from localflavor.us.models import USStateField
+
 
 logger = logging.getLogger('pua_scraper')
+error_log = logging.getLogger('pua_errors')
 
 
 class TranscriptManager(models.Manager):
     def create_transcript(self, data_blob):
         if data_blob['audio_files'] is None:
+            error_log.info('no audio file found for this transcript')
             return None
         audio_file = data_blob['audio_files'][0]
         if audio_file['current_status'] != 'Transcript complete':
@@ -195,7 +199,9 @@ class TranscriptMetadata(models.Model):
 
 
 class Source(models.Model):
+    pbcore_source = models.CharField(max_length=255, null=True)
     source = models.CharField(max_length=255)
+    state = USStateField(null=True)
     transcripts = models.ManyToManyField(Transcript)
 
     def __str__(self):
