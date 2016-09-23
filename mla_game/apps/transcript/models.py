@@ -214,8 +214,3 @@ class Topic(models.Model):
 
     def __str__(self):
         return self.topic
-
-
-class Genre(models.Model):
-    genre = models.CharField(max_length=255)
-    transcripts = models.ManyToManyField(Transcript)

@@ -11,9 +11,10 @@ aapb_url_prefix = 'http://americanarchive.org/api/'
 class Command(BaseCommand):
     help = 'Gets the AAPB PBCore information for a given transcript'
 
-    def _genres_and_topics(self, transcript, root):
+    def _topics(self, transcript, root):
         topics = []
-        # science, politics/public affairs,
+        # science, politics/public affairs, etc. List to come from Sadie and/or
+        # Casey
         for child in root.iter('{http://www.pbcore.org/PBCore/PBCoreNamespace.html}pbcoreGenre'):
             if child.attrib['annotation'] == 'topic':
                 topics.append(child.text)
@@ -64,7 +65,7 @@ class Command(BaseCommand):
             try:
                 tree = ET.ElementTree(ET.fromstringlist(transcript.aapb_xml))
                 root = tree.getroot()
-                self._genres_and_topics(transcript, root)
+                self._topics(transcript, root)
                 self._sources(transcript, root)
                 metadata = {
                     'description': self._description(root),
