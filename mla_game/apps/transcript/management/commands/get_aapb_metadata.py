@@ -5,7 +5,6 @@ from django.core.management.base import BaseCommand
 from ...models import Transcript, TranscriptMetadata, Topic, Source
 
 logger = logging.getLogger('django')
-aapb_url_prefix = 'http://americanarchive.org/api/'
 
 
 class Command(BaseCommand):
