@@ -44,8 +44,8 @@ class TranscriptManager(models.Manager):
 
     def for_user(self, user):
         profile = user.profile
-        if profile.preferred_station is not None:
-            transcripts_to_return = profile.preferred_station.transcripts.all()
+        if profile.preferred_stations is not None:
+            transcripts_to_return = profile.preferred_stations.transcripts.all()
         if profile.preferred_topics:
             for topic in profile.preferred_topics.all():
                 transcripts_to_return = transcripts_to_return & topic.transcripts.all()

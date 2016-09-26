@@ -1,9 +1,20 @@
 from rest_framework import viewsets
 from rest_framework.decorators import list_route
 from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination
 
-from ..transcript.models import Transcript, TranscriptPhraseDownvote
-from .serializers import TranscriptSerializer, TranscriptPhraseDownvoteSerializer
+from ..transcript.models import Transcript, TranscriptPhraseDownvote, Source
+from ..accounts.models import Profile
+from .serializers import (
+    TranscriptSerializer, TranscriptPhraseDownvoteSerializer, SourceSerializer,
+    ProfileSerializer
+)
+
+
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 100
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
 
 
 class TranscriptViewSet(viewsets.ModelViewSet):
@@ -28,3 +39,14 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 class TranscriptPhraseDownvoteViewSet(viewsets.ModelViewSet):
     queryset = TranscriptPhraseDownvote.objects.all()
     serializer_class = TranscriptPhraseDownvoteSerializer
+
+
+class SourceViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Source.objects.all()
+    serializer_class = SourceSerializer
+    pagination_class = StandardResultsSetPagination
+
+
+class ProfileViewSet(viewsets.ModelViewSet):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
