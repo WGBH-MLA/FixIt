@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -20,6 +21,8 @@ class Command(BaseCommand):
             settings.PUA_KEY,
             settings.PUA_SECRET,
         )
+        stats.info("=" * 80)
+        stats.info("Started PUA scraping at {}".format(datetime.now().isoformat()))
         for page in range(1, 50):
             for collection in client.get(
                 '/collections?page={}'.format(page)

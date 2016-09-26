@@ -16,10 +16,13 @@ error_log = logging.getLogger('pua_errors')
 class TranscriptManager(models.Manager):
     def create_transcript(self, data_blob):
         if data_blob['audio_files'] is None:
-            error_log.info('no audio file found for this transcript')
+            error_log.info('No audio file found for transcript {} from collection{}'.format(
+                data_blob['id'], data_blob['collection_id']))
             return None
         audio_file = data_blob['audio_files'][0]
         if audio_file['current_status'] != 'Transcript complete':
+            error_log.info('Incomplete transcript {} from collection{}'.format(
+                data_blob['id'], data_blob['collection_id']))
             return None
         name = data_blob['title']
         id_number = data_blob['id']

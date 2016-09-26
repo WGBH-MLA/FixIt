@@ -6,13 +6,15 @@ from .models import Transcript
 
 
 logger = logging.getLogger('pua_scraper')
+error_log = logging.getLogger('pua_errors')
 
 
 @db_task()
 def process_transcript(transcript):
     new_transcript = Transcript.objects.create_transcript(transcript)
     if new_transcript is None:
-        logger.info('transcript is none')
+        error_log.info('Could not make transcript from {}'.format(
+            transcript['id']))
         return None
     new_transcript.save()
     logger.info('transcript saved')
