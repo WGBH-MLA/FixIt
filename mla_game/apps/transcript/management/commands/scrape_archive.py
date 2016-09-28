@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -9,6 +10,7 @@ from ...tasks import process_transcript
 
 
 logger = logging.getLogger('pua_scraper')
+stats = logging.getLogger('pua_stats')
 
 
 class Command(BaseCommand):
@@ -19,11 +21,17 @@ class Command(BaseCommand):
             settings.PUA_KEY,
             settings.PUA_SECRET,
         )
+        stats.info("=" * 80)
+        stats.info("Started PUA scraping at {}".format(datetime.now().isoformat()))
         for page in range(1, 50):
             for collection in client.get(
                 '/collections?page={}'.format(page)
             )['collections']:
                 logger.info('processing collection id: ' + str(collection['id']))
+                stats.info('{},{}'.format(
+                    str(collection['id']),
+                    len(collection['item_ids']))
+                )
                 for item_id in collection['item_ids']:
                     logger.info('processing item id: ' + str(item_id))
                     try:

@@ -6,16 +6,23 @@ import requests
 from django.contrib.auth.models import User
 from django.db import models
 
+from localflavor.us.models import USStateField
+
 
 logger = logging.getLogger('pua_scraper')
+error_log = logging.getLogger('pua_errors')
 
 
 class TranscriptManager(models.Manager):
     def create_transcript(self, data_blob):
         if data_blob['audio_files'] is None:
+            error_log.info('No audio file found for transcript {} from collection{}'.format(
+                data_blob['id'], data_blob['collection_id']))
             return None
         audio_file = data_blob['audio_files'][0]
         if audio_file['current_status'] != 'Transcript complete':
+            error_log.info('Incomplete transcript {} from collection{}'.format(
+                data_blob['id'], data_blob['collection_id']))
             return None
         name = data_blob['title']
         id_number = data_blob['id']
@@ -37,8 +44,8 @@ class TranscriptManager(models.Manager):
 
     def for_user(self, user):
         profile = user.profile
-        if profile.preferred_station is not None:
-            transcripts_to_return = profile.preferred_station.transcripts.all()
+        if profile.preferred_stations is not None:
+            transcripts_to_return = profile.preferred_stations.transcripts.all()
         if profile.preferred_topics:
             for topic in profile.preferred_topics.all():
                 transcripts_to_return = transcripts_to_return & topic.transcripts.all()
@@ -56,6 +63,11 @@ class TranscriptManager(models.Manager):
             return transcripts_to_return[0:9]
 
         return transcripts_to_return
+
+    def random_transcript(self):
+        all_transcripts = self.all().defer('transcript_data_blob')
+        number_of_transcripts = all_transcripts.count()
+        return self.filter(pk__in=[randint(0, number_of_transcripts - 1)])
 
 
 class Transcript(models.Model):
@@ -91,6 +103,19 @@ class Transcript(models.Model):
         return 'http://americanarchive.org/catalog/{}'.format(
             self.asset_name
         )
+
+    @property
+    def media_url(self):
+        media_request = requests.head(
+            'http://americanarchive.org/media/{}?part=1'.format(
+                self.asset_name
+            ),
+            headers={'referer': 'http://americanarchive.org/'}
+        )
+        if media_request.is_redirect:
+            return media_request.headers['Location']
+        else:
+            return None
 
     def process_transcript_data_blob(self):
         new_phrases = [
@@ -140,7 +165,7 @@ class TranscriptPhrase(models.Model):
     start_time = models.DecimalField(max_digits=12, decimal_places=2)
     end_time = models.DecimalField(max_digits=12, decimal_places=2)
     speaker_id = models.IntegerField()
-    transcript = models.ForeignKey(Transcript, related_name='transcript_phrase')
+    transcript = models.ForeignKey(Transcript, related_name='phrases')
 
     objects = TranscriptPhraseManager()
 
@@ -170,14 +195,16 @@ class TranscriptPhraseCorrection(models.Model):
 
 
 class TranscriptMetadata(models.Model):
-    transcript = models.OneToOneField(Transcript)
+    transcript = models.OneToOneField(Transcript, related_name='metadata')
     description = models.TextField(blank=True, null=True)
     series = models.CharField(max_length=255, blank=True, null=True)
     broadcast_date = models.CharField(max_length=255, blank=True, null=True)
 
 
 class Source(models.Model):
+    pbcore_source = models.CharField(max_length=255, null=True)
     source = models.CharField(max_length=255)
+    state = USStateField(null=True)
     transcripts = models.ManyToManyField(Transcript)
 
     def __str__(self):
@@ -190,8 +217,3 @@ class Topic(models.Model):
 
     def __str__(self):
         return self.topic
-
-
-class Genre(models.Model):
-    genre = models.CharField(max_length=255)
-    transcripts = models.ManyToManyField(Transcript)
