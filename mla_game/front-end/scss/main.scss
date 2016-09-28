@@ -57,7 +57,12 @@ audio {
   width:100%;
 }
 
-.app-header, .app-content, {
+.welcome-message {
+  display:block;
+  margin-top:1.5em;
+}
+
+.app-header, .app-content, .welcome-message {
   @include grid;
 }
 .app-navigation {

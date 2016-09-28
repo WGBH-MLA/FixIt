@@ -453,12 +453,17 @@ audio {
   width: 100%;
 }
 
-.app-header, .app-content {
+.welcome-message {
+  display: block;
+  margin-top: 1.5em;
+}
+
+.app-header, .app-content, .welcome-message {
   max-width: 120em;
   margin-left: auto;
   margin-right: auto;
 }
-.app-header:after, .app-content:after {
+.app-header:after, .app-content:after, .welcome-message:after {
   content: " ";
   display: block;
   clear: both;
