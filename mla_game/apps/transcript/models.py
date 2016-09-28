@@ -43,14 +43,25 @@ class TranscriptManager(models.Manager):
         return transcript
 
     def for_user(self, user):
+        """
+        considerations:
+            - ideally the user will get only transcripts that are from their preferred stations and that relate to
+            their preferred topics
+            - users should not see the same phrase twice in game 1
+            - transcripts for which the user has considered every phrase should
+            be exempt from future game 1 sessions
+        """
         profile = user.profile
+        transcripts_to_return = Transcript.objects.none()
+        all_transcripts = self.all().defer('transcript_data_blob')
+        number_of_transcripts = all_transcripts.count()
+
         if profile.preferred_stations is not None:
-            transcripts_to_return = profile.preferred_stations.transcripts.all()
+            for station in profile.preferred_stations.all():
+                transcripts_to_return = transcripts_to_return | station.transcripts.all()
         if profile.preferred_topics:
             for topic in profile.preferred_topics.all():
                 transcripts_to_return = transcripts_to_return & topic.transcripts.all()
-        all_transcripts = self.all().defer('transcript_data_blob')
-        number_of_transcripts = all_transcripts.count()
 
         if transcripts_to_return.count() < 10:
             list_of_random_transcripts = []
