@@ -53,11 +53,7 @@ var Home = React.createClass({
   render: function(){
     return (
       <div>
-        <h2>Simple React {this.props.name}</h2>
-        <button className="app-counter" onClick={this._clickHandler}>Change Count</button>
-        <h1>{this.state.count}</h1>
-        <h2>State Object Debugger</h2>
-        <pre>{JSON.stringify(this.state, null, 2)}</pre>
+        <h2>Player</h2>
         <RandTranscriptContainer />
       </div>
     )
