@@ -5,51 +5,26 @@ from random import randint
 import requests
 from django.contrib.auth.models import User
 from django.db import models
-
 from localflavor.us.models import USStateField
-
 
 logger = logging.getLogger('pua_scraper')
 error_log = logging.getLogger('pua_errors')
 
 
 class TranscriptManager(models.Manager):
-    def create_transcript(self, data_blob):
-        if data_blob['audio_files'] is None:
-            error_log.info('No audio file found for transcript {} from collection{}'.format(
-                data_blob['id'], data_blob['collection_id']))
-            return None
-        audio_file = data_blob['audio_files'][0]
-        if audio_file['current_status'] != 'Transcript complete':
-            error_log.info('Incomplete transcript {} from collection{}'.format(
-                data_blob['id'], data_blob['collection_id']))
-            return None
-        name = data_blob['title']
-        id_number = data_blob['id']
-        collection_id = data_blob['collection_id']
-        url = audio_file['url']
-        transcript_data_blob = json.dumps(audio_file['transcript'])
-        try:
-            transcript = Transcript.objects.get(id_number=id_number)
-            transcript.transcript_data_blob = transcript_data_blob
-        except Transcript.DoesNotExist:
-            transcript = self.create(
-                name=name,
-                id_number=id_number,
-                collection_id=collection_id,
-                url=url,
-                transcript_data_blob=transcript_data_blob
-            )
-        return transcript
-
     def for_user(self, user):
         """
         considerations:
-            - ideally the user will get only transcripts that are from their preferred stations and that relate to
-            their preferred topics
+            - ideally the user will get only transcripts that are from their
+            preferred stations and that relate to their preferred topics
             - users should not see the same phrase twice in game 1
             - transcripts for which the user has considered every phrase should
             be exempt from future game 1 sessions
+
+        implications:
+            - we need a way to track which phrases a user has considered
+            - we need a way to determine if a user has seen every phrase in a
+            transcript, so it can be totally excluded
         """
         profile = user.profile
         transcripts_to_return = Transcript.objects.none()
@@ -67,7 +42,7 @@ class TranscriptManager(models.Manager):
             list_of_random_transcripts = []
             number_needed = 10 - transcripts_to_return.count()
             while len(list_of_random_transcripts) < number_needed:
-                random_transcript = Transcript.objects.all()[randint(0, number_of_transcripts - 1)]
+                random_transcript = all_transcripts.order_by('?')[randint(0, number_of_transcripts - 1)]
                 list_of_random_transcripts.append(random_transcript.pk)
             transcripts_to_return = transcripts_to_return & Transcript.objects.filter(pk__in=list_of_random_transcripts)
         elif transcripts_to_return.count() > 10:
@@ -129,21 +104,28 @@ class Transcript(models.Model):
             return None
 
     def process_transcript_data_blob(self):
-        new_phrases = [
-            TranscriptPhrase(
-                id_number=phrase['id'],
-                start_time=phrase['start_time'],
-                end_time=phrase['end_time'],
-                text=phrase['text'],
-                speaker_id=phrase['speaker_id'],
-                transcript=self
-            )
-            for phrase in json.loads(
-                self.transcript_data_blob
-            )['parts']
-            if phrase is not None
-        ]
-        TranscriptPhrase.objects.bulk_create(new_phrases)
+        data = json.loads(self.transcript_data_blob)
+        try:
+            data['audio_files']
+        except:
+            error_log.info('No audio file for transcript {}'.format(
+                self.pk
+            ))
+        # new_phrases = [
+        #     TranscriptPhrase(
+        #         id_number=phrase['id'],
+        #         start_time=phrase['start_time'],
+        #         end_time=phrase['end_time'],
+        #         text=phrase['text'],
+        #         speaker_id=phrase['speaker_id'],
+        #         transcript=self
+        #     )
+        #     for phrase in json.loads(
+        #         self.transcript_data_blob
+        #     )['parts']
+        #     if phrase is not None
+        # ]
+        # TranscriptPhrase.objects.bulk_create(new_phrases)
 
     def __str__(self):
         return self.name
@@ -183,6 +165,10 @@ class TranscriptPhrase(models.Model):
     @property
     def downvotes(self):
         return TranscriptPhraseDownvote.objects.get(transcript_phrase=self.pk).count()
+
+    @property
+    def total_length(self):
+        return self.end_time - self.start_time
 
     def __str__(self):
         return str(self.transcript) + '_phrase_' + str(self.id)
