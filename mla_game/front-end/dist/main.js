@@ -267,27 +267,6 @@ var RandTranscriptUI = _react2['default'].createClass({
     };
   },
 
-  TranscriptList: function TranscriptList() {
-    {
-      this.props.phrases.map((function (phrase, index) {
-        return _react2['default'].createElement(
-          'li',
-          { key: phrase.pk },
-          _react2['default'].createElement(
-            'button',
-            { className: 'play-button', onClick: this._playPhrase.bind(this, phrase.start_time), id: phrase.start_time },
-            'Play'
-          ),
-          _react2['default'].createElement(
-            'span',
-            { className: 'phrase', id: phrase.pk },
-            phrase.text
-          )
-        );
-      }).bind(this));
-    }
-  },
-
   render: function render() {
     return _react2['default'].createElement(
       'div',

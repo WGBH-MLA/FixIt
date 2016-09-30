@@ -19,16 +19,6 @@ var RandTranscriptUI = React.createClass({
       currentPhrase:0,
     };
   },
-
-  TranscriptList: function(){
-    {this.props.phrases.map(function (phrase, index){
-      return (
-      <li key={phrase.pk}>
-        <button className='play-button' onClick={this._playPhrase.bind(this, phrase.start_time)} id={phrase.start_time}>Play</button>
-        <span className='phrase' id={phrase.pk}>{phrase.text}</span>
-      </li>)
-    }.bind(this))}
-  },
   
   render: function(){
     return (
