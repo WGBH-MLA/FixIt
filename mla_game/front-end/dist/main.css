@@ -509,4 +509,26 @@ audio {
   background: green;
 }
 
+.phrase-list {
+  margin: 0;
+  padding: 0;
+  margin-top: 3em;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  padding: 1em 0;
+}
+.phrase-list li {
+  list-style: none;
+}
+.phrase-list dd {
+  margin: 0;
+}
+.phrase-list li {
+  margin-bottom: 1.5em;
+}
+.phrase-list .play-button {
+  display: inline-block;
+  margin-right: 1em;
+}
+
 /*# sourceMappingURL=main.css.map */
