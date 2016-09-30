@@ -404,6 +404,22 @@ textarea {
   /* 2 */
 }
 
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 html {
   box-sizing: border-box;
 }
@@ -525,6 +541,12 @@ audio {
 }
 .phrase-list li {
   margin-bottom: 1.5em;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
 }
 .phrase-list .play-button {
   display: inline-block;

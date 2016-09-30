@@ -3,6 +3,7 @@
 @import 'breakpoint';
 @import 'susy';
 @import 'mixins';
+@import 'animations';
 @import 'config';
 
 
@@ -99,6 +100,8 @@ audio {
   padding:1em 0;
   li {
     margin-bottom:1.5em;
+    @include animated;
+    @include fadeIn; 
   }
   .play-button {
     display: inline-block;
