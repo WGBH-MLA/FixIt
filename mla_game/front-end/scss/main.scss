@@ -57,7 +57,12 @@ audio {
   width:100%;
 }
 
-.app-header, .app-content, {
+.welcome-message {
+  display:block;
+  margin-top:1.5em;
+}
+
+.app-header, .app-content, .welcome-message {
   @include grid;
 }
 .app-navigation {
@@ -83,3 +88,24 @@ audio {
     }
   }
 }
+
+.phrase-list {
+  @include plain-list;
+  margin-top:3em;
+  // max-height:20em;
+  // overflow:hidden;
+  border-top:2px solid black;
+  border-bottom:2px solid black;
+  padding:1em 0;
+  li {
+    margin-bottom:1.5em;
+  }
+  .play-button {
+    display: inline-block;
+    margin-right:1em;
+  }
+}
+
+
+
+

@@ -7,9 +7,7 @@
     <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">Login with Google</a>
   </p>
   {% else %}
-  <p>
-    Welcome, {{user.first_name}}
+    <span class="welcome-message">Welcome, {{user.first_name}}</span>
     <div id="app" class="app-content"></div>
-  </p>
   {% endif %}
 {% endblock %}

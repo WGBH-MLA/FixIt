@@ -1,4 +1,5 @@
 import React from 'react'
+import RandTranscriptUI from '../components/transcript_component'
 
 var RandTranscriptContainer = React.createClass({
  
@@ -7,24 +8,17 @@ var RandTranscriptContainer = React.createClass({
       url: '/api/transcript/random/',
     })
     .then(function(data) {
+      data = data[0];
       this.setState({
-        series: data.series,
-        transcript: data.transcript,
+      media_url: data.media_url,
+        phrases: data.phrases,
       });
-
-      // for (var i = 0; i < Things.length; i++) {
-        // Things[i]
-      // }
-
-      
     }.bind(this));
   },
 
   getInitialState: function(){
     return {
-      series:'',
-      transcript:'',
-      station:'',
+    media_url: '',
       phrases: []
     }
   },
@@ -36,8 +30,7 @@ var RandTranscriptContainer = React.createClass({
   render: function(){
     return (
       <div>
-        <h1>Imported Component</h1>
-        <pre>{JSON.stringify(this.state, null, 2)}</pre>
+        <RandTranscriptUI phrases={this.state.phrases} media_url={this.state.media_url} />
       </div>
     )
   }
