@@ -277,28 +277,43 @@ var _componentsAudio_component2 = _interopRequireDefault(_componentsAudio_compon
 var RandTranscriptUI = _react2['default'].createClass({
   displayName: 'RandTranscriptUI',
 
+  _setClass: function _setClass() {
+    if (this.state['class'] === 'un-marked') {
+      this.setState({
+        'class': 'incorrect'
+      });
+    } else {
+      this.setState({
+        'class': 'un-marked'
+      });
+    }
+  },
+
   _playPhrase: function _playPhrase(callback) {
     var media = document.querySelector('.audio-player');
     media.currentTime = callback;
     media.play();
+    console.log(media.currentTime);
   },
 
   getInitialState: function getInitialState() {
     return {
-      currentPhrase: 0
+      currentPhrase: 0,
+      'class': 'un-marked'
     };
   },
 
-  componentDidMount: function componentDidMount() {
-    return {
-      currentPhrase: 0
-    };
-  },
+  componentDidMount: function componentDidMount() {},
 
   render: function render() {
     return _react2['default'].createElement(
       'div',
       null,
+      _react2['default'].createElement(
+        'pre',
+        null,
+        JSON.stringify(this.state, null, 2)
+      ),
       _react2['default'].createElement(_componentsAudio_component2['default'], { src: this.props.media_url }),
       _react2['default'].createElement(
         'ul',
@@ -309,21 +324,16 @@ var RandTranscriptUI = _react2['default'].createClass({
             { key: phrase.pk },
             _react2['default'].createElement(
               'button',
-              { className: 'play-button', onClick: this._playPhrase.bind(this, phrase.start_time) },
+              { className: 'play-button', id: phrase.start_time, onClick: this._playPhrase.bind(this, phrase.start_time) },
               'Play'
             ),
             _react2['default'].createElement(
               'span',
-              { className: 'phrase', id: phrase.pk },
+              { className: this.state['class'], onClick: this._setClass, id: phrase.pk },
               phrase.text
             )
           );
         }).bind(this))
-      ),
-      _react2['default'].createElement(
-        'pre',
-        null,
-        JSON.stringify(this.state, null, 2)
       )
     );
   }
@@ -360,6 +370,7 @@ var RandTranscriptContainer = _react2['default'].createClass({
         media_url: data.media_url,
         phrases: data.phrases
       });
+      console.log(data);
     }).bind(this));
   },
 

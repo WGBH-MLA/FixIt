@@ -475,7 +475,7 @@ audio {
 }
 
 .app-header, .app-content, .welcome-message {
-  max-width: 120em;
+  max-width: 90em;
   margin-left: auto;
   margin-right: auto;
 }
@@ -551,6 +551,9 @@ audio {
 .phrase-list .play-button {
   display: inline-block;
   margin-right: 1em;
+}
+.phrase-list .incorrect {
+  background: red;
 }
 
 /*# sourceMappingURL=main.css.map */
