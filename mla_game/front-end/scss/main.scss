@@ -95,6 +95,7 @@ audio {
   margin-top:3em;
   // max-height:20em;
   // overflow:hidden;
+  // overflow-y:scroll;
   border-top:2px solid black;
   border-bottom:2px solid black;
   padding:1em 0;
@@ -108,12 +109,19 @@ audio {
     margin-right:1em;
   }
   .phrase {
+    @include transition(background-color, .5s, ease-in);
     border:none;
     padding:.5em;
     background:none;
     &.incorrect {
       background:red;
     }
+  }
+  .submit-phrase {
+    display:inline-block;
+    margin-left:1em;
+    @include animated;
+    @include slideInLeft;
   }
 }
 
