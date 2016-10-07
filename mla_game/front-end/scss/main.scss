@@ -107,8 +107,13 @@ audio {
     display: inline-block;
     margin-right:1em;
   }
-  .incorrect {
-    background:red;
+  .phrase {
+    border:none;
+    padding:.5em;
+    background:none;
+    &.incorrect {
+      background:red;
+    }
   }
 }
 

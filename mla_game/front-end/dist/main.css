@@ -552,7 +552,12 @@ audio {
   display: inline-block;
   margin-right: 1em;
 }
-.phrase-list .incorrect {
+.phrase-list .phrase {
+  border: none;
+  padding: .5em;
+  background: none;
+}
+.phrase-list .phrase.incorrect {
   background: red;
 }
 
