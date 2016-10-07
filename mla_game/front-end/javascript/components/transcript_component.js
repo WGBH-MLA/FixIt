@@ -3,16 +3,10 @@ import Audio from '../components/audio_component'
 
 var RandTranscriptUI = React.createClass({
 
-  _setClass: function(){
-    if (this.state.class === 'un-marked'){
-      this.setState({
-        class: 'incorrect'
-      });
-    } else {
-      this.setState({
-        class: 'un-marked'
-      });
-    }
+  _selectPhrase: function(e){
+    this.setState({
+      currentPhrase:e
+    });
   },
   
   _playPhrase: function(callback){
@@ -25,7 +19,6 @@ var RandTranscriptUI = React.createClass({
   getInitialState:function(){
     return {
       currentPhrase:0,
-      class:'un-marked'
     };
   },
 
@@ -36,14 +29,15 @@ var RandTranscriptUI = React.createClass({
   render: function(){
     return (
     <div>
+      <h3>State Object Debugger</h3>
       <pre>{JSON.stringify(this.state, null, 2)}</pre>
       <Audio src={this.props.media_url} />
        <ul className='phrase-list'>
-        {this.props.phrases.map(function (phrase, index){
+        {this.props.phrases.map(function (phrase){
           return(
           <li key={phrase.pk}>
             <button className='play-button' id={phrase.start_time} onClick={this._playPhrase.bind(this, phrase.start_time)}>Play</button>
-            <span className={this.state.class} onClick={this._setClass} id={phrase.pk}>{phrase.text}</span>
+            <button className={this.state.currentPhrase === phrase.pk ? 'incorrect phrase' : 'un-marked phrase'} onClick={this._selectPhrase.bind(this, phrase.pk)} id={phrase.pk}>{phrase.text}</button>
           </li>)
         }.bind(this))}
        </ul>
