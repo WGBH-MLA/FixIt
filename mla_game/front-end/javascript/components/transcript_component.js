@@ -33,7 +33,9 @@ var RandTranscriptUI = React.createClass({
     <div>
       <h3>State Object Debugger</h3>
       <pre>{JSON.stringify(this.state, null, 2)}</pre>
-      <Audio src={this.props.media_url} />
+      <div className='game'>
+        <Audio src={this.props.media_url} />
+      </div>
        <ul className='phrase-list'>
         {this.props.phrases.map(function(phrase){
           return(
