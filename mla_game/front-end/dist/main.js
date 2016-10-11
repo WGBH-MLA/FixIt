@@ -158,7 +158,7 @@ var SubmitPhrase = _react2['default'].createClass({
   render: function render() {
     return _react2['default'].createElement(
       'button',
-      { type: 'submit', className: 'submit-phrase' },
+      { type: 'submit', className: 'submit-phrase', id: this.props.id },
       'Submit Phrase'
     );
   }
@@ -230,7 +230,11 @@ var RandTranscriptUI = _react2['default'].createClass({
         null,
         JSON.stringify(this.state, null, 2)
       ),
-      _react2['default'].createElement(_componentsAudio_component2['default'], { src: this.props.media_url }),
+      _react2['default'].createElement(
+        'div',
+        { className: 'game' },
+        _react2['default'].createElement(_componentsAudio_component2['default'], { src: this.props.media_url })
+      ),
       _react2['default'].createElement(
         'ul',
         { className: 'phrase-list' },
@@ -291,6 +295,7 @@ var RandTranscriptContainer = _react2['default'].createClass({
         media_url: data.media_url,
         phrases: data.phrases
       });
+      console.log(data);
     }).bind(this));
   },
 
