@@ -531,10 +531,6 @@ button:hover {
   cursor: pointer;
 }
 
-audio {
-  width: 100%;
-}
-
 .welcome-message {
   display: block;
   margin-top: 1.5em;
@@ -591,10 +587,23 @@ audio {
   background: green;
 }
 
+.game {
+  position: fixed;
+  background: rgba(255, 165, 0, 0.75);
+  z-index: 1;
+  padding: 1em;
+}
+
+.audio-player {
+  width: 88em;
+  max-width: 100%;
+  display: block;
+}
+
 .phrase-list {
   margin: 0;
   padding: 0;
-  margin-top: 3em;
+  margin-top: 6em;
   border-top: 2px solid black;
   border-bottom: 2px solid black;
   padding: 1em 0;
