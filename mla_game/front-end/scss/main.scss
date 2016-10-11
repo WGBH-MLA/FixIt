@@ -120,7 +120,22 @@ audio {
     display:inline-block;
     margin-left:1em;
     @include animated;
-    @include slideInRight;
+    &.submit-phrase-enter{
+      @include slideInRight;
+      opacity:.01;
+      &.submit-phrase-enter-active {
+        opacity:1;
+        @include transition(opacity, 300ms, ease-in);
+      }
+    }
+    &.submit-phrase-leave{
+      @include slideOutRight;
+      opacity:1;
+      &.submit-phrase-leave-active {
+        opacity: 0.01;
+        @include transition(opacity, 300ms, ease-out);
+      }
+    }   
   }
 }
 
