@@ -62,7 +62,7 @@ class Transcript(models.Model):
     name = models.TextField()
     url = models.URLField(max_length=1000)
     transcript_data_blob = models.TextField()
-    data_blob_processesed = models.BooleanField(
+    data_blob_processed = models.BooleanField(
         default=False
     )
 
@@ -105,27 +105,25 @@ class Transcript(models.Model):
 
     def process_transcript_data_blob(self):
         data = json.loads(self.transcript_data_blob)
-        try:
-            data['audio_files']
-        except:
-            error_log.info('No audio file for transcript {}'.format(
-                self.pk
-            ))
-        # new_phrases = [
-        #     TranscriptPhrase(
-        #         id_number=phrase['id'],
-        #         start_time=phrase['start_time'],
-        #         end_time=phrase['end_time'],
-        #         text=phrase['text'],
-        #         speaker_id=phrase['speaker_id'],
-        #         transcript=self
-        #     )
-        #     for phrase in json.loads(
-        #         self.transcript_data_blob
-        #     )['parts']
-        #     if phrase is not None
-        # ]
-        # TranscriptPhrase.objects.bulk_create(new_phrases)
+        if 'audio_files' in data:
+            audio_files = data['audio_files']
+            for entry in audio_files:
+                if 'transcript' in entry:
+                    new_phrases = [
+                        TranscriptPhrase(
+                            id_number=phrase['id'],
+                            start_time=phrase['start_time'],
+                            end_time=phrase['end_time'],
+                            text=phrase['text'],
+                            speaker_id=phrase['speaker_id'],
+                            transcript=self
+                        )
+                        for phrase in entry['transcript']['parts'] if phrase is not None
+                    ]
+                    TranscriptPhrase.objects.bulk_create(new_phrases)
+        else:
+            error_log.info(
+                'Transcript {} has a malformed data blob.'.format(self.pk))
 
     def __str__(self):
         return self.name

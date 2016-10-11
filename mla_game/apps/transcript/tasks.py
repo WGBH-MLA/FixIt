@@ -52,8 +52,8 @@ def process_blob(transcript):
 @db_periodic_task(crontab(minute='*/1'))
 def create_process_blob_tasks():
     unprocessed_transcripts = Transcript.objects.filter(
-        data_blob_processesed=False
-    )
+        data_blob_processed=False
+    )[:100]
     if unprocessed_transcripts:
         logger.info(
             'bulk processing {} transcript blobs'.format(
@@ -67,6 +67,6 @@ def create_process_blob_tasks():
                 )
             )
             process_blob(transcript)
-            transcript.data_blob_processesed = True
+            transcript.data_blob_processed = True
             transcript.save()
     return None
