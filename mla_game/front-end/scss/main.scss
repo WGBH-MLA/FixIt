@@ -109,7 +109,6 @@ audio {
     margin-right:1em;
   }
   .phrase {
-    @include transition(background-color, .5s, ease-in);
     border:none;
     padding:.5em;
     background:none;
@@ -121,7 +120,7 @@ audio {
     display:inline-block;
     margin-left:1em;
     @include animated;
-    @include slideInLeft;
+    @include slideInRight;
   }
 }
 
