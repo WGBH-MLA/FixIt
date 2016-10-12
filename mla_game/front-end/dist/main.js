@@ -201,20 +201,38 @@ var RandTranscriptUI = _react2['default'].createClass({
     });
   },
 
+  _updateTime: function _updateTime() {
+    var media = document.querySelector('.audio-player');
+    // only update currenTime if media is playing
+    if (!media.paused) {
+      this.setState({
+        currentTime: media.currentTime
+      });
+    }
+  },
+
   _playPhrase: function _playPhrase(callback) {
     var media = document.querySelector('.audio-player');
     media.currentTime = callback;
     media.play();
-    console.log(media.currentTime);
+    this.setState({
+      currentTime: media.currentTime
+    });
   },
 
   getInitialState: function getInitialState() {
     return {
-      currentPhrase: 0
+      currentPhrase: 0,
+      currentTime: 0
     };
   },
 
-  componentDidMount: function componentDidMount() {},
+  componentDidMount: function componentDidMount() {
+    var currentTime = setInterval(this._updateTime, 1000);
+    this.setState({
+      currentTime: currentTime
+    });
+  },
 
   render: function render() {
     return _react2['default'].createElement(
@@ -249,7 +267,7 @@ var RandTranscriptUI = _react2['default'].createClass({
             ),
             _react2['default'].createElement(
               'button',
-              { className: this.state.currentPhrase === phrase.pk ? 'incorrect phrase' : 'un-marked phrase', onClick: this._selectPhrase.bind(this, phrase.pk), id: phrase.pk },
+              { className: this.state.currentPhrase === phrase.pk ? 'incorrect phrase' : 'un-marked phrase', onClick: this._selectPhrase.bind(this, phrase.pk), id: phrase.start_time },
               phrase.text
             ),
             _react2['default'].createElement(
