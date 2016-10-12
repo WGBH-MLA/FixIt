@@ -67,6 +67,4 @@ def create_process_blob_tasks():
                 )
             )
             process_blob(transcript)
-            transcript.data_blob_processed = True
-            transcript.save()
     return None

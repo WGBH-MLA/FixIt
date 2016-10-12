@@ -109,18 +109,21 @@ class Transcript(models.Model):
             audio_files = data['audio_files']
             for entry in audio_files:
                 if 'transcript' in entry:
-                    new_phrases = [
-                        TranscriptPhrase(
-                            id_number=phrase['id'],
-                            start_time=phrase['start_time'],
-                            end_time=phrase['end_time'],
-                            text=phrase['text'],
-                            speaker_id=phrase['speaker_id'],
-                            transcript=self
-                        )
-                        for phrase in entry['transcript']['parts'] if phrase is not None
-                    ]
-                    TranscriptPhrase.objects.bulk_create(new_phrases)
+                    if entry['transcript']:
+                        new_phrases = [
+                            TranscriptPhrase(
+                                id_number=phrase['id'],
+                                start_time=phrase['start_time'],
+                                end_time=phrase['end_time'],
+                                text=phrase['text'],
+                                speaker_id=phrase['speaker_id'],
+                                transcript=self
+                            )
+                            for phrase in entry['transcript']['parts'] if phrase is not None
+                        ]
+                        TranscriptPhrase.objects.bulk_create(new_phrases)
+                        self.data_blob_processed = True
+                        self.save()
         else:
             error_log.info(
                 'Transcript {} has a malformed data blob.'.format(self.pk))
