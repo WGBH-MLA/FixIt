@@ -130,20 +130,21 @@ button {
     display:inline-block;
     margin-left:1em;
     @include animated;
+    @include transition(opacity, 300ms, ease-in);
     &.submit-phrase-enter{
-      @include slideInRight;
       opacity:.01;
+      will-change: transform, opacity, visibility;
       &.submit-phrase-enter-active {
+        @include slideInRight;
         opacity:1;
-        @include transition(opacity, 300ms, ease-in);
       }
     }
     &.submit-phrase-leave{
-      @include slideOutRight;
       opacity:1;
+      will-change: transform, opacity, visibility;
       &.submit-phrase-leave-active {
+        @include slideOutRight;
         opacity: 0.01;
-        @include transition(opacity, 300ms, ease-out);
       }
     }   
   }
