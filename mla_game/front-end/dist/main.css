@@ -623,6 +623,9 @@ button:hover {
   -webkit-animation-name: fadeIn;
   animation-name: fadeIn;
 }
+.phrase-list li.active-phrase {
+  background: yellow;
+}
 .phrase-list .play-button {
   display: inline-block;
   margin-right: 1em;

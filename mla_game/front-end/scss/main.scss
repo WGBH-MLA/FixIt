@@ -112,7 +112,10 @@ button {
   li {
     margin-bottom:1.5em;
     @include animated;
-    @include fadeIn; 
+    @include fadeIn;
+    &.active-phrase {
+      background:yellow;
+    } 
   }
   .play-button {
     display: inline-block;
