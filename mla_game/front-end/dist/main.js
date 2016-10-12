@@ -265,7 +265,7 @@ var RandTranscriptUI = _react2['default'].createClass({
         this.props.phrases.map((function (phrase) {
           return _react2['default'].createElement(
             'li',
-            { key: phrase.pk },
+            { key: phrase.pk, className: this.state.currentTime <= phrase.start_time || this.state.currentTime >= phrase.end_time ? 'not-active-phrase' : 'active-phrase' },
             _react2['default'].createElement(
               'button',
               { className: 'play-button', id: phrase.start_time, onClick: this._playPhrase.bind(this, phrase.start_time) },

@@ -61,7 +61,7 @@ var RandTranscriptUI = React.createClass({
        <ul className='phrase-list'>
         {this.props.phrases.map(function(phrase){
           return(
-          <li key={phrase.pk}>
+          <li key={phrase.pk} className={this.state.currentTime <= phrase.start_time || this.state.currentTime >= phrase.end_time ? 'not-active-phrase': 'active-phrase'}>
             <button className='play-button' id={phrase.start_time} onClick={this._playPhrase.bind(this, phrase.start_time)}>Play</button>
             <button className={this.state.currentPhrase === phrase.pk ? 'incorrect phrase' : 'un-marked phrase'} onClick={this._selectPhrase.bind(this, phrase.pk)} id={phrase.start_time}>{phrase.text}</button>
             <ReactCSSTransitionGroup transitionName="submit-phrase" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
