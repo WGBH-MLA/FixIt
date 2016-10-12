@@ -201,23 +201,25 @@ var RandTranscriptUI = _react2['default'].createClass({
     });
   },
 
-  _updateTime: function _updateTime() {
+  _updateAudio: function _updateAudio() {
+    var self = this;
+    setTimeout(function () {
+      self._syncAudio(); // do it once and then start it up ...
+      self._timer = setInterval(self._syncAudio, 1500);
+    }, 1500);
+  },
+
+  _syncAudio: function _syncAudio() {
     var media = document.querySelector('.audio-player');
-    // only update currenTime if media is playing
-    if (!media.paused) {
-      this.setState({
-        currentTime: media.currentTime
-      });
-    }
+    this.setState({
+      currentTime: media.currentTime
+    });
   },
 
   _playPhrase: function _playPhrase(callback) {
     var media = document.querySelector('.audio-player');
     media.currentTime = callback;
     media.play();
-    this.setState({
-      currentTime: media.currentTime
-    });
   },
 
   getInitialState: function getInitialState() {
@@ -228,10 +230,14 @@ var RandTranscriptUI = _react2['default'].createClass({
   },
 
   componentDidMount: function componentDidMount() {
-    var currentTime = setInterval(this._updateTime, 1000);
-    this.setState({
-      currentTime: currentTime
-    });
+    this._updateAudio();
+  },
+
+  componentWillUnmount: function componentWillUnmount() {
+    if (this._timer) {
+      clearInterval(this._timer);
+      this._timer = null;
+    }
   },
 
   render: function render() {

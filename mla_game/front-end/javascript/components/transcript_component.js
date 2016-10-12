@@ -4,30 +4,32 @@ import Audio from '../components/audio_component'
 import Submit from '../components/submitPhrase_component'
 
 var RandTranscriptUI = React.createClass({
-
+  
   _selectPhrase: function(e){
     this.setState({
       currentPhrase:e
     });
   },
+  
+  _updateAudio: function() {
+      var self = this;
+      setTimeout(function() {
+       self._syncAudio(); // do it once and then start it up ...
+       self._timer = setInterval(self._syncAudio, 1500);
+      }, 1500);
+  },
 
-  _updateTime: function(){
+  _syncAudio: function() {
     var media = document.querySelector('.audio-player');
-    // only update currenTime if media is playing
-    if(!media.paused){
-      this.setState({
-        currentTime:media.currentTime
-      })
-    }
+    this.setState({
+      currentTime:media.currentTime
+    })
   },
 
   _playPhrase: function(callback){
     var media = document.querySelector('.audio-player');
     media.currentTime = callback;
     media.play();
-    this.setState({
-      currentTime:media.currentTime
-    })
   }, 
   
   getInitialState:function(){
@@ -38,10 +40,14 @@ var RandTranscriptUI = React.createClass({
   },
 
   componentDidMount:function(){
-    var currentTime = setInterval(this._updateTime, 1000);
-    this.setState({
-      currentTime:currentTime
-    });
+    this._updateAudio();
+  },
+
+  componentWillUnmount:function(){
+    if(this._timer) {
+      clearInterval(this._timer);
+      this._timer = null;
+    }
   },
   
   render: function(){
