@@ -54,10 +54,6 @@ button {
   }
 }
 
-audio {
-  width:100%;
-}
-
 .welcome-message {
   display:block;
   margin-top:1.5em;
@@ -90,9 +86,23 @@ audio {
   }
 }
 
+// throw away
+.game {
+  position:fixed;
+  background:rgba(orange, .75);
+  z-index: 1;
+  padding:1em;  
+}
+
+.audio-player {
+  width:88em;
+  max-width:100%;
+  display:block;
+}
+
 .phrase-list {
   @include plain-list;
-  margin-top:3em;
+  margin-top:6em;
   // max-height:20em;
   // overflow:hidden;
   // overflow-y:scroll;
@@ -102,7 +112,10 @@ audio {
   li {
     margin-bottom:1.5em;
     @include animated;
-    @include fadeIn; 
+    @include fadeIn;
+    &.active-phrase {
+      background:yellow;
+    } 
   }
   .play-button {
     display: inline-block;
@@ -120,20 +133,21 @@ audio {
     display:inline-block;
     margin-left:1em;
     @include animated;
+    @include transition(opacity, 300ms, ease-in);
     &.submit-phrase-enter{
-      @include slideInRight;
       opacity:.01;
+      will-change: transform, opacity, visibility;
       &.submit-phrase-enter-active {
+        @include slideInRight;
         opacity:1;
-        @include transition(opacity, 300ms, ease-in);
       }
     }
     &.submit-phrase-leave{
-      @include slideOutRight;
       opacity:1;
+      will-change: transform, opacity, visibility;
       &.submit-phrase-leave-active {
+        @include slideOutRight;
         opacity: 0.01;
-        @include transition(opacity, 300ms, ease-out);
       }
     }   
   }

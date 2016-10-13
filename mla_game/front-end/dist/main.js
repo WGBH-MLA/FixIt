@@ -158,7 +158,7 @@ var SubmitPhrase = _react2['default'].createClass({
   render: function render() {
     return _react2['default'].createElement(
       'button',
-      { type: 'submit', className: 'submit-phrase' },
+      { type: 'submit', className: 'submit-phrase', id: this.props.id },
       'Submit Phrase'
     );
   }
@@ -201,20 +201,44 @@ var RandTranscriptUI = _react2['default'].createClass({
     });
   },
 
+  _updateAudio: function _updateAudio() {
+    var self = this;
+    setTimeout(function () {
+      self._syncAudio(); // do it once and then start it up ...
+      self._timer = setInterval(self._syncAudio, 1000);
+    }, 1000);
+  },
+
+  _syncAudio: function _syncAudio() {
+    var media = document.querySelector('.audio-player');
+    this.setState({
+      currentTime: media.currentTime
+    });
+  },
+
   _playPhrase: function _playPhrase(callback) {
     var media = document.querySelector('.audio-player');
     media.currentTime = callback;
     media.play();
-    console.log(media.currentTime);
   },
 
   getInitialState: function getInitialState() {
     return {
-      currentPhrase: 0
+      currentPhrase: 0,
+      currentTime: 0
     };
   },
 
-  componentDidMount: function componentDidMount() {},
+  componentDidMount: function componentDidMount() {
+    this._updateAudio();
+  },
+
+  componentWillUnmount: function componentWillUnmount() {
+    if (this._timer) {
+      clearInterval(this._timer);
+      this._timer = null;
+    }
+  },
 
   render: function render() {
     return _react2['default'].createElement(
@@ -230,14 +254,18 @@ var RandTranscriptUI = _react2['default'].createClass({
         null,
         JSON.stringify(this.state, null, 2)
       ),
-      _react2['default'].createElement(_componentsAudio_component2['default'], { src: this.props.media_url }),
+      _react2['default'].createElement(
+        'div',
+        { className: 'game' },
+        _react2['default'].createElement(_componentsAudio_component2['default'], { src: this.props.media_url })
+      ),
       _react2['default'].createElement(
         'ul',
         { className: 'phrase-list' },
         this.props.phrases.map((function (phrase) {
           return _react2['default'].createElement(
             'li',
-            { key: phrase.pk },
+            { key: phrase.pk, className: this.state.currentTime <= phrase.start_time || this.state.currentTime >= phrase.end_time ? 'not-active-phrase' : 'active-phrase' },
             _react2['default'].createElement(
               'button',
               { className: 'play-button', id: phrase.start_time, onClick: this._playPhrase.bind(this, phrase.start_time) },
@@ -245,7 +273,7 @@ var RandTranscriptUI = _react2['default'].createClass({
             ),
             _react2['default'].createElement(
               'button',
-              { className: this.state.currentPhrase === phrase.pk ? 'incorrect phrase' : 'un-marked phrase', onClick: this._selectPhrase.bind(this, phrase.pk), id: phrase.pk },
+              { className: this.state.currentPhrase === phrase.pk ? 'incorrect phrase' : 'un-marked phrase', onClick: this._selectPhrase.bind(this, phrase.pk), id: phrase.start_time },
               phrase.text
             ),
             _react2['default'].createElement(
@@ -291,6 +319,7 @@ var RandTranscriptContainer = _react2['default'].createClass({
         media_url: data.media_url,
         phrases: data.phrases
       });
+      console.log(data);
     }).bind(this));
   },
 
