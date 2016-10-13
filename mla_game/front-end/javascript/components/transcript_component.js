@@ -15,8 +15,8 @@ var RandTranscriptUI = React.createClass({
       var self = this;
       setTimeout(function() {
        self._syncAudio(); // do it once and then start it up ...
-       self._timer = setInterval(self._syncAudio, 1500);
-      }, 1500);
+       self._timer = setInterval(self._syncAudio, 1000);
+      }, 1000);
   },
 
   _syncAudio: function() {
