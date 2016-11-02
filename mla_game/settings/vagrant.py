@@ -5,6 +5,8 @@ SECRET_KEY = os.environ['SECRET_KEY']
 
 DEBUG = True
 
+ALLOWED_HOSTS = ['mlagame-dev.wgbhdigital.org']
+
 LOG_DIRECTORY = '/home/vagrant/logs'
 
 STATIC_ROOT = '/var/nginx/webroot/static'
