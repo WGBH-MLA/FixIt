@@ -45,7 +45,6 @@ def process_blob(transcript):
         )
     )
     transcript.process_transcript_data_blob()
-    logger.info('transcript blob processed')
     return None
 
 
