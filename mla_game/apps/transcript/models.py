@@ -65,6 +65,9 @@ class Transcript(models.Model):
     data_blob_processed = models.BooleanField(
         default=False
     )
+    metadata_processed = models.BooleanField(
+        default=False
+    )
 
     objects = TranscriptManager()
 
