@@ -211,6 +211,7 @@ class Source(models.Model):
 
 class Topic(models.Model):
     topic = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255)
     transcripts = models.ManyToManyField(Transcript)
 
     def __str__(self):
