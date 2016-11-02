@@ -57,7 +57,6 @@ class SourceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Source
         fields = ('pk', 'source', 'state')
-        read_only_fields = ('pk', 'source', 'state')
 
 
 class ProfileSerializer(serializers.ModelSerializer):
