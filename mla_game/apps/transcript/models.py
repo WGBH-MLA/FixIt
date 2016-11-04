@@ -1,5 +1,4 @@
 import json
-import re
 import logging
 from random import randint
 
@@ -78,7 +77,11 @@ class Transcript(models.Model):
         xml_url = 'http://americanarchive.org/api/{}.xml'.format(
             self.asset_name
         )
-        return requests.get(xml_url).text
+        request = requests.get(xml_url)
+        if request.status_code == 200:
+            return request.text
+        else:
+            return None
 
     @property
     def aapb_link(self):
