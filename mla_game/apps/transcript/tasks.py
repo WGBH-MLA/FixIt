@@ -3,6 +3,7 @@ import logging
 import sys
 
 from django.conf import settings
+from django.core.management import call_command
 from huey.contrib.djhuey import db_task, db_periodic_task, crontab
 from popuparchive.client import Client
 
@@ -67,3 +68,8 @@ def create_process_blob_tasks():
             )
             process_blob(transcript)
     return None
+
+
+@db_periodic_task(crontab(minute='*/1'))
+def scrape_aapb():
+    call_command('get_aapb_metadata')

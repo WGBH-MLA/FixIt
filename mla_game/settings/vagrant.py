@@ -48,6 +48,11 @@ LOGGING = {
             'class': 'logging.FileHandler',
             'filename': '{}/pua_stats.csv'.format(LOG_DIRECTORY),
         },
+        'metadata_errors': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': '{}/metadata_error.log'.format(LOG_DIRECTORY),
+        },
     },
     'loggers': {
         'django': {
@@ -67,6 +72,11 @@ LOGGING = {
         },
         'pua_stats': {
             'handlers': ['pua_stats'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'metadata_errors': {
+            'handlers': ['metadata_errors'],
             'level': 'DEBUG',
             'propagate': True,
         },
