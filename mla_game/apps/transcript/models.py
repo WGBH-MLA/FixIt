@@ -1,4 +1,5 @@
 import json
+import re
 import logging
 from random import randint
 
@@ -60,6 +61,7 @@ class Transcript(models.Model):
     id_number = models.IntegerField()
     collection_id = models.IntegerField()
     name = models.TextField()
+    asset_name = models.CharField(max_length=255, blank=True)
     url = models.URLField(max_length=1000)
     transcript_data_blob = models.TextField()
     data_blob_processed = models.BooleanField(
@@ -72,19 +74,10 @@ class Transcript(models.Model):
     objects = TranscriptManager()
 
     @property
-    def asset_name(self):
-        return self.name.replace(
-                'AA1677L5/cpb-aacip-', 'cpb-aacip_'
-            ).replace(
-                '.mp3', ''
-            )
-
-    @property
     def aapb_xml(self):
         xml_url = 'http://americanarchive.org/api/{}.xml'.format(
             self.asset_name
         )
-        print(xml_url)
         return requests.get(xml_url).text
 
     @property
@@ -111,6 +104,8 @@ class Transcript(models.Model):
         if 'audio_files' in data:
             audio_files = data['audio_files']
             for entry in audio_files:
+                if 'filename' in entry:
+                    self.asset_name = entry['filename']
                 if 'transcript' in entry:
                     if entry['transcript']:
                         new_phrases = [
@@ -125,8 +120,8 @@ class Transcript(models.Model):
                             for phrase in entry['transcript']['parts'] if phrase is not None
                         ]
                         TranscriptPhrase.objects.bulk_create(new_phrases)
-                        self.data_blob_processed = True
-                        self.save()
+                self.data_blob_processed = True
+                self.save()
         else:
             error_log.info(
                 'Transcript {} has a malformed data blob.'.format(self.pk))
