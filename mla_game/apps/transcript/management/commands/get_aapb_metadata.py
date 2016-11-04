@@ -109,8 +109,11 @@ class Command(BaseCommand):
         except:
             pass
         for candidate in set(source_candidates):
-            source = Source.objects.get(pbcore_source=candidate)
-            source.transcripts.add(transcript)
+            try:
+                source = Source.objects.get(pbcore_source=candidate)
+                source.transcripts.add(transcript)
+            except:
+                pass
 
     def _description(self, root):
         try:
@@ -141,32 +144,33 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for transcript in Transcript.objects.filter(metadata_processed=False)[:5000]:
-            try:
-                tree = ET.ElementTree(ET.fromstringlist(transcript.aapb_xml))
-                root = tree.getroot()
-                self._topics(transcript, root)
-                self._sources(transcript, root)
-                metadata = {
-                    'description': self._description(root),
-                    'series': self._series_title(root),
-                    'broadcast_date': self._broadcast_date(root),
-                }
-                tmd, created = TranscriptMetadata.objects.update_or_create(
-                    transcript=transcript,
-                    defaults=metadata,
-                )
-                tmd.save()
-                transcript.metadata_processed = True
-                transcript.save()
-            except Exception as inst:
-                errors.info('Problem transcript: {}'.format(transcript.name))
-                errors.info(transcript.asset_name)
-                errors.info('http://americanarchive.org/api/{}.xml'.format(transcript.asset_name))
-                # errors.info(transcript.aapb_xml)
-                errors.info(type(inst))
-                errors.info(inst.args)
-                errors.info(inst)
-                tb = sys.exc_info()[2]
-                errors.info(traceback.print_tb(tb))
-                errors.info('\n')
-                pass
+            aapb_data = transcript.aapb_xml
+            if aapb_data is not None:
+                try:
+                    tree = ET.ElementTree(ET.fromstringlist(aapb_data))
+                    root = tree.getroot()
+                    self._topics(transcript, root)
+                    self._sources(transcript, root)
+                    metadata = {
+                        'description': self._description(root),
+                        'series': self._series_title(root),
+                        'broadcast_date': self._broadcast_date(root),
+                    }
+                    tmd, created = TranscriptMetadata.objects.update_or_create(
+                        transcript=transcript,
+                        defaults=metadata,
+                    )
+                    tmd.save()
+                    transcript.metadata_processed = True
+                    transcript.save()
+                except Exception as inst:
+                    errors.info('Problem transcript: {}'.format(transcript.name))
+                    errors.info(transcript.asset_name)
+                    errors.info('http://americanarchive.org/api/{}.xml'.format(transcript.asset_name))
+                    errors.info(type(inst))
+                    errors.info(inst.args)
+                    errors.info(inst)
+                    tb = sys.exc_info()[2]
+                    errors.info(traceback.print_tb(tb))
+                    errors.info('\n')
+                    pass
