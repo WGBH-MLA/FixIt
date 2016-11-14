@@ -7,10 +7,10 @@ DEBUG = True
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'mla',
-        'USER': 'root',
-        'PASSWORD': '',
+        'USER': 'mla',
+        'PASSWORD': os.environ['PG_PASS'],
         'TEST': {
             'NAME': 'mla-test',
         },

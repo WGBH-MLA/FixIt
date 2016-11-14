@@ -1,4 +1,5 @@
 import json
+from django.contrib.postgres.fields import JSONField
 import logging
 from random import randint
 
@@ -60,29 +61,28 @@ class Transcript(models.Model):
     id_number = models.IntegerField()
     collection_id = models.IntegerField()
     name = models.TextField()
+    asset_name = models.CharField(max_length=255, blank=True)
     url = models.URLField(max_length=1000)
-    transcript_data_blob = models.TextField()
+    transcript_data_blob = JSONField()
     data_blob_processed = models.BooleanField(
+        default=False
+    )
+    metadata_processed = models.BooleanField(
         default=False
     )
 
     objects = TranscriptManager()
 
     @property
-    def asset_name(self):
-        return self.name.replace(
-                'AA1677L5/cpb-aacip-', 'cpb-aacip_'
-            ).replace(
-                '.mp3', ''
-            )
-
-    @property
     def aapb_xml(self):
         xml_url = 'http://americanarchive.org/api/{}.xml'.format(
             self.asset_name
         )
-        print(xml_url)
-        return requests.get(xml_url).text
+        request = requests.get(xml_url)
+        if request.status_code == 200:
+            return request.text
+        else:
+            return None
 
     @property
     def aapb_link(self):
@@ -104,10 +104,12 @@ class Transcript(models.Model):
             return None
 
     def process_transcript_data_blob(self):
-        data = json.loads(self.transcript_data_blob)
+        data = self.transcript_data_blob
         if 'audio_files' in data:
             audio_files = data['audio_files']
             for entry in audio_files:
+                if 'filename' in entry:
+                    self.asset_name = entry['filename']
                 if 'transcript' in entry:
                     if entry['transcript']:
                         new_phrases = [
@@ -122,8 +124,8 @@ class Transcript(models.Model):
                             for phrase in entry['transcript']['parts'] if phrase is not None
                         ]
                         TranscriptPhrase.objects.bulk_create(new_phrases)
-                        self.data_blob_processed = True
-                        self.save()
+                self.data_blob_processed = True
+                self.save()
         else:
             error_log.info(
                 'Transcript {} has a malformed data blob.'.format(self.pk))
@@ -211,7 +213,18 @@ class Source(models.Model):
 
 class Topic(models.Model):
     topic = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255)
     transcripts = models.ManyToManyField(Transcript)
 
     def __str__(self):
         return self.topic
+
+
+class PopupPage(models.Model):
+    page = models.SmallIntegerField()
+    content = JSONField()
+
+
+class PopupCollection(models.Model):
+    collection = models.SmallIntegerField()
+    content = JSONField()

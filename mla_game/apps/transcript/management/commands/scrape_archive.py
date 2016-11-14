@@ -6,7 +6,7 @@ from django.core.management.base import BaseCommand
 from popuparchive.client import Client
 
 from ...tasks import process_transcript
-from ...models import Transcript
+from ...models import Transcript, PopupPage, PopupCollection
 
 logger = logging.getLogger('pua_scraper')
 stats = logging.getLogger('pua_stats')
@@ -21,25 +21,28 @@ class Command(BaseCommand):
             settings.PUA_KEY,
             settings.PUA_SECRET,
         )
-        all_collections = []
         stats.info("=" * 80)
         stats.info("Started PUA scraping at {}".format(datetime.now().isoformat()))
         for page in range(1, 50):
-            for collection in client.get(
-                '/collections?page={}'.format(page)
-            )['collections']:
-                logger.info('processing collection id: ' + str(collection['id']))
-                all_collections.append(
-                    {'collection': collection['id'],
-                     'items': collection['item_ids']}
-                )
-                stats.info('{},{}'.format(
-                    str(collection['id']),
-                    len(collection['item_ids']))
-                )
-        for collection in all_collections:
-            for item in collection['items']:
+            try:
+                PopupPage.objects.get(page=page)
+            except:
+                print(page)
+                page_contents = client.get('/collections?page={}'.format(page))
+                PopupPage.objects.create(page=page, content=page_contents)
+
+        for page in PopupPage.objects.all():
+            if 'collections' in page.content:
+                for collection in page.content['collections']:
+                    PopupCollection.objects.get_or_create(
+                        collection=collection['id'],
+                        content=collection['item_ids']
+                    )
+
+        for collection in PopupCollection.objects.all():
+            for item in collection.content:
                 if not all_transcripts.filter(
-                    id_number=item, collection_id=collection['collection']
+                        id_number=item, collection_id=collection.collection
                 ).exists():
-                    process_transcript(item, collection['collection'])
+                        print(collection.collection, item)
+                        process_transcript(item, collection.collection)

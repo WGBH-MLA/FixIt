@@ -57,10 +57,14 @@ class SourceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Source
         fields = ('pk', 'source', 'state')
-        read_only_fields = ('pk', 'source', 'state')
 
 
 class ProfileSerializer(serializers.ModelSerializer):
+    def get_queryset(self):
+        user = self.request.user
+        return Profile.objects.get(user=user)
+
     class Meta:
         model = Profile
-        fields = ('preferred_stations', 'preferred_topics')
+        fields = ('preferred_stations', 'preferred_topics', 'considered_phrases')
+        extra_kwargs = {'considered_phrases': {'write_only': True}}

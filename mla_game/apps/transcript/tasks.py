@@ -3,6 +3,7 @@ import logging
 import sys
 
 from django.conf import settings
+from django.core.management import call_command
 from huey.contrib.djhuey import db_task, db_periodic_task, crontab
 from popuparchive.client import Client
 
@@ -18,14 +19,14 @@ def process_transcript(item_id, collection_id):
         settings.PUA_KEY,
         settings.PUA_SECRET,
     )
-    transcript_data = client.get_item(collection_id, item_id)
     try:
+        transcript_data = client.get_item(collection_id, item_id)
         new_transcript = Transcript(
             name=transcript_data['title'],
             id_number=transcript_data['id'],
             collection_id=transcript_data['collection_id'],
             url=json.dumps(transcript_data['urls']),
-            transcript_data_blob=json.dumps(transcript_data)
+            transcript_data_blob=transcript_data
         )
         new_transcript.save()
     except:
@@ -45,7 +46,6 @@ def process_blob(transcript):
         )
     )
     transcript.process_transcript_data_blob()
-    logger.info('transcript blob processed')
     return None
 
 
@@ -68,3 +68,8 @@ def create_process_blob_tasks():
             )
             process_blob(transcript)
     return None
+
+
+@db_periodic_task(crontab(minute='*/1'))
+def scrape_aapb():
+    call_command('get_aapb_metadata')

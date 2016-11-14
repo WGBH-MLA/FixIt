@@ -5,17 +5,21 @@ SECRET_KEY = os.environ['SECRET_KEY']
 
 DEBUG = True
 
+ALLOWED_HOSTS = ['mlagame-dev.wgbhdigital.org']
+
 LOG_DIRECTORY = '/home/vagrant/logs'
 
 STATIC_ROOT = '/var/nginx/webroot/static'
 
+PUA_CACHE_DIRECTORY = '/home/vagrant/pua_cache/'
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': 'localhost',
         'NAME': 'mla',
-        'OPTIONS': {
-            'read_default_file': '/home/vagrant/.my.cnf'
-        },
+        'USER': 'mla',
+        'PASSWORD': os.environ['PG_PASS'],
         'TEST': {
             'NAME': 'mla-test',
         },
@@ -46,6 +50,11 @@ LOGGING = {
             'class': 'logging.FileHandler',
             'filename': '{}/pua_stats.csv'.format(LOG_DIRECTORY),
         },
+        'metadata_errors': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': '{}/metadata_error.log'.format(LOG_DIRECTORY),
+        },
     },
     'loggers': {
         'django': {
@@ -65,6 +74,11 @@ LOGGING = {
         },
         'pua_stats': {
             'handlers': ['pua_stats'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'metadata_errors': {
+            'handlers': ['metadata_errors'],
             'level': 'DEBUG',
             'propagate': True,
         },
