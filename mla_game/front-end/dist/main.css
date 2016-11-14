@@ -531,10 +531,6 @@ button:hover {
   cursor: pointer;
 }
 
-audio {
-  width: 100%;
-}
-
 .welcome-message {
   display: block;
   margin-top: 1.5em;
@@ -591,10 +587,23 @@ audio {
   background: green;
 }
 
+.game {
+  position: fixed;
+  background: rgba(255, 165, 0, 0.75);
+  z-index: 1;
+  padding: 1em;
+}
+
+.audio-player {
+  width: 88em;
+  max-width: 100%;
+  display: block;
+}
+
 .phrase-list {
   margin: 0;
   padding: 0;
-  margin-top: 3em;
+  margin-top: 6em;
   border-top: 2px solid black;
   border-bottom: 2px solid black;
   padding: 1em 0;
@@ -613,6 +622,9 @@ audio {
   animation-fill-mode: both;
   -webkit-animation-name: fadeIn;
   animation-name: fadeIn;
+}
+.phrase-list li.active-phrase {
+  background: yellow;
 }
 .phrase-list .play-button {
   display: inline-block;
@@ -633,28 +645,27 @@ audio {
   animation-duration: 500ms;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
-}
-.phrase-list .submit-phrase.submit-phrase-enter {
-  -webkit-animation-name: slideInRight;
-  animation-name: slideInRight;
-  opacity: .01;
-}
-.phrase-list .submit-phrase.submit-phrase-enter.submit-phrase-enter-active {
-  opacity: 1;
   -webkit-transition: opacity 300ms ease-in;
   -ms-transition: opacity 300ms ease-in;
   transition: opacity 300ms ease-in;
 }
-.phrase-list .submit-phrase.submit-phrase-leave {
-  -webkit-animation-name: slideOutRight;
-  animation-name: slideOutRight;
+.phrase-list .submit-phrase.submit-phrase-enter {
+  opacity: .01;
+  will-change: transform, opacity, visibility;
+}
+.phrase-list .submit-phrase.submit-phrase-enter.submit-phrase-enter-active {
+  -webkit-animation-name: slideInRight;
+  animation-name: slideInRight;
   opacity: 1;
 }
+.phrase-list .submit-phrase.submit-phrase-leave {
+  opacity: 1;
+  will-change: transform, opacity, visibility;
+}
 .phrase-list .submit-phrase.submit-phrase-leave.submit-phrase-leave-active {
+  -webkit-animation-name: slideOutRight;
+  animation-name: slideOutRight;
   opacity: 0.01;
-  -webkit-transition: opacity 300ms ease-out;
-  -ms-transition: opacity 300ms ease-out;
-  transition: opacity 300ms ease-out;
 }
 
 /*# sourceMappingURL=main.css.map */

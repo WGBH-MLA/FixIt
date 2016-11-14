@@ -13,6 +13,7 @@ var RandTranscriptContainer = React.createClass({
       media_url: data.media_url,
         phrases: data.phrases,
       });
+      console.log(data);
     }.bind(this));
   },
 
