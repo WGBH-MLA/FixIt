@@ -48,5 +48,7 @@ class SourceViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
+    def get_queryset(self):
+        return Profile.objects.filter(user=self.request.user)
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
