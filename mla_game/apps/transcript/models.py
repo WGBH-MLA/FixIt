@@ -1,12 +1,12 @@
-import json
-from django.contrib.postgres.fields import JSONField
 import logging
+import requests
 from random import randint
 
-import requests
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import JSONField
 from django.db import models
 from localflavor.us.models import USStateField
+
 
 logger = logging.getLogger('pua_scraper')
 error_log = logging.getLogger('pua_errors')
@@ -164,6 +164,9 @@ class TranscriptPhrase(models.Model):
     transcript = models.ForeignKey(Transcript, related_name='phrases')
 
     objects = TranscriptPhraseManager()
+
+    class Meta:
+        ordering = ['start_time']
 
     @property
     def downvotes(self):
