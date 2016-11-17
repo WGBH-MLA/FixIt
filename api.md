@@ -42,3 +42,21 @@ Return a list of all known sources. Format is like so:
  },
 ...
 ```
+
+
+/api/topic/
+
+Return a list of topics:
+
+```
+{
+    "pk": 1,
+    "topic": "Arts",
+    "slug": "arts"
+},
+{
+    "pk": 2,
+    "topic": "Home",
+    "slug": "home"
+},
+```

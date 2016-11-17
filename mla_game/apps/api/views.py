@@ -3,11 +3,11 @@ from rest_framework.decorators import list_route
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 
-from ..transcript.models import Transcript, TranscriptPhraseDownvote, Source
+from ..transcript.models import Transcript, TranscriptPhraseDownvote, Source, Topic
 from ..accounts.models import Profile
 from .serializers import (
     TranscriptSerializer, TranscriptPhraseDownvoteSerializer, SourceSerializer,
-    ProfileSerializer
+    ProfileSerializer, TopicSerializer
 )
 
 
@@ -45,6 +45,11 @@ class SourceViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Source.objects.all()
     serializer_class = SourceSerializer
     pagination_class = StandardResultsSetPagination
+
+
+class TopicViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Topic.objects.all()
+    serializer_class = TopicSerializer
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
