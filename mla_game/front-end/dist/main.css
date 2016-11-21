@@ -769,6 +769,23 @@ body {
   color: white;
 }
 
+a {
+  text-decoration: none;
+  color: white;
+}
+a:hover {
+  text-decoration: none;
+}
+a:active {
+  text-decoration: none;
+}
+a:visited {
+  text-decoration: none;
+}
+a:focus {
+  text-decoration: none;
+}
+
 .assistive-text {
   position: absolute !important;
   overflow: hidden;
@@ -798,6 +815,23 @@ body {
 
 button:hover {
   cursor: pointer;
+}
+
+.social-login {
+  position: relative;
+  height: 100vh;
+}
+.social-login p {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.social-login p a {
+  display: inline-block;
+  margin: 1em;
+  padding: 1em 2em;
+  background: #068080;
 }
 
 .welcome-message {
