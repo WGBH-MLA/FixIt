@@ -17,8 +17,8 @@ $screen-sm-min:48.675em;
 $screen-md-min:70em;
 // 1344px
 $screen-lg-min:84em;
-// 1820px
-$screen-jb-min:113.75em;
+// 1530px
+$screen-jb-min:95.625em;
 
 
 // vertical rhythm var. used to break up sections based on a scale
@@ -32,20 +32,23 @@ $susy: (
   gutter-position:inside,
   math: fluid,
   output: float,
-  gutters:0,
-  // debug:(image:show)
+  debug:(image:show)
 );
 
 $map-sm: (
-  columns:(4)
+  columns:(4),
+  gutter-position:before,
 );
 
 $map-md: (
-  columns:(8)
+  columns:(8),
+  gutter-position:before,
 );
 
 $map-lg: (
-  columns:(12)
+  columns:(12),
+  gutter-position:before,
+  gutters:.3
 );
 
 

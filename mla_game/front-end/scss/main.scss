@@ -1,11 +1,16 @@
 @import 'reset';
+@import 'typography';
 @import 'compass';
 @import 'breakpoint';
 @import 'susy';
 @import 'mixins';
 @import 'animations';
 @import 'config';
+@import 'header';
 
+:root{
+  background:$theme-secondary;
+}
 
 html{
   box-sizing: border-box;
@@ -15,10 +20,17 @@ html{
   box-sizing: inherit;
 }
 
-body{
+body {
   position: relative;
   padding-left:5%;
   padding-right:5%;
+  @include susy-breakpoint($screen-jb-min) {
+    padding:0;
+  }
+}
+
+body {
+  color:white;
 }
 
 // semantic screen reading helper
@@ -59,31 +71,12 @@ button {
   margin-top:1.5em;
 }
 
-.app-header, .app-content, .welcome-message {
+.welcome-message {
   @include grid;
 }
-.app-navigation {
-  @include plain-list;
-  @include clearfix;
-  li {
-    float:left;
-    width:50%;
-    text-align:center;
-    border:1px solid black;
-    &:nth-child(1) {
-      border-right:none;    
-    }
-    a {
-      color:white;
-      text-decoration:none;
-      background:grey;
-      padding:1em;
-      display:block;
-      &.active {
-        background:green;
-      }
-    }
-  }
+
+.app-content {
+  @include grid;
 }
 
 // throw away
@@ -125,6 +118,7 @@ button {
     border:none;
     padding:.5em;
     background:none;
+    color:white;
     &.incorrect {
       background:red;
     }

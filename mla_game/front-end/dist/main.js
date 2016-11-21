@@ -1,5 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-// imports
+// Native React Components
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -12,9 +12,9 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-// still need to decide if we are going to use react-router
-
 var _reactRouter = require('react-router');
+
+// Nav Views
 
 var _componentsGamemenu = require('./components/gamemenu');
 
@@ -69,76 +69,105 @@ var App = _react2['default'].createClass({
         'header',
         { className: 'app-header' },
         _react2['default'].createElement(
-          'h1',
+          'div',
           null,
           _react2['default'].createElement(
-            _reactRouter.Link,
-            { className: 'game-title', to: '/', onlyActiveOnIndex: true },
-            'Fix It'
-          )
-        ),
-        _react2['default'].createElement(
-          'ul',
-          { className: 'app-navigation' },
-          _react2['default'].createElement(
-            'li',
-            null,
+            'h1',
+            { className: 'game-title' },
             _react2['default'].createElement(
               _reactRouter.Link,
-              { activeClassName: 'active', to: 'leaderboard' },
-              _react2['default'].createElement(
-                'svg',
-                { className: 'nav-icon', viewBox: '0 0 50 50', xmlns: 'http://www.w3.org/2000/svg' },
-                _react2['default'].createElement('circle', { cx: '25', cy: '25', r: '25' })
-              )
-            ),
-            'LeaderBoard'
+              { to: '/', onlyActiveOnIndex: true },
+              'Fix It'
+            )
           ),
           _react2['default'].createElement(
-            'li',
-            null,
-            _react2['default'].createElement(
-              _reactRouter.Link,
-              { activeClassName: 'active', to: '/', onlyActiveOnIndex: true },
-              _react2['default'].createElement(
-                'svg',
-                { className: 'nav-icon', viewBox: '0 0 50 50', xmlns: 'http://www.w3.org/2000/svg' },
-                _react2['default'].createElement('circle', { cx: '25', cy: '25', r: '25' })
-              )
-            ),
-            'GameMenu'
+            'span',
+            { className: 'score delta' },
+            '1580'
           ),
           _react2['default'].createElement(
-            'li',
-            null,
+            'ul',
+            { className: 'app-navigation' },
             _react2['default'].createElement(
-              _reactRouter.Link,
-              { activeClassName: 'active', to: 'settings' },
+              'li',
+              null,
               _react2['default'].createElement(
-                'svg',
-                { className: 'nav-icon', viewBox: '0 0 50 50', xmlns: 'http://www.w3.org/2000/svg' },
-                _react2['default'].createElement('circle', { cx: '25', cy: '25', r: '25' })
+                _reactRouter.Link,
+                { activeClassName: 'active', to: 'leaderboard' },
+                _react2['default'].createElement(
+                  'svg',
+                  { className: 'nav-icon', viewBox: '0 0 50 50', xmlns: 'http://www.w3.org/2000/svg' },
+                  _react2['default'].createElement('circle', { cx: '25', cy: '25', r: '25' })
+                )
+              ),
+              _react2['default'].createElement(
+                'span',
+                null,
+                'LeaderBoard'
               )
             ),
-            'Settings'
-          ),
-          _react2['default'].createElement(
-            'li',
-            null,
             _react2['default'].createElement(
-              _reactRouter.Link,
-              { activeClassName: 'active', to: 'preferences' },
+              'li',
+              null,
               _react2['default'].createElement(
-                'svg',
-                { className: 'nav-icon', viewBox: '0 0 50 50', xmlns: 'http://www.w3.org/2000/svg' },
-                _react2['default'].createElement('circle', { cx: '25', cy: '25', r: '25' })
+                _reactRouter.Link,
+                { activeClassName: 'active', to: '/', onlyActiveOnIndex: true },
+                _react2['default'].createElement(
+                  'svg',
+                  { className: 'nav-icon', viewBox: '0 0 50 50', xmlns: 'http://www.w3.org/2000/svg' },
+                  _react2['default'].createElement('circle', { cx: '25', cy: '25', r: '25' })
+                )
+              ),
+              _react2['default'].createElement(
+                'span',
+                null,
+                'GameMenu'
               )
             ),
-            'Preferences'
+            _react2['default'].createElement(
+              'li',
+              null,
+              _react2['default'].createElement(
+                _reactRouter.Link,
+                { activeClassName: 'active', to: 'settings' },
+                _react2['default'].createElement(
+                  'svg',
+                  { className: 'nav-icon', viewBox: '0 0 50 50', xmlns: 'http://www.w3.org/2000/svg' },
+                  _react2['default'].createElement('circle', { cx: '25', cy: '25', r: '25' })
+                )
+              ),
+              _react2['default'].createElement(
+                'span',
+                null,
+                'Settings'
+              )
+            ),
+            _react2['default'].createElement(
+              'li',
+              null,
+              _react2['default'].createElement(
+                _reactRouter.Link,
+                { activeClassName: 'active', to: 'preferences' },
+                _react2['default'].createElement(
+                  'svg',
+                  { className: 'nav-icon', viewBox: '0 0 50 50', xmlns: 'http://www.w3.org/2000/svg' },
+                  _react2['default'].createElement('circle', { cx: '25', cy: '25', r: '25' })
+                )
+              ),
+              _react2['default'].createElement(
+                'span',
+                null,
+                'Preferences'
+              )
+            )
           )
         )
       ),
-      this.props.children
+      _react2['default'].createElement(
+        'div',
+        { className: 'app-content' },
+        this.props.children
+      )
     );
   }
 });
@@ -313,7 +342,7 @@ var GameThree = _react2['default'].createClass({
       _react2['default'].createElement(
         'h1',
         null,
-        'Game One'
+        'Game Three'
       ),
       _react2['default'].createElement(_containersTranscript_random2['default'], null)
     );
