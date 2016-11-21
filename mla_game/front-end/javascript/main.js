@@ -3,8 +3,18 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 // still need to decide if we are going to use react-router
 import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router'
-// random transcript container
-import RandTranscriptContainer from './containers/transcript_random'
+
+import GameMenu from './components/gamemenu'
+import LeaderBoard from './components/leaderboard'
+import Settings from './components/settings'
+import Preferences from './components/preferences'
+
+
+
+// games
+import GameOne from './components/gameone'
+import GameTwo from './components/gametwo'
+import GameThree from './components/gamethree'
 
 var appTarget = document.getElementById('app');
 // Component names should always begin with an uppercase letter
@@ -17,38 +27,42 @@ var appTarget = document.getElementById('app');
    getInitialState: function(){}
 */
 
-// test component
+// App Skeleton
 var App = React.createClass({
   render: function(){
     return (
       <div>
-        <header>
-          <h1><Link to='/'>MLA Game</Link></h1>
+        <header className='app-header'>
+          <h1><Link className='game-title' to='/' onlyActiveOnIndex>Fix It</Link></h1>
+          <ul className='app-navigation'>
+            <li><Link activeClassName="active" to="leaderboard">
+              <svg className="nav-icon" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="25" cy="25" r="25"></circle>
+              </svg></Link>
+              LeaderBoard
+            </li>
+            <li><Link activeClassName="active" to="/" onlyActiveOnIndex>
+              <svg className="nav-icon" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="25" cy="25" r="25"></circle>
+              </svg></Link>
+              GameMenu
+            </li>
+            <li><Link activeClassName="active" to="settings">
+              <svg className="nav-icon" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="25" cy="25" r="25"></circle>
+              </svg></Link>
+              Settings
+            </li>
+            <li><Link activeClassName="active" to="preferences">
+              <svg className="nav-icon" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="25" cy="25" r="25"></circle>
+              </svg></Link>
+              Preferences
+            </li>
+          </ul>
         </header>
-        <ul className='app-navigation'>
-          <li><Link to='/'>Home</Link></li>
-          <li><Link activeClassName="active" to="about">About</Link></li>
-        </ul>
         {this.props.children}
       </div>
-    )
-  }
-});
-
-// test component
-var Home = React.createClass({
-  render: function(){
-    return (
-      <RandTranscriptContainer />
-    )
-  }
-});
-
-// test component
-var About = React.createClass({
-  render: function(){
-    return (
-      <h2>I am a component only loaded on the about page</h2>
     )
   }
 });
@@ -57,8 +71,13 @@ var About = React.createClass({
 ReactDOM.render((
   <Router history={browserHistory}>
     <Route path="/" component={App}>
-      <IndexRoute component={Home} />      
-      <Route path="about" component={About} />
+      <IndexRoute component={GameMenu} />      
+      <Route path="leaderboard" component={LeaderBoard} />
+      <Route path="settings" component={Settings} />
+      <Route path="preferences" component={Preferences} />
+      <Route path="gameone" component={GameOne} />
+      <Route path="gametwo" component={GameTwo} />
+      <Route path="gamethree" component={GameThree} />
     </Route>
   </Router>),
 appTarget);
