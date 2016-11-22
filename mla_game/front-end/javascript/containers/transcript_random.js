@@ -10,8 +10,11 @@ var RandTranscriptContainer = React.createClass({
     .then(function(data) {
       data = data[0];
       this.setState({
-      media_url: data.media_url,
+        media_url: data.media_url,
         phrases: data.phrases,
+        program_title: data.metadata.series,
+        broadcast_date: data.metadata.broadcast_date,
+        aapb_link:data.aapb_link
       });
       console.log(data);
     }.bind(this));
@@ -19,7 +22,10 @@ var RandTranscriptContainer = React.createClass({
 
   getInitialState: function(){
     return {
-    media_url: '',
+      media_url: '',
+      program_title: '',
+      broadcast_date:'',
+      aapb_link:'',
       phrases: []
     }
   },
@@ -30,9 +36,7 @@ var RandTranscriptContainer = React.createClass({
 
   render: function(){
     return (
-      <div>
-        <RandTranscriptUI phrases={this.state.phrases} media_url={this.state.media_url} />
-      </div>
+      <RandTranscriptUI phrases={this.state.phrases} media_url={this.state.media_url} broadcast_date={this.state.broadcast_date} program_title={this.state.program_title} aapb_link={this.state.aapb_link} />
     )
   }
 });
