@@ -112,9 +112,31 @@ button {
   display:block;
 }
 
+.game-meta {
+  @include plain-list;
+  dt {
+    font-size: 1.15em;
+  }
+  dt, dd {
+    margin-bottom:.5em;
+    color:darken(white, 25%);
+  }
+  .aapb-link-icon {
+    max-height:1.5em;
+    max-width:1.5em;
+    fill:lighten($theme-tertiary, 25%);
+  }
+  a {
+    &:hover {
+      .aapb-link-icon {
+        fill:green;
+      }
+    }
+  }
+}
+
 .phrase-list {
   @include plain-list;
-  margin-top:6em;
   // max-height:20em;
   // overflow:hidden;
   // overflow-y:scroll;
