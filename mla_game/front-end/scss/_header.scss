@@ -46,17 +46,19 @@
 .app-navigation {
   @include plain-list;
   @include clearfix;
+  padding:.5em 0;
   li {
     float:left;
     text-align:center;
-    width:25%;    
+    width:25%;
+    line-height:1; 
     a {
       color:white;
       text-decoration:none;
-      display: block;
+      display:block;
       .nav-icon {
-        height:2.25em;
-        width:2.25em;
+        height:1.75em;
+        width:1.75em;
         display:inline-block;
         fill:lighten($theme-secondary, 25%);
       }
@@ -67,6 +69,7 @@
       }
     }
     span {
+      display:inline-block;
       font-size:.85em;
     }
   }
