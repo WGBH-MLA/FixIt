@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import Audio from '../components/audio_component'
+import GameMeta from '../components/game_meta'
 import Submit from '../components/submitPhrase_component'
 
 var RandTranscriptUI = React.createClass({
@@ -53,11 +54,16 @@ var RandTranscriptUI = React.createClass({
   render: function(){
     return (
     <div>
-      <h3>State Object Debugger</h3>
-      <pre>{JSON.stringify(this.state, null, 2)}</pre>
-      <div className='game'>
+        {/*
+          <h3>State Object Debugger</h3>
+          <pre>{JSON.stringify(this.state, null, 2)}</pre>
+        */}
+      
+      <div className='game-meta'>
         <Audio src={this.props.media_url} />
+        <GameMeta program_title={this.props.program_title} broadcast_date={this.props.broadcast_date} aapb_link={this.props.aapb_link} />
       </div>
+      
        <ul className='phrase-list'>
         {this.props.phrases.map(function(phrase){
           return(
