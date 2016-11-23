@@ -1,14 +1,14 @@
 import React from 'react'
 
-// test component
-var LeaderBoard = React.createClass({
-  render: function(){
+class LeaderBoard extends React.Component{
+  
+  render(){
     return (
       <div>
         <h1>LeaderBoard</h1>
       </div>
     )
   }
-});
 
+}
 export default LeaderBoard;

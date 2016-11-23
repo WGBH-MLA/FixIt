@@ -1,9 +1,9 @@
 import React from 'react'
 import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router'
 
-// test component
-var GameMenu = React.createClass({
-  render: function(){
+class GameMenu extends React.Component{
+  
+  render() {
     return (
       <div>
         <h1>Game Menu</h1>
@@ -15,6 +15,6 @@ var GameMenu = React.createClass({
       </div>
     )
   }
-});
 
+}
 export default GameMenu;

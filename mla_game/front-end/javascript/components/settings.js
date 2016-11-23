@@ -1,8 +1,9 @@
 import React from 'react'
 
 // test component
-var Settings = React.createClass({
-  render: function(){
+class Settings extends React.Component{
+  
+  render(){
     return (
       <div>
         <h1>I am a component only loaded on the about page. Level One Heading</h1>
@@ -35,6 +36,6 @@ var Settings = React.createClass({
       </div>
     )
   }
-});
 
+}
 export default Settings;

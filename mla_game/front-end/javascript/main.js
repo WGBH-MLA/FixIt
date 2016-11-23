@@ -14,21 +14,21 @@ import GameOne from './components/gameone'
 import GameTwo from './components/gametwo'
 import GameThree from './components/gamethree'
 
-var appTarget = document.getElementById('app');
+const appTarget = document.getElementById('app');
 // Component names should always begin with an uppercase letter
 // state = owned by current component
 // props = handed down from parent component
 /* use an underscore as a prefix for custom functions
    // custom function
-   _clickHandler: function(){} 
+   _clickHandler(){} 
    // native method to react    
-   getInitialState: function(){}
+   componentDidMount(){}
 */
 
 // App Skeleton
-var App = React.createClass({
-  render: function(){
-    return (
+class App extends React.Component {
+  render() {
+    return(
       <div>
         <header className='app-header'>
           <div>
@@ -68,7 +68,7 @@ var App = React.createClass({
       </div>
     )
   }
-});
+};
 
 // render the app
 ReactDOM.render((

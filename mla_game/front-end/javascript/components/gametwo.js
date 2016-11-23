@@ -1,8 +1,9 @@
 import React from 'react'
 import RandTranscriptContainer from '../containers/transcript_random'
 
-var GameTwo = React.createClass({
-  render: function(){
+class GameTwo extends React.Component{
+  
+  render(){
     return (
       <div>
         <h1>Game Two</h1>
@@ -10,5 +11,6 @@ var GameTwo = React.createClass({
       </div>
     )
   }
-});
+
+}
 export default GameTwo;

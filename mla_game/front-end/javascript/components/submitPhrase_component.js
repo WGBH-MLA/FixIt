@@ -1,12 +1,12 @@
 import React from 'react'
 
-var SubmitPhrase = React.createClass({
+class SubmitPhrase extends React.Component{
 
-  render: function(){
+  render(){
     return (
       <button type='submit' className='submit-phrase' id={this.props.id}>Submit Phrase</button>
     )
   }
   
-});
+}
 export default SubmitPhrase;
