@@ -98,19 +98,26 @@ button {
   @include grid;
 }
 
-// throw away
-.game {
-  position:fixed;
-  background:rgba(orange, .75);
-  z-index: 1;
-  padding:1em;  
+.audio {
+  .play-button {
+    @include plain-button;
+    width:7.5em;
+    height:7.5em;
+  }
+  .play-icon {
+    circle {
+      stroke:$audio-play;
+    }
+    polygon {
+      fill:$audio-play;
+    }
+  }
+  
+  .audio-player {
+  
+  }
 }
 
-.audio-player {
-  width:88em;
-  max-width:100%;
-  display:block;
-}
 
 .game-meta {
   @include plain-list;
