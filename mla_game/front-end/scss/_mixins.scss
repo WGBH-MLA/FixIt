@@ -61,6 +61,18 @@
   }
 }
 
+@mixin plain-button {
+  border:none;
+  outline:none;
+  background:none;
+  box-shadow:none;
+  &:hover, &:focus, &:active {
+    box-shadow:none;
+    border:none;
+  }
+}
+
+
 // link reset
 @mixin link-reset {
   text-decoration:none;
