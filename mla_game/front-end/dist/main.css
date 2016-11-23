@@ -812,17 +812,23 @@ button:hover {
   clear: both;
 }
 
-.game {
-  position: fixed;
-  background: rgba(255, 165, 0, 0.75);
-  z-index: 1;
-  padding: 1em;
+.audio .play-button {
+  border: none;
+  outline: none;
+  background: none;
+  box-shadow: none;
+  width: 7.5em;
+  height: 7.5em;
 }
-
-.audio-player {
-  width: 88em;
-  max-width: 100%;
-  display: block;
+.audio .play-button:hover, .audio .play-button:focus, .audio .play-button:active {
+  box-shadow: none;
+  border: none;
+}
+.audio .play-icon circle {
+  stroke: #ca205f;
+}
+.audio .play-icon polygon {
+  fill: #ca205f;
 }
 
 .game-meta {
