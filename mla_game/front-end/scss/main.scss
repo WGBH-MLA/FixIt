@@ -263,15 +263,30 @@ button {
     @include grid;
     padding:1.5em 0;
   }
+  progress[value] {
+    -webkit-appearance: none;
+            appearance: none;
+  }
+  progress:not[value] {
+    -webkit-appearance: none;
+            appearance: none;
+  }
+  progress:not[value]::-webkit-progress-value {
+    box-shadow:0 2px 5px rgba(0, 0, 0, 0.25) inset;
+  }
+  progress:not[value]::-moz-progress-bar {
+    box-shadow:0 2px 5px rgba(0, 0, 0, 0.25) inset;
+  }
+  progress[value]::-webkit-progress-value {
+    background-color:$progress;
+  }
+  progress[value]::-moz-progress-bar {
+    background-color:$progress;
+  }
   progress {
     display:block;
     width:80%;
     margin:0 auto;
-    -webkit-appearance: none;
-            appearance: none;
-    background:$progress;
-    border-radius: 2px;
-    box-shadow:0 2px 5px rgba(0, 0, 0, 0.25) inset;
   }
 }
 
