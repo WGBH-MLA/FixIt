@@ -192,6 +192,7 @@ class TranscriptPhraseCorrection(models.Model):
     appearances = models.IntegerField(default=0)
     votes = models.IntegerField(default=0)
     transcript_phrase = models.ForeignKey(TranscriptPhrase, related_name='transcript_phrase_correction')
+    user = models.ForeignKey(User, default=None)
 
     def __str__(self):
         return str(self.transcript_phrase) + '_correction'

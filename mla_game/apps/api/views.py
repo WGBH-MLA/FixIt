@@ -3,10 +3,14 @@ from rest_framework.decorators import list_route
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 
-from ..transcript.models import Transcript, TranscriptPhraseDownvote, Source, Topic
+from ..transcript.models import (
+    Transcript, TranscriptPhraseDownvote, Source, Topic,
+    TranscriptPhraseCorrection
+)
 from ..accounts.models import Profile
 from .serializers import (
-    TranscriptSerializer, TranscriptPhraseDownvoteSerializer, SourceSerializer,
+    TranscriptSerializer, TranscriptPhraseDownvoteSerializer,
+    TranscriptPhraseCorrectionSerializer, SourceSerializer,
     ProfileSerializer, TopicSerializer
 )
 
@@ -39,6 +43,15 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 class TranscriptPhraseDownvoteViewSet(viewsets.ModelViewSet):
     queryset = TranscriptPhraseDownvote.objects.all()
     serializer_class = TranscriptPhraseDownvoteSerializer
+
+
+class TranscriptPhraseCorrectionViewSet(viewsets.ModelViewSet):
+    def get_queryset(self):
+        return TranscriptPhraseCorrection.objects.filter(
+            user=self.request.user
+        )
+    queryset = TranscriptPhraseCorrection.objects.all()
+    serializer_class = TranscriptPhraseCorrectionSerializer
 
 
 class SourceViewSet(viewsets.ReadOnlyModelViewSet):

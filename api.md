@@ -15,6 +15,11 @@ Returns a list of transcripts suitable for the current logged in user based on t
 
 `{"transcript_phrase": 231}`
 
+/api/transcriptphrasecorrection/
+
+Returns a list of phrase corrections authored by the logged in user. You can POST new corrections like so:
+
+`{"correction": "this is the corrected text for this phrase", "transcript_phrase": 1234}`
 
 /api/profile/ 
 

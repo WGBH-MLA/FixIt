@@ -32,11 +32,16 @@ class TranscriptSerializer(serializers.ModelSerializer):
 
 
 class TranscriptPhraseCorrectionSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(
+        default=serializers.CurrentUserDefault()
+    )
+
     class Meta:
         model = TranscriptPhraseCorrection
         fields = (
             'correction',
             'transcript_phrase',
+            'user',
         )
 
 
