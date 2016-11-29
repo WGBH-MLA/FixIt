@@ -5,7 +5,7 @@ class GameMenu extends React.Component{
   
   render() {
     return (
-      <div>
+      <div className='app-content'>
         <h1>Game Menu</h1>
         <ul className='game-navigation'>
           <li><Link to="gameone">Game One</Link></li>

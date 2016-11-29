@@ -5,7 +5,7 @@ class GameMeta extends React.Component {
   render(){
     const {meta, aapb_link} = this.props;
     return (
-      <dl className="game-meta">
+      <dl>
         <dt><em>Source Record:</em></dt>
         <dd className="delta">{meta.program_title}</dd>
         <dd className="delta">{meta.series}</dd>

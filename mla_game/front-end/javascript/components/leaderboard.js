@@ -4,11 +4,10 @@ class LeaderBoard extends React.Component{
   
   render(){
     return (
-      <div>
+      <div className="app-content">
         <h1>LeaderBoard</h1>
       </div>
     )
   }
-
 }
 export default LeaderBoard;

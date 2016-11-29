@@ -62,7 +62,7 @@ class App extends React.Component {
             </ul>
           </div>
         </header>
-        <div className="app-content">
+        <div>
           {this.props.children}
         </div>
       </div>
