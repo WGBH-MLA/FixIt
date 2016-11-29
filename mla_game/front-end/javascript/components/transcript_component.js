@@ -12,7 +12,7 @@ class TranscriptUI extends React.Component{
     this._selectPhrase = this._selectPhrase.bind(this); 
     this._updateAudio = this._updateAudio.bind(this); 
     this._syncAudio = this._syncAudio.bind(this); 
-    this._playPhrase = this._selectPhrase.bind(this);
+    this._playPhrase = this._playPhrase.bind(this);
     
     this.state = {
       currentPhrase:0,
@@ -38,8 +38,7 @@ class TranscriptUI extends React.Component{
   _syncAudio() {
     var media = document.querySelector('.audio-player');
     this.setState({
-      currentTime:media.currentTime,
-      isPlaying:!media.paused
+      currentTime:media.currentTime
     })
   }
 
@@ -73,15 +72,17 @@ class TranscriptUI extends React.Component{
         </div>
 
         <ul className='game-phrase-list'>
-          {Object.keys(this.props.phrases).map( key=> <Phrase key={key} isPlaying={this.state.isPlaying} time={this.state.currentTime} index={key} details={this.props.phrases[key]} />)}
+          {Object.keys(this.props.phrases).map( key=> <Phrase key={key} _playPhrase={this._playPhrase} time={this.state.currentTime} index={key} details={this.props.phrases[key]} />)}
           {this.props.phrases.length/8}
         </ul>
       </div>
+
       <div className="game-footer">
         <div>
           <progress max="100" value="20"></progress>
         </div>
       </div>
+
     </div>
     )
   }
