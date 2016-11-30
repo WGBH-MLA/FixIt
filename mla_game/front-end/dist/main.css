@@ -409,7 +409,7 @@ body {
 }
 
 h1, .alpha, h2, .beta, h3, .gamma {
-  font-family: 'Bungee', cursive;
+  font-family: 'Bungee', Cursive;
   font-weight: 400;
   line-height: 1.2;
 }
@@ -827,8 +827,11 @@ button:hover {
 .audio .play-icon circle {
   stroke: #ca205f;
 }
-.audio .play-icon polygon {
+.audio .play-icon polygon, .audio .play-icon rect {
   fill: #ca205f;
+}
+.audio .audio-player {
+  width: 100%;
 }
 
 .game-meta {
@@ -840,6 +843,13 @@ button:hover {
 }
 .game-meta dd {
   margin: 0;
+}
+@media (min-width: 84em) {
+  .game-meta {
+    width: 15.03268%;
+    float: left;
+    margin-left: 0;
+  }
 }
 .game-meta dt {
   font-size: 1.15em;
@@ -857,21 +867,30 @@ button:hover {
   fill: green;
 }
 
-.phrase-list {
+.game-phrase-list {
   margin: 0;
   padding: 0;
   border-top: 2px solid black;
   border-bottom: 2px solid black;
   padding: 1em 0;
 }
-.phrase-list li {
+.game-phrase-list li {
   list-style: none;
 }
-.phrase-list dd {
+.game-phrase-list dd {
   margin: 0;
 }
-.phrase-list li {
-  margin-bottom: 1.5em;
+@media (min-width: 84em) {
+  .game-phrase-list {
+    width: 66.01307%;
+    float: left;
+    margin-left: 1.96078%;
+    border: none;
+  }
+}
+.game-phrase-list li {
+  top: 0;
+  margin-bottom: .5em;
   -webkit-animation-duration: 500ms;
   animation-duration: 500ms;
   -webkit-animation-fill-mode: both;
@@ -879,23 +898,93 @@ button:hover {
   -webkit-animation-name: fadeIn;
   animation-name: fadeIn;
 }
-.phrase-list li.active-phrase {
-  background: yellow;
+.game-phrase-list li:after {
+  display: table;
+  clear: both;
+  content: '';
 }
-.phrase-list .play-button {
+.game-phrase-list li:before {
+  display: table;
+  clear: both;
+  content: '';
+}
+.game-phrase-list li button {
+  border: none;
+  outline: none;
+  background: none;
+  box-shadow: none;
+  color: #a59a9d;
+  font-family: 'Droid Sans', sans-serif;
+}
+.game-phrase-list li button:hover, .game-phrase-list li button:focus, .game-phrase-list li button:active {
+  box-shadow: none;
+  border: none;
+}
+.game-phrase-list li .play-phrase {
   display: inline-block;
-  margin-right: 1em;
+  padding: 0;
+  vertical-align: middle;
 }
-.phrase-list .phrase {
+.game-phrase-list li .play-phrase .speaker-icon {
+  fill: #665a5d;
+  height: 1.75em;
+  width: 1.75em;
+}
+@media (min-width: 84em) {
+  .game-phrase-list li .play-phrase {
+    width: 9.51705%;
+    float: left;
+    margin-left: 0;
+    text-align: right;
+  }
+}
+.game-phrase-list li .text {
+  text-align: left;
+}
+@media (min-width: 84em) {
+  .game-phrase-list li .text {
+    width: 87.07386%;
+    float: right;
+    margin-left: 3.40909%;
+  }
+}
+.game-phrase-list li.active-phrase .text {
+  background: #665a5d;
+  color: white;
+  font-family: 'Droid Sans', sans-serif;
+  font-weight: 700;
+}
+.game-phrase-list li.active-phrase .play-phrase .speaker-icon {
+  fill: #ffae18;
+}
+.game-phrase-list li.active-phrase + li .text {
+  background: #665a5d;
+  color: white;
+  font-family: 'Droid Sans', sans-serif;
+  font-weight: 700;
+}
+.game-phrase-list li.active-phrase + li + li .text {
+  background: #665a5d;
+  color: white;
+  font-family: 'Droid Sans', sans-serif;
+  font-weight: 700;
+}
+.game-phrase-list li.active-phrase + li + li + li .text {
+  background: #665a5d;
+  color: white;
+  font-family: 'Droid Sans', sans-serif;
+  font-weight: 700;
+}
+.game-phrase-list .phrase {
   border: none;
   padding: .5em;
   background: none;
   color: white;
 }
-.phrase-list .phrase.incorrect {
+.game-phrase-list .phrase.incorrect {
   background: red;
 }
-.phrase-list .submit-phrase {
+.game-phrase-list .submit-phrase {
   display: inline-block;
   margin-left: 1em;
   -webkit-animation-duration: 500ms;
@@ -906,23 +995,63 @@ button:hover {
   -ms-transition: opacity 300ms ease-in;
   transition: opacity 300ms ease-in;
 }
-.phrase-list .submit-phrase.submit-phrase-enter {
+.game-phrase-list .submit-phrase.submit-phrase-enter {
   opacity: .01;
   will-change: transform, opacity, visibility;
 }
-.phrase-list .submit-phrase.submit-phrase-enter.submit-phrase-enter-active {
+.game-phrase-list .submit-phrase.submit-phrase-enter.submit-phrase-enter-active {
   -webkit-animation-name: slideInRight;
   animation-name: slideInRight;
   opacity: 1;
 }
-.phrase-list .submit-phrase.submit-phrase-leave {
+.game-phrase-list .submit-phrase.submit-phrase-leave {
   opacity: 1;
   will-change: transform, opacity, visibility;
 }
-.phrase-list .submit-phrase.submit-phrase-leave.submit-phrase-leave-active {
+.game-phrase-list .submit-phrase.submit-phrase-leave.submit-phrase-leave-active {
   -webkit-animation-name: slideOutRight;
   animation-name: slideOutRight;
   opacity: 0.01;
+}
+
+.game-footer {
+  background: #000;
+}
+.game-footer div {
+  max-width: 90em;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1.5em 0;
+}
+.game-footer div:after {
+  content: " ";
+  display: block;
+  clear: both;
+}
+.game-footer progress[value] {
+  -webkit-appearance: none;
+  appearance: none;
+}
+.game-footer progress:not[value] {
+  -webkit-appearance: none;
+  appearance: none;
+}
+.game-footer progress:not[value]::-webkit-progress-value {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+}
+.game-footer progress:not[value]::-moz-progress-bar {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+}
+.game-footer progress[value]::-webkit-progress-value {
+  background-color: #ffae18;
+}
+.game-footer progress[value]::-moz-progress-bar {
+  background-color: #ffae18;
+}
+.game-footer progress {
+  display: block;
+  width: 80%;
+  margin: 0 auto;
 }
 
 /*# sourceMappingURL=main.css.map */

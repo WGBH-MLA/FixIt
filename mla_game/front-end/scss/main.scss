@@ -108,19 +108,22 @@ button {
     circle {
       stroke:$audio-play;
     }
-    polygon {
+    polygon, rect {
       fill:$audio-play;
     }
   }
   
   .audio-player {
-  
+    width:100%;
   }
 }
 
 
 .game-meta {
   @include plain-list;
+  @include susy-breakpoint($screen-lg-min, $map-lg) {
+    @include span(2 of 12 first);
+  }
   dt {
     font-size: 1.15em;
   }
@@ -142,26 +145,85 @@ button {
   }
 }
 
-.phrase-list {
+.game-phrase-list {
   @include plain-list;
-  // max-height:20em;
-  // overflow:hidden;
-  // overflow-y:scroll;
   border-top:2px solid black;
   border-bottom:2px solid black;
   padding:1em 0;
+  @include susy-breakpoint($screen-lg-min, $map-lg) {
+    @include span(8 of 12);
+    border:none;
+  }
   li {
-    margin-bottom:1.5em;
+    top:0;
+    margin-bottom:.5em;
     @include animated;
     @include fadeIn;
+    @include clearfix;
+    button {
+      @include plain-button;
+      color:lighten($theme-tertiary, 50%);
+      font-family: 'Droid Sans', sans-serif;
+    }
+    .play-phrase {
+      display: inline-block;
+      padding:0;
+      vertical-align: middle;
+      .speaker-icon {
+        fill:lighten($theme-tertiary, 25%);
+        height: 1.75em;
+        width: 1.75em;
+      }
+      @include susy-breakpoint($screen-lg-min, $map-lg) {
+        @include span(.875 of 7 first);
+        text-align:right;
+      }
+    }
+    .text {
+      text-align: left;
+      @include susy-breakpoint($screen-lg-min, $map-lg) {
+        @include span(6.125 of 7 last);
+      }
+    }
     &.active-phrase {
-      background:yellow;
-    } 
+      .text{
+        background:lighten($theme-tertiary, 25%);
+        color:white;
+        font-family: 'Droid Sans', sans-serif;
+        font-weight:700;
+      }
+      .play-phrase {
+        .speaker-icon {
+          fill:$progress;
+        }
+      }
+    }
+    &.active-phrase + li {
+      .text {
+        background:lighten($theme-tertiary, 25%);
+        color:white;
+        font-family: 'Droid Sans', sans-serif;
+        font-weight:700;
+      }
+    }
+    &.active-phrase + li + li {
+      .text {
+        background:lighten($theme-tertiary, 25%);
+        color:white;
+        font-family: 'Droid Sans', sans-serif;
+        font-weight:700;
+      }
+    }
+    &.active-phrase + li + li + li {
+      .text {
+        background:lighten($theme-tertiary, 25%);
+        color:white;
+        font-family: 'Droid Sans', sans-serif;
+        font-weight:700;
+      }
+    }
   }
-  .play-button {
-    display: inline-block;
-    margin-right:1em;
-  }
+
   .phrase {
     border:none;
     padding:.5em;
@@ -192,6 +254,39 @@ button {
         opacity: 0.01;
       }
     }   
+  }
+}
+
+.game-footer {
+  background:$theme-primary;
+  div {
+    @include grid;
+    padding:1.5em 0;
+  }
+  progress[value] {
+    -webkit-appearance: none;
+            appearance: none;
+  }
+  progress:not[value] {
+    -webkit-appearance: none;
+            appearance: none;
+  }
+  progress:not[value]::-webkit-progress-value {
+    box-shadow:0 2px 5px rgba(0, 0, 0, 0.25) inset;
+  }
+  progress:not[value]::-moz-progress-bar {
+    box-shadow:0 2px 5px rgba(0, 0, 0, 0.25) inset;
+  }
+  progress[value]::-webkit-progress-value {
+    background-color:$progress;
+  }
+  progress[value]::-moz-progress-bar {
+    background-color:$progress;
+  }
+  progress {
+    display:block;
+    width:80%;
+    margin:0 auto;
   }
 }
 
