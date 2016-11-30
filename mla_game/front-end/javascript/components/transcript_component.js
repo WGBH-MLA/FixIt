@@ -17,7 +17,7 @@ class TranscriptUI extends React.Component{
     this.state = {
       currentPhrase:0,
       currentTime:0,
-      isPlaying:false,
+      isPlaying:false
     }
   }
   
@@ -38,7 +38,8 @@ class TranscriptUI extends React.Component{
   _syncAudio() {
     var media = document.querySelector('.audio-player');
     this.setState({
-      currentTime:media.currentTime
+      currentTime:media.currentTime,
+      isPlaying:!media.paused
     })
   }
 
@@ -67,7 +68,7 @@ class TranscriptUI extends React.Component{
         <pre>{JSON.stringify(this.state, null, 2)}</pre>
         
         <div className='game-meta'>
-          <Audio src={this.props.media_url} isPlaying={this.state.isPLaying} />
+          <Audio src={this.props.media_url} isPlaying={this.state.isPlaying} />
           <GameMeta meta={this.props.meta} aapb_link={this.props.aapb_link} />
         </div>
 
