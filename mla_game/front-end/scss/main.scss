@@ -108,7 +108,7 @@ button {
     circle {
       stroke:$audio-play;
     }
-    polygon {
+    polygon, rect {
       fill:$audio-play;
     }
   }

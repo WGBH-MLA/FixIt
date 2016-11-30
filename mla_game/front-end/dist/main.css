@@ -827,7 +827,7 @@ button:hover {
 .audio .play-icon circle {
   stroke: #ca205f;
 }
-.audio .play-icon polygon {
+.audio .play-icon polygon, .audio .play-icon rect {
   fill: #ca205f;
 }
 .audio .audio-player {
