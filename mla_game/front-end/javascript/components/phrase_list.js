@@ -11,11 +11,8 @@ class Phrase extends React.Component{
     time <= start || time >= end || time === 0 ? 'not-active-phrase': 'active-phrase';
   }
 
-  componentDidUpdate() {
-  }
-
   render(){
-    const {details, time, isPlaying, index} = this.props;
+    const {details, time, index} = this.props;
     return (
       <li ref={(li) => {this.li = li}} className={time <= details.start_time || time >= details.end_time ? 'not-active-phrase': 'active-phrase'}>
         <button className='play-phrase' onClick={() => this.props._playPhrase(details.start_time)} id={details.start_time}>
