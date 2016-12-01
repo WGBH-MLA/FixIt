@@ -360,13 +360,26 @@ var GameMeta = (function (_React$Component) {
             "Source Record:"
           )
         ),
-        this._metaElement(meta.series),
         _react2["default"].createElement(
           "dd",
           { className: "delta" },
-          "Station Name ???"
+          "Program Title"
         ),
-        this._metaElement(meta.broadcast_date),
+        _react2["default"].createElement(
+          "dd",
+          { className: "delta" },
+          "Series"
+        ),
+        _react2["default"].createElement(
+          "dd",
+          { className: "delta" },
+          "Station Name"
+        ),
+        _react2["default"].createElement(
+          "dd",
+          { className: "delta" },
+          "Broadcast Date"
+        ),
         _react2["default"].createElement(
           "dd",
           { className: "delta" },
@@ -394,7 +407,11 @@ var GameMeta = (function (_React$Component) {
 
 exports["default"] = GameMeta;
 module.exports = exports["default"];
-/* this._metaElement(meta.program_title) */
+/* this._metaElement(meta.program_title)}
+{this._metaElement(meta.series )}
+<dd className="delta">Station Name ???</dd>
+{this._metaElement(meta.broadcast_date )
+*/
 
 },{"react":253}],4:[function(require,module,exports){
 'use strict';
