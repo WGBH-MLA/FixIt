@@ -60,6 +60,7 @@ INSTALLED_APPS = (
     'mla_game.apps.game',
     'huey.contrib.djhuey',
     'rest_framework',
+    'rest_framework_swagger',
 )
 
 MIDDLEWARE_CLASSES = (
