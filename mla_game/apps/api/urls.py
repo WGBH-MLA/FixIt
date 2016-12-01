@@ -4,7 +4,7 @@ from rest_framework import routers
 from .views import (
     TranscriptViewSet, TranscriptPhraseDownvoteViewSet,
     TranscriptPhraseCorrectionViewSet, SourceViewSet,
-    TopicViewSet, ProfileViewSet
+    TopicViewSet, ProfileViewSet,
 )
 
 router = routers.DefaultRouter()

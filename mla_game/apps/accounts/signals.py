@@ -10,6 +10,7 @@ def get_or_create_profile(sender, user, request, **kwargs):
         user=user
     )
     if created:
+        profile.username = user.username
         profile.save()
 
     return profile

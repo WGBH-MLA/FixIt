@@ -77,5 +77,6 @@ class TopicSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ('preferred_stations', 'preferred_topics', 'considered_phrases')
+        fields = ('preferred_stations', 'preferred_topics', 'considered_phrases',
+                  'username')
         extra_kwargs = {'considered_phrases': {'write_only': True}}

@@ -11,7 +11,7 @@ from ..accounts.models import Profile
 from .serializers import (
     TranscriptSerializer, TranscriptPhraseDownvoteSerializer,
     TranscriptPhraseCorrectionSerializer, SourceSerializer,
-    ProfileSerializer, TopicSerializer
+    ProfileSerializer, TopicSerializer,
 )
 
 
