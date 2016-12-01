@@ -31,16 +31,11 @@ class AudioUI extends  React.Component{
     } 
   }
 
-  componentDidMount() {
-    this._togglePlay();
-  }
-
   render(){
     const { isPlaying } = this.props;
     return (
       <div className='audio'>
         <button className='play-button' onClick={this._playAudio}>
-          {this._togglePlay()}
           <svg className="play-icon" viewBox="0 0 200 200">
             <circle cx="100" cy="100" r="90" fill="none" strokeWidth="15" stroke="#fff"/>
             {this._togglePlay()}

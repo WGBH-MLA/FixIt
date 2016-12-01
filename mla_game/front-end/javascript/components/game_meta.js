@@ -1,16 +1,30 @@
 import React from 'react'
 
 class GameMeta extends React.Component {
+
+  constructor(){
+    super();
+    this._metaElement = this._metaElement.bind(this);
+  }
+
+  _metaElement(e) {
+    if(e) {
+      return(
+        <dd className="delta">{e}</dd>
+      )  
+    }
+  }
+
   
   render(){
     const {meta, aapb_link} = this.props;
     return (
       <dl>
         <dt><em>Source Record:</em></dt>
-        <dd className="delta">{meta.program_title}</dd>
-        <dd className="delta">{meta.series}</dd>
+        {this._metaElement(meta.program_title)}
+        {this._metaElement(meta.series )}
         <dd className="delta">Station Name ???</dd>
-        <dd className="delta">{meta.broadcast_date}</dd>
+        {this._metaElement(meta.broadcast_date )}
         <dd className="delta">
           <a href={aapb_link}>
             <svg className="aapb-link-icon" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
