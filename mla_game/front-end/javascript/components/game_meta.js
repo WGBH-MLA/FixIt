@@ -21,7 +21,7 @@ class GameMeta extends React.Component {
     return (
       <dl>
         <dt><em>Source Record:</em></dt>
-        {this._metaElement(meta.program_title)}
+        {/* this._metaElement(meta.program_title) */}
         {this._metaElement(meta.series )}
         <dd className="delta">Station Name ???</dd>
         {this._metaElement(meta.broadcast_date )}
