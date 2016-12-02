@@ -360,26 +360,14 @@ var GameMeta = (function (_React$Component) {
             "Source Record:"
           )
         ),
+        this._metaElement(meta.program_title),
+        this._metaElement(meta.series),
         _react2["default"].createElement(
           "dd",
           { className: "delta" },
-          "Program Title"
+          "Station Name ???"
         ),
-        _react2["default"].createElement(
-          "dd",
-          { className: "delta" },
-          "Series"
-        ),
-        _react2["default"].createElement(
-          "dd",
-          { className: "delta" },
-          "Station Name"
-        ),
-        _react2["default"].createElement(
-          "dd",
-          { className: "delta" },
-          "Broadcast Date"
-        ),
+        this._metaElement(meta.broadcast_date),
         _react2["default"].createElement(
           "dd",
           { className: "delta" },
@@ -407,11 +395,6 @@ var GameMeta = (function (_React$Component) {
 
 exports["default"] = GameMeta;
 module.exports = exports["default"];
-/* this._metaElement(meta.program_title)}
-{this._metaElement(meta.series )}
-<dd className="delta">Station Name ???</dd>
-{this._metaElement(meta.broadcast_date )
-*/
 
 },{"react":253}],4:[function(require,module,exports){
 'use strict';
@@ -522,31 +505,53 @@ var _containersTranscript_random = require('../containers/transcript_random');
 
 var _containersTranscript_random2 = _interopRequireDefault(_containersTranscript_random);
 
+var _componentsLeaderboard = require('../components/leaderboard');
+
+var _componentsLeaderboard2 = _interopRequireDefault(_componentsLeaderboard);
+
 var GameOne = (function (_React$Component) {
   _inherits(GameOne, _React$Component);
 
   function GameOne() {
     _classCallCheck(this, GameOne);
 
-    _get(Object.getPrototypeOf(GameOne.prototype), 'constructor', this).apply(this, arguments);
+    _get(Object.getPrototypeOf(GameOne.prototype), 'constructor', this).call(this);
+    this._delay = this._delay.bind(this);
+    this._loader = this._loader.bind(this);
+
+    this.state = {
+      loaded: false
+    };
   }
 
   _createClass(GameOne, [{
+    key: '_loader',
+    value: function _loader() {
+      if (this.state.loaded) {
+        return _react2['default'].createElement(_containersTranscript_random2['default'], null);
+      } else {
+        return _react2['default'].createElement(_componentsLeaderboard2['default'], null);
+      }
+    }
+  }, {
+    key: '_delay',
+    value: function _delay() {
+      this.setState({
+        loaded: true
+      });
+    }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      setTimeout(this._delay, 250);
+    }
+  }, {
     key: 'render',
     value: function render() {
       return _react2['default'].createElement(
         'div',
         null,
-        _react2['default'].createElement(
-          'div',
-          { className: 'app-content' },
-          _react2['default'].createElement(
-            'h1',
-            null,
-            'Game One'
-          )
-        ),
-        _react2['default'].createElement(_containersTranscript_random2['default'], null)
+        this._loader()
       );
     }
   }]);
@@ -557,7 +562,7 @@ var GameOne = (function (_React$Component) {
 exports['default'] = GameOne;
 module.exports = exports['default'];
 
-},{"../containers/transcript_random":14,"react":253}],6:[function(require,module,exports){
+},{"../components/leaderboard":8,"../containers/transcript_random":14,"react":253}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
