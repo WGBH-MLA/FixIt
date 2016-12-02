@@ -257,6 +257,17 @@ button {
   }
 }
 
+.loading-screen {
+  position:relative;
+  height:90vh;
+}
+
+.loading-animation {
+  @include center();
+  width:10em;
+  height:10em;
+}
+
 .game-footer {
   background:$theme-primary;
   div {
