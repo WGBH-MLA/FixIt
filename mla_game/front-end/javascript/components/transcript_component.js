@@ -10,12 +10,11 @@ class TranscriptUI extends React.Component{
   constructor(){
     super();
     this._selectPhrase = this._selectPhrase.bind(this); 
-    this._updateAudio = this._updateAudio.bind(this); 
     this._syncAudio = this._syncAudio.bind(this); 
     this._playPhrase = this._playPhrase.bind(this);
     
     this.state = {
-      currentPhrase:0,
+      currentPhrase:[],
       currentTime:0,
       isPlaying:false
     }
@@ -23,23 +22,14 @@ class TranscriptUI extends React.Component{
   
   _selectPhrase(e){
     this.setState({
-      currentPhrase:e
+      currentPhrase:[e]
     });
   }
-  
-  _updateAudio() {
-    var self = this;
-    setTimeout(function() {
-     self._syncAudio(); // do it once and then start it up ...
-     self._timer = setInterval(self._syncAudio, 250);
-    }, 250);
-  }
 
-  _syncAudio() {
-    var media = document.querySelector('.audio-player');
+  _syncAudio(time, paused) {
     this.setState({
-      currentTime:media.currentTime,
-      isPlaying:!media.paused
+      currentTime:time,
+      isPlaying:paused
     })
   }
 
@@ -48,18 +38,7 @@ class TranscriptUI extends React.Component{
     media.currentTime = callback;
     media.play();
   }
-
-  componentDidMount(){
-    this._updateAudio();
-  }
-
-  componentWillUnmount(){
-    if(this._timer) {
-      clearInterval(this._timer);
-      this._timer = null;
-    }
-  }
-  
+    
   render(){
     return (
     <div>
@@ -68,12 +47,12 @@ class TranscriptUI extends React.Component{
         <pre>{JSON.stringify(this.state, null, 2)}</pre>
         
         <div className='game-meta'>
-          <Audio src={this.props.media_url} isPlaying={this.state.isPlaying} />
+          <Audio src={this.props.media_url} _syncAudio={this._syncAudio}  isPlaying={this.state.isPlaying} />
           <GameMeta meta={this.props.meta} aapb_link={this.props.aapb_link} />
         </div>
 
         <ul className='game-phrase-list'>
-          {Object.keys(this.props.phrases).map( key=> <Phrase key={key} _playPhrase={this._playPhrase} time={this.state.currentTime} index={key} details={this.props.phrases[key]} />)}
+          {Object.keys(this.props.phrases).map( key=> <Phrase key={key} _playPhrase={this._playPhrase} _selectPhrase={this._selectPhrase} time={this.state.currentTime} index={key} details={this.props.phrases[key]} />)}
           {this.props.phrases.length/8}
         </ul>
       </div>

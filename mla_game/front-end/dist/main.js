@@ -212,21 +212,21 @@ _reactDom2['default'].render(_react2['default'].createElement(
 ), appTarget);
 
 },{"./components/gamemenu":4,"./components/gameone":5,"./components/gamethree":6,"./components/gametwo":7,"./components/leaderboard":8,"./components/preferences":10,"./components/settings":11,"react":253,"react-dom":67,"react-router":97}],2:[function(require,module,exports){
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var _react = require('react');
 
@@ -238,13 +238,14 @@ var AudioUI = (function (_React$Component) {
   function AudioUI() {
     _classCallCheck(this, AudioUI);
 
-    _get(Object.getPrototypeOf(AudioUI.prototype), "constructor", this).call(this);
+    _get(Object.getPrototypeOf(AudioUI.prototype), 'constructor', this).call(this);
+    this._playingAudio = this._playingAudio.bind(this);
     this._playAudio = this._playAudio.bind(this);
     this._togglePlay = this._togglePlay.bind(this);
   }
 
   _createClass(AudioUI, [{
-    key: "_playAudio",
+    key: '_playAudio',
     value: function _playAudio() {
       if (this.audioPlayer.paused) {
         this.audioPlayer.play();
@@ -253,51 +254,64 @@ var AudioUI = (function (_React$Component) {
       }
     }
   }, {
-    key: "_togglePlay",
+    key: '_playingAudio',
+    value: function _playingAudio() {
+      var self = this;
+      this.audioPlayer.addEventListener('timeupdate', function () {
+        self.props._syncAudio(this.currentTime, !this.paused);
+      });
+    }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this._playingAudio();
+    }
+  }, {
+    key: '_togglePlay',
     value: function _togglePlay() {
       if (this.props.isPlaying) {
-        return _react2["default"].createElement(
-          "g",
+        return _react2['default'].createElement(
+          'g',
           null,
-          _react2["default"].createElement("rect", { fill: "#fff", width: "25.577312", height: "88.712906", x: "65", y: "55.643555" }),
-          _react2["default"].createElement("rect", { fill: "#fff", width: "25.577312", height: "88.712906", x: "110", y: "55.643555" })
+          _react2['default'].createElement('rect', { fill: '#fff', width: '25.577312', height: '88.712906', x: '65', y: '55.643555' }),
+          _react2['default'].createElement('rect', { fill: '#fff', width: '25.577312', height: '88.712906', x: '110', y: '55.643555' })
         );
       } else {
-        return _react2["default"].createElement("polygon", { points: "70, 55 70, 145 145, 100", fill: "#fff" });
+        return _react2['default'].createElement('polygon', { points: '70, 55 70, 145 145, 100', fill: '#fff' });
       }
     }
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
       var _this = this;
 
       var isPlaying = this.props.isPlaying;
 
-      return _react2["default"].createElement(
-        "div",
-        { className: "audio" },
-        _react2["default"].createElement(
-          "button",
-          { className: "play-button", onClick: this._playAudio },
-          _react2["default"].createElement(
-            "svg",
-            { className: "play-icon", viewBox: "0 0 200 200" },
-            _react2["default"].createElement("circle", { cx: "100", cy: "100", r: "90", fill: "none", strokeWidth: "15", stroke: "#fff" }),
+      return _react2['default'].createElement(
+        'div',
+        { className: 'audio' },
+        _react2['default'].createElement(
+          'button',
+          { className: 'play-button', onClick: this._playAudio },
+          _react2['default'].createElement(
+            'svg',
+            { className: 'play-icon', viewBox: '0 0 200 200' },
+            _react2['default'].createElement('circle', { cx: '100', cy: '100', r: '90', fill: 'none', strokeWidth: '15', stroke: '#fff' }),
             this._togglePlay()
           )
         ),
-        _react2["default"].createElement("audio", { ref: function (audio) {
+        _react2['default'].createElement('audio', { ref: function (audio) {
             _this.audioPlayer = audio;
-          }, className: "audio-player", src: this.props.src })
+          }, className: 'audio-player', src: this.props.src, preload: true })
       );
     }
   }]);
 
   return AudioUI;
-})(_react2["default"].Component);
+})(_react2['default'].Component);
 
-exports["default"] = AudioUI;
-module.exports = exports["default"];
+exports['default'] = AudioUI;
+module.exports = exports['default'];
 
 },{"react":253}],3:[function(require,module,exports){
 "use strict";
@@ -505,53 +519,31 @@ var _containersTranscript_random = require('../containers/transcript_random');
 
 var _containersTranscript_random2 = _interopRequireDefault(_containersTranscript_random);
 
-var _componentsLeaderboard = require('../components/leaderboard');
-
-var _componentsLeaderboard2 = _interopRequireDefault(_componentsLeaderboard);
-
 var GameOne = (function (_React$Component) {
   _inherits(GameOne, _React$Component);
 
   function GameOne() {
     _classCallCheck(this, GameOne);
 
-    _get(Object.getPrototypeOf(GameOne.prototype), 'constructor', this).call(this);
-    this._delay = this._delay.bind(this);
-    this._loader = this._loader.bind(this);
-
-    this.state = {
-      loaded: false
-    };
+    _get(Object.getPrototypeOf(GameOne.prototype), 'constructor', this).apply(this, arguments);
   }
 
   _createClass(GameOne, [{
-    key: '_loader',
-    value: function _loader() {
-      if (this.state.loaded) {
-        return _react2['default'].createElement(_containersTranscript_random2['default'], null);
-      } else {
-        return _react2['default'].createElement(_componentsLeaderboard2['default'], null);
-      }
-    }
-  }, {
-    key: '_delay',
-    value: function _delay() {
-      this.setState({
-        loaded: true
-      });
-    }
-  }, {
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      setTimeout(this._delay, 250);
-    }
-  }, {
     key: 'render',
     value: function render() {
       return _react2['default'].createElement(
         'div',
         null,
-        this._loader()
+        _react2['default'].createElement(
+          'div',
+          { className: 'app-content' },
+          _react2['default'].createElement(
+            'h1',
+            null,
+            'Game One'
+          )
+        ),
+        _react2['default'].createElement(_containersTranscript_random2['default'], null)
       );
     }
   }]);
@@ -562,7 +554,7 @@ var GameOne = (function (_React$Component) {
 exports['default'] = GameOne;
 module.exports = exports['default'];
 
-},{"../components/leaderboard":8,"../containers/transcript_random":14,"react":253}],6:[function(require,module,exports){
+},{"../containers/transcript_random":14,"react":253}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -794,7 +786,9 @@ var Phrase = (function (_React$Component) {
         ),
         _react2['default'].createElement(
           'button',
-          { className: 'text', id: details.pk },
+          { className: 'text', onClick: function () {
+              return _this.props._selectPhrase(details.pk);
+            }, id: details.pk },
           details.text
         )
       );
@@ -1120,12 +1114,11 @@ var TranscriptUI = (function (_React$Component) {
 
     _get(Object.getPrototypeOf(TranscriptUI.prototype), 'constructor', this).call(this);
     this._selectPhrase = this._selectPhrase.bind(this);
-    this._updateAudio = this._updateAudio.bind(this);
     this._syncAudio = this._syncAudio.bind(this);
     this._playPhrase = this._playPhrase.bind(this);
 
     this.state = {
-      currentPhrase: 0,
+      currentPhrase: [],
       currentTime: 0,
       isPlaying: false
     };
@@ -1135,25 +1128,15 @@ var TranscriptUI = (function (_React$Component) {
     key: '_selectPhrase',
     value: function _selectPhrase(e) {
       this.setState({
-        currentPhrase: e
+        currentPhrase: [e]
       });
     }
   }, {
-    key: '_updateAudio',
-    value: function _updateAudio() {
-      var self = this;
-      setTimeout(function () {
-        self._syncAudio(); // do it once and then start it up ...
-        self._timer = setInterval(self._syncAudio, 250);
-      }, 250);
-    }
-  }, {
     key: '_syncAudio',
-    value: function _syncAudio() {
-      var media = document.querySelector('.audio-player');
+    value: function _syncAudio(time, paused) {
       this.setState({
-        currentTime: media.currentTime,
-        isPlaying: !media.paused
+        currentTime: time,
+        isPlaying: paused
       });
     }
   }, {
@@ -1162,19 +1145,6 @@ var TranscriptUI = (function (_React$Component) {
       var media = document.querySelector('.audio-player');
       media.currentTime = callback;
       media.play();
-    }
-  }, {
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      this._updateAudio();
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      if (this._timer) {
-        clearInterval(this._timer);
-        this._timer = null;
-      }
     }
   }, {
     key: 'render',
@@ -1200,14 +1170,14 @@ var TranscriptUI = (function (_React$Component) {
           _react2['default'].createElement(
             'div',
             { className: 'game-meta' },
-            _react2['default'].createElement(_componentsAudio_component2['default'], { src: this.props.media_url, isPlaying: this.state.isPlaying }),
+            _react2['default'].createElement(_componentsAudio_component2['default'], { src: this.props.media_url, _syncAudio: this._syncAudio, isPlaying: this.state.isPlaying }),
             _react2['default'].createElement(_componentsGame_meta2['default'], { meta: this.props.meta, aapb_link: this.props.aapb_link })
           ),
           _react2['default'].createElement(
             'ul',
             { className: 'game-phrase-list' },
             Object.keys(this.props.phrases).map(function (key) {
-              return _react2['default'].createElement(_componentsPhrase_list2['default'], { key: key, _playPhrase: _this._playPhrase, time: _this.state.currentTime, index: key, details: _this.props.phrases[key] });
+              return _react2['default'].createElement(_componentsPhrase_list2['default'], { key: key, _playPhrase: _this._playPhrase, _selectPhrase: _this._selectPhrase, time: _this.state.currentTime, index: key, details: _this.props.phrases[key] });
             }),
             this.props.phrases.length / 8
           )

@@ -21,7 +21,7 @@ class Phrase extends React.Component{
             <circle cx="25" cy="25" r="25"></circle>
           </svg>
         </button>
-        <button className='text' id={details.pk}>{details.text}</button>
+        <button className='text' onClick={() => this.props._selectPhrase(details.pk)} id={details.pk}>{details.text}</button>
       </li>
     )
   }

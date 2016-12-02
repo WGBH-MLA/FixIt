@@ -4,6 +4,7 @@ class AudioUI extends  React.Component{
 
   constructor(){
     super();
+    this._playingAudio = this._playingAudio.bind(this); 
     this._playAudio = this._playAudio.bind(this); 
     this._togglePlay = this._togglePlay.bind(this); 
   }
@@ -15,6 +16,18 @@ class AudioUI extends  React.Component{
       this.audioPlayer.pause();
     }
   }
+
+  _playingAudio(){
+    var self = this;
+    this.audioPlayer.addEventListener('timeupdate', function(){
+      self.props._syncAudio(this.currentTime, !this.paused)
+    })
+  }
+
+  componentDidMount(){
+    this._playingAudio();
+  }
+  
 
   _togglePlay() {
     if(this.props.isPlaying) {
@@ -41,7 +54,7 @@ class AudioUI extends  React.Component{
             {this._togglePlay()}
           </svg>
         </button>  
-        <audio ref={(audio) => {this.audioPlayer = audio}} className="audio-player" src={this.props.src}></audio>
+        <audio ref={(audio) => {this.audioPlayer = audio}} className="audio-player" src={this.props.src} preload></audio>
       </div>
     )
   }
