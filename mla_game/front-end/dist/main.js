@@ -796,8 +796,7 @@ var Phrase = (function (_React$Component) {
               return _this.props._selectPhrase(details.pk);
             }, id: details.pk },
           details.text
-        ),
-        this._getContext(time, details.start_time, details.end_time, index)
+        )
       );
     }
   }]);

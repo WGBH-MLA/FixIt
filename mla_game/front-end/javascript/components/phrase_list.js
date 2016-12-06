@@ -32,7 +32,6 @@ class Phrase extends React.Component{
           </svg>
         </button>
         <button className='text' onClick={() => this.props._selectPhrase(details.pk)} id={details.pk}>{details.text}</button>
-        {this._getContext(time, details.start_time, details.end_time, index)}
       </li>
     )
   }
