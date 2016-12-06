@@ -745,13 +745,19 @@ var Phrase = (function (_React$Component) {
     _classCallCheck(this, Phrase);
 
     _get(Object.getPrototypeOf(Phrase.prototype), 'constructor', this).call(this);
-    this._activeState = this._activeState.bind(this);
+    this._activePhrase = this._activePhrase.bind(this);
+    this._getContext = this._getContext.bind(this);
   }
 
   _createClass(Phrase, [{
-    key: '_activeState',
-    value: function _activeState(start, end, time) {
-      time <= start || time >= end || time === 0 ? 'not-active-phrase' : 'active-phrase';
+    key: '_activePhrase',
+    value: function _activePhrase(time, start, end) {
+      var playingPhrase = time <= start || time >= end;
+      if (playingPhrase) {
+        return 'not-active-phrase';
+      } else {
+        return 'active-phrase';
+      }
     }
   }, {
     key: 'render',
@@ -767,7 +773,7 @@ var Phrase = (function (_React$Component) {
         'li',
         { ref: function (li) {
             _this.li = li;
-          }, className: time <= details.start_time || time >= details.end_time ? 'not-active-phrase' : 'active-phrase' },
+          }, className: this._activePhrase(time, details.start_time, details.end_time) },
         _react2['default'].createElement(
           'button',
           { className: 'play-phrase', onClick: function () {
@@ -790,7 +796,8 @@ var Phrase = (function (_React$Component) {
               return _this.props._selectPhrase(details.pk);
             }, id: details.pk },
           details.text
-        )
+        ),
+        this._getContext(time, details.start_time, details.end_time, index)
       );
     }
   }]);
@@ -1113,14 +1120,12 @@ var TranscriptUI = (function (_React$Component) {
     _classCallCheck(this, TranscriptUI);
 
     _get(Object.getPrototypeOf(TranscriptUI.prototype), 'constructor', this).call(this);
-    this._selectPhrase = this._selectPhrase.bind(this);
     this._syncAudio = this._syncAudio.bind(this);
     this._playPhrase = this._playPhrase.bind(this);
     this._delayRender = this._delayRender.bind(this);
     this._renderGame = this._renderGame.bind(this);
 
     this.state = {
-      currentPhrase: [],
       currentTime: 0,
       isPlaying: false,
       loaded: false
@@ -1128,13 +1133,6 @@ var TranscriptUI = (function (_React$Component) {
   }
 
   _createClass(TranscriptUI, [{
-    key: '_selectPhrase',
-    value: function _selectPhrase(e) {
-      this.setState({
-        currentPhrase: [e]
-      });
-    }
-  }, {
     key: '_syncAudio',
     value: function _syncAudio(time, paused) {
       this.setState({
@@ -1188,7 +1186,12 @@ var TranscriptUI = (function (_React$Component) {
               'ul',
               { className: 'game-phrase-list' },
               Object.keys(this.props.phrases).map(function (key) {
-                return _react2['default'].createElement(_componentsPhrase_list2['default'], { key: key, _playPhrase: _this._playPhrase, _selectPhrase: _this._selectPhrase, time: _this.state.currentTime, index: key, details: _this.props.phrases[key] });
+                return _react2['default'].createElement(_componentsPhrase_list2['default'], { key: key,
+                  _playPhrase: _this._playPhrase,
+                  _selectPhrase: _this._selectPhrase,
+                  time: _this.state.currentTime,
+                  index: key,
+                  details: _this.props.phrases[key] });
               }),
               this.props.phrases.length / 8
             )

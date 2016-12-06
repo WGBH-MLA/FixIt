@@ -9,26 +9,18 @@ class TranscriptUI extends React.Component{
 
   constructor(){
     super();
-    this._selectPhrase = this._selectPhrase.bind(this); 
     this._syncAudio = this._syncAudio.bind(this); 
     this._playPhrase = this._playPhrase.bind(this);
     this._delayRender = this._delayRender.bind(this);
     this._renderGame = this._renderGame.bind(this);
     
     this.state = {
-      currentPhrase:[],
       currentTime:0,
       isPlaying:false,
       loaded:false
     }
   }
   
-  _selectPhrase(e){
-    this.setState({
-      currentPhrase:[e]
-    });
-  }
-
   _syncAudio(time, paused) {
     this.setState({
       currentTime:time,
@@ -62,7 +54,13 @@ class TranscriptUI extends React.Component{
             </div>
 
             <ul className='game-phrase-list'>
-              {Object.keys(this.props.phrases).map( key=> <Phrase key={key} _playPhrase={this._playPhrase} _selectPhrase={this._selectPhrase} time={this.state.currentTime} index={key} details={this.props.phrases[key]} />)}
+              {Object.keys(this.props.phrases).map( key=> <Phrase key={key} 
+                _playPhrase={this._playPhrase} 
+                _selectPhrase={this._selectPhrase} 
+                 time={this.state.currentTime} 
+                 index={key} 
+                 details={this.props.phrases[key]} />)
+              }
               {this.props.phrases.length/8}
             </ul>
           </div>
