@@ -746,7 +746,6 @@ var Phrase = (function (_React$Component) {
 
     _get(Object.getPrototypeOf(Phrase.prototype), 'constructor', this).call(this);
     this._activePhrase = this._activePhrase.bind(this);
-    this._getContext = this._getContext.bind(this);
   }
 
   _createClass(Phrase, [{

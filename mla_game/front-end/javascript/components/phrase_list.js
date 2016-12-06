@@ -5,7 +5,6 @@ class Phrase extends React.Component{
   constructor(){
     super();
     this._activePhrase = this._activePhrase.bind(this);
-    this._getContext = this._getContext.bind(this);
   }
   
   _activePhrase(time, start, end){
