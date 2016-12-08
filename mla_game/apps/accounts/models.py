@@ -29,9 +29,9 @@ class Score(models.Model):
         User loses 5 points for each incorrectly validated vote (game 3)
     """
     game_choices = (
-        1, 'one',
-        2, 'two',
-        3, 'three'
+        1, 'Identify Errors',
+        2, 'Suggest Fixes',
+        3, 'Validate Fixes'
     )
     user = models.ForeignKey(User)
     score = models.PositiveSmallIntegerField()

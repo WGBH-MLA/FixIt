@@ -7,7 +7,7 @@ from ..transcript.models import (
     Source, Topic
 )
 
-from ..accounts.models import Profile
+from ..accounts.models import Profile, Score
 
 
 class TranscriptMetadataSerializer(serializers.ModelSerializer):
@@ -78,5 +78,15 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ('preferred_stations', 'preferred_topics', 'considered_phrases',
-                  'username')
+                  'username', 'pk')
         extra_kwargs = {'considered_phrases': {'write_only': True}}
+
+
+class ScoreSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(
+        default=serializers.CurrentUserDefault()
+    )
+
+    class Meta:
+        model = Score
+        fields = ('user', 'score', 'game')

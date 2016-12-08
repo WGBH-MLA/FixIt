@@ -7,11 +7,11 @@ from ..transcript.models import (
     Transcript, TranscriptPhraseDownvote, Source, Topic,
     TranscriptPhraseCorrection
 )
-from ..accounts.models import Profile
+from ..accounts.models import Profile, Score
 from .serializers import (
     TranscriptSerializer, TranscriptPhraseDownvoteSerializer,
     TranscriptPhraseCorrectionSerializer, SourceSerializer,
-    ProfileSerializer, TopicSerializer,
+    ProfileSerializer, TopicSerializer, ScoreSerializer
 )
 
 
@@ -70,3 +70,8 @@ class ProfileViewSet(viewsets.ModelViewSet):
         return Profile.objects.filter(user=self.request.user)
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+
+
+class ScoreViewSet(viewsets.ModelViewSet):
+    queryset = Score.objects.all()
+    serializer_class = ScoreSerializer
