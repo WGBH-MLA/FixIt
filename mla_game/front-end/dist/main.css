@@ -1014,6 +1014,20 @@ button:hover {
   opacity: 0.01;
 }
 
+.loading-screen {
+  position: relative;
+  height: 90vh;
+}
+
+.loading-animation {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10em;
+  height: 10em;
+}
+
 .game-footer {
   background: #000;
 }
