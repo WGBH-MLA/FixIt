@@ -143,7 +143,7 @@ class TranscriptUI extends React.Component{
   }
 
   componentDidMount(){
-    setTimeout(this._delayRender, 100);
+    setTimeout(this._delayRender, 5000);
   }
     
   render(){

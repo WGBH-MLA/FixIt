@@ -1392,7 +1392,7 @@ var TranscriptUI = (function (_React$Component) {
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      setTimeout(this._delayRender, 100);
+      setTimeout(this._delayRender, 5000);
     }
   }, {
     key: 'render',
