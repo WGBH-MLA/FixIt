@@ -159,9 +159,9 @@ button {
   @include susy-breakpoint($screen-lg-min, $map-lg) {
     @include span(8 of 12);
     border:none;
+    min-height:35vh;
   }
   li {
-    top:0;
     margin-bottom:.5em;
     @include animated;
     @include fadeIn;
@@ -170,6 +170,9 @@ button {
       @include plain-button;
       color:lighten($theme-tertiary, 50%);
       font-family: 'Droid Sans', sans-serif;
+      @include susy-breakpoint($screen-lg-min, $map-lg) {
+        font-size:1.15em;
+      }
     }
     .play-phrase {
       display: inline-block;
@@ -178,8 +181,9 @@ button {
       float:left;
       .speaker-icon {
         fill:lighten($theme-tertiary, 25%);
-        height: 1.75em;
-        width: 1.75em;
+        height: 1.5em;
+        width: 1.5em;
+        vertical-align:middle;
       }
       @include susy-breakpoint($screen-lg-min, $map-lg) {
         @include span(.875 of 7 first);
@@ -193,20 +197,17 @@ button {
       margin-left:.75em;
       @include susy-breakpoint($screen-lg-min, $map-lg) {
         @include span(6.125 of 7 last);
-        padding-left:0;
       }
     }
     .text-context {
       background:lighten($theme-tertiary, 25%);
       color:white;
-      font-family: 'Droid Sans', sans-serif;
       font-weight:700;
     }
     &.active-phrase {
       .text{
         background:lighten($theme-tertiary, 25%);
         color:white;
-        font-family: 'Droid Sans', sans-serif;
         font-weight:700;
       }
       .play-phrase {

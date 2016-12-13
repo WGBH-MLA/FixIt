@@ -530,15 +530,6 @@ var GameOne = (function (_React$Component) {
       return _react2['default'].createElement(
         'div',
         null,
-        _react2['default'].createElement(
-          'div',
-          { className: 'app-content' },
-          _react2['default'].createElement(
-            'h1',
-            null,
-            'Game One'
-          )
-        ),
         _react2['default'].createElement(_containersTranscript_random2['default'], null)
       );
     }
