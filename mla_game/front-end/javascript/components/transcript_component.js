@@ -4,6 +4,7 @@ import Audio from '../components/audio_component'
 import GameMeta from '../components/game_meta'
 import Submit from '../components/submitPhrase_component'
 import Phrase from '../components/phrase_list'
+import Paging from '../components/paginator'
 
 class TranscriptUI extends React.Component{
 
@@ -13,11 +14,17 @@ class TranscriptUI extends React.Component{
     this._playPhrase = this._playPhrase.bind(this);
     this._delayRender = this._delayRender.bind(this);
     this._renderGame = this._renderGame.bind(this);
+    this._paginate = this._paginate.bind(this);
+    this._selectPage = this._selectPage.bind(this);
     
     this.state = {
       currentTime:0,
       isPlaying:false,
-      loaded:false
+      loaded:false,
+      pagination:{
+        page:1,
+        perPage:8
+      }
     }
   }
   
@@ -40,38 +47,80 @@ class TranscriptUI extends React.Component{
     })
   }
 
+  _selectPage(page) {
+    const state = this.state;
+    const pagination =  state.pagination || {};
+    const pages = Math.ceil(this.props.phrases.length / pagination.perPage);
+
+    pagination.page = Math.min(Math.max(page, 1), pages);
+
+    this.setState({
+      pagination: pagination
+    });
+  }
+
+  _paginate(data, o) {
+    data = data || [];
+
+    let page = o.page - 1 || 0;
+    let perPage = o.perPage;
+
+    let amountOfPages = Math.ceil(data.length / perPage);
+    let startPage = page < amountOfPages? page: 0;
+
+    return {
+      amount: amountOfPages,
+      data: data.slice(startPage * perPage, startPage * perPage + perPage),
+      page: startPage + 1
+    };
+  }
+
   _renderGame(){
     if(this.state.loaded) {
+      let data = this.props.phrases || [];
+      let pagination = this.state.pagination || {};
+      let paginated = this._paginate(data, pagination);
+      let pages = Math.ceil(data.length / Math.max(
+        isNaN(pagination.perPage) ? 1 : pagination.perPage, 1)
+      );
       return(
         <div>
           <div className="app-content">
-            <h3>State Object Debugger</h3>
+            <h3>State as Object</h3>
             <pre>{JSON.stringify(this.state, null, 2)}</pre>
             
             <div className='game-meta'>
               <Audio src={this.props.media_url} _syncAudio={this._syncAudio}  isPlaying={this.state.isPlaying} />
               <GameMeta meta={this.props.meta} aapb_link={this.props.aapb_link} />
             </div>
-
-            <ul className='game-phrase-list'>
-              {Object.keys(this.props.phrases).map( key=> <Phrase key={key} 
+            <ul className="game-phrase-list">
+              {paginated.data.map((phrase, index) =>
+                <Phrase key={index} 
                 _playPhrase={this._playPhrase} 
                 _selectPhrase={this._selectPhrase} 
                  time={this.state.currentTime} 
-                 index={key} 
-                 details={this.props.phrases[key]} />)
-              }
-              {this.props.phrases.length/8}
+                 index={index} 
+                 details={phrase} />
+              )}
             </ul>
-          </div>
-
+          </div>  
           <div className="game-footer">
-            <div>
-              <progress max="100" value="20"></progress>
+            <div className="grid">
+              <h2 className='title delta'><span>1</span> Indentify Errors</h2>
+              <div className="controls">
+                <Paging
+                  pagination={pagination} 
+                  pages={pages} 
+                  onSelect={this._selectPage} />
+                
+                <progress max={pages} value={this.state.pagination.page}></progress>
+              </div>
+              <button className="help">Help</button>
             </div>
-          </div>
+          </div>    
         </div>
       )
+
     } else {
       return(
         <div className="app-content loading-screen">
@@ -94,7 +143,7 @@ class TranscriptUI extends React.Component{
   }
 
   componentDidMount(){
-    setTimeout(this._delayRender, 5000);
+    setTimeout(this._delayRender, 100);
   }
     
   render(){

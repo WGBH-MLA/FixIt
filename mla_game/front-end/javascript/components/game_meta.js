@@ -23,7 +23,7 @@ class GameMeta extends React.Component {
         <dt><em>Source Record:</em></dt>
         {this._metaElement(meta.program_title)}
         {this._metaElement(meta.series )}
-        <dd className="delta">Station Name ???</dd>
+        {this._metaElement(meta.station_name )}
         {this._metaElement(meta.broadcast_date )}
         <dd className="delta">
           <a href={aapb_link}>
