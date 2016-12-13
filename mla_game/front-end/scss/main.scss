@@ -98,6 +98,10 @@ button {
   @include grid;
 }
 
+.grid {
+  @include grid;
+}
+
 .audio {
   .play-button {
     @include plain-button;
@@ -185,6 +189,12 @@ button {
         @include span(6.125 of 7 last);
       }
     }
+    .text-context {
+      background:lighten($theme-tertiary, 25%);
+      color:white;
+      font-family: 'Droid Sans', sans-serif;
+      font-weight:700;
+    }
     &.active-phrase {
       .text{
         background:lighten($theme-tertiary, 25%);
@@ -270,10 +280,118 @@ button {
 
 .game-footer {
   background:$theme-primary;
-  div {
-    @include grid;
-    padding:1.5em 0;
+
+  // @include susy-breakpoint($screen-sm-min, $map-sm) {
+  //   @include span(1 of 4 first);
+  // }
+  // @include susy-breakpoint($screen-md-min, $map-md) {
+  //   @include span(3 of 8 first);
+  // }
+  // @include susy-breakpoint($screen-lg-min, $map-lg) {
+  //   @include span(7 of 12 first);
+  // }
+  
+  .title {
+    color:$progress;
+    text-transform:uppercase;
+    width:50%;
+    float:left;
+    padding:.25em .5em;
+    line-height:1.5;
+    margin-bottom:0;
+    span {
+      display: inline-block;
+      color:$theme-primary;
+      position: relative;
+      z-index:1;
+      margin-right:.5em;
+      &:before {
+        z-index: -1;
+        content:'';
+        display: inline-block;
+        @include center;
+        background:$progress;
+        width:1.5em;
+        height:1.5em;
+        border-radius:100%;
+      }
+    }
+    @include susy-breakpoint($screen-lg-min, $map-lg) {
+      @include span(3 of 12 first);
+      line-height:3.5em;
+    }
   }
+
+  .controls {
+    width:50%;
+    float:left;
+    height:5em;
+    position: relative;
+    .pagination {
+      @include clearfix;
+      button {
+        float:left;
+        width:3em;
+        @include plain-button;
+        svg {
+          width:2em;
+          height:2em;
+          vertical-align:middle;
+          circle {
+            stroke:lighten($theme-tertiary, 50%);
+          }
+          polygon {
+            fill:lighten($theme-tertiary, 50%);
+          }
+          &:hover {
+            circle {
+              stroke:$progress;
+            }
+            polygon {
+              fill:$progress;
+            }
+          }
+        }
+      }
+    }
+    progress {
+      width:100%;
+    }
+    @include susy-breakpoint($screen-lg-min, $map-lg) {
+      @include span(6 of 12);
+      progress {
+        width:70%;
+        @include center;
+      }
+      .pagination {
+        .prev, .next {
+          @include center(false, true);
+        }
+        .prev {
+          left:0;
+        }
+        .next {
+          right:0;
+        }
+        button {
+          width:inherit;
+          svg {
+            width:4em;
+            height:4em;
+          }
+        }
+      }
+    }
+  }
+
+  .help {
+    @include susy-breakpoint($screen-lg-min, $map-lg) {
+      float:right;
+      line-height:5em;
+    }
+  } 
+  
+  // browser resets and visual styling for progress element
   progress[value] {
     -webkit-appearance: none;
             appearance: none;
@@ -294,13 +412,4 @@ button {
   progress[value]::-moz-progress-bar {
     background-color:$progress;
   }
-  progress {
-    display:block;
-    width:80%;
-    margin:0 auto;
-  }
 }
-
-
-
-
