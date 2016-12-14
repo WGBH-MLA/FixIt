@@ -29,9 +29,10 @@ class GameMeta extends React.Component {
         {this._metaElement(meta.broadcast_date )}
         <dd className="delta">
           <a href={aapb_link}>
-            <svg className="aapb-link-icon" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+            <svg className="aapb-link-icon" viewBox="0 0 200 200">
               <title>AAPB Link</title>
-              <circle cx="25" cy="25" r="25"></circle>
+              <rect x="0" y="40.8" fill="#6D6E70" width="130.6" height="119"/>
+              <polygon fill="#6D6E70" points="200,40.8 100.8,90.8 200,140"/>
             </svg>
           </a>
         </dd>

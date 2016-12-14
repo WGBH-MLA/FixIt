@@ -19,7 +19,7 @@
     @include span(3 of 8 first);
   }
   @include susy-breakpoint($screen-lg-min, $map-lg) {
-    @include span(7 of 12 first);
+    @include span(8 of 12 first);
   }
 }
 
@@ -57,14 +57,20 @@
       text-decoration:none;
       display:block;
       .nav-icon {
-        height:1.75em;
-        width:1.75em;
+        @include transition(fill, 300ms, ease-in);
+        height:1.85em;
+        width:1.85em;
         display:inline-block;
-        fill:lighten($theme-secondary, 25%);
+        fill:$icon-dark;
+      }
+      &:hover {
+        .nav-icon {
+          fill:$progress;
+        }
       }
       &.active {
         .nav-icon {
-          fill:green;
+          fill:$progress;
         }
       }
     }
@@ -75,11 +81,18 @@
   }
   @include susy-breakpoint($screen-sm-min, $map-sm) {
     @include span(2 of 4);
+    li {
+      width:20%;
+      padding-top:.5em;
+      &:first-of-type{
+        margin-left:40%;
+      }
+    }
   }
   @include susy-breakpoint($screen-md-min, $map-md) {
     @include span(4 of 8);
   }
   @include susy-breakpoint($screen-lg-min, $map-lg) {
-    @include span(4 of 12);
+    @include span(3 of 12);
   }
 }

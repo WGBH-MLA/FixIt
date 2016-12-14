@@ -8,6 +8,11 @@ $help:#068080;
 $theme-primary:#000;
 $theme-secondary:#221e1f;
 $theme-tertiary:#221e1f;
+$icon-muted:#414042;
+
+$icon-dark:#6d6e71;
+$icon-hover:#939598;
+$icon-light:#bcbec0;
 
 
 // breakpoints
@@ -32,7 +37,7 @@ $susy: (
   gutter-position:inside,
   math: fluid,
   output: float,
-  // debug:(image:show)
+  //debug:(image:show)
 );
 
 $map-sm: (

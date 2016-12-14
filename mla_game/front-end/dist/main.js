@@ -113,14 +113,17 @@ var App = (function (_React$Component) {
                   { activeClassName: 'active', to: 'leaderboard' },
                   _react2['default'].createElement(
                     'svg',
-                    { className: 'nav-icon', viewBox: '0 0 50 50', xmlns: 'http://www.w3.org/2000/svg' },
-                    _react2['default'].createElement('circle', { cx: '25', cy: '25', r: '25' })
+                    { className: 'nav-icon', viewBox: '0 0 200 200' },
+                    _react2['default'].createElement(
+                      'title',
+                      null,
+                      'Leader Board'
+                    ),
+                    _react2['default'].createElement('rect', { x: '11.4', y: '56', width: '24', height: '144' }),
+                    _react2['default'].createElement('rect', { x: '113.5', y: '40', width: '24', height: '160' }),
+                    _react2['default'].createElement('rect', { x: '62.4', y: '0', width: '24', height: '200' }),
+                    _react2['default'].createElement('rect', { x: '164.6', y: '80', width: '24', height: '120' })
                   )
-                ),
-                _react2['default'].createElement(
-                  'span',
-                  null,
-                  'LeaderBoard'
                 )
               ),
               _react2['default'].createElement(
@@ -131,14 +134,17 @@ var App = (function (_React$Component) {
                   { activeClassName: 'active', to: '/', onlyActiveOnIndex: true },
                   _react2['default'].createElement(
                     'svg',
-                    { className: 'nav-icon', viewBox: '0 0 50 50', xmlns: 'http://www.w3.org/2000/svg' },
-                    _react2['default'].createElement('circle', { cx: '25', cy: '25', r: '25' })
+                    { className: 'nav-icon', viewBox: '0 0 200 200' },
+                    _react2['default'].createElement(
+                      'title',
+                      null,
+                      'Game Menu'
+                    ),
+                    _react2['default'].createElement('path', { d: 'M100.5 60.9c14.4 0 26.1-11.7 26.1-26.1 0-14.4-11.7-26.1-26.1-26.1S74.4 20.4 74.4 34.8c0 14.4 11.7 26.1 26.1 26.1' }),
+                    _react2['default'].createElement('path', { d: 'M100.5 63.6c-15.8 0-28.7-12.9-28.7-28.7 0-15.8 12.9-28.7 28.7-28.7 15.8 0 28.7 12.9 28.7 28.7 0 15.8-12.9 28.7-28.7 28.7zm0-52.2c-12.9 0-23.4 10.5-23.4 23.4 0 12.9 10.5 23.4 23.4 23.4s23.4-10.5 23.4-23.4c0-12.9-10.5-23.4-23.4-23.4zM28.5 190.2c14.4 0 26.1-11.7 26.1-26.1 0-14.4-11.7-26.1-26.1-26.1S2.4 149.7 2.4 164.1c0 14.4 11.7 26.1 26.1 26.1' }),
+                    _react2['default'].createElement('path', { d: 'M28.5 192.8c-15.8 0-28.7-12.9-28.7-28.7s12.9-28.7 28.7-28.7c15.8 0 28.7 12.9 28.7 28.7s-12.9 28.7-28.7 28.7zm0-52.1c-12.9 0-23.4 10.5-23.4 23.4 0 12.9 10.5 23.4 23.4 23.4s23.4-10.5 23.4-23.4c0-12.9-10.5-23.4-23.4-23.4zM171.1 190.2c14.4 0 26.1-11.7 26.1-26.1 0-14.4-11.7-26.1-26.1-26.1-14.4 0-26.1 11.7-26.1 26.1 0 14.4 11.7 26.1 26.1 26.1' }),
+                    _react2['default'].createElement('path', { d: 'M171.1 192.8c-15.8 0-28.7-12.9-28.7-28.7s12.9-28.7 28.7-28.7c15.8 0 28.7 12.9 28.7 28.7s-12.9 28.7-28.7 28.7zm0-52.1c-12.9 0-23.4 10.5-23.4 23.4 0 12.9 10.5 23.4 23.4 23.4s23.4-10.5 23.4-23.4c0-12.9-10.5-23.4-23.4-23.4zM70.3 160.9h59.9v16H70.3zM131.076 68.195l29.95 51.873-13.856 8-29.95-51.873zM73.24 68.215l13.857 8L57.14 128.09l-13.855-8.002z' })
                   )
-                ),
-                _react2['default'].createElement(
-                  'span',
-                  null,
-                  'GameMenu'
                 )
               ),
               _react2['default'].createElement(
@@ -149,32 +155,14 @@ var App = (function (_React$Component) {
                   { activeClassName: 'active', to: 'settings' },
                   _react2['default'].createElement(
                     'svg',
-                    { className: 'nav-icon', viewBox: '0 0 50 50', xmlns: 'http://www.w3.org/2000/svg' },
-                    _react2['default'].createElement('circle', { cx: '25', cy: '25', r: '25' })
+                    { className: 'nav-icon', viewBox: '0 0 200 200' },
+                    _react2['default'].createElement(
+                      'title',
+                      null,
+                      'Settings'
+                    ),
+                    _react2['default'].createElement('path', { d: 'M134.6,115.1c5-4.6,9.4-10.2,12.8-16.5c5.5-10.2,8.4-22,8.4-34.2c0-16.9-5.6-32.8-15.6-44.9 C129.7,6.9,115.6,0,100.4,0S71.1,6.9,60.6,19.5c-10.1,12.1-15.6,28-15.6,44.9c0,12.1,2.9,24,8.4,34.2c3.4,6.4,7.8,12,12.8,16.5 c-11.4,5.5-22,14.9-30.7,27.5c-10.3,15-16.5,32.6-16.5,47.2c0,5.6,4.6,10.2,10.2,10.2h142.4c5.6,0,10.2-4.6,10.2-10.2 c0-14.6-6.2-32.2-16.5-47.2C156.7,130.1,146.1,120.6,134.6,115.1z M40.7,179.7c2-8.3,6-17.5,11.6-25.5 c8.8-12.8,19.7-21.1,30.9-23.5c4.7-1,8-5.1,8-9.9v-7.3c0-3.7-2-7-5.1-8.8c-12.6-7.2-20.7-22.9-20.7-40.2 c0-24.3,15.8-44.1,35.1-44.1s35.1,19.8,35.1,44.1c0,17.2-8.1,33-20.7,40.2c-3.2,1.8-5.1,5.2-5.1,8.8v7.3c0,4.8,3.3,8.9,8,9.9 c11.1,2.4,22.1,10.7,30.9,23.5c5.6,8.1,9.6,17.2,11.6,25.5H40.7z' })
                   )
-                ),
-                _react2['default'].createElement(
-                  'span',
-                  null,
-                  'Settings'
-                )
-              ),
-              _react2['default'].createElement(
-                'li',
-                null,
-                _react2['default'].createElement(
-                  _reactRouter.Link,
-                  { activeClassName: 'active', to: 'preferences' },
-                  _react2['default'].createElement(
-                    'svg',
-                    { className: 'nav-icon', viewBox: '0 0 50 50', xmlns: 'http://www.w3.org/2000/svg' },
-                    _react2['default'].createElement('circle', { cx: '25', cy: '25', r: '25' })
-                  )
-                ),
-                _react2['default'].createElement(
-                  'span',
-                  null,
-                  'Preferences'
                 )
               )
             )
@@ -273,11 +261,11 @@ var AudioUI = (function (_React$Component) {
         return _react2['default'].createElement(
           'g',
           null,
-          _react2['default'].createElement('rect', { fill: '#fff', width: '25.577312', height: '88.712906', x: '65', y: '55.643555' }),
-          _react2['default'].createElement('rect', { fill: '#fff', width: '25.577312', height: '88.712906', x: '110', y: '55.643555' })
+          _react2['default'].createElement('rect', { x: '78.4', y: '78.8', width: '16', height: '41.9' }),
+          _react2['default'].createElement('rect', { x: '106.1', y: '78.8', width: '16', height: '41.9' })
         );
       } else {
-        return _react2['default'].createElement('polygon', { points: '70, 55 70, 145 145, 100', fill: '#fff' });
+        return _react2['default'].createElement('path', { className: 'path', d: 'M83 71v52.8l42.7-26.4' });
       }
     }
   }, {
@@ -295,8 +283,37 @@ var AudioUI = (function (_React$Component) {
           { className: 'play-button', onClick: this._playAudio },
           _react2['default'].createElement(
             'svg',
-            { className: 'play-icon', viewBox: '0 0 200 200' },
-            _react2['default'].createElement('circle', { cx: '100', cy: '100', r: '90', fill: 'none', strokeWidth: '15', stroke: '#fff' }),
+            { className: 'play-icon', xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 200 200' },
+            _react2['default'].createElement(
+              'defs',
+              null,
+              _react2['default'].createElement(
+                'filter',
+                { id: 'a', filterUnits: 'userSpaceOnUse', x: '-13.8', y: '-11.5', width: '227.2', height: '214.8' },
+                _react2['default'].createElement('feFlood', { result: 'back', floodColor: '#fff', floodOpacity: '1' }),
+                _react2['default'].createElement('feBlend', { 'in': 'SourceGraphic', in2: 'back' })
+              )
+            ),
+            _react2['default'].createElement(
+              'mask',
+              { maskUnits: 'userSpaceOnUse', x: '-13.8', y: '-11.5', width: '227.2', height: '214.8', id: 'c' },
+              _react2['default'].createElement(
+                'g',
+                { filter: 'url(#a)' },
+                _react2['default'].createElement(
+                  'linearGradient',
+                  { id: 'b', gradientUnits: 'userSpaceOnUse', x1: '-1341.74', y1: '776.722', x2: '-1340.508', y2: '776.722', gradientTransform: 'scale(209.2743) rotate(37 -1831.724 1616.687)' },
+                  _react2['default'].createElement('stop', { offset: '0', stopColor: '#FFF' }),
+                  _react2['default'].createElement('stop', { offset: '1' })
+                ),
+                _react2['default'].createElement('path', { clipPath: 'url(#SVGID_2_)', fill: 'url(#b)', d: 'M71.5-101.4L300.8 71.4 128 300.6l-229.3-172.7z' })
+              )
+            ),
+            _react2['default'].createElement(
+              'g',
+              { clipPath: 'url(#SVGID_2_)', mask: 'url(#c)' },
+              _react2['default'].createElement('circle', { clipPath: 'url(#SVGID_8_)', fill: 'none', strokeWidth: '30', cx: '99.8', cy: '99.6', r: '84' })
+            ),
             this._togglePlay()
           )
         ),
@@ -388,13 +405,14 @@ var GameMeta = (function (_React$Component) {
             { href: aapb_link },
             _react2["default"].createElement(
               "svg",
-              { className: "aapb-link-icon", viewBox: "0 0 50 50", xmlns: "http://www.w3.org/2000/svg" },
+              { className: "aapb-link-icon", viewBox: "0 0 200 200" },
               _react2["default"].createElement(
                 "title",
                 null,
                 "AAPB Link"
               ),
-              _react2["default"].createElement("circle", { cx: "25", cy: "25", r: "25" })
+              _react2["default"].createElement("rect", { x: "0", y: "40.8", fill: "#6D6E70", width: "130.6", height: "119" }),
+              _react2["default"].createElement("polygon", { fill: "#6D6E70", points: "200,40.8 100.8,90.8 200,140" })
             )
           )
         )
@@ -870,8 +888,8 @@ var Phrase = (function (_React$Component) {
           ),
           _react2['default'].createElement(
             'svg',
-            { className: 'speaker-icon', viewBox: '0 0 50 50', xmlns: 'http://www.w3.org/2000/svg' },
-            _react2['default'].createElement('circle', { cx: '25', cy: '25', r: '25' })
+            { className: 'speaker-icon', viewBox: '0 0 200 200' },
+            _react2['default'].createElement('path', { d: 'M73.8 19.9c4.7-4.7 8.6-3.1 8.6 3.6v152c0 6.7-3.9 8.3-8.6 3.6l-44.4-44.3H0V64.2h29.4l44.4-44.3zm27.1 121.6c-2.3 0-4.5-.9-6.2-2.6-3.5-3.4-3.5-9 0-12.5 14.9-14.9 14.9-39.1 0-54-3.5-3.4-3.5-9 0-12.5 3.4-3.4 9-3.4 12.5 0 21.8 21.8 21.8 57.2 0 78.9-1.8 1.9-4 2.7-6.3 2.7m31.4 16.6c-2.3 0-4.5-.9-6.2-2.6-3.4-3.4-3.4-9 0-12.5 24.1-24 24.1-63.2 0-87.2-3.4-3.4-3.4-9 0-12.5 3.5-3.4 9-3.4 12.5 0 15 15 23.3 34.9 23.3 56.1 0 21.2-8.3 41.1-23.3 56.1-1.8 1.8-4.1 2.6-6.3 2.6m31.3 16.7c-2.3 0-4.5-.9-6.2-2.6-3.5-3.4-3.5-9 0-12.5 16.1-16.1 25-37.5 25-60.2 0-22.7-8.9-44.1-25-60.2-3.5-3.4-3.5-9 0-12.5 3.4-3.4 9-3.4 12.5 0C189.3 46.2 200 72 200 99.5s-10.7 53.3-30.2 72.7c-1.7 1.7-3.9 2.6-6.2 2.6' })
           )
         ),
         _react2['default'].createElement(
@@ -984,119 +1002,7 @@ var Settings = (function (_React$Component) {
         _react2["default"].createElement(
           "h1",
           null,
-          "I am a component only loaded on the about page. Level One Heading"
-        ),
-        _react2["default"].createElement(
-          "p",
-          null,
-          "The Count halted, putting down my bags, closed the door, and crossing the room, opened another door, which led into a small octagonal room lit by a single lamp, and seemingly without a window of any sort. Passing through this, he opened another door, and motioned me to enter. It was a welcome sight. For here was a great bedroom well lighted and warmed with another log fire, also added to but lately, for the top logs were fresh, which sent a hollow roar up the wide chimney. The Count himself left my luggage inside and withdrew, saying, before he closed the door."
-        ),
-        _react2["default"].createElement(
-          "h2",
-          null,
-          "Level Two Heading"
-        ),
-        _react2["default"].createElement(
-          "ol",
-          null,
-          _react2["default"].createElement(
-            "li",
-            null,
-            "Lions"
-          ),
-          _react2["default"].createElement(
-            "li",
-            null,
-            "Tigers"
-          ),
-          _react2["default"].createElement(
-            "li",
-            null,
-            "Bears"
-          ),
-          _react2["default"].createElement(
-            "li",
-            null,
-            "Monkeys"
-          )
-        ),
-        _react2["default"].createElement(
-          "h3",
-          null,
-          "Level Three Heading"
-        ),
-        _react2["default"].createElement(
-          "ul",
-          null,
-          _react2["default"].createElement(
-            "li",
-            null,
-            "Lions"
-          ),
-          _react2["default"].createElement(
-            "li",
-            null,
-            "Tigers"
-          ),
-          _react2["default"].createElement(
-            "li",
-            null,
-            "Bears"
-          ),
-          _react2["default"].createElement(
-            "li",
-            null,
-            "Monkeys"
-          )
-        ),
-        _react2["default"].createElement(
-          "h4",
-          null,
-          "Level 4 Heading"
-        ),
-        _react2["default"].createElement(
-          "p",
-          null,
-          "The Count halted, putting down my bags, closed the door, and crossing the room, opened another door, which led into a small octagonal room lit by a single lamp, and seemingly without a window of any sort. Passing through this, he opened another door, and motioned me to enter. It was a welcome sight. For here was a great bedroom well lighted and warmed with another log fire, also added to but lately, for the top logs were fresh, which sent a hollow roar up the wide chimney. The Count himself left my luggage inside and withdrew, saying, before he closed the door."
-        ),
-        _react2["default"].createElement(
-          "h5",
-          null,
-          "Level 5 Heading"
-        ),
-        _react2["default"].createElement(
-          "ul",
-          null,
-          _react2["default"].createElement(
-            "li",
-            null,
-            "Lions"
-          ),
-          _react2["default"].createElement(
-            "li",
-            null,
-            "Tigers"
-          ),
-          _react2["default"].createElement(
-            "li",
-            null,
-            "Bears"
-          ),
-          _react2["default"].createElement(
-            "li",
-            null,
-            "Monkeys"
-          )
-        ),
-        _react2["default"].createElement(
-          "h6",
-          null,
-          "Level 6 Heading"
-        ),
-        _react2["default"].createElement(
-          "p",
-          null,
-          "The Count halted, putting down my bags, closed the door, and crossing the room, opened another door, which led into a small octagonal room lit by a single lamp, and seemingly without a window of any sort. Passing through this, he opened another door, and motioned me to enter. It was a welcome sight. For here was a great bedroom well lighted and warmed with another log fire, also added to but lately, for the top logs were fresh, which sent a hollow roar up the wide chimney. The Count himself left my luggage inside and withdrew, saying, before he closed the door."
+          "Settings"
         )
       );
     }
@@ -1392,7 +1298,7 @@ var TranscriptUI = (function (_React$Component) {
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      setTimeout(this._delayRender, 100);
+      setTimeout(this._delayRender, 5000);
     }
   }, {
     key: 'render',

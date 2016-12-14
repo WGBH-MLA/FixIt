@@ -47,14 +47,16 @@
           width:2em;
           height:2em;
           vertical-align:middle;
-          fill:lighten($theme-tertiary, 50%);
+          fill:$icon-dark;
+          @include transition(fill, 300ms, ease-in);
           polygon {
-            fill:lighten($theme-tertiary, 50%);
+            fill:$icon-dark;
+            @include transition(fill, 300ms, ease-in);
           }
           &:hover {
-            fill:$progress;
+            fill:$icon-hover;
             polygon {
-              fill:$progress;
+              fill:$icon-hover;
             }
           }
         }
@@ -100,6 +102,7 @@
     top:0;
     right:0;
     svg {
+      @include transition(fill, 300ms, ease-in);
       fill:$help;
       width:2em;
       height:2em;
@@ -107,7 +110,7 @@
     }
     &:hover {
       svg {
-        fill:$progress;
+        fill:$icon-hover;
       }
     }
     @include susy-breakpoint($screen-lg-min, $map-lg) {
