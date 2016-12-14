@@ -1,6 +1,6 @@
 .game-footer {
   background:$theme-primary;
-  
+  position: relative;
   .title {
     color:$progress;
     text-transform:uppercase;
@@ -35,7 +35,7 @@
   .controls {
     width:50%;
     float:left;
-    height:5em;
+    height:5.5em;
     position: relative;
     .pagination {
       @include clearfix;
@@ -47,16 +47,12 @@
           width:2em;
           height:2em;
           vertical-align:middle;
-          circle {
-            stroke:lighten($theme-tertiary, 50%);
-          }
+          fill:lighten($theme-tertiary, 50%);
           polygon {
             fill:lighten($theme-tertiary, 50%);
           }
           &:hover {
-            circle {
-              stroke:$progress;
-            }
+            fill:$progress;
             polygon {
               fill:$progress;
             }
@@ -97,9 +93,31 @@
   }
 
   .help {
+    @include plain-button;
+    height:2em;
+    width:3em;
+    position:absolute;
+    top:0;
+    right:0;
+    svg {
+      fill:$help;
+      width:2em;
+      height:2em;
+      vertical-align:middle;
+    }
+    &:hover {
+      svg {
+        fill:$progress;
+      }
+    }
     @include susy-breakpoint($screen-lg-min, $map-lg) {
+      position:inherit;
       float:right;
-      line-height:5em;
+      height:5.45em;
+      svg {
+        height:4em;
+        width:4em;
+      }
     }
   } 
   
