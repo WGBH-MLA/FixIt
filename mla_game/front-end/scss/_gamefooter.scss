@@ -53,10 +53,17 @@
             fill:$icon-dark;
             @include transition(fill, 300ms, ease-in);
           }
+          circle {
+            stroke:$icon-dark;
+            @include transition(fill, 300ms, ease-in);
+          }
           &:hover {
             fill:$icon-hover;
             polygon {
               fill:$icon-hover;
+            }
+            circle {
+              stroke:$icon-hover;
             }
           }
         }

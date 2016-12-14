@@ -777,7 +777,7 @@ var Paging = function Paging(_ref) {
         null,
         _react2['default'].createElement(
           'svg',
-          { xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 200 200' },
+          { viewBox: '0 0 200 200' },
           _react2['default'].createElement(
             'title',
             null,
@@ -797,7 +797,7 @@ var Paging = function Paging(_ref) {
         null,
         _react2['default'].createElement(
           'svg',
-          { xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 200 200' },
+          { viewBox: '0 0 200 200' },
           _react2['default'].createElement(
             'title',
             null,

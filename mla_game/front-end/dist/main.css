@@ -816,11 +816,20 @@ ol, ul {
   -ms-transition: fill 300ms ease-in;
   transition: fill 300ms ease-in;
 }
+.game-footer .controls .pagination button svg circle {
+  stroke: #6d6e71;
+  -webkit-transition: fill 300ms ease-in;
+  -ms-transition: fill 300ms ease-in;
+  transition: fill 300ms ease-in;
+}
 .game-footer .controls .pagination button svg:hover {
   fill: #939598;
 }
 .game-footer .controls .pagination button svg:hover polygon {
   fill: #939598;
+}
+.game-footer .controls .pagination button svg:hover circle {
+  stroke: #939598;
 }
 .game-footer .controls progress {
   width: 100%;
@@ -1184,6 +1193,9 @@ button:hover {
   float: left;
 }
 .game-phrase-list li .play-phrase .speaker-icon {
+  -webkit-transition: fill 300ms ease-in;
+  -ms-transition: fill 300ms ease-in;
+  transition: fill 300ms ease-in;
   fill: #414042;
   height: 1.5em;
   width: 1.5em;
