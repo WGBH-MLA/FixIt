@@ -889,6 +889,7 @@ ol, ul {
     position: inherit;
     float: right;
     height: 5.45em;
+    width: 5.45em;
   }
   .game-footer .help svg {
     height: 4em;
