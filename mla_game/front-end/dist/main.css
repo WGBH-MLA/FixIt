@@ -405,7 +405,9 @@ textarea {
 }
 
 body {
-  font: normal 1em/1.625 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
+  line-height: 1.625;
+  font-size: 1em;
 }
 
 h1, .alpha, h2, .beta, h3, .gamma {
@@ -783,7 +785,7 @@ ol, ul {
 }
 @media (min-width: 84em) {
   .game-footer .controls {
-    width: 49.01961%;
+    width: 57.51634%;
     float: left;
     margin-left: 1.96078%;
   }
@@ -1044,10 +1046,10 @@ button:hover {
     float: left;
     margin-left: 1.96078%;
     border: none;
+    min-height: 35vh;
   }
 }
 .game-phrase-list li {
-  top: 0;
   margin-bottom: .5em;
   -webkit-animation-duration: 500ms;
   animation-duration: 500ms;
@@ -1078,6 +1080,11 @@ button:hover {
   box-shadow: none;
   border: none;
 }
+@media (min-width: 84em) {
+  .game-phrase-list li button {
+    font-size: 1.15em;
+  }
+}
 .game-phrase-list li .play-phrase {
   display: inline-block;
   padding: 0;
@@ -1086,8 +1093,9 @@ button:hover {
 }
 .game-phrase-list li .play-phrase .speaker-icon {
   fill: #665a5d;
-  height: 1.75em;
-  width: 1.75em;
+  height: 1.5em;
+  width: 1.5em;
+  vertical-align: middle;
 }
 @media (min-width: 84em) {
   .game-phrase-list li .play-phrase {
@@ -1108,19 +1116,16 @@ button:hover {
     width: 87.07386%;
     float: right;
     margin-left: 3.40909%;
-    padding-left: 0;
   }
 }
 .game-phrase-list li .text-context {
   background: #665a5d;
   color: white;
-  font-family: 'Droid Sans', sans-serif;
   font-weight: 700;
 }
 .game-phrase-list li.active-phrase .text {
   background: #665a5d;
   color: white;
-  font-family: 'Droid Sans', sans-serif;
   font-weight: 700;
 }
 .game-phrase-list li.active-phrase .play-phrase .speaker-icon {

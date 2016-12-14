@@ -4,7 +4,9 @@
 
 // body base
 body {
-  font:normal 1em/1.625 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
+  line-height: 1.625;
+  font-size:1em;
 }
 // base heading styling
 h1, .alpha,  h2, .beta, h3, .gamma {

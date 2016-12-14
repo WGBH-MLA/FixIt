@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import Audio from '../components/audio_component'
 import GameMeta from '../components/game_meta'
 import Submit from '../components/submitPhrase_component'
@@ -66,7 +65,7 @@ class TranscriptUI extends React.Component{
     let perPage = o.perPage;
 
     let amountOfPages = Math.ceil(data.length / perPage);
-    let startPage = page < amountOfPages? page: 0;
+    let startPage = page < amountOfPages ? page: 0;
 
     return {
       amount: amountOfPages,
@@ -77,8 +76,8 @@ class TranscriptUI extends React.Component{
 
   _renderGame(){
     if(this.state.loaded) {
-      let data = this.props.phrases || [];
-      let pagination = this.state.pagination || {};
+      let data = this.props.phrases;
+      let pagination = this.state.pagination;
       let paginated = this._paginate(data, pagination);
       let pages = Math.ceil(data.length / Math.max(
         isNaN(pagination.perPage) ? 1 : pagination.perPage, 1)
@@ -106,7 +105,7 @@ class TranscriptUI extends React.Component{
           </div>  
           <div className="game-footer">
             <div className="grid">
-              <h2 className='title delta'><span>1</span> Indentify Errors</h2>
+              <h2 className='title delta'><span>1</span> Identify Errors</h2>
               <div className="controls">
                 <Paging
                   pagination={pagination} 
