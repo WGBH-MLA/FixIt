@@ -905,6 +905,10 @@ ol, ul {
     width: 4em;
   }
 }
+.game-footer progress {
+  background: #6d6e71;
+  border: 0;
+}
 .game-footer progress[value] {
   -webkit-appearance: none;
   appearance: none;

@@ -133,6 +133,10 @@
   } 
   
   // browser resets and visual styling for progress element
+  progress {
+    background:$icon-dark;
+    border:0;
+  }
   progress[value] {
     -webkit-appearance: none;
             appearance: none;
