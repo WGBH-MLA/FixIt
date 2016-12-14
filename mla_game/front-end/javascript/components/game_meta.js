@@ -12,6 +12,8 @@ class GameMeta extends React.Component {
       return(
         <dd className="delta">{e}</dd>
       )  
+    } else{
+      return
     }
   }
 

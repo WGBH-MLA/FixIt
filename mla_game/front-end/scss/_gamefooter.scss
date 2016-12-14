@@ -70,7 +70,7 @@
     }
     
     @include susy-breakpoint($screen-lg-min, $map-lg) {
-      @include span(6 of 12);
+      @include span(7 of 12);
       progress {
         width:70%;
         @include center;
