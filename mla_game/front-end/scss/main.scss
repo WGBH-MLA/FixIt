@@ -107,18 +107,30 @@ button {
 .audio {
   .play-button {
     @include plain-button;
-    width:7.5em;
-    height:7.5em;
-  }
-  .play-icon {
-    circle {
-      stroke:$audio-play;
+
+    width:10em;
+    height:10em;
+    .play-icon {
+      circle {
+        stroke:$audio-play;
+        @include transition(stroke, 300ms, ease-in);
+      }
+      polygon, rect, .path  {
+        fill:$audio-play;
+        @include transition(fill, 300ms, ease-in);
+      }
     }
-    polygon, rect {
-      fill:$audio-play;
+    &:hover {
+      .play-icon {
+        circle {
+          stroke:$icon-hover;
+        }
+        polygon, rect, .path  {
+          fill:$icon-hover;
+        }
+      }
     }
   }
-  
   .audio-player {
     width:100%;
   }
@@ -140,12 +152,17 @@ button {
   .aapb-link-icon {
     max-height:1.5em;
     max-width:1.5em;
-    fill:lighten($theme-tertiary, 25%);
+    rect, polygon {
+      fill:$icon-dark;
+      @include transition(fill, 300ms, ease-in);
+    } 
   }
   a {
     &:hover {
       .aapb-link-icon {
-        fill:green;
+          rect, polygon {
+          fill:$icon-hover;
+        } 
       }
     }
   }
@@ -180,10 +197,15 @@ button {
       vertical-align: middle;
       float:left;
       .speaker-icon {
-        fill:lighten($theme-tertiary, 25%);
+        fill:$icon-muted;
         height: 1.5em;
         width: 1.5em;
         vertical-align:middle;
+      }
+      &:hover {
+        .speaker-icon {
+          fill:$icon-hover;
+        }
       }
       @include susy-breakpoint($screen-lg-min, $map-lg) {
         @include span(.875 of 7 first);
@@ -212,7 +234,7 @@ button {
       }
       .play-phrase {
         .speaker-icon {
-          fill:$progress;
+          fill:$icon-hover;
         }
       }
     }

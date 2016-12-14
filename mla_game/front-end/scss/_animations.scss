@@ -6,6 +6,34 @@
 }
 
 
+.playing {
+  will-change:transform;
+  animation-name: play;
+  animation-duration:2s;
+  animation-iteration-count:infinite;
+  transform-origin: 50% 50%;
+}
+
+
+@-webkit-keyframes play {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+}
+
+@keyframes play {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+}
+
+
 @-webkit-keyframes fadeIn {
   from {
     opacity: 0;

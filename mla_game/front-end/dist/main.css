@@ -458,6 +458,30 @@ ol, ul {
   padding-left: 1em;
 }
 
+.playing {
+  will-change: transform;
+  animation-name: play;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  transform-origin: 50% 50%;
+}
+
+@-webkit-keyframes play {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes play {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 @-webkit-keyframes fadeIn {
   from {
     opacity: 0;
@@ -590,7 +614,7 @@ ol, ul {
 }
 @media (min-width: 84em) {
   .game-title {
-    width: 57.51634%;
+    width: 66.01307%;
     float: left;
     margin-left: 0;
   }
@@ -661,13 +685,19 @@ ol, ul {
   display: block;
 }
 .app-navigation li a .nav-icon {
-  height: 1.75em;
-  width: 1.75em;
+  -webkit-transition: fill 300ms ease-in;
+  -ms-transition: fill 300ms ease-in;
+  transition: fill 300ms ease-in;
+  height: 1.85em;
+  width: 1.85em;
   display: inline-block;
-  fill: #665a5d;
+  fill: #6d6e71;
+}
+.app-navigation li a:hover .nav-icon {
+  fill: #ffae18;
 }
 .app-navigation li a.active .nav-icon {
-  fill: green;
+  fill: #ffae18;
 }
 .app-navigation li span {
   display: inline-block;
@@ -679,6 +709,13 @@ ol, ul {
     float: left;
     margin-left: 5.26316%;
   }
+  .app-navigation li {
+    width: 20%;
+    padding-top: .5em;
+  }
+  .app-navigation li:first-of-type {
+    margin-left: 40%;
+  }
 }
 @media (min-width: 70em) {
   .app-navigation {
@@ -689,7 +726,7 @@ ol, ul {
 }
 @media (min-width: 84em) {
   .app-navigation {
-    width: 32.02614%;
+    width: 23.52941%;
     float: left;
     margin-left: 1.96078%;
   }
@@ -697,6 +734,7 @@ ol, ul {
 
 .game-footer {
   background: #000;
+  position: relative;
 }
 .game-footer .title {
   color: #ffae18;
@@ -738,7 +776,7 @@ ol, ul {
 .game-footer .controls {
   width: 50%;
   float: left;
-  height: 5em;
+  height: 5.5em;
   position: relative;
 }
 .game-footer .controls .pagination:after {
@@ -767,18 +805,22 @@ ol, ul {
   width: 2em;
   height: 2em;
   vertical-align: middle;
-}
-.game-footer .controls .pagination button svg circle {
-  stroke: #a59a9d;
+  fill: #6d6e71;
+  -webkit-transition: fill 300ms ease-in;
+  -ms-transition: fill 300ms ease-in;
+  transition: fill 300ms ease-in;
 }
 .game-footer .controls .pagination button svg polygon {
-  fill: #a59a9d;
+  fill: #6d6e71;
+  -webkit-transition: fill 300ms ease-in;
+  -ms-transition: fill 300ms ease-in;
+  transition: fill 300ms ease-in;
 }
-.game-footer .controls .pagination button svg:hover circle {
-  stroke: #ffae18;
+.game-footer .controls .pagination button svg:hover {
+  fill: #939598;
 }
 .game-footer .controls .pagination button svg:hover polygon {
-  fill: #ffae18;
+  fill: #939598;
 }
 .game-footer .controls progress {
   width: 100%;
@@ -815,10 +857,42 @@ ol, ul {
     height: 4em;
   }
 }
+.game-footer .help {
+  border: none;
+  outline: none;
+  background: none;
+  box-shadow: none;
+  height: 2em;
+  width: 3em;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.game-footer .help:hover, .game-footer .help:focus, .game-footer .help:active {
+  box-shadow: none;
+  border: none;
+}
+.game-footer .help svg {
+  -webkit-transition: fill 300ms ease-in;
+  -ms-transition: fill 300ms ease-in;
+  transition: fill 300ms ease-in;
+  fill: #068080;
+  width: 2em;
+  height: 2em;
+  vertical-align: middle;
+}
+.game-footer .help:hover svg {
+  fill: #939598;
+}
 @media (min-width: 84em) {
   .game-footer .help {
+    position: inherit;
     float: right;
-    line-height: 5em;
+    height: 5.45em;
+  }
+  .game-footer .help svg {
+    height: 4em;
+    width: 4em;
   }
 }
 .game-footer progress[value] {
@@ -977,18 +1051,30 @@ button:hover {
   outline: none;
   background: none;
   box-shadow: none;
-  width: 7.5em;
-  height: 7.5em;
+  width: 10em;
+  height: 10em;
 }
 .audio .play-button:hover, .audio .play-button:focus, .audio .play-button:active {
   box-shadow: none;
   border: none;
 }
-.audio .play-icon circle {
+.audio .play-button .play-icon circle {
   stroke: #ca205f;
+  -webkit-transition: stroke 300ms ease-in;
+  -ms-transition: stroke 300ms ease-in;
+  transition: stroke 300ms ease-in;
 }
-.audio .play-icon polygon, .audio .play-icon rect {
+.audio .play-button .play-icon polygon, .audio .play-button .play-icon rect, .audio .play-button .play-icon .path {
   fill: #ca205f;
+  -webkit-transition: fill 300ms ease-in;
+  -ms-transition: fill 300ms ease-in;
+  transition: fill 300ms ease-in;
+}
+.audio .play-button:hover .play-icon circle {
+  stroke: #939598;
+}
+.audio .play-button:hover .play-icon polygon, .audio .play-button:hover .play-icon rect, .audio .play-button:hover .play-icon .path {
+  fill: #939598;
 }
 .audio .audio-player {
   width: 100%;
@@ -1021,10 +1107,15 @@ button:hover {
 .game-meta .aapb-link-icon {
   max-height: 1.5em;
   max-width: 1.5em;
-  fill: #665a5d;
 }
-.game-meta a:hover .aapb-link-icon {
-  fill: green;
+.game-meta .aapb-link-icon rect, .game-meta .aapb-link-icon polygon {
+  fill: #6d6e71;
+  -webkit-transition: fill 300ms ease-in;
+  -ms-transition: fill 300ms ease-in;
+  transition: fill 300ms ease-in;
+}
+.game-meta a:hover .aapb-link-icon rect, .game-meta a:hover .aapb-link-icon polygon {
+  fill: #939598;
 }
 
 .game-phrase-list {
@@ -1092,10 +1183,13 @@ button:hover {
   float: left;
 }
 .game-phrase-list li .play-phrase .speaker-icon {
-  fill: #665a5d;
+  fill: #414042;
   height: 1.5em;
   width: 1.5em;
   vertical-align: middle;
+}
+.game-phrase-list li .play-phrase:hover .speaker-icon {
+  fill: #939598;
 }
 @media (min-width: 84em) {
   .game-phrase-list li .play-phrase {
@@ -1129,7 +1223,7 @@ button:hover {
   font-weight: 700;
 }
 .game-phrase-list li.active-phrase .play-phrase .speaker-icon {
-  fill: #ffae18;
+  fill: #939598;
 }
 .game-phrase-list li.active-phrase + li .text {
   background: #665a5d;
