@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import JSONField
 
 
 class Profile(models.Model):
@@ -11,6 +12,11 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class TranscriptPicks(models.Model):
+    user = models.OneToOneField(User)
+    picks = JSONField(default={})
 
 
 class Score(models.Model):
