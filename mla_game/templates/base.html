@@ -7,7 +7,7 @@
     <link rel="shortcut icon" href="{% static 'dist/favicon.ico' %}" type="image/x-icon" />
     <title>{% block title %}{% endblock %}</title>
     {% block css %}
-    <link rel="stylesheet" rel="preload" href="https://fonts.googleapis.com/css?family=Bungee|Droid+Sans:400,700|Open+Sans+Condensed:700|Open+Sans:400,400i,700" onload="this.rel='stylesheet'">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bungee|Droid+Sans:400,700|Open+Sans+Condensed:700|Open+Sans:400,400i,700">
     <link rel="stylesheet" href="{% static 'dist/main.css' %}" type="text/css" media="all" />
     {% endblock %}
 </head>
@@ -15,8 +15,10 @@
 {% block content %}
 {% endblock %}
 {% block javascript %}
-    <script src="{% static 'dist/lib/jquery.custom.js' %}" type="text/javascript" charset="utf-8"></script>
-    <script src="{% static 'dist/main.js' %}" type="text/javascript" charset="utf-8"></script>
+    {% if user.is_authenticated %}
+      <script src="{% static 'dist/lib/jquery.custom.js' %}" type="text/javascript" charset="utf-8"></script>
+      <script src="{% static 'dist/main.js' %}" type="text/javascript" charset="utf-8"></script>
+    {% endif %}
 {% endblock %}
 </body>
 </html>
