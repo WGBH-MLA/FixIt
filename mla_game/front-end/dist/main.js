@@ -1159,9 +1159,9 @@ var _componentsPhrase = require('../components/phrase');
 
 var _componentsPhrase2 = _interopRequireDefault(_componentsPhrase);
 
-var _componentsLoading = require('../components/loading');
+var _componentsLoadingscreen = require('../components/loadingscreen');
 
-var _componentsLoading2 = _interopRequireDefault(_componentsLoading);
+var _componentsLoadingscreen2 = _interopRequireDefault(_componentsLoadingscreen);
 
 var _componentsPaginator = require('../components/paginator');
 
@@ -1319,7 +1319,7 @@ var TranscriptUI = (function (_React$Component) {
           )
         );
       } else {
-        return _react2['default'].createElement(_componentsLoading2['default'], null);
+        return _react2['default'].createElement(_componentsLoadingscreen2['default'], null);
       }
     }
   }, {
@@ -1340,7 +1340,7 @@ var TranscriptUI = (function (_React$Component) {
 exports['default'] = TranscriptUI;
 module.exports = exports['default'];
 
-},{"../components/audio_component":2,"../components/game_meta":3,"../components/loading":9,"../components/paginator":10,"../components/phrase":11,"../components/submitPhrase_component":14,"react":254}],16:[function(require,module,exports){
+},{"../components/audio_component":2,"../components/game_meta":3,"../components/loadingscreen":9,"../components/paginator":10,"../components/phrase":11,"../components/submitPhrase_component":14,"react":254}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {

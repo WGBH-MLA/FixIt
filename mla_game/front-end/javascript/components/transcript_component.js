@@ -3,7 +3,7 @@ import Audio from '../components/audio_component'
 import GameMeta from '../components/game_meta'
 import Submit from '../components/submitPhrase_component'
 import Phrase from '../components/phrase'
-import LoadingScreen from '../components/loading'
+import LoadingScreen from '../components/loadingscreen'
 import Paging from '../components/paginator'
 
 class TranscriptUI extends React.Component{
