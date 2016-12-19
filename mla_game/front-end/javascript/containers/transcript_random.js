@@ -10,8 +10,7 @@ class RandTranscriptContainer extends React.Component {
       media_url: '',
       aapb_link:'',
       phrases: [],
-      meta:'',
-      pages:null
+      meta:''
     }
   }
   
@@ -43,7 +42,6 @@ class RandTranscriptContainer extends React.Component {
         broadcast_date={this.state.broadcast_date}
         program_title={this.state.program_title} 
         aapb_link={this.state.aapb_link} 
-        pages={this.state.pages} 
       />
     )
   }

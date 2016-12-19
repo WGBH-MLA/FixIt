@@ -173,6 +173,11 @@ button {
   border-top:2px solid black;
   border-bottom:2px solid black;
   padding:1em 0;
+
+  // height:15em;
+  // overflow: hidden;
+  // margin-bottom:3em;
+
   @include susy-breakpoint($screen-lg-min, $map-lg) {
     @include span(8 of 12);
     border:none;
@@ -221,46 +226,17 @@ button {
       @include susy-breakpoint($screen-lg-min, $map-lg) {
         @include span(6.125 of 7 last);
       }
-    }
-    .text-context {
-      background:lighten($theme-tertiary, 25%);
-      color:white;
-      font-weight:700;
-    }
-    &.active-phrase {
-      .text{
+      &.context {
         background:lighten($theme-tertiary, 25%);
         color:white;
         font-weight:700;
       }
+    }
+    &.active-phrase {
       .play-phrase {
         .speaker-icon {
           fill:$icon-hover;
         }
-      }
-    }
-    &.active-phrase + li {
-      .text {
-        background:lighten($theme-tertiary, 25%);
-        color:white;
-        font-family: 'Droid Sans', sans-serif;
-        font-weight:700;
-      }
-    }
-    &.active-phrase + li + li {
-      .text {
-        background:lighten($theme-tertiary, 25%);
-        color:white;
-        font-family: 'Droid Sans', sans-serif;
-        font-weight:700;
-      }
-    }
-    &.active-phrase + li + li + li {
-      .text {
-        background:lighten($theme-tertiary, 25%);
-        color:white;
-        font-family: 'Droid Sans', sans-serif;
-        font-weight:700;
       }
     }
   }

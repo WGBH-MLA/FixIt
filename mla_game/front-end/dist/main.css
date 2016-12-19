@@ -1229,36 +1229,13 @@ button:hover {
     margin-left: 3.40909%;
   }
 }
-.game-phrase-list li .text-context {
-  background: #665a5d;
-  color: white;
-  font-weight: 700;
-}
-.game-phrase-list li.active-phrase .text {
+.game-phrase-list li .text.context {
   background: #665a5d;
   color: white;
   font-weight: 700;
 }
 .game-phrase-list li.active-phrase .play-phrase .speaker-icon {
   fill: #939598;
-}
-.game-phrase-list li.active-phrase + li .text {
-  background: #665a5d;
-  color: white;
-  font-family: 'Droid Sans', sans-serif;
-  font-weight: 700;
-}
-.game-phrase-list li.active-phrase + li + li .text {
-  background: #665a5d;
-  color: white;
-  font-family: 'Droid Sans', sans-serif;
-  font-weight: 700;
-}
-.game-phrase-list li.active-phrase + li + li + li .text {
-  background: #665a5d;
-  color: white;
-  font-family: 'Droid Sans', sans-serif;
-  font-weight: 700;
 }
 .game-phrase-list .phrase {
   border: none;

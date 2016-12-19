@@ -14,13 +14,10 @@
     "gulp": "^3.8.11",
     "gulp-compass": "^2.1.0",
     "gulp-jquery": "^1.1.2",
-    "lodash": "^4.17.2",
     "react": "^15.3.1",
     "react-addons-css-transition-group": "^15.3.2",
     "react-dom": "^15.3.1",
-    "react-pagify": "^2.1.1",
     "react-router": "^2.8.1",
-    "segmentize": "^0.4.1",
     "vinyl-source-stream": "^1.1.0"
   }
 }
