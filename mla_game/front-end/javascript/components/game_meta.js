@@ -17,16 +17,15 @@ class GameMeta extends React.Component {
     }
   }
 
-  
   render(){
     const {meta, aapb_link} = this.props;
     return (
       <dl>
         <dt><em>Source Record:</em></dt>
         {this._metaElement(meta.program_title)}
-        {this._metaElement(meta.series )}
-        {this._metaElement(meta.station_name )}
-        {this._metaElement(meta.broadcast_date )}
+        {this._metaElement(meta.series)}
+        {this._metaElement(meta.station_name)}
+        {this._metaElement(meta.broadcast_date)}
         <dd className="delta">
           <a href={aapb_link}>
             <svg className="aapb-link-icon" viewBox="0 0 200 200">
