@@ -901,13 +901,16 @@ var Phrase = (function (_React$Component) {
     this._activePhrase = this._activePhrase.bind(this);
     this._context = this._context.bind(this);
     this._markPhrases = this._markPhrases.bind(this);
+    this._markedIndication = this._markedIndication.bind(this);
   }
 
   _createClass(Phrase, [{
     key: '_markPhrases',
     value: function _markPhrases() {
       // shortcut for props
-      var details = this.props.details;
+      var _props = this.props;
+      var details = _props.details;
+      var wrongPhrases = _props.wrongPhrases;
 
       // create object that gets pushed to state
       var PhraseMarked = {
@@ -915,6 +918,15 @@ var Phrase = (function (_React$Component) {
         text: details.text
       };
       this.props._selectPhrase(PhraseMarked, details.pk);
+
+      var key = 'phrase-' + this.button.id;
+      var hasKey = (key in wrongPhrases);
+
+      if (hasKey) {
+        this.button.className = 'text';
+      } else {
+        this.button.className = 'text highlighted';
+      }
     }
   }, {
     key: '_context',
@@ -929,7 +941,9 @@ var Phrase = (function (_React$Component) {
     }
   }, {
     key: '_markedIndication',
-    value: function _markedIndication() {}
+    value: function _markedIndication() {
+      console.log(this.props.wrongPhrases);
+    }
   }, {
     key: '_activePhrase',
     value: function _activePhrase(time, start, end) {
@@ -945,10 +959,10 @@ var Phrase = (function (_React$Component) {
     value: function render() {
       var _this = this;
 
-      var _props = this.props;
-      var details = _props.details;
-      var time = _props.time;
-      var active = _props.active;
+      var _props2 = this.props;
+      var details = _props2.details;
+      var time = _props2.time;
+      var active = _props2.active;
 
       return _react2['default'].createElement(
         'li',
@@ -973,7 +987,9 @@ var Phrase = (function (_React$Component) {
         ),
         _react2['default'].createElement(
           'button',
-          { className: 'text', onClick: function () {
+          { ref: function (button) {
+              _this.button = button;
+            }, className: 'text', onClick: function () {
               return _this._markPhrases();
             }, id: details.pk },
           _react2['default'].createElement(
@@ -1318,7 +1334,8 @@ var TranscriptUI = (function (_React$Component) {
                   time: _this.state.currentTime,
                   active: _this.state.index,
                   keys: key,
-                  details: _this.props.phrases[key]
+                  details: _this.props.phrases[key],
+                  wrongPhrases: _this.state.wrongPhrases
                 });
               })
             )

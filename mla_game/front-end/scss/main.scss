@@ -231,12 +231,19 @@ button {
         padding-right:.5em;
         float:left;
       }
-    }
-    .context {
-      background:lighten($theme-tertiary, 25%);
-      color:white;
-      font-weight:700;
-      display:block;
+      .context {
+        background:lighten($theme-tertiary, 25%);
+        color:white;
+        font-weight:700;
+        display:block;
+      }
+      &.highlighted {
+        .context, span {
+          background:$transcript-error;
+          color:white;
+          font-weight:700;
+        }
+      }
     }
     &.active-phrase {
       .play-phrase {

@@ -44,7 +44,7 @@ class TranscriptUI extends React.Component{
       this.setState({ wrongPhrases });
     }
   }
-
+  
   _syncAudio(time, paused) {
     this.setState({
       currentTime:time,
@@ -108,6 +108,7 @@ class TranscriptUI extends React.Component{
                  active={this.state.index}
                  keys={key}
                  details={this.props.phrases[key]}
+                 wrongPhrases={this.state.wrongPhrases}
                 />)
               }
             </ul>
