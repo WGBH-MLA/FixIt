@@ -19,16 +19,8 @@ class Phrase extends React.Component{
         pk:details.pk,
         text:details.text
     }
-    this.props._selectPhrase(PhraseMarked, details.pk);
-
-    let key = `phrase-${this.button.id}`
-    let hasKey = key in wrongPhrases;
-
-    if(hasKey) {
-      this.button.className = 'text'
-    } else {
-      this.button.className = 'text highlighted'
-    }
+    // check and set
+    this.props._selectPhrase(PhraseMarked, details.pk, this.button);
   }
 
   _context(){
