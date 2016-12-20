@@ -22,6 +22,10 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _reactRouter = require('react-router');
 
+var _containersUser_container = require('./containers/user_container');
+
+var _containersUser_container2 = _interopRequireDefault(_containersUser_container);
+
 // Nav Views
 
 var _componentsGamemenu = require('./components/gamemenu');
@@ -171,6 +175,7 @@ var App = (function (_React$Component) {
         _react2['default'].createElement(
           'div',
           null,
+          _react2['default'].createElement(_containersUser_container2['default'], null),
           this.props.children
         )
       );
@@ -199,7 +204,7 @@ _reactDom2['default'].render(_react2['default'].createElement(
   )
 ), appTarget);
 
-},{"./components/gamemenu":4,"./components/gameone":5,"./components/gamethree":6,"./components/gametwo":7,"./components/leaderboard":8,"./components/preferences":12,"./components/settings":13,"react":256,"react-dom":67,"react-router":223}],2:[function(require,module,exports){
+},{"./components/gamemenu":4,"./components/gameone":5,"./components/gamethree":6,"./components/gametwo":7,"./components/leaderboard":8,"./components/preferences":12,"./components/settings":13,"./containers/user_container":18,"react":256,"react-dom":67,"react-router":223}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -535,10 +540,6 @@ var _containersTranscript_random = require('../containers/transcript_random');
 
 var _containersTranscript_random2 = _interopRequireDefault(_containersTranscript_random);
 
-var _containersUser_container = require('../containers/user_container');
-
-var _containersUser_container2 = _interopRequireDefault(_containersUser_container);
-
 var GameOne = (function (_React$Component) {
   _inherits(GameOne, _React$Component);
 
@@ -551,12 +552,7 @@ var GameOne = (function (_React$Component) {
   _createClass(GameOne, [{
     key: 'render',
     value: function render() {
-      return _react2['default'].createElement(
-        'div',
-        null,
-        _react2['default'].createElement(_containersUser_container2['default'], null),
-        _react2['default'].createElement(_containersTranscript_random2['default'], null)
-      );
+      return _react2['default'].createElement(_containersTranscript_random2['default'], null);
     }
   }]);
 
@@ -566,7 +562,7 @@ var GameOne = (function (_React$Component) {
 exports['default'] = GameOne;
 module.exports = exports['default'];
 
-},{"../containers/transcript_random":17,"../containers/user_container":18,"react":256}],6:[function(require,module,exports){
+},{"../containers/transcript_random":17,"react":256}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -920,9 +916,6 @@ var Phrase = (function (_React$Component) {
       };
       this.props._selectPhrase(PhraseMarked, details.pk);
     }
-  }, {
-    key: '_highlightPhrase',
-    value: function _highlightPhrase() {}
   }, {
     key: '_context',
     value: function _context() {
@@ -1325,8 +1318,7 @@ var TranscriptUI = (function (_React$Component) {
                   time: _this.state.currentTime,
                   active: _this.state.index,
                   keys: key,
-                  details: _this.props.phrases[key],
-                  wrongPhrase: _this.state.wrongPhrases
+                  details: _this.props.phrases[key]
                 });
               })
             )
@@ -1394,21 +1386,21 @@ exports['default'] = TranscriptUI;
 module.exports = exports['default'];
 
 },{"../components/audio_component":2,"../components/game_meta":3,"../components/loadingscreen":9,"../components/paginator":10,"../components/phrase":11,"../components/submitPhrase_component":14,"react":256}],16:[function(require,module,exports){
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var _react = require('react');
 
@@ -1420,21 +1412,30 @@ var User = (function (_React$Component) {
   function User() {
     _classCallCheck(this, User);
 
-    _get(Object.getPrototypeOf(User.prototype), 'constructor', this).call(this);
+    _get(Object.getPrototypeOf(User.prototype), "constructor", this).call(this);
   }
 
   _createClass(User, [{
-    key: 'render',
+    key: "render",
     value: function render() {
-      return _react2['default'].createElement('div', null);
+      return _react2["default"].createElement(
+        "div",
+        { className: "grid" },
+        _react2["default"].createElement(
+          "h2",
+          null,
+          "Welcome ",
+          this.props.userName
+        )
+      );
     }
   }]);
 
   return User;
-})(_react2['default'].Component);
+})(_react2["default"].Component);
 
-exports['default'] = User;
-module.exports = exports['default'];
+exports["default"] = User;
+module.exports = exports["default"];
 
 },{"react":256}],17:[function(require,module,exports){
 'use strict';
@@ -1550,7 +1551,9 @@ var UseContainer = (function (_React$Component) {
 
     _get(Object.getPrototypeOf(UseContainer.prototype), 'constructor', this).call(this);
     this._getData = this._getData.bind(this);
-    this.state = {};
+    this.state = {
+      userName: ''
+    };
   }
 
   _createClass(UseContainer, [{
@@ -1559,7 +1562,10 @@ var UseContainer = (function (_React$Component) {
       $.ajax({
         url: '/api/profile/' + currentUser
       }).then((function (data) {
-        this.setState({});
+        data = data[0];
+        this.setState({
+          userName: data.username
+        });
         console.log(data);
       }).bind(this));
     }
@@ -1571,7 +1577,7 @@ var UseContainer = (function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      return _react2['default'].createElement(_componentsUser2['default'], null);
+      return _react2['default'].createElement(_componentsUser2['default'], { userName: this.state.userName });
     }
   }]);
 

@@ -7,7 +7,7 @@ class UseContainer extends React.Component {
     super();
     this._getData = this._getData.bind(this); 
     this.state = {
-      
+      userName:'',
     }
   }
   _getData() {
@@ -15,7 +15,9 @@ class UseContainer extends React.Component {
       url:`/api/profile/${currentUser}`
     })
     .then(function(data) {
+      data = data[0];
       this.setState({
+        userName:data.username
       });
       console.log(data);
     }.bind(this)); 
@@ -27,7 +29,7 @@ class UseContainer extends React.Component {
 
   render() {
     return (
-      <User  />
+      <User userName={this.state.userName} />
     )
   }
 }

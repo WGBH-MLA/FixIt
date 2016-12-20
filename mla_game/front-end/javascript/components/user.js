@@ -8,7 +8,9 @@ class User extends React.Component {
   
   render(){
     return(
-      <div></div>
+      <div className="grid">
+        <h2>Welcome {this.props.userName}</h2>
+      </div>
     )
   }
 }

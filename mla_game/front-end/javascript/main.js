@@ -2,6 +2,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router'
+import UserContainer from './containers/user_container'
 
 // Nav Views
 import GameMenu from './components/gamemenu'
@@ -66,6 +67,7 @@ class App extends React.Component {
           </div>
         </header>
         <div>
+          <UserContainer />
           {this.props.children}
         </div>
       </div>
