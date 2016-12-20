@@ -226,11 +226,17 @@ button {
       @include susy-breakpoint($screen-lg-min, $map-lg) {
         @include span(6.125 of 7 last);
       }
-      &.context {
-        background:lighten($theme-tertiary, 25%);
-        color:white;
-        font-weight:700;
+      span {
+        padding-left:.5em;
+        padding-right:.5em;
+        float:left;
       }
+    }
+    .context {
+      background:lighten($theme-tertiary, 25%);
+      color:white;
+      font-weight:700;
+      display:block;
     }
     &.active-phrase {
       .play-phrase {

@@ -16,12 +16,32 @@ class TranscriptUI extends React.Component{
     this._handleProgress = this._handleProgress.bind(this);
     this._goBack = this._goBack.bind(this);
     this._renderGame = this._renderGame.bind(this);
+    this._selectPhrase = this._selectPhrase.bind(this);
     
     this.state = {
       currentTime:0,
       isPlaying:false,
       loaded:false,
       index:0,
+      wrongPhrases:{}
+    }
+  }
+
+  _selectPhrase(phrase, pk){
+    // reference state
+    const wrongPhrases = {...this.state.wrongPhrases};
+    
+    // keys
+    let key = `phrase-${pk}`
+    let keyExists = key in wrongPhrases;
+    wrongPhrases[`phrase-${pk}`] = phrase;
+    
+    // push obkject to state only if it already doesn't exist    
+    if(keyExists){
+      delete wrongPhrases[key];
+      this.setState({ wrongPhrases });
+    } else {
+      this.setState({ wrongPhrases });
     }
   }
 
@@ -78,6 +98,7 @@ class TranscriptUI extends React.Component{
               <Audio src={this.props.media_url} _syncAudio={this._syncAudio}  isPlaying={this.state.isPlaying} index={this.state.index} />
               <GameMeta meta={this.props.meta} aapb_link={this.props.aapb_link} />
             </div>
+            
             <ul className="game-phrase-list">
               {Object.keys(this.props.phrases).map( key=> 
                 <Phrase key={key} 
@@ -86,7 +107,7 @@ class TranscriptUI extends React.Component{
                  time={this.state.currentTime} 
                  active={this.state.index}
                  keys={key}
-                 details={this.props.phrases[key]} 
+                 details={this.props.phrases[key]}
                 />)
               }
             </ul>

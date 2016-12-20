@@ -899,19 +899,36 @@ var Phrase = (function (_React$Component) {
     _get(Object.getPrototypeOf(Phrase.prototype), 'constructor', this).call(this);
     this._activePhrase = this._activePhrase.bind(this);
     this._context = this._context.bind(this);
+    this._markPhrases = this._markPhrases.bind(this);
   }
 
   _createClass(Phrase, [{
+    key: '_markPhrases',
+    value: function _markPhrases() {
+      // shortcut for props
+      var details = this.props.details;
+
+      // create object that gets pushed to state
+      var PhraseMarked = {
+        pk: details.pk,
+        text: details.text
+      };
+      this.props._selectPhrase(PhraseMarked, details.pk);
+    }
+  }, {
     key: '_context',
     value: function _context() {
       var keys = Number(this.props.keys);
       var context = this.props.active === keys || this.props.active === keys - 1 || this.props.active === keys + 1;
       if (context) {
-        return 'text context';
+        return 'context';
       } else {
-        return 'text';
+        return '';
       }
     }
+  }, {
+    key: '_markedIndication',
+    value: function _markedIndication() {}
   }, {
     key: '_activePhrase',
     value: function _activePhrase(time, start, end) {
@@ -955,10 +972,14 @@ var Phrase = (function (_React$Component) {
         ),
         _react2['default'].createElement(
           'button',
-          { className: this._context(), onClick: function () {
-              return _this.props._selectPhrase(details.pk);
+          { className: 'text', onClick: function () {
+              return _this._markPhrases();
             }, id: details.pk },
-          details.text
+          _react2['default'].createElement(
+            'span',
+            { className: this._context() },
+            details.text
+          )
         )
       );
     }
@@ -1129,6 +1150,8 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
@@ -1180,16 +1203,37 @@ var TranscriptUI = (function (_React$Component) {
     this._handleProgress = this._handleProgress.bind(this);
     this._goBack = this._goBack.bind(this);
     this._renderGame = this._renderGame.bind(this);
+    this._selectPhrase = this._selectPhrase.bind(this);
 
     this.state = {
       currentTime: 0,
       isPlaying: false,
       loaded: false,
-      index: 0
+      index: 0,
+      wrongPhrases: {}
     };
   }
 
   _createClass(TranscriptUI, [{
+    key: '_selectPhrase',
+    value: function _selectPhrase(phrase, pk) {
+      // reference state
+      var wrongPhrases = _extends({}, this.state.wrongPhrases);
+
+      // keys
+      var key = 'phrase-' + pk;
+      var keyExists = (key in wrongPhrases);
+      wrongPhrases['phrase-' + pk] = phrase;
+
+      // push obkject to state only if it already doesn't exist   
+      if (keyExists) {
+        delete wrongPhrases[key];
+        this.setState({ wrongPhrases: wrongPhrases });
+      } else {
+        this.setState({ wrongPhrases: wrongPhrases });
+      }
+    }
+  }, {
     key: '_syncAudio',
     value: function _syncAudio(time, paused) {
       this.setState({

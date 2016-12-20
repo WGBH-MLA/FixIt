@@ -1229,10 +1229,16 @@ button:hover {
     margin-left: 3.40909%;
   }
 }
-.game-phrase-list li .text.context {
+.game-phrase-list li .text span {
+  padding-left: .5em;
+  padding-right: .5em;
+  float: left;
+}
+.game-phrase-list li .context {
   background: #665a5d;
   color: white;
   font-weight: 700;
+  display: block;
 }
 .game-phrase-list li.active-phrase .play-phrase .speaker-icon {
   fill: #939598;
