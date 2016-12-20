@@ -15,7 +15,6 @@ class UseContainer extends React.Component {
       url:`/api/profile/${currentUser}`
     })
     .then(function(data) {
-      data = data[0];
       this.setState({
         userName:data.username
       });
