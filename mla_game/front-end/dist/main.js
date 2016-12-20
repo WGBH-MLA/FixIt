@@ -917,16 +917,8 @@ var Phrase = (function (_React$Component) {
         pk: details.pk,
         text: details.text
       };
-      this.props._selectPhrase(PhraseMarked, details.pk);
-
-      var key = 'phrase-' + this.button.id;
-      var hasKey = (key in wrongPhrases);
-
-      if (hasKey) {
-        this.button.className = 'text';
-      } else {
-        this.button.className = 'text highlighted';
-      }
+      // check and set
+      this.props._selectPhrase(PhraseMarked, details.pk, this.button);
     }
   }, {
     key: '_context',
@@ -1233,7 +1225,7 @@ var TranscriptUI = (function (_React$Component) {
 
   _createClass(TranscriptUI, [{
     key: '_selectPhrase',
-    value: function _selectPhrase(phrase, pk) {
+    value: function _selectPhrase(phrase, pk, button) {
       // reference state
       var wrongPhrases = _extends({}, this.state.wrongPhrases);
 
@@ -1242,12 +1234,18 @@ var TranscriptUI = (function (_React$Component) {
       var keyExists = (key in wrongPhrases);
       wrongPhrases['phrase-' + pk] = phrase;
 
-      // push obkject to state only if it already doesn't exist   
+      // push object to state only if it already doesn't exist
+      // and set the class name accordingly
       if (keyExists) {
+        // remove item and set state
         delete wrongPhrases[key];
         this.setState({ wrongPhrases: wrongPhrases });
+        // reset button to default state
+        button.className = 'text';
       } else {
         this.setState({ wrongPhrases: wrongPhrases });
+        // set button to higlighted state
+        button.className = 'text highlighted';
       }
     }
   }, {

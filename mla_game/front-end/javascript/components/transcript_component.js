@@ -27,21 +27,27 @@ class TranscriptUI extends React.Component{
     }
   }
 
-  _selectPhrase(phrase, pk){
+  _selectPhrase(phrase, pk, button){
     // reference state
     const wrongPhrases = {...this.state.wrongPhrases};
-    
+
     // keys
     let key = `phrase-${pk}`
     let keyExists = key in wrongPhrases;
     wrongPhrases[`phrase-${pk}`] = phrase;
     
-    // push obkject to state only if it already doesn't exist    
+    // push object to state only if it already doesn't exist
+    // and set the class name accordingly
     if(keyExists){
+      // remove item and set state
       delete wrongPhrases[key];
       this.setState({ wrongPhrases });
+      // reset button to default state
+      button.className = 'text'
     } else {
       this.setState({ wrongPhrases });
+      // set button to higlighted state
+      button.className = 'text highlighted'
     }
   }
   
