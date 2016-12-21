@@ -12,11 +12,11 @@ class UseContainer extends React.Component {
   }
   _getData() {
     $.ajax({
-      url:`/api/profile/${currentUser}`
+      url:'/api/profile/'
     })
     .then(function(data) {
       this.setState({
-        userName:data.username
+        userName:data.results[0].username
       });
       console.log(data);
     }.bind(this)); 
