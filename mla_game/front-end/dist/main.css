@@ -1024,7 +1024,12 @@ button:hover {
 
 .welcome-message {
   display: block;
-  margin-top: 1.5em;
+  margin: 1.5em 0;
+}
+.welcome-message span {
+  color: #08b1b1;
+  font-family: 'Open Sans Condensed', sans-serif;
+  padding-left: .5em;
 }
 
 .welcome-message {

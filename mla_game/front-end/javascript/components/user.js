@@ -9,7 +9,7 @@ class User extends React.Component {
   render(){
     return(
       <div className="grid">
-        <h2>Welcome {this.props.userName}</h2>
+        <h2 className='welcome-message'>Welcome <span>{this.props.userName}</span></h2>
       </div>
     )
   }

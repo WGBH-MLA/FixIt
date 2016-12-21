@@ -89,7 +89,12 @@ button {
 
 .welcome-message {
   display:block;
-  margin-top:1.5em;
+  margin:1.5em 0;
+  span {
+    color:lighten($help, 10%);
+    font-family:'Open Sans Condensed', sans-serif;
+    padding-left:.5em;
+  }
 }
 
 .welcome-message {
