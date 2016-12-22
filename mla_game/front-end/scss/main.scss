@@ -235,11 +235,13 @@ button {
         @include span(6.125 of 7 last);
       }
       span {
+        @include transition(background, 300ms, ease-in);
         padding-left:.5em;
         padding-right:.5em;
         float:left;
       }
       .context {
+
         background:lighten($theme-tertiary, 25%);
         color:white;
         font-weight:700;
@@ -250,6 +252,12 @@ button {
           background:$transcript-error;
           color:white;
           font-weight:700;
+        }
+      }
+      &:hover {
+        .context, span {
+          background:darken($transcript-error, 25%);
+          color:white;
         }
       }
     }
