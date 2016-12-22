@@ -23,11 +23,6 @@ html{
 
 body {
   position: relative;
-  padding-left:5%;
-  padding-right:5%;
-  @include susy-breakpoint($screen-jb-min) {
-    padding:0;
-  }
 }
 
 body {
@@ -107,6 +102,19 @@ button {
 
 .grid {
   @include grid;
+  padding:0 5%;
+  @include susy-breakpoint($screen-jb-min) {
+    padding:0;
+  }
+}
+
+.app-header {
+  & > div {
+    padding:0 5%;
+    @include susy-breakpoint($screen-jb-min) {
+      padding:0;
+    }
+  }
 }
 
 .audio {
@@ -172,8 +180,6 @@ button {
 
 .game-phrase-list {
   @include plain-list;
-  border-top:2px solid black;
-  border-bottom:2px solid black;
   padding:1em 0;
 
   // height:15em;

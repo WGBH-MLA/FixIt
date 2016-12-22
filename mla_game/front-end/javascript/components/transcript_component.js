@@ -96,7 +96,7 @@ class TranscriptUI extends React.Component{
     if(this.state.loaded) {
       return(
         <div>
-          <div className="app-content">
+          <div className="grid">
             <h3>State as Object</h3>
             <pre>{JSON.stringify(this.state, null, 2)}</pre>
             

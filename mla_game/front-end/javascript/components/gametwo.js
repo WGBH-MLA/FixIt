@@ -6,7 +6,9 @@ class GameTwo extends React.Component{
   render(){
     return (
       <div>
-        <h1>Game Two</h1>
+        <div className='grid'>
+          <h1>Game Two</h1>
+        </div>
         <RandTranscriptContainer />
       </div>
     )

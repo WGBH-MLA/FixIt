@@ -71,7 +71,7 @@ gulp.task('build', ['js', 'compass'], function (){
 
 gulp.task('watch', [], function(){
     gulp.watch(paths.watchJS, ['js']);
-    gulp.watch(paths.sass + '*', ['scss']);
+    gulp.watch(paths.sass + '*', ['compass']);
 });
 
 gulp.task('production_build', ['compress']);

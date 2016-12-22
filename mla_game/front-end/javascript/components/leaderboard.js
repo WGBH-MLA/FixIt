@@ -4,7 +4,7 @@ class LeaderBoard extends React.Component{
   
   render(){
     return (
-      <div className="app-content">
+      <div className="grid">
         <h1>LeaderBoard</h1>
       </div>
     )

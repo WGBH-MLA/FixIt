@@ -1,6 +1,12 @@
 .game-footer {
   background:$theme-primary;
-  position: relative;
+  .grid {
+    position:relative;
+    padding-top:.5em;
+    @include susy-breakpoint($screen-lg-min, $map-lg) {
+      padding-top:0;
+    }
+  }
   .title {
     color:$progress;
     text-transform:uppercase;
@@ -106,8 +112,8 @@
     height:2em;
     width:3em;
     position:absolute;
-    top:0;
-    right:0;
+    top:.5em;
+    right:5%;
     svg {
       @include transition(fill, 300ms, ease-in);
       fill:$help;
@@ -125,6 +131,8 @@
       float:right;
       height:5.45em;
       width:5.45em;
+      top:0;
+      right:0;
       svg {
         height:4em;
         width:4em;

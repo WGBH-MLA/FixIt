@@ -468,7 +468,7 @@ var GameMenu = (function (_React$Component) {
     value: function render() {
       return _react2['default'].createElement(
         'div',
-        { className: 'app-content' },
+        { className: 'grid' },
         _react2['default'].createElement(
           'h1',
           null,
@@ -603,9 +603,13 @@ var GameThree = (function (_React$Component) {
         'div',
         null,
         _react2['default'].createElement(
-          'h1',
-          null,
-          'Game Three'
+          'div',
+          { className: 'grid' },
+          _react2['default'].createElement(
+            'h1',
+            null,
+            'Game Three'
+          )
         ),
         _react2['default'].createElement(_containersTranscript_random2['default'], null)
       );
@@ -659,9 +663,13 @@ var GameTwo = (function (_React$Component) {
         'div',
         null,
         _react2['default'].createElement(
-          'h1',
-          null,
-          'Game Two'
+          'div',
+          { className: 'grid' },
+          _react2['default'].createElement(
+            'h1',
+            null,
+            'Game Two'
+          )
         ),
         _react2['default'].createElement(_containersTranscript_random2['default'], null)
       );
@@ -709,7 +717,7 @@ var LeaderBoard = (function (_React$Component) {
     value: function render() {
       return _react2["default"].createElement(
         "div",
-        { className: "app-content" },
+        { className: "grid" },
         _react2["default"].createElement(
           "h1",
           null,
@@ -1305,7 +1313,7 @@ var TranscriptUI = (function (_React$Component) {
           null,
           _react2['default'].createElement(
             'div',
-            { className: 'app-content' },
+            { className: 'grid' },
             _react2['default'].createElement(
               'h3',
               null,
