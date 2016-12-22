@@ -4,8 +4,11 @@ var browserify = require('browserify'),
     compass = require('gulp-compass'),
     source = require('vinyl-source-stream'),
     jquery = require('gulp-jquery');
+    uglify = require('gulp-uglify');
+    pump = require('pump');
     paths = {
         mainJS: './front-end/javascript/main.js',
+        buildMainJS: './front-end/dist/main.js',
         watchJS: './front-end/javascript/**/*.js',
         mainScss: './front-end/scss/main.scss',
         sass: './front-end/scss/',
@@ -30,29 +33,48 @@ gulp.task('jquery', function(){
     .pipe(gulp.dest('./front-end/dist/lib/'));
 });
 
-gulp.task('scss', function(){
+gulp.task('compass', function(){
     return gulp.src(paths.mainScss)
     .pipe(compass({
         css: paths.dist,
         sass: paths.sass,
         require: 'breakpoint',
-        sourcemap:true
+        sourcemap:true,
+        style:'compressed'
     }))
     .on('error', function (err) {
       console.error('Error: ', err.message);
     })
-    // .pipe(minifyCSS())
     .pipe(gulp.dest(paths.dist));
 });
 
-gulp.task('build', ['js', 'scss'], function () {
+gulp.task('compress', function (cb) {
+  // process.stdout.write("Setting NODE_ENV to 'production'" + "\n");
+  // process.env.NODE_ENV = 'production';
+  // if (process.env.NODE_ENV != 'production') {
+  //   throw new Error("Failed to set NODE_ENV to production!!!!");
+  // } else {
+  //   process.stdout.write("Successfully set NODE_ENV to production" + "\n");
+  // }
+  pump([
+    gulp.src(paths.buildMainJS),
+    uglify(),
+    gulp.dest(paths.dist)
+    ],
+    cb
+  );
+});
 
+gulp.task('build', ['js', 'compass'], function (){
+  process.env.NODE_ENV = 'development';
 });
 
 gulp.task('watch', [], function(){
     gulp.watch(paths.watchJS, ['js']);
     gulp.watch(paths.sass + '*', ['scss']);
 });
+
+gulp.task('production_build', ['compress']);
 
 gulp.task('default', ['build', 'watch'], function () {
 
