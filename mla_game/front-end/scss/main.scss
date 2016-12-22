@@ -23,13 +23,9 @@ html{
 
 body {
   position: relative;
-}
-
-body {
   color:white;
 }
 
-// temp styling for links 
 a {
   @include link-reset;
   color:white;
@@ -96,24 +92,11 @@ button {
   @include grid;
 }
 
-.app-content {
-  @include grid;
-}
-
 .grid {
   @include grid;
   padding:0 5%;
   @include susy-breakpoint($screen-jb-min) {
     padding:0;
-  }
-}
-
-.app-header {
-  & > div {
-    padding:0 5%;
-    @include susy-breakpoint($screen-jb-min) {
-      padding:0;
-    }
   }
 }
 
@@ -152,12 +135,14 @@ button {
   @include susy-breakpoint($screen-lg-min, $map-lg) {
     @include span(2 of 12 first);
   }
-  dt {
-    font-size: 1.15em;
-  }
-  dt, dd {
-    margin-bottom:.5em;
-    color:darken(white, 25%);
+  dl {
+    dt {
+      font-size: 1.15em;
+    }
+    dt, dd {
+      margin-bottom:.5em;
+      color:darken(white, 25%);
+    }
   }
   .aapb-link-icon {
     max-height:1.5em;
@@ -241,7 +226,6 @@ button {
         float:left;
       }
       .context {
-
         background:lighten($theme-tertiary, 25%);
         color:white;
         font-weight:700;
