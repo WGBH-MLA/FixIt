@@ -18,7 +18,6 @@ class UseContainer extends React.Component {
       this.setState({
         userName:data.results[0].username
       });
-      console.log(data);
     }.bind(this)); 
   }
 
