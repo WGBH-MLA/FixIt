@@ -91,7 +91,7 @@ class TranscriptUI extends React.Component{
     } 
     else {
       for(let key in wrongPhrases){
-        let data = wrongPhrases[key].pk.toString();
+        let data = wrongPhrases[key].pk;
         $.ajax({
           url: '/api/transcriptphrasedownvote/',
           type: 'POST',

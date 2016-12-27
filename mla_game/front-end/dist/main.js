@@ -1294,7 +1294,7 @@ var TranscriptUI = (function (_React$Component) {
         return;
       } else {
         for (var key in wrongPhrases) {
-          var data = wrongPhrases[key].pk.toString();
+          var data = wrongPhrases[key].pk;
           $.ajax({
             url: '/api/transcriptphrasedownvote/',
             type: 'POST',
