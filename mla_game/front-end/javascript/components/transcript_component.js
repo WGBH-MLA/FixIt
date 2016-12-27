@@ -5,11 +5,12 @@ import Submit from '../components/submitPhrase_component'
 import Phrase from '../components/phrase'
 import LoadingScreen from '../components/loadingscreen'
 import Paging from '../components/paginator'
+import {getCookie} from '../helpers'
 
 class TranscriptUI extends React.Component{
 
   constructor(){
-    super();
+    super();  
     this._syncAudio = this._syncAudio.bind(this); 
     this._playPhrase = this._playPhrase.bind(this);
     this._delayRender = this._delayRender.bind(this);
@@ -100,14 +101,14 @@ class TranscriptUI extends React.Component{
           },
           headers: {
             // csrftoken token?
-            "X-CSRFToken": '9aOrk1PUze60VDltdpEJTeisOBtx8vHU'
+            "X-CSRFToken": getCookie('csrftoken')
            }
         })
-        .done(function(data) {
-          console.log(data)
+        .done(function(response) {
+          console.log(response)
         })
-        .fail(function(data) {
-          console.log(data);
+        .fail(function(response) {
+          console.log(response);
         })
       }
       // clean state
