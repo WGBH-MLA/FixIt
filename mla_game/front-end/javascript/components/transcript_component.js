@@ -99,7 +99,7 @@ class TranscriptUI extends React.Component{
             transcript_phrase:data
           },
           headers: {
-            // csrftoken is set on line 1 of /project_static/scripts.js
+            // csrftoken token?
             "X-CSRFToken": '9aOrk1PUze60VDltdpEJTeisOBtx8vHU'
            }
         })
@@ -142,17 +142,18 @@ class TranscriptUI extends React.Component{
             </div>
             
             <ul className="game-phrase-list">
-              {Object.keys(this.props.phrases).map( key=> 
-                <Phrase key={key} 
+            {this.props.phrases.map((index, key) =>{
+              return(
+              <Phrase key={key} 
                 _playPhrase={this._playPhrase} 
                 _selectPhrase={this._selectPhrase}
                  time={this.state.currentTime} 
                  active={this.state.index}
                  keys={key}
-                 details={this.props.phrases[key]}
+                 details={index}
                  wrongPhrases={this.state.wrongPhrases}
-                />)
-              }
+              />)
+            })}
             </ul>
           </div>  
           <div className="game-footer">
