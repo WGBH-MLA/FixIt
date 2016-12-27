@@ -7,7 +7,6 @@ class Phrase extends React.Component{
     this._activePhrase = this._activePhrase.bind(this);
     this._context = this._context.bind(this);
     this._markPhrases = this._markPhrases.bind(this);
-    this._markedIndication = this._markedIndication.bind(this);
   }
 
   _markPhrases(){
@@ -35,10 +34,6 @@ class Phrase extends React.Component{
         ''
       )
     }
-  }
-
-  _markedIndication(){
-    console.log(this.props.wrongPhrases);
   }
   
   _activePhrase(time, start, end){
