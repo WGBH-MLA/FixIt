@@ -909,7 +909,6 @@ var Phrase = (function (_React$Component) {
     this._activePhrase = this._activePhrase.bind(this);
     this._context = this._context.bind(this);
     this._markPhrases = this._markPhrases.bind(this);
-    this._markedIndication = this._markedIndication.bind(this);
   }
 
   _createClass(Phrase, [{
@@ -938,11 +937,6 @@ var Phrase = (function (_React$Component) {
       } else {
         return '';
       }
-    }
-  }, {
-    key: '_markedIndication',
-    value: function _markedIndication() {
-      console.log(this.props.wrongPhrases);
     }
   }, {
     key: '_activePhrase',
@@ -1281,6 +1275,10 @@ var TranscriptUI = (function (_React$Component) {
   }, {
     key: '_handleProgress',
     value: function _handleProgress(i) {
+      // copy state
+      var wrongPhrases = _extends({}, this.state.wrongPhrases);
+
+      // update round
       if (this.state.index <= this.props.phrases.length) {
         var update = i + this.state.index;
         this.setState({
@@ -1288,6 +1286,35 @@ var TranscriptUI = (function (_React$Component) {
         });
       } else {
         return;
+      }
+
+      // data push for phrases if they exist
+      var noPhrases = Object.keys(wrongPhrases).length === 0 && wrongPhrases.constructor === Object;
+      if (noPhrases) {
+        return;
+      } else {
+        for (var key in wrongPhrases) {
+          var data = wrongPhrases[key].pk.toString();
+          $.ajax({
+            url: '/api/transcriptphrasedownvote/',
+            type: 'POST',
+            data: {
+              transcript_phrase: data
+            },
+            headers: {
+              // csrftoken is set on line 1 of /project_static/scripts.js
+              "X-CSRFToken": '9aOrk1PUze60VDltdpEJTeisOBtx8vHU'
+            }
+          }).done(function (data) {
+            console.log(data);
+          }).fail(function (data) {
+            console.log(data);
+          });
+        }
+        // clean state
+        this.setState({
+          wrongPhrases: {}
+        });
       }
     }
   }, {
