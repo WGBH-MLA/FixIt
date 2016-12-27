@@ -71,6 +71,10 @@ class TranscriptUI extends React.Component{
   }
 
   _handleProgress(i) {
+    // copy state
+    const wrongPhrases = {...this.state.wrongPhrases};
+    
+    // update round
     if(this.state.index <= this.props.phrases.length) {
       let update = i + this.state.index;
       this.setState({
@@ -78,6 +82,38 @@ class TranscriptUI extends React.Component{
       })
     } else {
       return
+    }
+
+    // data push for phrases if they exist
+    let noPhrases = Object.keys(wrongPhrases).length === 0 && wrongPhrases.constructor === Object
+    if(noPhrases) {
+      return
+    } 
+    else {
+      for(let key in wrongPhrases){
+        let data = wrongPhrases[key].pk.toString();
+        $.ajax({
+          url: '/api/transcriptphrasedownvote/',
+          type: 'POST',
+          data: {
+            transcript_phrase:data
+          },
+          headers: {
+            // csrftoken is set on line 1 of /project_static/scripts.js
+            "X-CSRFToken": '9aOrk1PUze60VDltdpEJTeisOBtx8vHU'
+           }
+        })
+        .done(function(data) {
+          console.log(data)
+        })
+        .fail(function(data) {
+          console.log(data);
+        })
+      }
+      // clean state
+      this.setState({
+        wrongPhrases:{}
+      })
     }
   }
 
@@ -91,7 +127,7 @@ class TranscriptUI extends React.Component{
       return
     }
   }
-
+  
   _renderGame(){
     if(this.state.loaded) {
       return(
