@@ -7,49 +7,21 @@ from django.contrib.postgres.fields import JSONField
 from django.db import models
 from localflavor.us.models import USStateField
 
+from mla_game.apps.accounts.models import TranscriptPicks, Profile
 
-logger = logging.getLogger('pua_scraper')
+
+django_log = logging.getLogger('django')
+scraper_log = logging.getLogger('pua_scraper')
 error_log = logging.getLogger('pua_errors')
 
 
 class TranscriptManager(models.Manager):
-    def for_user(self, user):
-        """
-        considerations:
-            - ideally the user will get only transcripts that are from their
-            preferred stations and that relate to their preferred topics
-            - users should not see the same phrase twice in game 1
-            - transcripts for which the user has considered every phrase should
-            be exempt from future game 1 sessions
-
-        implications:
-            - we need a way to track which phrases a user has considered
-            - we need a way to determine if a user has seen every phrase in a
-            transcript, so it can be totally excluded
-        """
-        profile = user.profile
-        transcripts_to_return = Transcript.objects.none()
-        all_transcripts = self.all().defer('transcript_data_blob')
-        number_of_transcripts = all_transcripts.count()
-
-        if profile.preferred_stations is not None:
-            for station in profile.preferred_stations.all():
-                transcripts_to_return = transcripts_to_return | station.transcripts.all()
-        if profile.preferred_topics:
-            for topic in profile.preferred_topics.all():
-                transcripts_to_return = transcripts_to_return & topic.transcripts.all()
-
-        if transcripts_to_return.count() < 10:
-            list_of_random_transcripts = []
-            number_needed = 10 - transcripts_to_return.count()
-            while len(list_of_random_transcripts) < number_needed:
-                random_transcript = all_transcripts.order_by('?')[randint(0, number_of_transcripts - 1)]
-                list_of_random_transcripts.append(random_transcript.pk)
-            transcripts_to_return = transcripts_to_return & Transcript.objects.filter(pk__in=list_of_random_transcripts)
-        elif transcripts_to_return.count() > 10:
-            return transcripts_to_return[0:9]
-
-        return transcripts_to_return
+    def game_one(self, user):
+        picks = TranscriptPicks.objects.get(user=user).picks
+        if picks['partially_completed_transcripts']:
+            to_return = self.filter(pk=picks['partially_completed_transcripts'][0])
+            phrases = to_return.first().phrases.unseen(user)
+            return (to_return, phrases)
 
     def random_transcript(self):
         all_transcripts = self.all().defer('transcript_data_blob')
@@ -135,6 +107,8 @@ class Transcript(models.Model):
 
 
 class TranscriptPhraseManager(models.Manager):
+    use_for_related_fields = True
+
     def create_transcript_phrase(self, data_blob, transcript):
         id_number = data_blob['id']
         start_time = data_blob['start_time']
@@ -153,6 +127,12 @@ class TranscriptPhraseManager(models.Manager):
                 transcript=transcript
             )
         return transcript_phrase
+
+    def unseen(self, user):
+        profile = Profile.objects.get(user=user)
+        considered_phrases = [phrase.pk for phrase in
+                              profile.considered_phrases.all()]
+        return self.exclude(pk__in=considered_phrases)
 
 
 class TranscriptPhrase(models.Model):
