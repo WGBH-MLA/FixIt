@@ -7,8 +7,8 @@ var browserify = require('browserify'),
     uglify = require('gulp-uglify');
     pump = require('pump');
     paths = {
-        mainJS: './front-end/javascript/main.js',
-        buildMainJS: './front-end/dist/main.js',
+        indexJS: './front-end/javascript/index.js',
+        buildindexJS: './front-end/dist/index.js',
         watchJS: './front-end/javascript/**/*.js',
         mainScss: './front-end/scss/main.scss',
         sass: './front-end/scss/',
@@ -18,9 +18,9 @@ var browserify = require('browserify'),
 gulp.task('js', [], function(){
     var b = browserify();
     b.transform(babelify);
-    b.add(paths.mainJS);
+    b.add(paths.indexJS);
     return b.bundle()
-        .pipe(source('main.js'))
+        .pipe(source('index.js'))
         .pipe(gulp.dest('./front-end/dist'));
 });
 
@@ -57,7 +57,7 @@ gulp.task('compress', function (cb) {
   //   process.stdout.write("Successfully set NODE_ENV to production" + "\n");
   // }
   pump([
-    gulp.src(paths.buildMainJS),
+    gulp.src(paths.buildindexJS),
     uglify(),
     gulp.dest(paths.dist)
     ],
