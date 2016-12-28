@@ -2,6 +2,10 @@
   background:$theme-primary;
   div {
     @include grid;
+    padding:0 5%;
+    @include susy-breakpoint($screen-jb-min) {
+      padding:0;
+    }
   }
 }
 

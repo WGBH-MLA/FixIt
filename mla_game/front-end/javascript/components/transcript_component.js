@@ -5,11 +5,12 @@ import Submit from '../components/submitPhrase_component'
 import Phrase from '../components/phrase'
 import LoadingScreen from '../components/loadingscreen'
 import Paging from '../components/paginator'
+import {getCookie} from '../helpers'
 
 class TranscriptUI extends React.Component{
 
   constructor(){
-    super();
+    super();  
     this._syncAudio = this._syncAudio.bind(this); 
     this._playPhrase = this._playPhrase.bind(this);
     this._delayRender = this._delayRender.bind(this);
@@ -71,6 +72,10 @@ class TranscriptUI extends React.Component{
   }
 
   _handleProgress(i) {
+    // copy state
+    const wrongPhrases = {...this.state.wrongPhrases};
+    
+    // update round
     if(this.state.index <= this.props.phrases.length) {
       let update = i + this.state.index;
       this.setState({
@@ -78,6 +83,38 @@ class TranscriptUI extends React.Component{
       })
     } else {
       return
+    }
+
+    // data push for phrases if they exist
+    let noPhrases = Object.keys(wrongPhrases).length === 0 && wrongPhrases.constructor === Object
+    if(noPhrases) {
+      return
+    } 
+    else {
+      for(let key in wrongPhrases){
+        let data = wrongPhrases[key].pk;
+        $.ajax({
+          url: '/api/transcriptphrasedownvote/',
+          type: 'POST',
+          data: {
+            transcript_phrase:data
+          },
+          headers: {
+            // csrftoken token?
+            "X-CSRFToken": getCookie('csrftoken')
+           }
+        })
+        .done(function(response) {
+          console.log(response)
+        })
+        .fail(function(response) {
+          console.log(response);
+        })
+      }
+      // clean state
+      this.setState({
+        wrongPhrases:{}
+      })
     }
   }
 
@@ -91,7 +128,7 @@ class TranscriptUI extends React.Component{
       return
     }
   }
-
+  
   _renderGame(){
     if(this.state.loaded) {
       return(
@@ -106,17 +143,18 @@ class TranscriptUI extends React.Component{
             </div>
             
             <ul className="game-phrase-list">
-              {Object.keys(this.props.phrases).map( key=> 
-                <Phrase key={key} 
+            {this.props.phrases.map((index, key) =>{
+              return(
+              <Phrase key={key} 
                 _playPhrase={this._playPhrase} 
                 _selectPhrase={this._selectPhrase}
                  time={this.state.currentTime} 
                  active={this.state.index}
                  keys={key}
-                 details={this.props.phrases[key]}
+                 details={index}
                  wrongPhrases={this.state.wrongPhrases}
-                />)
-              }
+              />)
+            })}
             </ul>
           </div>  
           <div className="game-footer">
