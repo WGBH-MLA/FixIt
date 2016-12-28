@@ -7,7 +7,7 @@ import LoadingScreen from '../components/loadingscreen'
 import Paging from '../components/paginator'
 import {getCookie} from '../helpers'
 
-class TranscriptUI extends React.Component{
+class GameUi extends React.Component{
 
   constructor(){
     super();  
@@ -195,4 +195,4 @@ class TranscriptUI extends React.Component{
   }
 }
 
-export default TranscriptUI;
+export default GameUi;
