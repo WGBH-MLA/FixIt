@@ -1,3 +1,5 @@
+import logging
+
 from rest_framework import viewsets
 from rest_framework.decorators import list_route
 from rest_framework.response import Response
@@ -9,10 +11,14 @@ from ..transcript.models import (
 )
 from ..accounts.models import Profile, Score
 from .serializers import (
-    TranscriptSerializer, TranscriptPhraseDownvoteSerializer,
+    TranscriptSerializer,
+    TranscriptPhraseSerializer,
+    TranscriptPhraseDownvoteSerializer,
     TranscriptPhraseCorrectionSerializer, SourceSerializer,
     ProfileSerializer, TopicSerializer, ScoreSerializer
 )
+
+django_log = logging.getLogger('django')
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -37,6 +43,15 @@ class TranscriptViewSet(viewsets.ModelViewSet):
     def random(self, request):
         transcript = Transcript.objects.random_transcript()
         serializer = self.get_serializer(transcript, many=True)
+        return Response(serializer.data)
+
+    @list_route()
+    def game_one(self, request):
+        transcripts, phrases = Transcript.objects.game_one(request.user)
+        serializer = self.get_serializer(
+            transcripts, many=True, context={'phrases': phrases})
+        phrase_serializer = TranscriptPhraseSerializer(phrases, many=True)
+        serializer.data[0]['phrases'] = phrase_serializer.data
         return Response(serializer.data)
 
 

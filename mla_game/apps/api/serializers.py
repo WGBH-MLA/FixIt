@@ -23,7 +23,9 @@ class TranscriptPhraseSerializer(serializers.ModelSerializer):
 
 
 class TranscriptSerializer(serializers.ModelSerializer):
-    phrases = TranscriptPhraseSerializer(many=True, read_only=True)
+    phrases = TranscriptPhraseSerializer(
+        many=True, read_only=True,
+    )
     metadata = TranscriptMetadataSerializer()
 
     class Meta:
