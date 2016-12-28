@@ -81,10 +81,18 @@ class TopicViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
-    def get_queryset(self):
-        return Profile.objects.filter(user=self.request.user)
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+
+    def get_queryset(self):
+        return Profile.objects.filter(user=self.request.user)
+
+    def partial_update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        if request.data['considered_phrases']:
+            for phrase in self.get_object().considered_phrases.all():
+                request.data['considered_phrases'].append(phrase.pk)
+        return self.update(request, *args, **kwargs)
 
 
 class ScoreViewSet(viewsets.ModelViewSet):
