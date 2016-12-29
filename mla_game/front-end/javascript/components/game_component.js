@@ -35,7 +35,7 @@ class GameUi extends React.Component{
     // keys
     let key = `phrase-${pk}`
     let keyExists = key in wrongPhrases;
-    wrongPhrases[`phrase-${pk}`] = phrase;
+    wrongPhrases[key] = phrase;
     
     // push object to state only if it already doesn't exist
     // and set the class name accordingly
