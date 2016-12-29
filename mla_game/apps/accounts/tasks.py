@@ -57,6 +57,8 @@ def update_transcript_picks(user, **kwargs):
                                   if transcript.pk not in completed_transcripts]
     picks['ideal_transcripts'] = list(set(picks['station_transcripts']).intersection(
         set(picks['topic_transcripts'])))
+    picks['acceptable_transcripts'] = [t for t in picks['station_transcripts'] + picks['topic_transcripts']
+                                       if t not in picks['ideal_transcripts']]
     picks['partially_completed_transcripts'] = [transcript for transcript in partial_transcripts
                                                 if transcript not in completed_transcripts]
     picks['completed_transcripts'] = completed_transcripts

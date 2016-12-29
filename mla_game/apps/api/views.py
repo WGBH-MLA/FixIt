@@ -49,9 +49,11 @@ class TranscriptViewSet(viewsets.ModelViewSet):
     def game_one(self, request):
         transcripts, phrases = Transcript.objects.game_one(request.user)
         serializer = self.get_serializer(
-            transcripts, many=True, context={'phrases': phrases})
-        phrase_serializer = TranscriptPhraseSerializer(phrases, many=True)
-        serializer.data[0]['phrases'] = phrase_serializer.data
+            transcripts, many=True,
+        )
+        if phrases:
+            phrase_serializer = TranscriptPhraseSerializer(phrases, many=True)
+            serializer.data[0]['phrases'] = phrase_serializer.data
         return Response(serializer.data)
 
 

@@ -1,5 +1,6 @@
 import logging
 import requests
+import random
 from random import randint
 
 from django.contrib.auth.models import User
@@ -19,9 +20,21 @@ class TranscriptManager(models.Manager):
     def game_one(self, user):
         picks = TranscriptPicks.objects.get(user=user).picks
         if picks['partially_completed_transcripts']:
-            to_return = self.filter(pk=picks['partially_completed_transcripts'][0])
-            phrases = to_return.first().phrases.unseen(user)
-            return (to_return, phrases)
+            transcript = self.filter(pk=picks['partially_completed_transcripts'][0])
+            phrases = transcript.first().phrases.unseen(user)
+            return (transcript, phrases)
+        elif picks['ideal_transcripts']:
+            return (
+                self.filter(pk=random.choice(picks['ideal_transcripts'])),
+                False
+            )
+        elif picks['acceptable_transcripts']:
+            return (
+                self.filter(pk=random.choice(picks['acceptable_transcripts'])),
+                False
+            )
+        else:
+            return (self.random_transcript(), False)
 
     def random_transcript(self):
         all_transcripts = self.all().defer('transcript_data_blob')
