@@ -226,7 +226,7 @@ button {
         float:left;
       }
       .context {
-        background:lighten($theme-tertiary, 25%);
+        background:$context;
         color:white;
         font-weight:700;
         display:block;
@@ -240,7 +240,7 @@ button {
       }
       &:hover {
         .context, span {
-          background:darken($transcript-error, 25%);
+          background:$transcript-error;
           color:white;
         }
       }

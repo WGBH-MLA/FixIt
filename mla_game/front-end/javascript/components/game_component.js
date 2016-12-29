@@ -7,7 +7,7 @@ import LoadingScreen from '../components/loadingscreen'
 import Paging from '../components/paginator'
 import {getCookie} from '../helpers'
 
-class TranscriptUI extends React.Component{
+class GameUi extends React.Component{
 
   constructor(){
     super();  
@@ -35,7 +35,7 @@ class TranscriptUI extends React.Component{
     // keys
     let key = `phrase-${pk}`
     let keyExists = key in wrongPhrases;
-    wrongPhrases[`phrase-${pk}`] = phrase;
+    wrongPhrases[key] = phrase;
     
     // push object to state only if it already doesn't exist
     // and set the class name accordingly
@@ -195,4 +195,4 @@ class TranscriptUI extends React.Component{
   }
 }
 
-export default TranscriptUI;
+export default GameUi;

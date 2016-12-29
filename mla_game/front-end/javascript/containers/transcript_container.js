@@ -1,5 +1,5 @@
 import React from 'react'
-import TranscriptUI from '../components/transcript_component'
+import GameUi from '../components/game_component'
 
 class RandTranscriptContainer extends React.Component {
   
@@ -35,7 +35,7 @@ class RandTranscriptContainer extends React.Component {
 
   render() {
     return (
-      <TranscriptUI 
+      <GameUi 
         phrases={this.state.phrases} 
         meta={this.state.meta} 
         media_url={this.state.media_url} 
