@@ -1,7 +1,6 @@
 // Native React Components
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 
 // Nav Views
 import Header from './components/header'
@@ -16,6 +15,7 @@ import GameTwo from './components/gametwo'
 import GameThree from './components/gamethree'
 
 const appTarget = document.getElementById('app');
+
 // Component names should always begin with an uppercase letter
 // state = owned by current component
 // props = handed down from parent component
@@ -25,10 +25,11 @@ const appTarget = document.getElementById('app');
    // native method to react    
    componentDidMount(){}
 */
+
 class App extends React.Component{
   render(){
     return(
-      <Router history={browserHistory}>
+      <Router history={history}>
         <Route path="/" component={Header}>
           <IndexRoute component={GameMenu} />      
           <Route path="leaderboard" component={LeaderBoard} />
@@ -44,4 +45,6 @@ class App extends React.Component{
 }
 
 // render the app
-ReactDOM.render((<App />),appTarget);
+ ReactDOM.render((
+  <App />
+),appTarget);
