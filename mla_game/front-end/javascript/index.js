@@ -1,7 +1,7 @@
 // Native React Components
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter,Router, Route, Match, IndexRoute, browserHistory } from 'react-router'
+import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 
 // Nav Views
 import Header from './components/header'
@@ -25,18 +25,23 @@ const appTarget = document.getElementById('app');
    // native method to react    
    componentDidMount(){}
 */
+class App extends React.Component{
+  render(){
+    return(
+      <Router history={browserHistory}>
+        <Route path="/" component={Header}>
+          <IndexRoute component={GameMenu} />      
+          <Route path="leaderboard" component={LeaderBoard} />
+          <Route path="settings" component={Settings} />
+          <Route path="preferences" component={Preferences} />
+          <Route path="gameone" component={GameOne} />
+          <Route path="gametwo" component={GameTwo} />
+          <Route path="gamethree" component={GameThree} />
+        </Route>
+      </Router>
+    )
+  }
+}
 
 // render the app
-ReactDOM.render((
-  <Router history={browserHistory}>
-    <Route path="/" component={Header}>
-      <IndexRoute component={GameMenu} />      
-      <Route path="leaderboard" component={LeaderBoard} />
-      <Route path="settings" component={Settings} />
-      <Route path="preferences" component={Preferences} />
-      <Route path="gameone" component={GameOne} />
-      <Route path="gametwo" component={GameTwo} />
-      <Route path="gamethree" component={GameThree} />
-    </Route>
-  </Router>),
-appTarget);
+ReactDOM.render((<App />),appTarget);
