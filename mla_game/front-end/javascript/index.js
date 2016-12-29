@@ -1,6 +1,7 @@
 // Native React Components
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 
 // Nav Views
 import Header from './components/header'
