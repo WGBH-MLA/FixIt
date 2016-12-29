@@ -30,7 +30,7 @@ const appTarget = document.getElementById('app');
 class App extends React.Component{
   render(){
     return(
-      <Router history={history}>
+      <Router history={browserHistory}>
         <Route path="/" component={Header}>
           <IndexRoute component={GameMenu} />      
           <Route path="leaderboard" component={LeaderBoard} />
