@@ -192,10 +192,20 @@ class TranscriptPhraseCorrection(models.Model):
 
 
 class TranscriptMetadata(models.Model):
+    media_types = (
+        ('v', 'Video'),
+        ('a', 'Audio'),
+        ('u', 'Unknown')
+    )
     transcript = models.OneToOneField(Transcript, related_name='metadata')
     description = models.TextField(blank=True, null=True)
     series = models.CharField(max_length=255, blank=True, null=True)
     broadcast_date = models.CharField(max_length=255, blank=True, null=True)
+    media_type = models.CharField(
+        max_length=1,
+        choices=media_types,
+        default='u'
+    )
 
 
 class Source(models.Model):

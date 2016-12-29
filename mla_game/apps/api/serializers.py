@@ -13,7 +13,10 @@ from ..accounts.models import Profile, Score
 class TranscriptMetadataSerializer(serializers.ModelSerializer):
     class Meta:
         model = TranscriptMetadata
-        fields = ('description', 'series', 'broadcast_date')
+        fields = (
+            'description', 'series', 'broadcast_date',
+            'media_type'
+        )
 
 
 class TranscriptPhraseSerializer(serializers.ModelSerializer):

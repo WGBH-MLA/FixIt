@@ -102,7 +102,6 @@ class Command(BaseCommand):
             for child in root.iter(
                     '{http://www.pbcore.org/PBCore/PBCoreNamespace.html}pbcoreAnnotation'):
                 if child.attrib['annotationType'] == 'organization':
-                    logger.info('Found source {} for transcript: {}'.format(
                         child.text, transcript
                     ))
                     source_candidates.append(child.text)
@@ -142,6 +141,22 @@ class Command(BaseCommand):
         except:
             return ''
 
+    def _media_type(self, root):
+        try:
+            types = set()
+            for child in root.iter(
+                    '{http://www.pbcore.org/PBCore/PBCoreNamespace.html}instantiationMediaType'):
+                types.add(child.text)
+            if types:
+                return {
+                    'Moving Image': 'v',
+                    'Sound': 'a'
+                }[types.pop()]
+            else:
+                return 'u'
+        except:
+            return 'u'
+
     def handle(self, *args, **options):
         for transcript in Transcript.objects.filter(metadata_processed=False)[:5000]:
             aapb_data = transcript.aapb_xml
@@ -155,6 +170,7 @@ class Command(BaseCommand):
                         'description': self._description(root),
                         'series': self._series_title(root),
                         'broadcast_date': self._broadcast_date(root),
+                        'media_type': self._media_type(root),
                     }
                     tmd, created = TranscriptMetadata.objects.update_or_create(
                         transcript=transcript,
