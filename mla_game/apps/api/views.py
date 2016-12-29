@@ -7,15 +7,18 @@ from rest_framework.pagination import PageNumberPagination
 
 from ..transcript.models import (
     Transcript, TranscriptPhraseDownvote, Source, Topic,
-    TranscriptPhraseCorrection
+    TranscriptPhraseCorrection,
+    TranscriptPhraseCorrectionVote
 )
 from ..accounts.models import Profile, Score
 from .serializers import (
     TranscriptSerializer,
     TranscriptPhraseSerializer,
     TranscriptPhraseDownvoteSerializer,
-    TranscriptPhraseCorrectionSerializer, SourceSerializer,
-    ProfileSerializer, TopicSerializer, ScoreSerializer
+    TranscriptPhraseCorrectionSerializer,
+    TranscriptPhraseCorrectionVoteSerializer,
+    SourceSerializer, ProfileSerializer,
+    TopicSerializer, ScoreSerializer
 )
 
 django_log = logging.getLogger('django')
@@ -69,6 +72,15 @@ class TranscriptPhraseCorrectionViewSet(viewsets.ModelViewSet):
         )
     queryset = TranscriptPhraseCorrection.objects.all()
     serializer_class = TranscriptPhraseCorrectionSerializer
+
+
+class TranscriptPhraseCorrectionVoteViewSet(viewsets.ModelViewSet):
+    def get_queryset(self):
+        return TranscriptPhraseCorrectionVote.objects.filter(
+            user=self.request.user
+        )
+    queryset = TranscriptPhraseCorrectionVote.objects.all()
+    serializer_class = TranscriptPhraseCorrectionVoteSerializer
 
 
 class SourceViewSet(viewsets.ReadOnlyModelViewSet):

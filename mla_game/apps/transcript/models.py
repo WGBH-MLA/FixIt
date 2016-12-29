@@ -183,12 +183,22 @@ class TranscriptPhraseCorrection(models.Model):
     no_words = models.BooleanField(default=False)
     confidence = models.FloatField(default=-1.0)
     appearances = models.IntegerField(default=0)
-    votes = models.IntegerField(default=0)
     transcript_phrase = models.ForeignKey(TranscriptPhrase, related_name='transcript_phrase_correction')
     user = models.ForeignKey(User, default=None)
 
+    @property
+    def votes(self):
+        return TranscriptPhraseCorrectionVote.filter(
+            transcript_phrase_correction=self.pk
+        ).count()
+
     def __str__(self):
         return str(self.transcript_phrase) + '_correction'
+
+
+class TranscriptPhraseCorrectionVote(models.Model):
+    transcript_phrase_correction = models.ForeignKey(TranscriptPhraseCorrection)
+    user = models.ForeignKey(User)
 
 
 class TranscriptMetadata(models.Model):

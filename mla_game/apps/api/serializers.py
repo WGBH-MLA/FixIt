@@ -4,7 +4,7 @@ from rest_framework.validators import UniqueTogetherValidator
 from ..transcript.models import (
     Transcript, TranscriptPhrase, TranscriptMetadata,
     TranscriptPhraseDownvote, TranscriptPhraseCorrection,
-    Source, Topic
+    TranscriptPhraseCorrectionVote, Source, Topic
 )
 
 from ..accounts.models import Profile, Score
@@ -48,6 +48,16 @@ class TranscriptPhraseCorrectionSerializer(serializers.ModelSerializer):
             'transcript_phrase',
             'user',
         )
+
+
+class TranscriptPhraseCorrectionVoteSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(
+        default=serializers.CurrentUserDefault()
+    )
+
+    class Meta:
+        model = TranscriptPhraseCorrectionVote
+        fields = ('transcript_phrase_correction', 'user')
 
 
 class TranscriptPhraseDownvoteSerializer(serializers.ModelSerializer):
