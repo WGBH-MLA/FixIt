@@ -53,14 +53,14 @@
           width:2em;
           height:2em;
           vertical-align:middle;
-          fill:$icon-dark;
+          fill:$default;
           @include transition(fill, 300ms, ease-in);
           polygon {
-            fill:$icon-dark;
+            fill:$default;
             @include transition(fill, 300ms, ease-in);
           }
           circle {
-            stroke:$icon-dark;
+            stroke:$default;
             @include transition(fill, 300ms, ease-in);
           }
           &:hover {
@@ -142,28 +142,34 @@
   
   // browser resets and visual styling for progress element
   progress {
-    background:$icon-dark;
+    background-color:$default;
+    color:$default;
     border:0;
+    
+    &[value] {
+      -webkit-appearance: none;
+              appearance: none;
+      height:.75em;
+      @include transition(width, 400ms, ease-out);
+    }
+    &:not[value] {
+      -webkit-appearance: none;
+              appearance: none;
+      height:.75em;
+    }
+
+    &[value]::-webkit-progress-bar{
+      background-color:$default
+    }
+
+    &[value]::-webkit-progress-value{
+      background-color:$progress;
+      @include transition(width, 400ms, ease-out);
+    }
+    
+    &[value]::-moz-progress-bar{ 
+      background-color:$progress;
+    } 
+
   }
-  progress[value] {
-    -webkit-appearance: none;
-            appearance: none;
-  }
-  progress:not[value] {
-    -webkit-appearance: none;
-            appearance: none;
-  }
-  progress:not[value]::-webkit-progress-value {
-    box-shadow:0 2px 5px rgba(0, 0, 0, 0.25) inset;
-  }
-  progress:not[value]::-moz-progress-bar {
-    box-shadow:0 2px 5px rgba(0, 0, 0, 0.25) inset;
-  }
-  progress[value]::-webkit-progress-value {
-    background-color:$progress;
-  }
-  progress[value]::-moz-progress-bar {
-    background-color:$progress;
-  }
-  
 }
