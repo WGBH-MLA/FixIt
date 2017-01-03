@@ -18,6 +18,7 @@ class GameUi extends React.Component{
     this._goBack = this._goBack.bind(this);
     this._renderGame = this._renderGame.bind(this);
     this._selectPhrase = this._selectPhrase.bind(this);
+    this._setAudio = this._setAudio.bind(this);
     
     this.state = {
       currentTime:0,
@@ -52,10 +53,15 @@ class GameUi extends React.Component{
     }
   }
   
-  _syncAudio(time, paused) {
+  _syncAudio(time) {
     this.setState({
       currentTime:time,
-      isPlaying:paused
+    })
+  }
+
+  _setAudio(callback){
+    this.setState({
+      isPlaying:callback
     })
   }
   
@@ -138,7 +144,13 @@ class GameUi extends React.Component{
             <pre>{JSON.stringify(this.state, null, 2)}</pre>
             
             <div className='game-meta'>
-              <Audio src={this.props.media_url} _syncAudio={this._syncAudio}  isPlaying={this.state.isPlaying} index={this.state.index} />
+              <Audio
+                   _setAudio={this._setAudio}
+                   _syncAudio={this._syncAudio}  
+                    src={this.props.media_url} 
+                    isPlaying={this.state.isPlaying} 
+                    index={this.state.index}
+              />
               <GameMeta meta={this.props.meta} aapb_link={this.props.aapb_link} />
             </div>
             
@@ -162,7 +174,7 @@ class GameUi extends React.Component{
               <h2 className='title delta'><span>1</span> Identify Errors</h2>
               <div className="controls">
                 <Paging _goBack={this._goBack} _handleProgress={this._handleProgress} />                
-                <progress max={this.props.phrases.length} value={this.state.index}></progress>
+                <progress className="game-progress" max={this.props.phrases.length} value={this.state.index}></progress>
               </div>
               <button className="help">
                 <title>Help</title>

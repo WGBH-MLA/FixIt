@@ -5,27 +5,35 @@ class AudioUI extends  React.Component{
   constructor(){
     super();
     this._playingAudio = this._playingAudio.bind(this); 
-    this._playAudio = this._playAudio.bind(this); 
+    this._playPause = this._playPause.bind(this); 
     this._togglePlay = this._togglePlay.bind(this); 
   }
 
-  _playAudio(){
-    if(this.audioPlayer.paused) {
-      this.audioPlayer.play();
-    } else {
+  _playPause(){
+    if(this.props.isPlaying) {
       this.audioPlayer.pause();
+    } else {
+      this.audioPlayer.play();
     }
   }
-
+  
   _playingAudio(){
     var self = this;
     this.audioPlayer.addEventListener('timeupdate', function(){
-      self.props._syncAudio(this.currentTime, !this.paused)
+      self.props._syncAudio(this.currentTime)
+    })
+    
+    this.audioPlayer.addEventListener('play', function(){
+      self.props._setAudio(true)
+    })
+    
+    this.audioPlayer.addEventListener('pause', function(){
+      self.props._setAudio(false)
     })
   }
-
+  
   componentDidMount(){
-    this._playingAudio();
+    this._playingAudio()
   }
   
 
@@ -48,7 +56,7 @@ class AudioUI extends  React.Component{
     const { isPlaying } = this.props;
     return (
       <div className='audio'>
-        <button className='play-button' onClick={this._playAudio}>
+        <button className='play-button' onClick={() => this._playPause()}>
           <svg className="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
             <defs>
               <filter id="a" filterUnits="userSpaceOnUse" x="-13.8" y="-11.5" width="227.2" height="214.8">
