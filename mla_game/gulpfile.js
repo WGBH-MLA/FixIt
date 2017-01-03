@@ -17,11 +17,7 @@ var browserify = require('browserify'),
 
 gulp.task('js', [], function(){
     var b = browserify();
-    b.transform(babelify, {
-      presets: ['es2015', 'react'],
-      plugins: ['transform-object-rest-spread', 'transform-decorators-legacy', 'transform-class-properties']
-
-    })
+    b.transform(babelify);
     b.add(paths.indexJS);
     return b.bundle()
         .pipe(source('index.js'))
