@@ -145,11 +145,11 @@ class GameUi extends React.Component{
             
             <div className='game-meta'>
               <Audio
-                   _setAudio={this._setAudio}
-                   _syncAudio={this._syncAudio}  
-                    src={this.props.media_url} 
-                    isPlaying={this.state.isPlaying} 
-                    index={this.state.index}
+               _setAudio={this._setAudio}
+               _syncAudio={this._syncAudio}
+                src={this.props.media_url} 
+                isPlaying={this.state.isPlaying} 
+                index={this.state.index}
               />
               <GameMeta meta={this.props.meta} aapb_link={this.props.aapb_link} />
             </div>
@@ -187,7 +187,6 @@ class GameUi extends React.Component{
           </div>    
         </div>
       )
-
     } else {
       return(
         <LoadingScreen />
@@ -196,7 +195,7 @@ class GameUi extends React.Component{
   }
 
   componentDidMount(){
-    setTimeout(this._delayRender, 1000);
+    setTimeout(this._delayRender, 1000); 
   }
 
 
