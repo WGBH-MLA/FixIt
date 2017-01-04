@@ -1,5 +1,8 @@
 .game-footer {
   background:$theme-primary;
+  position:fixed;
+  width:100%;
+  bottom:0;
   .grid {
     position:relative;
     padding-top:.5em;
@@ -12,7 +15,9 @@
     text-transform:uppercase;
     width:50%;
     float:left;
-    padding:.25em .5em;
+    @include center(false, true);
+    padding:0 .5em;
+    font-size: 4vw;
     line-height:1.5;
     margin-bottom:0;
     span {
@@ -32,17 +37,26 @@
         border-radius:100%;
       }
     }
+    @include susy-breakpoint($screen-sm-min, $map-sm) {
+      padding:1em .5em .25em .5em;
+      font-size: 1.25em;
+      position:inherit;
+      transform:inherit;
+      top:inherit;
+    }
+    
     @include susy-breakpoint($screen-lg-min, $map-lg) {
       @include span(3 of 12 first);
       line-height:3.5em;
+      padding:.25em .5em;
     }
   }
 
   .controls {
     width:50%;
     float:left;
-    height:5.5em;
     position: relative;
+    margin-left:50%;
     .pagination {
       @include clearfix;
       button {
@@ -78,6 +92,11 @@
     
     progress {
       width:100%;
+    }
+
+    @include susy-breakpoint($screen-sm-min, $map-sm) {
+      margin-left:inherit;
+      height:5.5em;
     }
     
     @include susy-breakpoint($screen-lg-min, $map-lg) {

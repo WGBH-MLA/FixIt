@@ -485,17 +485,6 @@ var GameUi = (function (_React$Component) {
           _react2['default'].createElement(
             'div',
             { className: 'grid' },
-            this.props.score,
-            _react2['default'].createElement(
-              'h3',
-              null,
-              'State as Object'
-            ),
-            _react2['default'].createElement(
-              'pre',
-              null,
-              JSON.stringify(this.state, null, 2)
-            ),
             _react2['default'].createElement(
               'div',
               { className: 'game-meta' },
@@ -1064,7 +1053,6 @@ var Header = (function (_React$Component) {
         _react2['default'].createElement(
           'div',
           null,
-          _react2['default'].createElement(_containersUser_container2['default'], null),
           _react2['default'].cloneElement(this.props.children, this.props)
         )
       );

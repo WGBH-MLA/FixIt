@@ -140,10 +140,6 @@ class GameUi extends React.Component{
       return(
         <div>
           <div className="grid">
-            {this.props.score}
-            <h3>State as Object</h3>
-            <pre>{JSON.stringify(this.state, null, 2)}</pre>
-            
             <div className='game-meta'>
               <Audio
                _setAudio={this._setAudio}

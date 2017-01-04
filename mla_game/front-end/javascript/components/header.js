@@ -42,7 +42,6 @@ class Header extends React.Component {
           </div>
         </header>
         <div>
-          <UserContainer />
           {React.cloneElement(this.props.children, this.props)}
         </div>
       </div>
