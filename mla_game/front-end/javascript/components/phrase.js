@@ -42,7 +42,7 @@ class Phrase extends React.Component{
   _showRound(){
     let keys = Number(this.props.keys);
     const {details, time, active} = this.props;
-    let currentRound = this.props.active <= keys + 7 && this.props.active >= keys - 7;
+    let currentRound = this.props.active <= keys + 4 && this.props.active >= keys -4;
     if(currentRound) {
       return(
         <li ref={(li) => {this.li = li}} className={this._activePhrase(time, details.start_time, details.end_time)}>

@@ -2,9 +2,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
-
+import { createStore } from 'redux';
+import { Provider } from 'react-redux'
+import store, { history } from './store'
 // Nav Views
-import Header from './components/header'
+import Base from './components/app'
 import GameMenu from './components/gamemenu'
 import LeaderBoard from './components/leaderboard'
 import Settings from './components/settings'
@@ -27,25 +29,22 @@ const appTarget = document.getElementById('app');
    componentDidMount(){}
 */
 
-class App extends React.Component{
-  render(){
-    return(
-      <Router history={browserHistory}>
-        <Route path="/" component={Header}>
-          <IndexRoute component={GameMenu} />      
-          <Route path="leaderboard" component={LeaderBoard} />
-          <Route path="settings" component={Settings} />
-          <Route path="preferences" component={Preferences} />
-          <Route path="gameone" component={GameOne} />
-          <Route path="gametwo" component={GameTwo} />
-          <Route path="gamethree" component={GameThree} />
-        </Route>
-      </Router>
-    )
-  }
-}
+const App = (
+  <Provider store={store}>
+    <Router history={history}>
+      <Route path="/" component={Base}>
+        <IndexRoute component={GameMenu} />      
+        <Route path="leaderboard" component={LeaderBoard} />
+        <Route path="settings" component={Settings} />
+        <Route path="preferences" component={Preferences} />
+        <Route path="gameone" component={GameOne} />
+        <Route path="gametwo" component={GameTwo} />
+        <Route path="gamethree" component={GameThree} />
+      </Route>
+    </Router>
+  </Provider>
+);
+  
 
 // render the app
- ReactDOM.render((
-  <App />
-),appTarget);
+ ReactDOM.render((App),appTarget);

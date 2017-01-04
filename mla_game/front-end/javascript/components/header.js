@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
 import UserContainer from '../containers/user_container'
-import ScoreContainer from '../containers/score_container'
 
 class Header extends React.Component {
   render() {
@@ -10,7 +9,7 @@ class Header extends React.Component {
         <header className='app-header'>
           <div>
             <h1 className='game-title'><Link to='/' onlyActiveOnIndex>Fix It</Link></h1>
-            <span className='score delta'><ScoreContainer /></span>
+            <span className='score delta'>0</span>
             <ul className='app-navigation'>
               <li><Link activeClassName="active" to="leaderboard">
                   <svg className='nav-icon' viewBox="0 0 200 200">
@@ -44,7 +43,7 @@ class Header extends React.Component {
         </header>
         <div>
           <UserContainer />
-          {this.props.children}
+          {React.cloneElement(this.props.children, this.props)}
         </div>
       </div>
     )

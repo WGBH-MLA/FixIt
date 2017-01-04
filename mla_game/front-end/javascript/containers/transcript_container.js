@@ -26,6 +26,7 @@ class RandTranscriptContainer extends React.Component {
         aapb_link:data.aapb_link,
         meta:data.metadata,
       });
+      console.log(data);
     }.bind(this));
   }
 

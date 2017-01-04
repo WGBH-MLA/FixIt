@@ -140,6 +140,7 @@ class GameUi extends React.Component{
       return(
         <div>
           <div className="grid">
+            {this.props.score}
             <h3>State as Object</h3>
             <pre>{JSON.stringify(this.state, null, 2)}</pre>
             
@@ -174,7 +175,7 @@ class GameUi extends React.Component{
               <h2 className='title delta'><span>1</span> Identify Errors</h2>
               <div className="controls">
                 <Paging _goBack={this._goBack} _handleProgress={this._handleProgress} />                
-                <progress className="game-progress" max={this.props.phrases.length} value={this.state.index}></progress>
+                <progress className="game-progress" max={this.props.phrases.length} value={this.state.index + 3}></progress>
               </div>
               <button className="help">
                 <title>Help</title>
