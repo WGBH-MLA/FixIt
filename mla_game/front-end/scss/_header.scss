@@ -44,6 +44,34 @@
   background:lighten($theme-tertiary, 5%);
   border:1px solid $theme-primary;
   box-shadow:inset 0 0 .625em darken($theme-tertiary, 15%);
+  overflow:hidden;
+  position: relative;
+  span {
+    display:inline-block;
+  }
+  .score-enter {
+    -webkit-transition: all 0.25s;
+    transition: all 0.25s;
+    -webkit-transform: translateY(-100%);
+            transform: translateY(-100%);
+  }
+  .score-enter.score-enter-active {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  .score-leave {
+    -webkit-transition: all 0.15s;
+    transition: all 0.15s;
+    position: absolute;
+    right: .25em;
+    bottom: 0;
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  .score-leave.score-leave-active {
+    -webkit-transform: translateY(100%);
+            transform: translateY(100%);
+  }
   @include susy-breakpoint($screen-sm-min, $map-sm) {
     @include span(1 of 4);
   }
@@ -54,6 +82,8 @@
     @include span(1 of 12);
   }
 }
+
+
 
 .app-navigation {
   @include plain-list;
