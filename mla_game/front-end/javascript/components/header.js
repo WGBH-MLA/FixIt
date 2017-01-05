@@ -14,10 +14,10 @@ class Header extends React.Component {
               component="span"
               className="score delta"
               transitionName="score"
-              transitionEnterTimeout={250}
-              transitionLeaveTimeout={250}
+              transitionEnterTimeout={500}
+              transitionLeaveTimeout={500}
             >
-            <span key={this.props.score.totalScore}>{this.props.score.totalScore}</span>
+              <span key={this.props.score.totalScore}>{this.props.score.totalScore}</span>
             </ReactCSSTransitionGroup>
             <ul className='app-navigation'>
               <li><Link activeClassName="active" to="leaderboard">

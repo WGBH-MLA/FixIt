@@ -117,6 +117,7 @@ class GameUi extends React.Component{
         .fail(function(response) {
           console.log(response);
         })
+        this.props.updateScore(1);
       }
       // clean state
       this.setState({
