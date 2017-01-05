@@ -178,7 +178,7 @@ button {
   }
   li {
     margin-bottom:.5em;
-    @include animated;
+    @include animated(.25s);
     @include fadeIn;
     @include clearfix;
     button {
@@ -266,7 +266,7 @@ button {
   .submit-phrase {
     display:inline-block;
     margin-left:1em;
-    @include animated;
+    @include animated(.25s);
     @include transition(opacity, 300ms, ease-in);
     &.submit-phrase-enter{
       opacity:.01;

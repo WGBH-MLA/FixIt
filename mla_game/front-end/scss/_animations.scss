@@ -1,6 +1,6 @@
-@mixin animated(dur) {
-  -webkit-animation-duration: dur;
-  animation-duration: dur;
+@mixin animated($dur) {
+  -webkit-animation-duration: $dur;
+  animation-duration: $dur;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
