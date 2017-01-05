@@ -5,7 +5,10 @@ class GameOne extends React.Component{
   
   render(){
     return (
-      <RandTranscriptContainer />
+      <RandTranscriptContainer 
+        score={this.props.score} 
+        updateScore={this.props.updateScore}
+      />
     )
   }
 
