@@ -1,8 +1,7 @@
-//play pause audio
-export function updateScore(amount, currentScore){
+ //play pause audio
+export function updateScore(amount){
   return {
     type: 'UPDATE_SCORE',
-    score,
-    currentScore
+    amount,
   }
 }
