@@ -87,6 +87,7 @@ class GameUi extends React.Component{
       this.setState({
         index:update
       })
+      this.props.updateScore(10);
     } else {
       return
     }
@@ -124,6 +125,8 @@ class GameUi extends React.Component{
     }
   }
 
+
+  
   _goBack(i) {
     if(this.state.index >= 1) {
       let update = this.state.index - i;
@@ -140,6 +143,7 @@ class GameUi extends React.Component{
       return(
         <div>
           <div className="grid">
+            <pre>{JSON.stringify(this.state, null, 2)}</pre>
             <div className='game-meta'>
               <Audio
                _setAudio={this._setAudio}
