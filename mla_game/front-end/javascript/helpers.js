@@ -13,3 +13,27 @@ let cookieValue = null;
   }
   return cookieValue;
 }
+
+// get user
+export function getUser() {
+  return(
+    $.ajax({
+      url:'/api/profile/'
+    })
+  )
+}
+
+// post data
+export function postData(endpoint, data) {
+  return(
+    $.ajax({
+      url: endpoint,
+      type: 'POST',
+      data: data,
+      headers: {
+        // csrftoken token?
+        "X-CSRFToken": getCookie('csrftoken')
+      }
+    })
+  )
+}
