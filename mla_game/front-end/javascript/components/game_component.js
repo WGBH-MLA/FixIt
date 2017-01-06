@@ -5,7 +5,7 @@ import Submit from '../components/submitPhrase_component'
 import Phrase from '../components/phrase'
 import LoadingScreen from '../components/loadingscreen'
 import Paging from '../components/paginator'
-import {getCookie} from '../helpers'
+import { getCookie, postData } from '../helpers'
 
 class GameUi extends React.Component{
 
@@ -99,24 +99,13 @@ class GameUi extends React.Component{
     } 
     else {
       for(let key in wrongPhrases){
-        let data = wrongPhrases[key].pk;
-        $.ajax({
-          url: '/api/transcriptphrasedownvote/',
-          type: 'POST',
-          data: {
-            transcript_phrase:data
-          },
-          headers: {
-            // csrftoken token?
-            "X-CSRFToken": getCookie('csrftoken')
-           }
-        })
-        .done(function(response) {
-          console.log(response)
-        })
-        .fail(function(response) {
-          console.log(response);
-        })
+        // construct object for downvote
+        let data = {
+          transcript_phrase: wrongPhrases[key].pk
+        }
+        // helper ajax function to post downvote
+        postData('/api/transcriptphrasedownvote/', data);
+
         this.props.updateScore(1);
       }
       // clean state
