@@ -5,7 +5,6 @@
 
 function user(state = {
   isFetching: false,
-  user: {}
 }, action) {
 
   // console.log(state, action);
@@ -14,12 +13,14 @@ function user(state = {
     case 'GET_USER':
       return {...state, 
         isFetching:true,
-        user: null 
       }
     case 'GET_USER_SUCCESS':
       return {...state, 
         isFetching:false, 
-        user:action.user
+        pk:action.user.pk,
+        preferred_stations:[action.user.preferred_stations],
+        preferred_topics:[action.user.preferred_topics],
+        username:action.user.username
       }
     default:
       return state;

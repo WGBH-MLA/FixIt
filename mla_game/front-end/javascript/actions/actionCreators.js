@@ -26,7 +26,7 @@ export function fetchUser(user){
   return (dispatch, getState) => {
     dispatch(requestUser(user))
     return getUserEndpoint().then(function(data){
-        dispatch(storeUser(data.results))
+      dispatch(storeUser(data.data.results[0]))
     })
   }
 }
