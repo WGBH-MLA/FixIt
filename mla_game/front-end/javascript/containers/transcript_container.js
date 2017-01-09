@@ -1,5 +1,6 @@
 import React from 'react'
 import GameUi from '../components/game_component'
+import axios from 'axios'
 
 class RandTranscriptContainer extends React.Component {
   
@@ -15,18 +16,17 @@ class RandTranscriptContainer extends React.Component {
   }
   
   _getData() {
-    $.ajax({
-      url: '/api/transcript/random/'
-    })
-    .then(function(data) {
-      data = data[0];
-      this.setState({
+    let self = this;
+    axios.get('/api/transcript/random/')
+     .then(function(data) {
+      data = data.data[0];
+       self.setState({
         media_url: data.media_url,
         phrases: data.phrases,
         aapb_link:data.aapb_link,
         meta:data.metadata,
-      });
-    }.bind(this));
+       })
+    });
   }
 
   componentDidMount() {
