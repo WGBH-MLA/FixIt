@@ -3,7 +3,6 @@ var browserify = require('browserify'),
     babelify = require('babelify'),
     compass = require('gulp-compass'),
     source = require('vinyl-source-stream'),
-    jquery = require('gulp-jquery');
     uglify = require('gulp-uglify');
     pump = require('pump');
     paths = {
@@ -22,15 +21,6 @@ gulp.task('js', [], function(){
     return b.bundle()
         .pipe(source('index.js'))
         .pipe(gulp.dest('./front-end/dist'));
-});
-
-gulp.task('jquery', function(){
-    return jquery.src({
-        release: 2,
-         // modules to be excluded
-        flags: ['-sizzle', '-effects', '-event/alias',]
-    })
-    .pipe(gulp.dest('./front-end/dist/lib/'));
 });
 
 gulp.task('compass', function(){

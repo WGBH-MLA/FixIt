@@ -16,7 +16,6 @@
 {% endblock %}
 {% block javascript %}
     {% if user.is_authenticated %}
-      <script src="{% static 'dist/lib/jquery.custom.js' %}" type="text/javascript" charset="utf-8"></script>
       <script src="{% static 'dist/index.js' %}" type="text/javascript" charset="utf-8"></script>
     {% endif %}
 {% endblock %}
