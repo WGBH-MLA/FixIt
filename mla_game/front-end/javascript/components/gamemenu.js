@@ -6,7 +6,9 @@ class GameMenu extends React.Component{
   render() {
     return (
       <div className='grid'>
+        <h1></h1>
         <h1>Game Menu</h1>
+        <h2>Welcome </h2>
         <ul className='game-navigation'>
           <li><Link to="gameone">Game One</Link></li>
           <li><Link to="gametwo">Game Two</Link></li>

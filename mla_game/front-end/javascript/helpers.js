@@ -15,7 +15,7 @@ let cookieValue = null;
 }
 
 // get user
-export function getUser() {
+export function getUserEndpoint() {
   return(
     $.ajax({
       url:'/api/profile/'

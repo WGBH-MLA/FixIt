@@ -4,7 +4,10 @@ import ReactDOM from 'react-dom'
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 import { createStore } from 'redux';
 import { Provider } from 'react-redux'
-import store, { history } from './store'
+import configureStore from './store'
+import { syncHistoryWithStore } from 'react-router-redux'
+
+
 // Nav Views
 import Base from './components/app'
 import GameMenu from './components/gamemenu'
@@ -19,6 +22,9 @@ import GameThree from './components/gamethree'
 
 const appTarget = document.getElementById('app');
 
+// const history = syncHistoryWithStore(browserHistory, store);
+const store = configureStore()
+
 // Component names should always begin with an uppercase letter
 // state = owned by current component
 // props = handed down from parent component
@@ -31,7 +37,7 @@ const appTarget = document.getElementById('app');
 
 const App = (
   <Provider store={store}>
-    <Router history={history}>
+    <Router history={browserHistory}>
       <Route path="/" component={Base}>
         <IndexRoute component={GameMenu} />      
         <Route path="leaderboard" component={LeaderBoard} />

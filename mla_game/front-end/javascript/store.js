@@ -1,10 +1,12 @@
-import { createStore, compse } from 'redux'
-import { syncHistoryWithStore } from 'react-router-redux'
-import { browserHistory } from 'react-router'
-
+import { createStore, applyMiddleware } from 'redux'
+import thunkMiddleware from 'redux-thunk'
+import createLogger from 'redux-logger'
+import { getUserEndpoint } from './helpers'
 
 //import the root reducer
  import rootReducer from './reducers/index'
+
+const loggerMiddleware = createLogger()
 
 const score = {
   totalScore:205
@@ -15,8 +17,13 @@ const defaultState = {
   score
 };
 
-const store = createStore(rootReducer, defaultState);
-
-export const history = syncHistoryWithStore(browserHistory, store);
-export default store;
-
+export default function configureStore(defaultState) {
+  return createStore(
+    rootReducer,
+    defaultState,
+    applyMiddleware(
+      thunkMiddleware,
+      loggerMiddleware
+    )
+  )
+}

@@ -6,6 +6,7 @@ class Preferences extends React.Component{
     return (
       <div className="app-content">
         <h1>Preferences</h1>
+        }
       </div>
     )
   }

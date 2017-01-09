@@ -2,8 +2,15 @@ import React from 'react'
 import { Link } from 'react-router'
 import UserContainer from '../containers/user_container'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import { getUserEndpoint } from '../helpers'
 
-class Header extends React.Component {
+class Base extends React.Component {
+  
+  componentDidMount(){
+    this.props.fetchUser()
+  }
+
+
   render() {
     return(
       <div>
@@ -17,7 +24,7 @@ class Header extends React.Component {
               transitionEnterTimeout={500}
               transitionLeaveTimeout={500}
             >
-              <span key={this.props.score.totalScore}>{this.props.score.totalScore}</span>
+            <span key={this.props.score.totalScore}>{this.props.score.totalScore}</span>
             </ReactCSSTransitionGroup>
             <ul className='app-navigation'>
               <li><Link activeClassName="active" to="leaderboard">
@@ -58,4 +65,4 @@ class Header extends React.Component {
   }
 }
 
-export default Header;
+export default Base;
