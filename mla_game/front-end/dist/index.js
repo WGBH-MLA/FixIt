@@ -668,6 +668,11 @@ var GameUi = (function (_React$Component) {
         this.setState({
           index: update
         });
+        var score = {
+          game: '1',
+          score: 10
+        };
+        (0, _helpers.postData)('/api/score/', score);
         this.props.updateScore(10);
       } else {
         return;
@@ -685,7 +690,11 @@ var GameUi = (function (_React$Component) {
           };
           // helper ajax function to post downvote
           (0, _helpers.postData)('/api/transcriptphrasedownvote/', data);
-
+          var score = {
+            game: '1',
+            score: 1
+          };
+          (0, _helpers.postData)('/api/score/', score);
           this.props.updateScore(1);
         }
         // clean state
@@ -2006,10 +2015,12 @@ var _reducersIndex2 = _interopRequireDefault(_reducersIndex);
 var loggerMiddleware = (0, _reduxLogger2['default'])();
 
 function configureStore(defaultState) {
-  return (0, _redux.createStore)(_reducersIndex2['default'], defaultState, (0, _redux.applyMiddleware)(_reduxThunk2['default'], loggerMiddleware));
+  return (0, _redux.createStore)(_reducersIndex2['default'], defaultState, (0, _redux.applyMiddleware)(_reduxThunk2['default']));
 }
 
 module.exports = exports['default'];
+
+// loggerMiddleware
 
 },{"./actions/actionCreators":2,"./helpers":21,"./reducers/index":22,"redux":344,"redux-logger":337,"redux-thunk":338}],26:[function(require,module,exports){
 module.exports = require('./lib/axios');
