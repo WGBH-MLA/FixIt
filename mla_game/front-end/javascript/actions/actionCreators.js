@@ -1,3 +1,4 @@
+require('es6-promise').polyfill();
 import axios from 'axios'
 
 export function updateScore(amount){
