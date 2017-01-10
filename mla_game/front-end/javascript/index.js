@@ -22,24 +22,9 @@ import GameTwo from './components/gametwo'
 import GameThree from './components/gamethree'
 
 const appTarget = document.getElementById('app');
-
-// const defaultState = {}
-
-// // load up inital state
-// axios.all([
-//   axios.get('/api/profile'),
-//   axios.get('/api/score/')
-// ])
-// .then(axios.spread(function (profile, score) {
-//   defaultState.score = score.data.results
-//   defaultState.profile = profile.data.results[0]
-// }))
-
 const store = configureStore()
 
 // Component names should always begin with an uppercase letter
-// state = owned by current component
-// props = handed down from parent component
 /* use an underscore as a prefix for custom functions
    // custom function
    _clickHandler(){} 
