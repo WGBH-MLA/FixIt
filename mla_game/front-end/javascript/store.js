@@ -2,7 +2,6 @@ import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 import { getUserEndpoint } from './helpers'
-import { fetchScore, fetchUser } from './actions/actionCreators';
 
 //import the root reducer
  import rootReducer from './reducers/index'
