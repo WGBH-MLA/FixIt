@@ -87,11 +87,6 @@ class GameUi extends React.Component{
       this.setState({
         index:update
       })
-      let score = {
-        game:'1',
-        score:10
-      }
-      postData('/api/score/', score)
       this.props.updateScore(10)
     } else {
       return
@@ -110,11 +105,6 @@ class GameUi extends React.Component{
         }
         // helper ajax function to post downvote
         postData('/api/transcriptphrasedownvote/', data);
-        let score = {
-          game:'1',
-          score:1
-        }
-        postData('/api/score/', score)
         this.props.updateScore(1);
       }
       // clean state
