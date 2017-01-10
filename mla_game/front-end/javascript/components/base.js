@@ -9,11 +9,13 @@ class Base extends React.Component {
   componentWillMount(){
     this.props.fetchData()
   }
-  
   render() {
     let loading = this.props.initialData.loading;
-    if(!loading) {
-      {console.log(this.props)}
+    if(loading) {
+      return(
+        <LoadingScreen />
+      )
+    } else {
       return(
         <div>
           <header className='app-header'>
@@ -28,6 +30,7 @@ class Base extends React.Component {
               >
                <span key={this.props.totalScore.totalScore}>{this.props.totalScore.totalScore}</span>
               </ReactCSSTransitionGroup>
+
               <ul className='app-navigation'>
                 <li><Link activeClassName="active" to="leaderboard">
                     <svg className='nav-icon' viewBox="0 0 200 200">
@@ -59,14 +62,11 @@ class Base extends React.Component {
               </ul>
             </div>
           </header>
+          
           <div>
             {React.cloneElement(this.props.children, this.props)}
           </div>
         </div>
-      )
-    } else {
-      return(
-        <LoadingScreen />
       )
     }
   }
