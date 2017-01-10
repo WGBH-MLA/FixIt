@@ -133,7 +133,7 @@ class GameUi extends React.Component{
       return(
         <div>
           <div className="grid">
-            <pre>{JSON.stringify(this.state, null, 2)}</pre>
+            
             <div className='game-meta'>
               <Audio
                _setAudio={this._setAudio}

@@ -719,11 +719,6 @@ var GameUi = (function (_React$Component) {
             'div',
             { className: 'grid' },
             _react2['default'].createElement(
-              'pre',
-              null,
-              JSON.stringify(this.state, null, 2)
-            ),
-            _react2['default'].createElement(
               'div',
               { className: 'game-meta' },
               _react2['default'].createElement(_componentsAudio_component2['default'], {
@@ -954,11 +949,13 @@ var GameMenu = (function (_React$Component) {
         ),
         _react2['default'].createElement(
           'h2',
-          null,
+          { className: 'welcome-message' },
           'Welcome ',
-          _react2['default'].createElement('br', null),
-          ' ',
-          this.props.initialData.user[0].username
+          _react2['default'].createElement(
+            'span',
+            null,
+            this.props.initialData.user[0].username
+          )
         ),
         _react2['default'].createElement(
           'ul',
