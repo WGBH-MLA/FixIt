@@ -1,5 +1,6 @@
 // Native React Components
 import React from 'react'
+import axios from 'axios'
 import ReactDOM from 'react-dom'
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 import { createStore } from 'redux';
@@ -9,7 +10,7 @@ import { syncHistoryWithStore } from 'react-router-redux'
 
 
 // Nav Views
-import Base from './components/app'
+import Base from './components/base_connect'
 import GameMenu from './components/gamemenu'
 import LeaderBoard from './components/leaderboard'
 import Settings from './components/settings'
@@ -22,7 +23,18 @@ import GameThree from './components/gamethree'
 
 const appTarget = document.getElementById('app');
 
-// const history = syncHistoryWithStore(browserHistory, store);
+// const defaultState = {}
+
+// // load up inital state
+// axios.all([
+//   axios.get('/api/profile'),
+//   axios.get('/api/score/')
+// ])
+// .then(axios.spread(function (profile, score) {
+//   defaultState.score = score.data.results
+//   defaultState.profile = profile.data.results[0]
+// }))
+
 const store = configureStore()
 
 // Component names should always begin with an uppercase letter

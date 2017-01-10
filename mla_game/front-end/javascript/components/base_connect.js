@@ -5,8 +5,8 @@ import Base from './base';
 
 function mapStateToProps(state) {
   return {
-     score: state.score,
-     user: state.user
+    initialData:state.initialData,
+    totalScore:state.totalScore
   }
 }
 

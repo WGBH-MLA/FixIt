@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export function getCookie(name) {
-let cookieValue = null;
+  let cookieValue = null;
   if (document.cookie && document.cookie !== '') {
       let cookies = document.cookie.split(';');
       for (let i = 0; i < cookies.length; i++) {
@@ -16,14 +16,7 @@ let cookieValue = null;
   return cookieValue;
 }
 
-// get user
-export function getUserEndpoint() {
-  return(
-    axios.get('/api/profile/')
-  )
-}
-
-// post data
+// post data. helper was created because CSRFToken needs to be set
 export function postData(endpoint, data) {
   return(
     axios({
@@ -37,3 +30,11 @@ export function postData(endpoint, data) {
     })
   )
 }
+
+// let total = [];
+// for (var i = 0; i < data.results.length; i++) {
+//   total.push(data.results[i].score);
+// }
+// var totalScore = total.reduce((a, b) => a + b, 0);
+
+

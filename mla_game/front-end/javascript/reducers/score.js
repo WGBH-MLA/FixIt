@@ -3,8 +3,17 @@
 // 1. the action (info about what happened)
 // 2. copy of current state
 
-function score(state = {}, action) {
+function totalScore(state = {
+  totalScore:null
+}, action) {
   switch(action.type){
+    case 'SET_TOTAL_SCORE':
+      return {
+        // take a copy of state
+        ...state.totalScore, 
+        // increment score based on amount callback
+        totalScore:action.score
+      }
     case 'UPDATE_SCORE':
       return {
         // take a copy of state
@@ -16,4 +25,4 @@ function score(state = {}, action) {
       return state;
   }
 }
-export default score;
+export default totalScore;

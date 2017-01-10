@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux'
 import { routerReducer} from 'react-router-redux'
 
-import score from './score'
-import user from './user'
+import initialData from './initial_data'
+import totalScore from './score'
 
 const rootReducer = combineReducers({
-  score, 
-  user, 
+  initialData,
+  totalScore,
   routing: routerReducer
 })
 

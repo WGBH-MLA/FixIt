@@ -1,32 +1,52 @@
-import { getUserEndpoint } from '../helpers'
- //play pause audio
+import axios from 'axios'
+
 export function updateScore(amount){
   return {
-    type: 'UPDATE_SCORE',
-    amount,
+    type:'UPDATE_SCORE',
+    amount
   }
 }
 
-// user business
-function storeUser(user) {
+function setTotalScore(score){
   return {
-    type: 'GET_USER_SUCCESS',
-    user
+    type:'SET_TOTAL_SCORE',
+    score
   }
 }
-
-function requestUser(user){
+ 
+ //score actions
+function requestInitialData(bool){
   return {
-    type: 'GET_USER',
-    user
+    type: 'GET_INITIAL_DATA',
+    loading:bool
   }
 }
 
-export function fetchUser(user){
+function storeInitialData(user, score) {
+  return {
+    type: 'GET_INITIAL_DATA_SUCCESS',
+    user,
+    score
+  }
+}
+
+export function fetchData(data){
   return (dispatch, getState) => {
-    dispatch(requestUser(user))
-    return getUserEndpoint().then(function(data){
-      dispatch(storeUser(data.data.results[0]))
-    })
+    dispatch(requestInitialData(true))
+    return axios.all([
+        axios.get('/api/profile'),
+        axios.get('/api/score/')
+      ])
+      .then(axios.spread(function (profile, score) {
+        dispatch(storeInitialData(profile.data.results, score.data.results))
+        
+        // set total score
+        let total = [];
+        for (var i = 0; i < score.data.results.length; i++) {
+          total.push(score.data.results[i].score);
+        }
+        let totalScore = total.reduce((a, b) => a + b, 0);
+        dispatch(setTotalScore(totalScore))
+      }))
   }
 }
