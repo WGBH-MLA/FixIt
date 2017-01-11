@@ -1,43 +1,39 @@
 import React from 'react'
 
-class AudioUI extends  React.Component{
+class Audio extends  React.Component{
 
   constructor(){
     super();
-    this._playingAudio = this._playingAudio.bind(this); 
-    this._playPause = this._playPause.bind(this); 
-    this._togglePlay = this._togglePlay.bind(this); 
+    this.playingAudio = this.playingAudio.bind(this); 
+    // this.playPause = this.playPause.bind(this); 
+    this.togglePlay = this.togglePlay.bind(this); 
   }
 
-  _playPause(){
-    if(this.props.isPlaying) {
-      this.audioPlayer.pause();
+  playPause(){
+    const { audioPlayer } = this
+    if(audioPlayer.paused) {
+      audioPlayer.play()
     } else {
-      this.audioPlayer.play();
+      audioPlayer.pause()
     }
   }
   
-  _playingAudio(){
-    var self = this;
+  playingAudio(){
+    const { setCurrentTime, setIsPlaying, isPlaying } = this.props    
+    
     this.audioPlayer.addEventListener('timeupdate', function(){
-      self.props._syncAudio(this.currentTime)
+      setCurrentTime(this.currentTime)
     })
-    
     this.audioPlayer.addEventListener('play', function(){
-      self.props._setAudio(true)
+      setIsPlaying(true)
     })
-    
     this.audioPlayer.addEventListener('pause', function(){
-      self.props._setAudio(false)
+      setIsPlaying(false)
     })
-  }
-  
-  componentDidMount(){
-    this._playingAudio()
-  }
-  
 
-  _togglePlay() {
+  }  
+  
+  togglePlay() {
     if(this.props.isPlaying) {
       return(
         <g>
@@ -52,11 +48,15 @@ class AudioUI extends  React.Component{
     } 
   }
 
+  componentDidMount(){
+    this.playingAudio()
+  }
+  
   render(){
     const { isPlaying } = this.props;
     return (
       <div className='audio'>
-        <button className='play-button' onClick={() => this._playPause()}>
+        <button className='play-button' onClick={() => this.playPause()}>
           <svg className="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
             <defs>
               <filter id="a" filterUnits="userSpaceOnUse" x="-13.8" y="-11.5" width="227.2" height="214.8">
@@ -76,7 +76,7 @@ class AudioUI extends  React.Component{
             <g clipPath="url(#SVGID_2_)" mask="url(#c)">
               <circle clipPath="url(#SVGID_8_)" fill="none" strokeWidth="30" cx="99.8" cy="99.6" r="84" />
             </g>
-            {this._togglePlay()}
+            {this.togglePlay()}
           </svg>
         </button>  
         <audio ref={(audio) => {this.audioPlayer = audio}} className="audio-player" src={this.props.src} preload></audio>
@@ -85,4 +85,4 @@ class AudioUI extends  React.Component{
   }
 }
 
-export default AudioUI;
+export default Audio;

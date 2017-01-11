@@ -2,13 +2,14 @@ import React from 'react'
 import { Link } from 'react-router'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { getUserEndpoint } from '../helpers'
-import LoadingScreen from './loadingScreen'
+import LoadingScreen from './loading_screen'
 
 class Base extends React.Component {
   
   componentWillMount(){
     this.props.fetchData()
   }
+  
   render() {
     let loading = this.props.initialData.loading;
     if(loading) {

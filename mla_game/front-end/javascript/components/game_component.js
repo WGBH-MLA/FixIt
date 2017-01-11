@@ -1,9 +1,8 @@
 import React from 'react'
-import Audio from '../components/audio_component'
+import Audio from '../components/audio'
 import GameMeta from '../components/game_meta'
-import Submit from '../components/submitPhrase_component'
 import Phrase from '../components/phrase'
-import LoadingScreen from '../components/loadingscreen'
+import LoadingScreen from '../components/loading_screen'
 import Paging from '../components/paginator'
 import { postData } from '../helpers'
 
@@ -11,14 +10,11 @@ class GameUi extends React.Component{
 
   constructor(){
     super();  
-    this._syncAudio = this._syncAudio.bind(this); 
     this._playPhrase = this._playPhrase.bind(this);
     this._delayRender = this._delayRender.bind(this);
     this._handleProgress = this._handleProgress.bind(this);
     this._goBack = this._goBack.bind(this);
-    this._renderGame = this._renderGame.bind(this);
     this._selectPhrase = this._selectPhrase.bind(this);
-    this._setAudio = this._setAudio.bind(this);
     
     this.state = {
       currentTime:0,
@@ -127,12 +123,10 @@ class GameUi extends React.Component{
     }
   }
   
-  _renderGame(){
-    if(this.state.loaded) {
-      return(
-        <div>
+  render(){
+    return (
+      <div>
           <div className="grid">
-           
             <div className='game-meta'>
               <Audio
                _setAudio={this._setAudio}
@@ -176,22 +170,6 @@ class GameUi extends React.Component{
             </div>
           </div>    
         </div>
-      )
-    } else {
-      return(
-        <LoadingScreen />
-      )
-    }
-  }
-
-  componentDidMount(){
-    setTimeout(this._delayRender, 1000); 
-  }
-
-
-  render(){
-    return (
-      this._renderGame()
     )
   }
 }
