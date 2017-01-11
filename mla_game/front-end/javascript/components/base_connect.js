@@ -7,14 +7,14 @@ function mapStateToProps(state) {
   return {
     initialData:state.initialData,
     totalScore:state.totalScore, 
-    gameone:state.gameOne
+    gameone:state.gameOne 
   }
 }
 
-function mapDispachToProps(dispatch) {
-  return bindActionCreators(actionCreators, dispatch);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(actionCreators, dispatch)
 }
 
-const BaseConnect = connect(mapStateToProps, mapDispachToProps)(Base);
+const BaseConnect = connect(mapStateToProps, mapDispatchToProps)(Base);
 
 export default BaseConnect;

@@ -30,11 +30,3 @@ export function postData(endpoint, data) {
     })
   )
 }
-
-// let total = [];
-// for (var i = 0; i < data.results.length; i++) {
-//   total.push(data.results[i].score);
-// }
-// var totalScore = total.reduce((a, b) => a + b, 0);
-
-

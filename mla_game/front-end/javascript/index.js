@@ -11,15 +11,15 @@ import { syncHistoryWithStore } from 'react-router-redux'
 
 // Nav Views
 import Base from './components/base_connect'
-import GameMenu from './components/game_menu'
-import LeaderBoard from './components/leader_board'
-import Settings from './components/settings'
-import Preferences from './components/preferences'
+import GameMenu from './components/routes/game_menu'
+import LeaderBoard from './components/routes/leader_board'
+import Settings from './components/routes/settings'
+import Preferences from './components/routes/preferences'
 
 // games
-import GameOne from './components/game_one'
-import GameTwo from './components/game_two'
-import GameThree from './components/game_three'
+import GameOne from './components/routes/game_one'
+import GameTwo from './components/routes/game_two'
+import GameThree from './components/routes/game_three'
 
 const appTarget = document.getElementById('app');
 const store = configureStore()

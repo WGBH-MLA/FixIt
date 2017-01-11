@@ -1,10 +1,10 @@
 import React from 'react'
-import LoadingScreen from './loading_screen'
-import GameMeta from './game_meta'
-import Audio from './audio'
-import Phrase from './phrase'
-import Paging from './paginator'
-import { postData } from '../helpers'
+import LoadingScreen from '../partials/loading_screen'
+import GameMeta from '../partials/game_meta'
+import Audio from '../partials/audio'
+import Phrase from '../partials/phrase'
+import Paging from '../partials/paginator'
+import { postData } from '../../helpers'
 
 class GameOne extends React.Component{
 

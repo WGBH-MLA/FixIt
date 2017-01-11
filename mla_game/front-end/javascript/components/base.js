@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { getUserEndpoint } from '../helpers'
-import LoadingScreen from './loading_screen'
+import LoadingScreen from './partials/loading_screen'
 
 class Base extends React.Component {
   
@@ -63,10 +63,7 @@ class Base extends React.Component {
               </ul>
             </div>
           </header>
-          
-          <div>
-            {React.cloneElement(this.props.children, this.props)}
-          </div>
+          {React.cloneElement(this.props.children, this.props)}
         </div>
       )
     }
