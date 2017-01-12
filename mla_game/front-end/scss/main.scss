@@ -103,42 +103,44 @@ button {
     padding:0;
   }
 }
-
-.audio {
-  .play-button {
-    @include plain-button;
-
-    width:10em;
-    height:10em;
-    .play-icon {
-      circle {
-        stroke:$audio-play;
-        @include transition(stroke, 300ms, ease-in);
-      }
-      polygon, rect, .path  {
-        fill:$audio-play;
-        @include transition(fill, 300ms, ease-in);
-      }
-    }
-    &:hover {
-      .play-icon {
-        circle {
-          stroke:$icon-hover;
-        }
-        polygon, rect, .path  {
-          fill:$icon-hover;
-        }
-      }
-    }
-  }
-}
-
-
 .game-meta {
   @include plain-list;
-  @include susy-breakpoint($screen-lg-min, $map-lg) {
+  @include susy-breakpoint($screen-md-min, $map-md) {
     @include span(2 of 12 first);
   }
+  .audio {
+    .play-button {
+      @include plain-button;
+
+      width:7em;
+      height:7em;
+      @include susy-breakpoint($screen-lg-min, $map-lg) {
+          width:10em;
+          height:10em;
+      }
+      .play-icon {
+        circle {
+          stroke:$audio-play;
+          @include transition(stroke, 300ms, ease-in);
+        }
+        polygon, rect, .path  {
+          fill:$audio-play;
+          @include transition(fill, 300ms, ease-in);
+        }
+      }
+      &:hover {
+        .play-icon {
+          circle {
+            stroke:$icon-hover;
+          }
+          polygon, rect, .path  {
+            fill:$icon-hover;
+          }
+        }
+      }
+    }
+  }
+  
   dl {
     dt {
       font-size: 1.15em;
@@ -175,7 +177,7 @@ button {
   // overflow: hidden;
   // margin-bottom:3em;
 
-  @include susy-breakpoint($screen-lg-min, $map-lg) {
+  @include susy-breakpoint($screen-md-min, $map-md) {
     @include span(8 of 12);
     border:none;
     min-height:35vh;

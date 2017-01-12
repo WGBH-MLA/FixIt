@@ -88,6 +88,17 @@
           }
         }
       }
+      .next {
+        &:disabled {
+          cursor:default;
+          svg {
+            fill:$transcript-error;
+            polygon {
+              fill:$transcript-error;
+            }
+          }
+        }
+      }
     }
     
     progress {

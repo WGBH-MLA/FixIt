@@ -958,7 +958,7 @@ var Paging = (function (_React$Component) {
         { className: "pagination" },
         _react2["default"].createElement(
           "button",
-          { onClick: this.props.goBack.bind(this, 3), className: "prev" },
+          { disabled: true, onClick: this.props.goBack.bind(this, 3), className: "prev" },
           _react2["default"].createElement(
             "svg",
             { viewBox: "0 0 200 200" },
@@ -1060,8 +1060,9 @@ var Phrase = (function (_React$Component) {
       var keys = _props2.keys;
 
       var currentSegment = active === keys || active === keys + 1 || active === keys - 1;
-      var firstSegment = currentSegment === 0;
-      // console.log(firstSegment)
+      var middle = active === keys;
+      var firstSegment = middle === 0;
+
       return _react2['default'].createElement(
         'div',
         null,

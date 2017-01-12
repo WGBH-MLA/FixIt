@@ -22,10 +22,12 @@ class Phrase extends React.Component{
   }
 
   render(){
+    
     const {details, time, active, keys} = this.props;
     let currentSegment = active === keys || active === keys + 1 || active === keys -1
-    let firstSegment = currentSegment === 0
-    // console.log(firstSegment)
+    let middle = active === keys
+    let firstSegment = middle === 0
+
     return(
       <div>
         <button className='play-phrase' onClick={() => this.props.playPhrase(details.start_time)} id={details.start_time}>

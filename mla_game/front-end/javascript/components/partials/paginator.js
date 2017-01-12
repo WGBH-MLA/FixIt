@@ -4,7 +4,7 @@ class Paging extends React.Component{
   render(){     
     return(
       <div className="pagination">
-        <button onClick={this.props.goBack.bind(this, 3)} className="prev">
+        <button disabled onClick={this.props.goBack.bind(this, 3)} className="prev">
           <svg viewBox="0 0 200 200">
             <title>Previous</title>
             <circle cx="100" cy="100" r="90" strokeWidth="15" fill="none" stroke="black" />
