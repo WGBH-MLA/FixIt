@@ -1009,8 +1009,7 @@ var Phrase = (function (_React$Component) {
       var active = _props2.active;
       var keys = _props2.keys;
 
-      var current = active === keys || active === keys + 1 || active === keys - 1;
-      console.log(current);
+      var currentSegment = active === keys || active === keys + 1 || active === keys - 1;
       return _react2['default'].createElement(
         'div',
         null,
@@ -1032,14 +1031,14 @@ var Phrase = (function (_React$Component) {
         ),
         _react2['default'].createElement(
           'button',
-          { disabled: current ? false : true, ref: function (button) {
+          { disabled: currentSegment ? false : true, ref: function (button) {
               _this.button = button;
             }, className: 'text', onClick: function () {
               return _this.markPhrases();
             }, id: details.pk },
           _react2['default'].createElement(
             'span',
-            { className: current ? 'context' : '' },
+            { className: currentSegment ? 'context' : '' },
             details.text
           )
         )
