@@ -131,6 +131,7 @@ class GameOne extends React.Component{
                 src={gameone.media_url} 
                 setCurrentTime={setCurrentTime}
                 setIsPlaying={setIsPlaying}
+                startTime={gameone.startTime} 
               />
               <GameMeta 
                 meta={gameone.metadata} 

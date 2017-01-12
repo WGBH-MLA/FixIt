@@ -112,6 +112,7 @@ Object.defineProperty(exports, '__esModule', {
 exports.updateScore = updateScore;
 exports.fetchData = fetchData;
 exports.fetchGameOne = fetchGameOne;
+exports.setStartTime = setStartTime;
 exports.setCurrentTime = setCurrentTime;
 exports.setIsPlaying = setIsPlaying;
 exports.advanceSegment = advanceSegment;
@@ -199,17 +200,30 @@ function fetchGameOne() {
     return _axios2['default'].get('/api/transcript/random/').then(function (gameOneInfo) {
       // store data for gameone
       dispatch(storeGameOne(gameOneInfo.data[0]));
+      // set start time for for audio based on start time of first phrase
+      dispatch(setStartTime(gameOneInfo.data[0].phrases[0].start_time));
+      // set end time based on forst phrase start time
+      var transcriptEndTime = Number(gameOneInfo.data[0].phrases[0].start_time) + 1200;
       // grab first twenty minutes of segments and push
       // to new array and then state
       var phrases = [];
       for (var i = 0; i < gameOneInfo.data[0].phrases.length; i++) {
-        if (gameOneInfo.data[0].phrases[i].start_time <= 1200) {
+        if (gameOneInfo.data[0].phrases[i].start_time <= transcriptEndTime) {
           phrases.push(gameOneInfo.data[0].phrases[i]);
         }
       }
       // update state with new phrase array with twenty minutes of audio
       dispatch(setPhraseList(phrases));
     });
+  };
+}
+
+// gameone audio actions
+
+function setStartTime(startTime) {
+  return {
+    type: 'SET_STARTTIME',
+    startTime: startTime
   };
 }
 
@@ -503,7 +517,7 @@ var Audio = (function (_React$Component) {
 
     _get(Object.getPrototypeOf(Audio.prototype), 'constructor', this).call(this);
     this.playingAudio = this.playingAudio.bind(this);
-    // this.playPause = this.playPause.bind(this);
+    this.playPause = this.playPause.bind(this);
     this.togglePlay = this.togglePlay.bind(this);
   }
 
@@ -526,6 +540,7 @@ var Audio = (function (_React$Component) {
       var setIsPlaying = _props.setIsPlaying;
       var isPlaying = _props.isPlaying;
 
+      var self = this;
       this.audioPlayer.addEventListener('timeupdate', function () {
         setCurrentTime(this.currentTime);
       });
@@ -534,6 +549,9 @@ var Audio = (function (_React$Component) {
       });
       this.audioPlayer.addEventListener('pause', function () {
         setIsPlaying(false);
+      });
+      this.audioPlayer.addEventListener('loadstart', function () {
+        this.currentTime = self.props.startTime;
       });
     }
   }, {
@@ -1010,6 +1028,8 @@ var Phrase = (function (_React$Component) {
       var keys = _props2.keys;
 
       var currentSegment = active === keys || active === keys + 1 || active === keys - 1;
+      var firstSegment = currentSegment === 0;
+      // console.log(firstSegment)
       return _react2['default'].createElement(
         'div',
         null,
@@ -1338,7 +1358,8 @@ var GameOne = (function (_React$Component) {
                 isPlaying: gameone.isPlaying,
                 src: gameone.media_url,
                 setCurrentTime: setCurrentTime,
-                setIsPlaying: setIsPlaying
+                setIsPlaying: setIsPlaying,
+                startTime: gameone.startTime
               }),
               _react2['default'].createElement(_partialsGame_meta2['default'], {
                 meta: gameone.metadata,
@@ -1758,6 +1779,7 @@ function gameOne(state, action) {
     phrases: [],
     metadata: {},
     currentTime: 0,
+    startTime: 0,
     isPlaying: false,
     segment: 0,
     wrongPhrases: {}
@@ -1783,6 +1805,10 @@ function gameOne(state, action) {
     case 'SET_CURRENTTIME':
       return _extends({}, state, {
         currentTime: action.currentTime
+      });
+    case 'SET_STARTTIME':
+      return _extends({}, state, {
+        startTime: action.startTime
       });
     case 'SET_ISPLAYING':
       return _extends({}, state, {

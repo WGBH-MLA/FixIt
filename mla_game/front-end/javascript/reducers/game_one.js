@@ -5,6 +5,7 @@ function gameOne(state = {
   phrases: [],
   metadata:{},
   currentTime:0,
+  startTime:0,
   isPlaying:false,
   segment:0,
   wrongPhrases:{}
@@ -29,6 +30,10 @@ function gameOne(state = {
     case 'SET_CURRENTTIME':
       return {...state, 
         currentTime:action.currentTime
+      }
+    case 'SET_STARTTIME':
+      return {...state, 
+        startTime:action.startTime
       }
     case 'SET_ISPLAYING':
       return {...state, 

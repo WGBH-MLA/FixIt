@@ -5,7 +5,7 @@ class Audio extends  React.Component{
   constructor(){
     super();
     this.playingAudio = this.playingAudio.bind(this); 
-    // this.playPause = this.playPause.bind(this); 
+    this.playPause = this.playPause.bind(this); 
     this.togglePlay = this.togglePlay.bind(this); 
   }
 
@@ -20,7 +20,7 @@ class Audio extends  React.Component{
   
   playingAudio(){
     const { setCurrentTime, setIsPlaying, isPlaying } = this.props    
-    
+    let self = this
     this.audioPlayer.addEventListener('timeupdate', function(){
       setCurrentTime(this.currentTime)
     })
@@ -30,7 +30,9 @@ class Audio extends  React.Component{
     this.audioPlayer.addEventListener('pause', function(){
       setIsPlaying(false)
     })
-
+    this.audioPlayer.addEventListener('loadstart', function(){
+      this.currentTime = self.props.startTime
+    })
   }  
   
   togglePlay() {

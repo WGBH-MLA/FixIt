@@ -75,11 +75,15 @@ export function fetchGameOne(){
       .then(function(gameOneInfo){
         // store data for gameone
         dispatch(storeGameOne(gameOneInfo.data[0]))
+        // set start time for for audio based on start time of first phrase
+        dispatch(setStartTime(gameOneInfo.data[0].phrases[0].start_time))
+        // set end time based on forst phrase start time
+        let transcriptEndTime = Number(gameOneInfo.data[0].phrases[0].start_time) + 1200
         // grab first twenty minutes of segments and push 
         // to new array and then state
         const phrases = [];
         for (var i = 0; i < gameOneInfo.data[0].phrases.length; i++) {
-          if(gameOneInfo.data[0].phrases[i].start_time <= 1200) {
+          if(gameOneInfo.data[0].phrases[i].start_time <= transcriptEndTime) {
             phrases.push(gameOneInfo.data[0].phrases[i]);
           }
         }
@@ -88,6 +92,13 @@ export function fetchGameOne(){
       })
   }
 } 
+// gameone audio actions
+export function setStartTime(startTime){
+  return {
+    type:'SET_STARTTIME',
+    startTime
+  }
+}
 // gameone audio actions
 export function setCurrentTime(currentTime){
   return {
