@@ -11,6 +11,8 @@ class GameFooter extends React.Component{
             <Paging 
               goBack={this.props.goBack} 
               handleProgress={this.props.handleProgress} 
+              waitingUpdate={this.props.waitingUpdate}
+              waiting={this.props.waiting}
             />                
             <progress className="game-progress" max={this.props.max} value={this.props.value}></progress>
           </div>

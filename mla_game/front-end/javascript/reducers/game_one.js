@@ -8,6 +8,7 @@ function gameOne(state = {
   startTime:0,
   isPlaying:false,
   segment:0,
+  waiting:false,
   wrongPhrases:{}
 }, action) {
   switch(action.type){
@@ -42,6 +43,10 @@ function gameOne(state = {
     case 'ADVANCE_SEGMENT':
       return  {...state, 
         segment:state.segment + action.progress
+      }    
+    case 'WAITING_UPDATE':
+      return  {...state, 
+        waiting:action.waiting
       }
     case 'GOBACK_ROUND':
       return  {...state, 

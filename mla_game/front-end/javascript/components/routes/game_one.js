@@ -52,6 +52,8 @@ class GameOne extends React.Component{
     // copy state
     const wrongPhrases = {...this.state.wrongPhrases};
     
+    this.props.wait(3000);
+
     // update round
     if(gameone.segment <= gameone.phrases.length) {
       this.props.advanceSegment(i)
@@ -80,6 +82,7 @@ class GameOne extends React.Component{
         wrongPhrases:{}
       })
     }
+
   }
 
   goBack(i) {
@@ -119,7 +122,7 @@ class GameOne extends React.Component{
   }
   
   render(){
-    const { gameone, setIsPlaying, setCurrentTime, playPhrase, selectPhrase } = this.props
+    const { gameone, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate } = this.props
     
     if(this.props.gameone.loading) {
       return(
@@ -164,11 +167,14 @@ class GameOne extends React.Component{
                })}
               </ul>
           </div>
+  
           <GameFooter
             goBack={this.goBack}
             handleProgress={this.handleProgress}
             max={gameone.phrases.length}
             value={gameone.segment + 3}
+            waitingUpdate={this.props.waitingUpdate}
+            waiting={this.props.gameone.waiting}
           />
         </div>
       )

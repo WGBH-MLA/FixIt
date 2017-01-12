@@ -123,6 +123,27 @@ export function setIsPlaying(bool){
 }
 
 //gameone round actions
+export function waitingUpdate(bool){
+  return{
+    type:'WAITING_UPDATE',
+    waiting:bool
+  }
+}
+
+export function wait(time){
+  return (dispatch, getState) => {
+    dispatch(waitingUpdate(true));
+    new Promise(function(resolve) {
+      setTimeout(function() { 
+        resolve(); 
+      }, time);
+    })
+    .then(function() {
+      dispatch(waitingUpdate(false));
+    });
+  }
+}
+
 export function advanceSegment(progress){
   return{
     type:'ADVANCE_SEGMENT',
