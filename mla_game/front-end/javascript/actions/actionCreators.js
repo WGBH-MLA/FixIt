@@ -137,6 +137,13 @@ export function goBackRound(progress){
   }
 }
 
+export function resetRound(progress){
+  return{
+    type:'RESET_ROUND',
+    progress
+  }
+}
+
 export function markIncorrect(phrase){
   return{
     type:'MARK_INCORRECT',

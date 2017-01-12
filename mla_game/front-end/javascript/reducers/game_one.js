@@ -47,6 +47,10 @@ function gameOne(state = {
       return  {...state, 
         segment:state.segment - action.progress
       }
+    case 'RESET_ROUND':
+      return  {...state, 
+        segment:action.progress
+      }
     case 'MARK_INCORRECT':
       return  {...state.wrongPhrases,
         wrongPhrases:action.phrase

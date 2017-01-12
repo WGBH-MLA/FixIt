@@ -114,8 +114,8 @@ class GameOne extends React.Component{
     this.props.fetchGameOne()
   }
 
-  componentWillUnMount(){
-    this.props.advanceSegment(0)
+  componentWillUnmount(){
+    this.props.resetRound(0)
   }
   
   render(){
