@@ -4,7 +4,7 @@ class Paging extends React.Component{
   render(){     
     return(
       <div className="pagination">
-        <button onClick={this.props.goBack.bind(this, 3)} className="prev">
+        <button onClick={this.props.goBack.bind(this, 1)} className="prev">
           <svg viewBox="0 0 200 200">
             <title>Previous</title>
             <circle cx="100" cy="100" r="90" strokeWidth="15" fill="none" stroke="black" />
@@ -13,7 +13,7 @@ class Paging extends React.Component{
           </svg>
         </button>
         
-        <button onClick={this.props.handleProgress.bind(this, 3)} className='next'>
+        <button onClick={this.props.handleProgress.bind(this, 1)} className='next'>
           <svg viewBox="0 0 200 200">
             <title>Next</title>
             <path d="M100 200C44.9 200 0 155.1 0 100S44.9 0 100 0s100 44.9 100 100-44.9 100-100 100zm0-180.4c-44.3 0-80.4 36.1-80.4 80.4 0 44.3 36.1 80.4 80.4 80.4s80.4-36.1 80.4-80.4c0-44.3-36.1-80.4-80.4-80.4z"/>

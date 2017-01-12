@@ -908,7 +908,7 @@ var Paging = (function (_React$Component) {
         { className: "pagination" },
         _react2["default"].createElement(
           "button",
-          { onClick: this.props.goBack.bind(this, 3), className: "prev" },
+          { onClick: this.props.goBack.bind(this, 1), className: "prev" },
           _react2["default"].createElement(
             "svg",
             { viewBox: "0 0 200 200" },
@@ -924,7 +924,7 @@ var Paging = (function (_React$Component) {
         ),
         _react2["default"].createElement(
           "button",
-          { onClick: this.props.handleProgress.bind(this, 3), className: "next" },
+          { onClick: this.props.handleProgress.bind(this, 1), className: "next" },
           _react2["default"].createElement(
             "svg",
             { viewBox: "0 0 200 200" },
@@ -1007,7 +1007,10 @@ var Phrase = (function (_React$Component) {
       var details = _props2.details;
       var time = _props2.time;
       var active = _props2.active;
+      var keys = _props2.keys;
 
+      var current = active === keys || active === keys + 1 || active === keys - 1;
+      console.log(current);
       return _react2['default'].createElement(
         'div',
         null,
@@ -1029,14 +1032,14 @@ var Phrase = (function (_React$Component) {
         ),
         _react2['default'].createElement(
           'button',
-          { ref: function (button) {
+          { disabled: current ? false : true, ref: function (button) {
               _this.button = button;
             }, className: 'text', onClick: function () {
               return _this.markPhrases();
             }, id: details.pk },
           _react2['default'].createElement(
             'span',
-            null,
+            { className: current ? 'context' : '' },
             details.text
           )
         )

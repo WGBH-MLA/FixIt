@@ -231,6 +231,15 @@ button {
         font-weight:700;
         display:block;
       }
+      &:disabled {
+        &:hover {
+          span {
+            background:none;
+            cursor:default;
+            color:inherit;
+          }
+        }
+      }
       &.highlighted {
         .context, span {
           background:$transcript-error;
