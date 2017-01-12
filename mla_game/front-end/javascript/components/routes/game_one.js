@@ -113,6 +113,10 @@ class GameOne extends React.Component{
   componentWillMount(){
     this.props.fetchGameOne()
   }
+
+  componentWillUnMount(){
+    this.props.advanceSegment(0)
+  }
   
   render(){
     const { gameone, setIsPlaying, setCurrentTime, playPhrase, selectPhrase } = this.props
