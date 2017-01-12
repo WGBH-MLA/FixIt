@@ -22,6 +22,10 @@ function gameOne(state = {
         phrases:action.data.phrases,
         metadata:action.data.metadata,
       }
+    case 'SET_PHRASE_LIST':
+      return {...state, 
+        phrases:action.newPhrases
+      }
     case 'SET_CURRENTTIME':
       return {...state, 
         currentTime:action.currentTime
@@ -30,7 +34,7 @@ function gameOne(state = {
       return {...state, 
         isPlaying:action.isPlaying
       }
-    case 'ADVANCE_ROUND':
+    case 'ADVANCE_SEGMENT':
       return  {...state, 
         segment:state.segment + action.progress
       }

@@ -73,7 +73,18 @@ export function fetchGameOne(){
     dispatch(requestGameOne(true))
     return axios.get('/api/transcript/random/')
       .then(function(gameOneInfo){
+        // store data for gameone
         dispatch(storeGameOne(gameOneInfo.data[0]))
+        // grab first twenty minutes of segments and push 
+        // to new array and then state
+        const phrases = [];
+        for (var i = 0; i < gameOneInfo.data[0].phrases.length; i++) {
+          if(gameOneInfo.data[0].phrases[i].start_time <= 1200) {
+            phrases.push(gameOneInfo.data[0].phrases[i]);
+          }
+        }
+        // update state with new phrase array with twenty minutes of audio
+        dispatch(setPhraseList(phrases))
       })
   }
 } 
@@ -85,6 +96,14 @@ export function setCurrentTime(currentTime){
   }
 }
 
+// for grabbing the first twent minutes for game round
+function setPhraseList(newPhrases) {
+  return {
+    type: 'SET_PHRASE_LIST',
+    newPhrases
+  }
+}
+
 export function setIsPlaying(bool){
   return {
     type:'SET_ISPLAYING',
@@ -93,9 +112,9 @@ export function setIsPlaying(bool){
 }
 
 //gameone round actions
-export function advanceRound(progress){
+export function advanceSegment(progress){
   return{
-    type:'ADVANCE_ROUND',
+    type:'ADVANCE_SEGMENT',
     progress
   }
 }

@@ -7,6 +7,7 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux'
 import configureStore from './store'
 import { syncHistoryWithStore } from 'react-router-redux'
+import NotFound from './components/routes/not_found'
 
 
 // Nav Views
@@ -43,6 +44,7 @@ const App = (
         <Route path="gameone" component={GameOne} />
         <Route path="gametwo" component={GameTwo} />
         <Route path="gamethree" component={GameThree} />
+        <Route path='*' component={NotFound} />
       </Route>
     </Router>
   </Provider>
