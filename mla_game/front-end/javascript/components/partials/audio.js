@@ -17,12 +17,15 @@ class Audio extends  React.Component{
       audioPlayer.pause()
     }
   }
-  
+
   playingAudio(){
     const { setCurrentTime, setIsPlaying, isPlaying } = this.props    
-    let self = this
+    const self = this
     this.audioPlayer.addEventListener('timeupdate', function(){
       setCurrentTime(this.currentTime)
+      if(self.props.endSegment <= this.currentTime) {
+        this.pause()
+      }
     })
     this.audioPlayer.addEventListener('play', function(){
       setIsPlaying(true)

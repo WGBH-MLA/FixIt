@@ -112,7 +112,7 @@ class GameOne extends React.Component{
     media.currentTime = callback;
     media.play();
   }
-
+  
   componentWillMount(){
     this.props.fetchGameOne()
   }
@@ -122,7 +122,7 @@ class GameOne extends React.Component{
   }
   
   render(){
-    const { gameone, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate } = this.props
+    const { gameone, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd } = this.props
     
     if(this.props.gameone.loading) {
       return(
@@ -139,6 +139,8 @@ class GameOne extends React.Component{
                 setCurrentTime={setCurrentTime}
                 setIsPlaying={setIsPlaying}
                 startTime={gameone.startTime} 
+                endSegment={gameone.endSegment}
+                time={gameone.currentTime}
               />
               <GameMeta 
                 meta={gameone.metadata} 
@@ -147,8 +149,10 @@ class GameOne extends React.Component{
             </div>
             <ul className="game-phrase-list">
               {gameone.phrases.map((index, key) => {
-                let keys = Number(key);
-                let currentRound = gameone.segment <= keys + 4 && gameone.segment >= keys -4;
+                let items = Number(key);
+                let currentRound = gameone.segment <= items + 4 && gameone.segment >= items -4;
+                let last = gameone.segment == items + 4;
+
                 if(currentRound) {
                 return(
                   <li key={key} className={this.activePhrase(gameone.currentTime, index.start_time, index.end_time)}>
@@ -160,6 +164,7 @@ class GameOne extends React.Component{
                        keys={key}
                        details={index}
                        wrongPhrases={gameone.wrongPhrases}
+                       setSegmentEnd={setSegmentEnd}
                     />
                   </li>
                  )
