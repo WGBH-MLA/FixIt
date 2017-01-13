@@ -107,6 +107,13 @@ export function setCurrentTime(currentTime){
   }
 }
 
+export function setSegmentEnd(segmentEnd){
+  return {
+    type:'SET_SEGMENT_END',
+    segmentEnd
+  }
+}
+
 // for grabbing the first twent minutes for game round
 function setPhraseList(newPhrases) {
   return {

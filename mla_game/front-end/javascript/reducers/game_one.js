@@ -8,6 +8,7 @@ function gameOne(state = {
   startTime:0,
   isPlaying:false,
   segment:0,
+  endSegment:0,
   waiting:false,
   wrongPhrases:{}
 }, action) {
@@ -39,6 +40,10 @@ function gameOne(state = {
     case 'SET_ISPLAYING':
       return {...state, 
         isPlaying:action.isPlaying
+      }
+    case 'SET_SEGMENT_END':
+      return {...state,
+        endSegment:action.segmentEnd
       }
     case 'ADVANCE_SEGMENT':
       return  {...state, 
