@@ -114,6 +114,7 @@ exports.fetchData = fetchData;
 exports.fetchGameOne = fetchGameOne;
 exports.setStartTime = setStartTime;
 exports.setCurrentTime = setCurrentTime;
+exports.setSegmentStart = setSegmentStart;
 exports.setSegmentEnd = setSegmentEnd;
 exports.setIsPlaying = setIsPlaying;
 exports.waitingUpdate = waitingUpdate;
@@ -205,7 +206,7 @@ function fetchGameOne() {
       // store data for gameone
       dispatch(storeGameOne(gameOneInfo.data[0]));
       // set start time for for audio based on start time of first phrase
-      dispatch(setStartTime(gameOneInfo.data[0].phrases[0].start_time));
+      dispatch(setStartTime(Number(gameOneInfo.data[0].phrases[0].start_time)));
       // set end time based on forst phrase start time
       var transcriptEndTime = Number(gameOneInfo.data[0].phrases[0].start_time) + 1200;
       // grab first twenty minutes of segments and push
@@ -237,6 +238,13 @@ function setCurrentTime(currentTime) {
   return {
     type: 'SET_CURRENTTIME',
     currentTime: currentTime
+  };
+}
+
+function setSegmentStart(segmentStart) {
+  return {
+    type: 'SET_SEGMENT_START',
+    segmentStart: segmentStart
   };
 }
 
@@ -1042,6 +1050,7 @@ var Phrase = (function (_React$Component) {
     _get(Object.getPrototypeOf(Phrase.prototype), 'constructor', this).call(this);
     this.markPhrases = this.markPhrases.bind(this);
     this.getEndOfContext = this.getEndOfContext.bind(this);
+    this.getStartofContext = this.getStartofContext.bind(this);
   }
 
   _createClass(Phrase, [{
@@ -1061,36 +1070,47 @@ var Phrase = (function (_React$Component) {
       this.props.selectPhrase(PhraseMarked, details.pk, this.button);
     }
   }, {
-    key: 'getEndOfContext',
-    value: function getEndOfContext() {
+    key: 'getStartofContext',
+    value: function getStartofContext() {
       var _props2 = this.props;
       var active = _props2.active;
       var details = _props2.details;
       var keys = _props2.keys;
 
+      // set start time for segment
+      if (keys == active + 2) {
+        this.props.setSegmentStart(Number(details.start_time));
+      }
+    }
+  }, {
+    key: 'getEndOfContext',
+    value: function getEndOfContext() {
+      var _props3 = this.props;
+      var active = _props3.active;
+      var details = _props3.details;
+      var keys = _props3.keys;
+
+      // set end time for segment
       if (keys == active + 4) {
         this.props.setSegmentEnd(Number(details.end_time));
       }
-
-      // if(keys == active - 1){
-      //   console.log(details.end_time)
-      // }
     }
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.getEndOfContext();
+      this.getStartofContext();
     }
   }, {
     key: 'render',
     value: function render() {
       var _this = this;
 
-      var _props3 = this.props;
-      var details = _props3.details;
-      var time = _props3.time;
-      var active = _props3.active;
-      var keys = _props3.keys;
+      var _props4 = this.props;
+      var details = _props4.details;
+      var time = _props4.time;
+      var active = _props4.active;
+      var keys = _props4.keys;
 
       var currentSegment = active === keys || active === keys + 1 || active === keys - 1;
 
@@ -1101,7 +1121,7 @@ var Phrase = (function (_React$Component) {
           'button',
           { className: 'play-phrase', onClick: function () {
               return _this.props.playPhrase(details.start_time);
-            }, id: details.end_time },
+            }, id: 'phraseEnd-' + details.end_time },
           _react2['default'].createElement(
             'title',
             null,
@@ -1273,6 +1293,10 @@ var _partialsPaginator = require('../partials/paginator');
 
 var _partialsPaginator2 = _interopRequireDefault(_partialsPaginator);
 
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
 var _helpers = require('../../helpers');
 
 var _partialsGame_footer = require('../partials/game_footer');
@@ -1335,10 +1359,20 @@ var GameOne = (function (_React$Component) {
 
       this.props.wait(3000);
 
+      var media = document.querySelector('.audio-player');
+      media.currentTime = gameone.startSegment;
+      media.play();
+
       // update round
       if (gameone.segment <= gameone.phrases.length) {
         this.props.advanceSegment(i);
         this.props.updateScore(10);
+
+        var data = {
+          game: '1',
+          score: 10
+        };
+        (0, _helpers.postData)('/api/score/', data);
       } else {
         return;
       }
@@ -1414,6 +1448,8 @@ var GameOne = (function (_React$Component) {
       var selectPhrase = _props2.selectPhrase;
       var waitingUpdate = _props2.waitingUpdate;
       var setSegmentEnd = _props2.setSegmentEnd;
+      var setSegmentStart = _props2.setSegmentStart;
+      var advanceSegment = _props2.advanceSegment;
 
       if (this.props.gameone.loading) {
         return _react2['default'].createElement(_partialsLoading_screen2['default'], null);
@@ -1425,6 +1461,25 @@ var GameOne = (function (_React$Component) {
             'div',
             { className: 'grid' },
             _react2['default'].createElement(
+              'h2',
+              null,
+              'Start Segment: ',
+              gameone.startSegment
+            ),
+            _react2['default'].createElement(
+              'h2',
+              null,
+              'End Segment: ',
+              gameone.endSegment
+            ),
+            _react2['default'].createElement('br', null),
+            _react2['default'].createElement(
+              'h2',
+              null,
+              'Current Time: ',
+              gameone.currentTime
+            ),
+            _react2['default'].createElement(
               'div',
               { className: 'game-meta' },
               _react2['default'].createElement(_partialsAudio2['default'], {
@@ -1434,7 +1489,7 @@ var GameOne = (function (_React$Component) {
                 setIsPlaying: setIsPlaying,
                 startTime: gameone.startTime,
                 endSegment: gameone.endSegment,
-                time: gameone.currentTime
+                startSegment: gameone.startSegment
               }),
               _react2['default'].createElement(_partialsGame_meta2['default'], {
                 meta: gameone.metadata,
@@ -1461,7 +1516,10 @@ var GameOne = (function (_React$Component) {
                       keys: key,
                       details: index,
                       wrongPhrases: gameone.wrongPhrases,
-                      setSegmentEnd: setSegmentEnd
+                      setSegmentStart: setSegmentStart,
+                      setSegmentEnd: setSegmentEnd,
+                      advanceSegment: advanceSegment
+
                     })
                   );
                 }
@@ -1487,7 +1545,7 @@ var GameOne = (function (_React$Component) {
 exports['default'] = GameOne;
 module.exports = exports['default'];
 
-},{"../../helpers":19,"../partials/audio":5,"../partials/game_footer":6,"../partials/game_meta":7,"../partials/loading_screen":8,"../partials/paginator":9,"../partials/phrase":10,"react":332}],13:[function(require,module,exports){
+},{"../../helpers":19,"../partials/audio":5,"../partials/game_footer":6,"../partials/game_meta":7,"../partials/loading_screen":8,"../partials/paginator":9,"../partials/phrase":10,"axios":25,"react":332}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1805,6 +1863,7 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports.getCookie = getCookie;
 exports.postData = postData;
+exports.postSData = postSData;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -1832,9 +1891,26 @@ function getCookie(name) {
 
 function postData(endpoint, data) {
   return (0, _axios2['default'])({
-    method: 'post',
+    method: 'POST',
     url: endpoint,
     data: data,
+    headers: {
+      // csrftoken token?
+      "X-CSRFToken": getCookie('csrftoken')
+    }
+  });
+}
+
+// post data. helper was created because CSRFToken needs to be set
+
+function postSData(endpoint, data) {
+  return (0, _axios2['default'])({
+    method: 'POST',
+    url: endpoint,
+    data: data,
+    paramsSerializer: function paramsSerializer(params) {
+      return Qs.stringify(params, { arrayFormat: 'brackets' });
+    },
     headers: {
       // csrftoken token?
       "X-CSRFToken": getCookie('csrftoken')
@@ -1863,6 +1939,7 @@ function gameOne(state, action) {
     isPlaying: false,
     segment: 0,
     endSegment: 0,
+    startSegment: 0,
     waiting: false,
     wrongPhrases: {}
   };
@@ -1895,6 +1972,10 @@ function gameOne(state, action) {
     case 'SET_ISPLAYING':
       return _extends({}, state, {
         isPlaying: action.isPlaying
+      });
+    case 'SET_SEGMENT_START':
+      return _extends({}, state, {
+        startSegment: action.segmentStart
       });
     case 'SET_SEGMENT_END':
       return _extends({}, state, {

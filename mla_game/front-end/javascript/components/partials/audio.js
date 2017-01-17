@@ -20,7 +20,7 @@ class Audio extends  React.Component{
 
   playingAudio(){
     const { setCurrentTime, setIsPlaying, isPlaying } = this.props    
-    const self = this
+    const self = (this)
     this.audioPlayer.addEventListener('timeupdate', function(){
       setCurrentTime(this.currentTime)
       if(self.props.endSegment <= this.currentTime) {

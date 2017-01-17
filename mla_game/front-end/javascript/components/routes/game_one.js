@@ -4,7 +4,8 @@ import GameMeta from '../partials/game_meta'
 import Audio from '../partials/audio'
 import Phrase from '../partials/phrase'
 import Paging from '../partials/paginator'
-import { postData } from '../../helpers'
+import axios from 'axios'
+import { postData, postSData } from '../../helpers'
 import GameFooter from '../partials/game_footer'
 
 class GameOne extends React.Component{
@@ -54,10 +55,22 @@ class GameOne extends React.Component{
     
     this.props.wait(3000);
 
+
+    var media = document.querySelector('.audio-player');
+    media.currentTime = gameone.startSegment;
+    media.play();
+
     // update round
     if(gameone.segment <= gameone.phrases.length) {
       this.props.advanceSegment(i)
       this.props.updateScore(10)
+
+      let data = {
+        game:'1',
+        score:10
+      }
+      postData('/api/score/', data)
+
     } else {
       return
     }
@@ -122,7 +135,7 @@ class GameOne extends React.Component{
   }
   
   render(){
-    const { gameone, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd } = this.props
+    const { gameone, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegment } = this.props
     
     if(this.props.gameone.loading) {
       return(
@@ -132,6 +145,10 @@ class GameOne extends React.Component{
       return(
         <div>
           <div className="grid">
+            <h2>Start Segment: {gameone.startSegment}</h2>
+            <h2>End Segment: {gameone.endSegment}</h2>
+            <br/>
+            <h2>Current Time: {gameone.currentTime}</h2>
             <div className='game-meta'>
               <Audio 
                 isPlaying={gameone.isPlaying}
@@ -140,7 +157,7 @@ class GameOne extends React.Component{
                 setIsPlaying={setIsPlaying}
                 startTime={gameone.startTime} 
                 endSegment={gameone.endSegment}
-                time={gameone.currentTime}
+                startSegment={gameone.startSegment}
               />
               <GameMeta 
                 meta={gameone.metadata} 
@@ -164,7 +181,10 @@ class GameOne extends React.Component{
                        keys={key}
                        details={index}
                        wrongPhrases={gameone.wrongPhrases}
+                       setSegmentStart={setSegmentStart}
                        setSegmentEnd={setSegmentEnd}
+                       advanceSegment={advanceSegment}
+
                     />
                   </li>
                  )
