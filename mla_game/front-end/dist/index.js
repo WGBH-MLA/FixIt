@@ -1211,7 +1211,7 @@ var GameMenu = (function (_React$Component) {
           'Welcome ',
           _react2['default'].createElement(
             'span',
-            null,
+            { className: 'username' },
             this.props.initialData.user[0].username
           )
         ),
@@ -1279,6 +1279,8 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRouter = require('react-router');
+
 var _partialsLoading_screen = require('../partials/loading_screen');
 
 var _partialsLoading_screen2 = _interopRequireDefault(_partialsLoading_screen);
@@ -1321,7 +1323,6 @@ var GameOne = (function (_React$Component) {
     this.handleProgress = this.handleProgress.bind(this);
     this.goBack = this.goBack.bind(this);
     this.selectPhrase = this.selectPhrase.bind(this);
-    this.renderRound = this.renderRound.bind(this);
 
     this.state = {
       wrongPhrases: {}
@@ -1366,7 +1367,7 @@ var GameOne = (function (_React$Component) {
 
       // this.props.wait(3000);
 
-      if (gameone.segment <= gameone.phrases.length + 1) {
+      if (gameone.segment <= gameone.phrases.length) {
         // update round
         var media = document.querySelector('.audio-player');
         media.currentTime = gameone.startSegment;
@@ -1433,8 +1434,18 @@ var GameOne = (function (_React$Component) {
       media.play();
     }
   }, {
-    key: 'renderRound',
-    value: function renderRound() {
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      this.props.fetchGameOne();
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      this.props.resetRound(0);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
       var _this = this;
 
       var _props2 = this.props;
@@ -1448,71 +1459,6 @@ var GameOne = (function (_React$Component) {
       var setSegmentStart = _props2.setSegmentStart;
       var advanceSegment = _props2.advanceSegment;
 
-      if (gameone.endOfRound) {
-        return _react2['default'].createElement(
-          'div',
-          null,
-          _react2['default'].createElement(
-            'h1',
-            null,
-            'End Of Round'
-          )
-        );
-      } else {
-        return _react2['default'].createElement(
-          'ul',
-          { className: 'game-phrase-list' },
-          gameone.phrases.map(function (index, key) {
-            var items = Number(key);
-            var currentRound = gameone.segment <= items + 4 && gameone.segment >= items - 4;
-            var last = gameone.segment == items + 4;
-
-            if (currentRound) {
-              return _react2['default'].createElement(
-                'li',
-                { key: key, className: _this.activePhrase(gameone.currentTime, index.start_time, index.end_time) },
-                _react2['default'].createElement(_partialsPhrase2['default'], {
-                  selectPhrase: _this.selectPhrase,
-                  playPhrase: _this.playPhrase,
-                  time: gameone.currentTime,
-                  active: gameone.segment,
-                  keys: key,
-                  details: index,
-                  wrongPhrases: gameone.wrongPhrases,
-                  setSegmentStart: setSegmentStart,
-                  setSegmentEnd: setSegmentEnd,
-                  advanceSegment: advanceSegment
-                })
-              );
-            }
-          })
-        );
-      }
-    }
-  }, {
-    key: 'componentWillMount',
-    value: function componentWillMount() {
-      this.props.fetchGameOne();
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      this.props.resetRound(0);
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _props3 = this.props;
-      var gameone = _props3.gameone;
-      var setIsPlaying = _props3.setIsPlaying;
-      var setCurrentTime = _props3.setCurrentTime;
-      var playPhrase = _props3.playPhrase;
-      var selectPhrase = _props3.selectPhrase;
-      var waitingUpdate = _props3.waitingUpdate;
-      var setSegmentEnd = _props3.setSegmentEnd;
-      var setSegmentStart = _props3.setSegmentStart;
-      var advanceSegment = _props3.advanceSegment;
-
       if (this.props.gameone.loading) {
         return _react2['default'].createElement(_partialsLoading_screen2['default'], null);
       } else {
@@ -1525,21 +1471,106 @@ var GameOne = (function (_React$Component) {
             _react2['default'].createElement(
               'div',
               { className: 'game-meta' },
-              _react2['default'].createElement(_partialsAudio2['default'], {
-                isPlaying: gameone.isPlaying,
-                src: gameone.media_url,
-                setCurrentTime: setCurrentTime,
-                setIsPlaying: setIsPlaying,
-                startTime: gameone.startTime,
-                endSegment: gameone.endSegment,
-                startSegment: gameone.startSegment
-              }),
-              _react2['default'].createElement(_partialsGame_meta2['default'], {
-                meta: gameone.metadata,
-                aapb_link: gameone.aapb_link
-              })
+              gameone.endOfRound ? '' : _react2['default'].createElement(
+                'div',
+                null,
+                _react2['default'].createElement(_partialsAudio2['default'], {
+                  isPlaying: gameone.isPlaying,
+                  src: gameone.media_url,
+                  setCurrentTime: setCurrentTime,
+                  setIsPlaying: setIsPlaying,
+                  startTime: gameone.startTime,
+                  endSegment: gameone.endSegment,
+                  startSegment: gameone.startSegment
+                }),
+                _react2['default'].createElement(_partialsGame_meta2['default'], {
+                  meta: gameone.metadata,
+                  aapb_link: gameone.aapb_link
+                })
+              )
             ),
-            this.renderRound()
+            gameone.endOfRound ? _react2['default'].createElement(
+              'div',
+              { className: 'roundup' },
+              _react2['default'].createElement(
+                'h1',
+                null,
+                'End Of Round'
+              ),
+              _react2['default'].createElement(
+                'h2',
+                null,
+                _react2['default'].createElement(
+                  'span',
+                  { className: 'username' },
+                  this.props.initialData.user[0].username
+                ),
+                ' Just Scored'
+              ),
+              _react2['default'].createElement(
+                'h3',
+                null,
+                'points go here'
+              ),
+              _react2['default'].createElement(
+                'ul',
+                { className: 'game-navigation' },
+                _react2['default'].createElement(
+                  'li',
+                  null,
+                  _react2['default'].createElement(
+                    _reactRouter.Link,
+                    { to: 'gameone' },
+                    'Game One'
+                  )
+                ),
+                _react2['default'].createElement(
+                  'li',
+                  null,
+                  _react2['default'].createElement(
+                    _reactRouter.Link,
+                    { to: 'gametwo' },
+                    'Game Two'
+                  )
+                ),
+                _react2['default'].createElement(
+                  'li',
+                  null,
+                  _react2['default'].createElement(
+                    _reactRouter.Link,
+                    { to: 'gamethree' },
+                    'Game Three'
+                  )
+                )
+              )
+            ) : _react2['default'].createElement(
+              'ul',
+              { className: 'game-phrase-list' },
+              gameone.phrases.map(function (index, key) {
+                var items = Number(key);
+                var currentRound = gameone.segment <= items + 4 && gameone.segment >= items - 4;
+                var last = gameone.segment == items + 4;
+
+                if (currentRound) {
+                  return _react2['default'].createElement(
+                    'li',
+                    { key: key, className: _this.activePhrase(gameone.currentTime, index.start_time, index.end_time) },
+                    _react2['default'].createElement(_partialsPhrase2['default'], {
+                      selectPhrase: _this.selectPhrase,
+                      playPhrase: _this.playPhrase,
+                      time: gameone.currentTime,
+                      active: gameone.segment,
+                      keys: key,
+                      details: index,
+                      wrongPhrases: gameone.wrongPhrases,
+                      setSegmentStart: setSegmentStart,
+                      setSegmentEnd: setSegmentEnd,
+                      advanceSegment: advanceSegment
+                    })
+                  );
+                }
+              })
+            )
           ),
           _react2['default'].createElement(_partialsGame_footer2['default'], {
             goBack: this.goBack,
@@ -1560,7 +1591,7 @@ var GameOne = (function (_React$Component) {
 exports['default'] = GameOne;
 module.exports = exports['default'];
 
-},{"../../helpers":19,"../partials/audio":5,"../partials/game_footer":6,"../partials/game_meta":7,"../partials/loading_screen":8,"../partials/paginator":9,"../partials/phrase":10,"axios":25,"react":332}],13:[function(require,module,exports){
+},{"../../helpers":19,"../partials/audio":5,"../partials/game_footer":6,"../partials/game_meta":7,"../partials/loading_screen":8,"../partials/paginator":9,"../partials/phrase":10,"axios":25,"react":332,"react-router":292}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {

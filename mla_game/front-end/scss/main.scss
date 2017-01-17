@@ -78,12 +78,15 @@ button {
   }
 }
 
+.username {
+  color:lighten($help, 10%);
+  font-family:'Open Sans Condensed', sans-serif;
+}
+
 .welcome-message {
   display:block;
   margin:1.5em 0;
   span {
-    color:lighten($help, 10%);
-    font-family:'Open Sans Condensed', sans-serif;
     padding-left:.5em;
   }
 }
@@ -169,14 +172,17 @@ button {
   }
 }
 
+
+.roundup{
+  @include susy-breakpoint($screen-md-min, $map-md) {
+    @include span(first 8 of 12);
+  }
+}
+
 .game-phrase-list {
   @include plain-list;
   padding:1em 0;
-
-  // height:15em;
-  // overflow: hidden;
-  // margin-bottom:3em;
-
+  
   @include susy-breakpoint($screen-md-min, $map-md) {
     @include span(8 of 12);
     border:none;

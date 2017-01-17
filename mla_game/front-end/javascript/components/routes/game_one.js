@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router'
 import LoadingScreen from '../partials/loading_screen'
 import GameMeta from '../partials/game_meta'
 import Audio from '../partials/audio'
@@ -17,7 +18,6 @@ class GameOne extends React.Component{
     this.handleProgress = this.handleProgress.bind(this)
     this.goBack = this.goBack.bind(this)
     this.selectPhrase = this.selectPhrase.bind(this)
-    this.renderRound = this.renderRound.bind(this)
 
     this.state = {
       wrongPhrases:{}
@@ -56,7 +56,7 @@ class GameOne extends React.Component{
     
     // this.props.wait(3000);
     
-    if(gameone.segment <= gameone.phrases.length + 1) {
+    if(gameone.segment <= gameone.phrases.length) {
       // update round
       var media = document.querySelector('.audio-player');
       media.currentTime = gameone.startSegment;
@@ -125,47 +125,6 @@ class GameOne extends React.Component{
     media.currentTime = callback;
     media.play();
   }
-
-  renderRound(){
-    const { gameone, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegment } = this.props
-
-    if(gameone.endOfRound) {
-      return(
-        <div>
-          <h1>End Of Round</h1>
-        </div>
-      )
-    } else {
-      return(
-        <ul className="game-phrase-list">
-          {gameone.phrases.map((index, key) => {
-          let items = Number(key);
-          let currentRound = gameone.segment <= items + 4 && gameone.segment >= items -4;
-          let last = gameone.segment == items + 4;
-          
-           if(currentRound) {
-            return(
-              <li key={key} className={this.activePhrase(gameone.currentTime, index.start_time, index.end_time)}>
-                <Phrase
-                   selectPhrase={this.selectPhrase}
-                   playPhrase={this.playPhrase}
-                   time={gameone.currentTime} 
-                   active={gameone.segment}
-                   keys={key}
-                   details={index}
-                   wrongPhrases={gameone.wrongPhrases}
-                   setSegmentStart={setSegmentStart}
-                   setSegmentEnd={setSegmentEnd}
-                   advanceSegment={advanceSegment}
-                />
-              </li>
-             )
-            }
-         })}
-        </ul>        
-      )
-    }
-  }
   
   componentWillMount(){
     this.props.fetchGameOne()
@@ -187,23 +146,67 @@ class GameOne extends React.Component{
         <div>
           <div className="grid">
             <div className='game-meta'>
-              <Audio 
-                isPlaying={gameone.isPlaying}
-                src={gameone.media_url} 
-                setCurrentTime={setCurrentTime}
-                setIsPlaying={setIsPlaying}
-                startTime={gameone.startTime} 
-                endSegment={gameone.endSegment}
-                startSegment={gameone.startSegment}
-              />
-              <GameMeta 
-                meta={gameone.metadata} 
-                aapb_link={gameone.aapb_link} 
-              />
+              {gameone.endOfRound ? (
+                ''
+              ) : (
+                <div>
+                  <Audio 
+                    isPlaying={gameone.isPlaying}
+                    src={gameone.media_url} 
+                    setCurrentTime={setCurrentTime}
+                    setIsPlaying={setIsPlaying}
+                    startTime={gameone.startTime} 
+                    endSegment={gameone.endSegment}
+                    startSegment={gameone.startSegment}
+                  />
+                  <GameMeta 
+                    meta={gameone.metadata} 
+                    aapb_link={gameone.aapb_link} 
+                  />
+                </div>
+              )}
             </div>
-            {this.renderRound()}
+            {gameone.endOfRound ? (
+              <div className='roundup'>
+                <h1>End Of Round</h1>
+                <h2><span className='username'>{this.props.initialData.user[0].username}</span> Just Scored</h2>
+                <h3>points go here</h3>
+                <ul className='game-navigation'>
+                  <li><Link to="gameone">Game One</Link></li>
+                  <li><Link to="gametwo">Game Two</Link></li>
+                  <li><Link to="gamethree">Game Three</Link></li>
+                </ul>
+              </div>
+            ) : (
+              <ul className="game-phrase-list">
+                {gameone.phrases.map((index, key) => {
+                let items = Number(key);
+                let currentRound = gameone.segment <= items + 4 && gameone.segment >= items -4;
+                let last = gameone.segment == items + 4;
+                
+                 if(currentRound) {
+                  return(
+                    <li key={key} className={this.activePhrase(gameone.currentTime, index.start_time, index.end_time)}>
+                      <Phrase
+                         selectPhrase={this.selectPhrase}
+                         playPhrase={this.playPhrase}
+                         time={gameone.currentTime} 
+                         active={gameone.segment}
+                         keys={key}
+                         details={index}
+                         wrongPhrases={gameone.wrongPhrases}
+                         setSegmentStart={setSegmentStart}
+                         setSegmentEnd={setSegmentEnd}
+                         advanceSegment={advanceSegment}
+                      />
+                    </li>
+                   )
+                  }
+               })}
+              </ul>     
+            )}
           </div>
-  
+          
           <GameFooter
             goBack={this.goBack}
             handleProgress={this.handleProgress}
