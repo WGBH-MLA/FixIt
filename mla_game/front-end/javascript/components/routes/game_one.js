@@ -54,7 +54,7 @@ class GameOne extends React.Component{
     // copy state
     const wrongPhrases = {...this.state.wrongPhrases};
     // disable advance round for three seconds when round updates
-    // this.props.wait(3000);
+    this.props.wait(3000);
     
     // check if the round has ended. if so change state. 
     // if not push other things to state like the score and play the media    
