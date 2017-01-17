@@ -1461,25 +1461,6 @@ var GameOne = (function (_React$Component) {
             'div',
             { className: 'grid' },
             _react2['default'].createElement(
-              'h2',
-              null,
-              'Start Segment: ',
-              gameone.startSegment
-            ),
-            _react2['default'].createElement(
-              'h2',
-              null,
-              'End Segment: ',
-              gameone.endSegment
-            ),
-            _react2['default'].createElement('br', null),
-            _react2['default'].createElement(
-              'h2',
-              null,
-              'Current Time: ',
-              gameone.currentTime
-            ),
-            _react2['default'].createElement(
               'div',
               { className: 'game-meta' },
               _react2['default'].createElement(_partialsAudio2['default'], {

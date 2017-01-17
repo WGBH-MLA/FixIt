@@ -145,10 +145,6 @@ class GameOne extends React.Component{
       return(
         <div>
           <div className="grid">
-            <h2>Start Segment: {gameone.startSegment}</h2>
-            <h2>End Segment: {gameone.endSegment}</h2>
-            <br/>
-            <h2>Current Time: {gameone.currentTime}</h2>
             <div className='game-meta'>
               <Audio 
                 isPlaying={gameone.isPlaying}
