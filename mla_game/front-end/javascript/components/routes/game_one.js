@@ -18,6 +18,7 @@ class GameOne extends React.Component{
     this.handleProgress = this.handleProgress.bind(this)
     this.goBack = this.goBack.bind(this)
     this.selectPhrase = this.selectPhrase.bind(this)
+    this.reload = this.reload.bind(this)
 
     this.state = {
       wrongPhrases:{}
@@ -53,7 +54,7 @@ class GameOne extends React.Component{
     // copy state
     const wrongPhrases = {...this.state.wrongPhrases};
     // disable advance round for three seconds when round updates
-    this.props.wait(3000);
+    // this.props.wait(3000);
     
     // check if the round has ended. if so change state. 
     // if not push other things to state like the score and play the media    
@@ -98,7 +99,10 @@ class GameOne extends React.Component{
         wrongPhrases:{}
       })
     }
+  }
 
+  reload(){
+    window.location.reload();
   }
 
   goBack(i) {
@@ -178,7 +182,7 @@ class GameOne extends React.Component{
                 <h2><span className='username'>{this.props.initialData.user[0].username}</span> Just Scored: {gameone.gameScore} Points</h2>
                 
                 <ul className='game-navigation'>
-                  <li><Link to="gameone">Game One</Link></li>
+                  <li><Link onClick={() => this.reload()} to="gameone">Game One</Link></li>
                   <li><Link to="gametwo">Game Two</Link></li>
                   <li><Link to="gamethree">Game Three</Link></li>
                 </ul>
