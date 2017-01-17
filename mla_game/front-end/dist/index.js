@@ -1442,6 +1442,7 @@ var GameOne = (function (_React$Component) {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
       this.props.resetRound(0);
+      this.props.endOfRound(false);
     }
   }, {
     key: 'render',

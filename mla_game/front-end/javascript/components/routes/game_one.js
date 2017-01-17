@@ -132,6 +132,7 @@ class GameOne extends React.Component{
 
   componentWillUnmount(){
     this.props.resetRound(0)
+    this.props.endOfRound(false)
   }
   
   render(){
