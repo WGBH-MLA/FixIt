@@ -57,7 +57,7 @@ class GameOne extends React.Component{
     
     // check if the round has ended. if so change state. 
     // if not push other things to state like the score and play the media    
-    if(gameone.segment <= gameone.phrases.length) {
+    if(gameone.segment <= gameone.phrases.length -2) {
       // update round
       var media = document.querySelector('.audio-player');
       media.currentTime = gameone.startSegment;

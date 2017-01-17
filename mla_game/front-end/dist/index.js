@@ -234,6 +234,7 @@ function fetchGameOne() {
           phrases.push(gameOneInfo.data[0].phrases[i]);
         }
       }
+      console.log(phrases);
       // update state with new phrase array with twenty minutes of audio
       dispatch(setPhraseList(phrases));
     });
@@ -1385,7 +1386,7 @@ var GameOne = (function (_React$Component) {
 
       // check if the round has ended. if so change state.
       // if not push other things to state like the score and play the media   
-      if (gameone.segment <= gameone.phrases.length) {
+      if (gameone.segment <= gameone.phrases.length - 2) {
         // update round
         var media = document.querySelector('.audio-player');
         media.currentTime = gameone.startSegment;
