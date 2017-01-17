@@ -101,7 +101,6 @@ export function fetchGameOne(){
             phrases.push(gameOneInfo.data[0].phrases[i]);
           }
         }
-        // console.log(phrases);
         // update state with new phrase array with twenty minutes of audio
         dispatch(setPhraseList(phrases))
       })
