@@ -9,6 +9,7 @@ function gameOne(state = {
   isPlaying:false,
   segment:0,
   endSegment:0,
+  endOfRound:false,
   startSegment:0,
   waiting:false,
   wrongPhrases:{}
@@ -57,6 +58,10 @@ function gameOne(state = {
     case 'WAITING_UPDATE':
       return  {...state, 
         waiting:action.waiting
+      }
+    case 'SET_END_ROUND':
+      return  {...state, 
+        endOfRound:action.endOfRound
       }
     case 'GOBACK_ROUND':
       return  {...state, 

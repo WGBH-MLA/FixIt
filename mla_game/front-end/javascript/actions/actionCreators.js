@@ -99,7 +99,7 @@ export function setStartTime(startTime){
     startTime
   }
 }
-// gameone audio actions
+
 export function setCurrentTime(currentTime){
   return {
     type:'SET_CURRENTTIME',
@@ -120,6 +120,7 @@ export function setSegmentEnd(segmentEnd){
     segmentEnd
   }
 }
+
 // for grabbing the first twent minutes for game round
 function setPhraseList(newPhrases) {
   return {
@@ -136,6 +137,13 @@ export function setIsPlaying(bool){
 }
 
 //gameone round actions
+export function endOfRound(bool){
+  return {
+    type:'SET_END_ROUND',
+    endOfRound:bool
+  }
+}
+
 export function waitingUpdate(bool){
   return{
     type:'WAITING_UPDATE',
