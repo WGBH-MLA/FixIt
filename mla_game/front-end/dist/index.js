@@ -109,7 +109,9 @@ _reactDom2['default'].render(App, appTarget);
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-exports.updateScore = updateScore;
+exports.updateTotalScore = updateTotalScore;
+exports.updateGameScore = updateGameScore;
+exports.resetGameScore = resetGameScore;
 exports.fetchData = fetchData;
 exports.fetchGameOne = fetchGameOne;
 exports.setStartTime = setStartTime;
@@ -135,9 +137,23 @@ var _axios2 = _interopRequireDefault(_axios);
 // score actions
 require('es6-promise').polyfill();
 
-function updateScore(amount) {
+function updateTotalScore(amount) {
   return {
-    type: 'UPDATE_SCORE',
+    type: 'UPDATE_TOTAL_SCORE',
+    amount: amount
+  };
+}
+
+function updateGameScore(amount) {
+  return {
+    type: 'UPDATE_GAME_SCORE',
+    amount: amount
+  };
+}
+
+function resetGameScore(amount) {
+  return {
+    type: 'RESET_GAME_SCORE',
     amount: amount
   };
 }
@@ -1364,9 +1380,11 @@ var GameOne = (function (_React$Component) {
 
       // copy state
       var wrongPhrases = _extends({}, this.state.wrongPhrases);
-
+      // disable advance round for three seconds when round updates
       // this.props.wait(3000);
 
+      // check if the round has ended. if so change state.
+      // if not push other things to state like the score and play the media   
       if (gameone.segment <= gameone.phrases.length) {
         // update round
         var media = document.querySelector('.audio-player');
@@ -1374,7 +1392,8 @@ var GameOne = (function (_React$Component) {
         media.play();
 
         this.props.advanceSegment(i);
-        this.props.updateScore(10);
+        this.props.updateTotalScore(10);
+        this.props.updateGameScore(10);
 
         var data = {
           game: '1',
@@ -1397,7 +1416,8 @@ var GameOne = (function (_React$Component) {
           };
           // helper ajax function to post downvote
           (0, _helpers.postData)('/api/transcriptphrasedownvote/', data);
-          this.props.updateScore(1);
+          this.props.updateTotalScore(1);
+          this.props.updateGameScore(1);
         }
         // clean state
         this.setState({
@@ -1441,7 +1461,9 @@ var GameOne = (function (_React$Component) {
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
+      // reset state for game
       this.props.resetRound(0);
+      this.props.resetGameScore(0);
       this.props.endOfRound(false);
     }
   }, {
@@ -1506,12 +1528,9 @@ var GameOne = (function (_React$Component) {
                   { className: 'username' },
                   this.props.initialData.user[0].username
                 ),
-                ' Just Scored'
-              ),
-              _react2['default'].createElement(
-                'h3',
-                null,
-                'points go here'
+                ' Just Scored: ',
+                gameone.gameScore,
+                ' Points'
               ),
               _react2['default'].createElement(
                 'ul',
@@ -1988,8 +2007,8 @@ function gameOne(state, action) {
     endSegment: 0,
     endOfRound: false,
     startSegment: 0,
-    waiting: false,
-    wrongPhrases: {}
+    gameScore: 0,
+    waiting: false
   };
 
   switch (action.type) {
@@ -2020,6 +2039,14 @@ function gameOne(state, action) {
     case 'SET_ISPLAYING':
       return _extends({}, state, {
         isPlaying: action.isPlaying
+      });
+    case 'UPDATE_GAME_SCORE':
+      return _extends({}, state, {
+        gameScore: state.gameScore + action.amount
+      });
+    case 'RESET_GAME_SCORE':
+      return _extends({}, state, {
+        gameScore: action.amount
       });
     case 'SET_SEGMENT_START':
       return _extends({}, state, {
@@ -2153,7 +2180,7 @@ function totalScore(state, action) {
         // increment score based on amount callback
         totalScore: action.score
       });
-    case 'UPDATE_SCORE':
+    case 'UPDATE_TOTAL_SCORE':
       return _extends({}, state.totalScore, {
         // increment score based on amount callback
         totalScore: state.totalScore + action.amount

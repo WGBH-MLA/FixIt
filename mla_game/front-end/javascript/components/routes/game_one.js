@@ -50,12 +50,13 @@ class GameOne extends React.Component{
 
   handleProgress(i) {
     const { gameone, setIsPlaying, setCurrentTime, playPhrase } = this.props
-
     // copy state
     const wrongPhrases = {...this.state.wrongPhrases};
-    
+    // disable advance round for three seconds when round updates
     // this.props.wait(3000);
     
+    // check if the round has ended. if so change state. 
+    // if not push other things to state like the score and play the media    
     if(gameone.segment <= gameone.phrases.length) {
       // update round
       var media = document.querySelector('.audio-player');
@@ -63,7 +64,8 @@ class GameOne extends React.Component{
       media.play();
       
       this.props.advanceSegment(i)
-      this.props.updateScore(10)
+      this.props.updateTotalScore(10)
+      this.props.updateGameScore(10)
 
       let data = {
         game:'1',
@@ -88,7 +90,8 @@ class GameOne extends React.Component{
         }
         // helper ajax function to post downvote
         postData('/api/transcriptphrasedownvote/', data);
-        this.props.updateScore(1);
+        this.props.updateTotalScore(1);
+        this.props.updateGameScore(1);
       }
       // clean state
       this.setState({
@@ -131,7 +134,9 @@ class GameOne extends React.Component{
   }
 
   componentWillUnmount(){
+    // reset state for game 
     this.props.resetRound(0)
+    this.props.resetGameScore(0);
     this.props.endOfRound(false)
   }
   
@@ -170,8 +175,8 @@ class GameOne extends React.Component{
             {gameone.endOfRound ? (
               <div className='roundup'>
                 <h1>End Of Round</h1>
-                <h2><span className='username'>{this.props.initialData.user[0].username}</span> Just Scored</h2>
-                <h3>points go here</h3>
+                <h2><span className='username'>{this.props.initialData.user[0].username}</span> Just Scored: {gameone.gameScore} Points</h2>
+                
                 <ul className='game-navigation'>
                   <li><Link to="gameone">Game One</Link></li>
                   <li><Link to="gametwo">Game Two</Link></li>

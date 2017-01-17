@@ -2,9 +2,23 @@ require('es6-promise').polyfill();
 import axios from 'axios'
 
 // score actions
-export function updateScore(amount){
+export function updateTotalScore(amount){
   return {
-    type:'UPDATE_SCORE',
+    type:'UPDATE_TOTAL_SCORE',
+    amount
+  }
+}
+
+export function updateGameScore(amount){
+  return {
+    type:'UPDATE_GAME_SCORE',
+    amount
+  }
+}
+
+export function resetGameScore(amount){
+  return {
+    type:'RESET_GAME_SCORE',
     amount
   }
 }

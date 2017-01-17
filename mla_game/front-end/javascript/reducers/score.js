@@ -9,7 +9,7 @@ function totalScore(state = {
         // increment score based on amount callback
         totalScore:action.score
       }
-    case 'UPDATE_SCORE':
+    case 'UPDATE_TOTAL_SCORE':
       return {
         // take a copy of state
         ...state.totalScore, 

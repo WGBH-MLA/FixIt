@@ -11,8 +11,8 @@ function gameOne(state = {
   endSegment:0,
   endOfRound:false,
   startSegment:0,
+  gameScore:0,
   waiting:false,
-  wrongPhrases:{}
 }, action) {
   switch(action.type){
     case 'GET_GAMEONE':
@@ -42,6 +42,14 @@ function gameOne(state = {
     case 'SET_ISPLAYING':
       return {...state, 
         isPlaying:action.isPlaying
+      }
+    case 'UPDATE_GAME_SCORE':
+      return {...state, 
+        gameScore:state.gameScore + action.amount
+      }
+    case 'RESET_GAME_SCORE':
+      return {...state, 
+        gameScore:action.amount
       }
     case 'SET_SEGMENT_START':
       return {...state,
