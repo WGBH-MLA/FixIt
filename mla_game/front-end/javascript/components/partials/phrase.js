@@ -38,8 +38,7 @@ class Phrase extends React.Component{
       this.props.setSegmentEnd(Number(details.end_time))
     }
   }
-
-
+  
   componentDidMount(){
     this.getEndOfContext()
     this.getStartofContext()
