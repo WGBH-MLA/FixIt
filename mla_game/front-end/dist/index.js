@@ -117,6 +117,7 @@ exports.setCurrentTime = setCurrentTime;
 exports.setSegmentStart = setSegmentStart;
 exports.setSegmentEnd = setSegmentEnd;
 exports.setIsPlaying = setIsPlaying;
+exports.endOfRound = endOfRound;
 exports.waitingUpdate = waitingUpdate;
 exports.wait = wait;
 exports.advanceSegment = advanceSegment;
@@ -232,8 +233,6 @@ function setStartTime(startTime) {
   };
 }
 
-// gameone audio actions
-
 function setCurrentTime(currentTime) {
   return {
     type: 'SET_CURRENTTIME',
@@ -271,6 +270,13 @@ function setIsPlaying(bool) {
 }
 
 //gameone round actions
+
+function endOfRound(bool) {
+  return {
+    type: 'SET_END_ROUND',
+    endOfRound: bool
+  };
+}
 
 function waitingUpdate(bool) {
   return {
@@ -1315,6 +1321,7 @@ var GameOne = (function (_React$Component) {
     this.handleProgress = this.handleProgress.bind(this);
     this.goBack = this.goBack.bind(this);
     this.selectPhrase = this.selectPhrase.bind(this);
+    this.renderRound = this.renderRound.bind(this);
 
     this.state = {
       wrongPhrases: {}
@@ -1357,14 +1364,14 @@ var GameOne = (function (_React$Component) {
       // copy state
       var wrongPhrases = _extends({}, this.state.wrongPhrases);
 
-      this.props.wait(3000);
+      // this.props.wait(3000);
 
-      var media = document.querySelector('.audio-player');
-      media.currentTime = gameone.startSegment;
-      media.play();
+      if (gameone.segment <= gameone.phrases.length + 1) {
+        // update round
+        var media = document.querySelector('.audio-player');
+        media.currentTime = gameone.startSegment;
+        media.play();
 
-      // update round
-      if (gameone.segment <= gameone.phrases.length) {
         this.props.advanceSegment(i);
         this.props.updateScore(10);
 
@@ -1374,7 +1381,7 @@ var GameOne = (function (_React$Component) {
         };
         (0, _helpers.postData)('/api/score/', data);
       } else {
-        return;
+        this.props.endOfRound(true);
       }
 
       // data push for phrases if they exist
@@ -1426,18 +1433,8 @@ var GameOne = (function (_React$Component) {
       media.play();
     }
   }, {
-    key: 'componentWillMount',
-    value: function componentWillMount() {
-      this.props.fetchGameOne();
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      this.props.resetRound(0);
-    }
-  }, {
-    key: 'render',
-    value: function render() {
+    key: 'renderRound',
+    value: function renderRound() {
       var _this = this;
 
       var _props2 = this.props;
@@ -1450,6 +1447,71 @@ var GameOne = (function (_React$Component) {
       var setSegmentEnd = _props2.setSegmentEnd;
       var setSegmentStart = _props2.setSegmentStart;
       var advanceSegment = _props2.advanceSegment;
+
+      if (gameone.endOfRound) {
+        return _react2['default'].createElement(
+          'div',
+          null,
+          _react2['default'].createElement(
+            'h1',
+            null,
+            'End Of Round'
+          )
+        );
+      } else {
+        return _react2['default'].createElement(
+          'ul',
+          { className: 'game-phrase-list' },
+          gameone.phrases.map(function (index, key) {
+            var items = Number(key);
+            var currentRound = gameone.segment <= items + 4 && gameone.segment >= items - 4;
+            var last = gameone.segment == items + 4;
+
+            if (currentRound) {
+              return _react2['default'].createElement(
+                'li',
+                { key: key, className: _this.activePhrase(gameone.currentTime, index.start_time, index.end_time) },
+                _react2['default'].createElement(_partialsPhrase2['default'], {
+                  selectPhrase: _this.selectPhrase,
+                  playPhrase: _this.playPhrase,
+                  time: gameone.currentTime,
+                  active: gameone.segment,
+                  keys: key,
+                  details: index,
+                  wrongPhrases: gameone.wrongPhrases,
+                  setSegmentStart: setSegmentStart,
+                  setSegmentEnd: setSegmentEnd,
+                  advanceSegment: advanceSegment
+                })
+              );
+            }
+          })
+        );
+      }
+    }
+  }, {
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      this.props.fetchGameOne();
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      this.props.resetRound(0);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _props3 = this.props;
+      var gameone = _props3.gameone;
+      var setIsPlaying = _props3.setIsPlaying;
+      var setCurrentTime = _props3.setCurrentTime;
+      var playPhrase = _props3.playPhrase;
+      var selectPhrase = _props3.selectPhrase;
+      var waitingUpdate = _props3.waitingUpdate;
+      var setSegmentEnd = _props3.setSegmentEnd;
+      var setSegmentStart = _props3.setSegmentStart;
+      var advanceSegment = _props3.advanceSegment;
 
       if (this.props.gameone.loading) {
         return _react2['default'].createElement(_partialsLoading_screen2['default'], null);
@@ -1477,35 +1539,7 @@ var GameOne = (function (_React$Component) {
                 aapb_link: gameone.aapb_link
               })
             ),
-            _react2['default'].createElement(
-              'ul',
-              { className: 'game-phrase-list' },
-              gameone.phrases.map(function (index, key) {
-                var items = Number(key);
-                var currentRound = gameone.segment <= items + 4 && gameone.segment >= items - 4;
-                var last = gameone.segment == items + 4;
-
-                if (currentRound) {
-                  return _react2['default'].createElement(
-                    'li',
-                    { key: key, className: _this.activePhrase(gameone.currentTime, index.start_time, index.end_time) },
-                    _react2['default'].createElement(_partialsPhrase2['default'], {
-                      selectPhrase: _this.selectPhrase,
-                      playPhrase: _this.playPhrase,
-                      time: gameone.currentTime,
-                      active: gameone.segment,
-                      keys: key,
-                      details: index,
-                      wrongPhrases: gameone.wrongPhrases,
-                      setSegmentStart: setSegmentStart,
-                      setSegmentEnd: setSegmentEnd,
-                      advanceSegment: advanceSegment
-
-                    })
-                  );
-                }
-              })
-            )
+            this.renderRound()
           ),
           _react2['default'].createElement(_partialsGame_footer2['default'], {
             goBack: this.goBack,
@@ -1920,6 +1954,7 @@ function gameOne(state, action) {
     isPlaying: false,
     segment: 0,
     endSegment: 0,
+    endOfRound: false,
     startSegment: 0,
     waiting: false,
     wrongPhrases: {}
@@ -1969,6 +2004,10 @@ function gameOne(state, action) {
     case 'WAITING_UPDATE':
       return _extends({}, state, {
         waiting: action.waiting
+      });
+    case 'SET_END_ROUND':
+      return _extends({}, state, {
+        endOfRound: action.endOfRound
       });
     case 'GOBACK_ROUND':
       return _extends({}, state, {

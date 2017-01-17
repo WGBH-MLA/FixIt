@@ -17,6 +17,7 @@ class GameOne extends React.Component{
     this.handleProgress = this.handleProgress.bind(this)
     this.goBack = this.goBack.bind(this)
     this.selectPhrase = this.selectPhrase.bind(this)
+    this.renderRound = this.renderRound.bind(this)
 
     this.state = {
       wrongPhrases:{}
@@ -53,15 +54,14 @@ class GameOne extends React.Component{
     // copy state
     const wrongPhrases = {...this.state.wrongPhrases};
     
-    this.props.wait(3000);
-
-
-    var media = document.querySelector('.audio-player');
-    media.currentTime = gameone.startSegment;
-    media.play();
-
-    // update round
-    if(gameone.segment <= gameone.phrases.length) {
+    // this.props.wait(3000);
+    
+    if(gameone.segment <= gameone.phrases.length + 1) {
+      // update round
+      var media = document.querySelector('.audio-player');
+      media.currentTime = gameone.startSegment;
+      media.play();
+      
       this.props.advanceSegment(i)
       this.props.updateScore(10)
 
@@ -72,7 +72,7 @@ class GameOne extends React.Component{
       postData('/api/score/', data)
 
     } else {
-      return
+      this.props.endOfRound(true)
     }
 
     // data push for phrases if they exist
@@ -125,6 +125,47 @@ class GameOne extends React.Component{
     media.currentTime = callback;
     media.play();
   }
+
+  renderRound(){
+    const { gameone, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegment } = this.props
+
+    if(gameone.endOfRound) {
+      return(
+        <div>
+          <h1>End Of Round</h1>
+        </div>
+      )
+    } else {
+      return(
+        <ul className="game-phrase-list">
+          {gameone.phrases.map((index, key) => {
+          let items = Number(key);
+          let currentRound = gameone.segment <= items + 4 && gameone.segment >= items -4;
+          let last = gameone.segment == items + 4;
+          
+           if(currentRound) {
+            return(
+              <li key={key} className={this.activePhrase(gameone.currentTime, index.start_time, index.end_time)}>
+                <Phrase
+                   selectPhrase={this.selectPhrase}
+                   playPhrase={this.playPhrase}
+                   time={gameone.currentTime} 
+                   active={gameone.segment}
+                   keys={key}
+                   details={index}
+                   wrongPhrases={gameone.wrongPhrases}
+                   setSegmentStart={setSegmentStart}
+                   setSegmentEnd={setSegmentEnd}
+                   advanceSegment={advanceSegment}
+                />
+              </li>
+             )
+            }
+         })}
+        </ul>        
+      )
+    }
+  }
   
   componentWillMount(){
     this.props.fetchGameOne()
@@ -136,7 +177,7 @@ class GameOne extends React.Component{
   
   render(){
     const { gameone, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegment } = this.props
-    
+
     if(this.props.gameone.loading) {
       return(
         <LoadingScreen />
@@ -160,33 +201,7 @@ class GameOne extends React.Component{
                 aapb_link={gameone.aapb_link} 
               />
             </div>
-            <ul className="game-phrase-list">
-              {gameone.phrases.map((index, key) => {
-                let items = Number(key);
-                let currentRound = gameone.segment <= items + 4 && gameone.segment >= items -4;
-                let last = gameone.segment == items + 4;
-
-                if(currentRound) {
-                return(
-                  <li key={key} className={this.activePhrase(gameone.currentTime, index.start_time, index.end_time)}>
-                    <Phrase
-                       selectPhrase={this.selectPhrase}
-                       playPhrase={this.playPhrase}
-                       time={gameone.currentTime} 
-                       active={gameone.segment}
-                       keys={key}
-                       details={index}
-                       wrongPhrases={gameone.wrongPhrases}
-                       setSegmentStart={setSegmentStart}
-                       setSegmentEnd={setSegmentEnd}
-                       advanceSegment={advanceSegment}
-
-                    />
-                  </li>
-                 )
-                }
-               })}
-              </ul>
+            {this.renderRound()}
           </div>
   
           <GameFooter
