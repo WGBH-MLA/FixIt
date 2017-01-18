@@ -4,9 +4,8 @@ class Preferences extends React.Component{
   
   render(){
     return (
-      <div className="app-content">
+      <div className="grid">
         <h1>Preferences</h1>
-        }
       </div>
     )
   }

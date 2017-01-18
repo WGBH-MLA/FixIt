@@ -13,6 +13,7 @@ function gameOne(state = {
   startSegment:0,
   gameScore:0,
   waiting:false,
+  inGameTip:true
 }, action) {
   switch(action.type){
     case 'GET_GAMEONE':
@@ -86,6 +87,10 @@ function gameOne(state = {
     case 'UNMARK_PHRASE':
       return  {...state, 
         wrongPhrases:action.phrase
+      }
+    case 'DISMISS_TIP':
+      return  {...state, 
+        inGameTip:action.bool
       }
     default:
       return state;

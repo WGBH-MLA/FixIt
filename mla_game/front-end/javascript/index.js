@@ -14,7 +14,6 @@ import NotFound from './components/routes/not_found'
 import Base from './components/base_connect'
 import GameMenu from './components/routes/game_menu'
 import LeaderBoard from './components/routes/leader_board'
-import Settings from './components/routes/settings'
 import Preferences from './components/routes/preferences'
 
 // games
@@ -39,7 +38,6 @@ const App = (
       <Route path="/" component={Base}>
         <IndexRoute component={GameMenu} />      
         <Route path="leaderboard" component={LeaderBoard} />
-        <Route path="settings" component={Settings} />
         <Route path="preferences" component={Preferences} />
         <Route path="gameone" component={GameOne} />
         <Route path="gametwo" component={GameTwo} />

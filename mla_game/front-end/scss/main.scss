@@ -315,6 +315,37 @@ button {
   }
 }
 
+// ingame tip
+.game-tip {
+  background:$help;
+  padding:.5em;
+  text-align: right;
+  font-family: 'Droid Sans', sans-serif;
+  button {
+    @include plain-button;
+    padding:0;
+    line-height:1;
+    svg {
+      height:2em;
+      width:2em;
+      fill:white;
+      stroke:white;
+      stroke-width:15
+    }
+  }
+  p {
+    margin-top:.5em;
+    text-align: left;
+    padding:1em;
+  }
+  @include susy-breakpoint($screen-sm-min, $map-sm) {
+    width:50%;
+  }
+  @include susy-breakpoint($screen-md-min, $map-md) {
+    @include span(last 2 of 12);
+  }
+}
+
 .loading-screen {
   position:relative;
   height:90vh;

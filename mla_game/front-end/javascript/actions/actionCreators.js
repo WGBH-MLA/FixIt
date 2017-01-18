@@ -215,10 +215,17 @@ export function unMarkPhrase(phrase){
 }
 // <-- end  gameone actions
 
-//Modal window toggle
+//Modal window and in Game Tip
 export function setModal(bool){
   return {
     type:'TOGGLE_MODAL',
+    bool
+  }
+}
+
+export function dismissTip(bool){
+  return {
+    type:'DISMISS_TIP',
     bool
   }
 }

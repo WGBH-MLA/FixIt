@@ -19,6 +19,7 @@ class GameOne extends React.Component{
     this.goBack = this.goBack.bind(this)
     this.selectPhrase = this.selectPhrase.bind(this)
     this.reload = this.reload.bind(this)
+    this.dismiss = this.dismiss.bind(this)
 
     this.state = {
       wrongPhrases:{}
@@ -105,6 +106,10 @@ class GameOne extends React.Component{
     window.location.reload();
   }
 
+  dismiss(){
+    this.props.dismissTip(false)
+  }
+
   goBack(i) {
     const { gameone } = this.props
     if(gameone.segment >= 1) {
@@ -189,32 +194,47 @@ class GameOne extends React.Component{
                 </ul>
               </div>
             ) : (
-              <ul className="game-phrase-list">
-                {gameone.phrases.map((index, key) => {
-                let items = Number(key);
-                let currentRound = gameone.segment <= items + 4 && gameone.segment >= items -4;
-                let last = gameone.segment == items + 4;
-                
-                 if(currentRound) {
-                  return(
-                    <li key={key} className={this.activePhrase(gameone.currentTime, index.start_time, index.end_time)}>
-                      <Phrase
-                         selectPhrase={this.selectPhrase}
-                         playPhrase={this.playPhrase}
-                         time={gameone.currentTime} 
-                         active={gameone.segment}
-                         keys={key}
-                         details={index}
-                         wrongPhrases={gameone.wrongPhrases}
-                         setSegmentStart={setSegmentStart}
-                         setSegmentEnd={setSegmentEnd}
-                         advanceSegment={advanceSegment}
-                      />
-                    </li>
-                   )
-                  }
-               })}
-              </ul>     
+              <div>
+                <ul className="game-phrase-list">
+                  {gameone.phrases.map((index, key) => {
+                  let items = Number(key);
+                  let currentRound = gameone.segment <= items + 4 && gameone.segment >= items -4;
+                  let last = gameone.segment == items + 4;
+                  
+                   if(currentRound) {
+                    return(
+                      <li key={key} className={this.activePhrase(gameone.currentTime, index.start_time, index.end_time)}>
+                        <Phrase
+                           selectPhrase={this.selectPhrase}
+                           playPhrase={this.playPhrase}
+                           time={gameone.currentTime} 
+                           active={gameone.segment}
+                           keys={key}
+                           details={index}
+                           wrongPhrases={gameone.wrongPhrases}
+                           setSegmentStart={setSegmentStart}
+                           setSegmentEnd={setSegmentEnd}
+                           advanceSegment={advanceSegment}
+                        />
+                      </li>
+                     )
+                    }
+                 })}
+                </ul>
+                {gameone.inGameTip ? (
+                  <div className="game-tip">
+                    <button className='dismiss-tip' onClick={() => this.dismiss()} >
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+                        <title>Dismiss</title>
+                        <path d="M340.2 160l-84.4 84.2-84-83.8-11.8 11.8 84 83.8-84 83.8 11.8 11.8 84-83.8 84.4 84.2 11.8-11.8-84.4-84.2 84.4-84.2"/>
+                      </svg>
+                    </button>
+                    <p>Click to Indentify the line(s) with error</p>
+                  </div> 
+                  ) : (
+                    ''
+                )}
+              </div>    
             )}
           </div>
           
