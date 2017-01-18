@@ -1,7 +1,28 @@
 import React from 'react'
 import Paging from './paginator'
+import Modal from 'react-modal'
+import customStyles from '../../helpers'
 
 class GameFooter extends React.Component{
+  constructor(){
+    super()
+    this.setModal = this.setModal.bind(this)
+    this.closeModal = this.closeModal.bind(this)
+  }
+  
+  setModal(){
+    const { modalIsOpen } = this.props
+    if(modalIsOpen) {
+      this.props.setModal(false)
+    } else {
+      this.props.setModal(true)
+    }
+  }
+
+  closeModal(){
+    this.props.setModal(false)
+  }
+
   render(){
     return(
       <div className="game-footer">
@@ -16,7 +37,7 @@ class GameFooter extends React.Component{
             />                
             <progress className="game-progress" max={this.props.max} value={this.props.value}></progress>
           </div>
-          <button className="help">
+          <button onClick={() => this.setModal()}className="help">
             <title>Help</title>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
             <path d="M100 200C44.9 200 0 155.1 0 100S44.9 0 100 0s100 44.9 100 100-44.9 100-100 100zm0-180.4c-44.3 0-80.4 36.1-80.4 80.4 0 44.3 36.1 80.4 80.4 80.4s80.4-36.1 80.4-80.4c0-44.3-36.1-80.4-80.4-80.4z"/>
@@ -24,6 +45,25 @@ class GameFooter extends React.Component{
             </svg>
           </button>              
         </div>
+        <Modal
+          isOpen={this.props.modalIsOpen}
+          onRequestClose={this.closeModal}        
+          contentLabel="Help FAQ"
+          style={customStyles}
+        >
+          <h1>Help Information</h1>
+          <button className='modal-close' onClick={this.closeModal}>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+              <title>Close Modal</title>
+              <path d="M403.1 108.9c-81.2-81.2-212.9-81.2-294.2 0s-81.2 212.9 0 294.2c81.2 81.2 212.9 81.2 294.2 0s81.2-213 0-294.2zm-12.3 281.9c-74.3 74.3-195.3 74.3-269.6 0-74.3-74.3-74.3-195.3 0-269.6s195.3-74.3 269.6 0c74.4 74.3 74.4 195.3 0 269.6z"/>
+              <path d="M340.2 160l-84.4 84.2-84-83.8-11.8 11.8 84 83.8-84 83.8 11.8 11.8 84-83.8 84.4 84.2 11.8-11.8-84.4-84.2 84.4-84.2"/>
+            </svg>
+          </button>
+          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+          <p> but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+          <p>eady. Think of a news blog that's filled with content hourly on the day of going live. However, reviewers tend to be distracted by comprehensible content, say, a random text copied from a</p>
+          <p>ontent. It's also called placeholder (or filler) text. It's a convenient tool for mock-ups. It helps to outline the visual elements of a document or presentation, eg typography, font, or layout. Lorem ipsum is mostly a part of a Latin </p>
+        </Modal>
       </div>
     )
   }

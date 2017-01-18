@@ -60,7 +60,7 @@ export function fetchData(){
         for (var i = 0; i < score.data.results.length; i++) {
           total.push(score.data.results[i].score);
         }
-        let totalScore = total.reduce((a, b) => a + b, 0);
+        let totalScore = total.reduce((a, b) => a + b, 0);  
         dispatch(setTotalScore(totalScore))
       }))
   }
@@ -214,5 +214,13 @@ export function unMarkPhrase(phrase){
   }
 }
 // <-- end  gameone actions
+
+//Modal window toggle
+export function setModal(bool){
+  return {
+    type:'TOGGLE_MODAL',
+    bool
+  }
+}
 
 

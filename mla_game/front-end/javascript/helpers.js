@@ -48,3 +48,30 @@ export function postSData(endpoint, data) {
     })
   )
 }
+
+// styling object for modal window
+const customStyles = {
+  overlay : {
+    position          : 'fixed',
+    top               : 0,
+    left              : 0,
+    right             : 0,
+    bottom            : 0,
+    backgroundColor   : 'rgba(0, 0, 0, 0.75)',
+    zIndex:5, 
+  },
+  
+  content : {
+    top           : '50%',
+    left          : '50%',
+    right         : 'auto',
+    bottom        : 'auto',
+    marginRight   : '-50%',
+    transform     : 'translate(-50%, -50%)',
+    background    : '#221e1f',
+    maxWidth      : '42.5em',
+    maxHeight     : '100vh',
+  }
+}
+export default customStyles;
+

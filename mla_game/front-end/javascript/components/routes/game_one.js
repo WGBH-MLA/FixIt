@@ -143,6 +143,7 @@ class GameOne extends React.Component{
     this.props.resetGameScore(0);
     this.props.endOfRound(false)
   }
+
   
   render(){
     const { gameone, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegment } = this.props
@@ -224,6 +225,8 @@ class GameOne extends React.Component{
             value={gameone.segment + 3}
             waitingUpdate={this.props.waitingUpdate}
             waiting={this.props.gameone.waiting}
+            modalIsOpen={this.props.initialData.modalIsOpen}
+            setModal={this.props.setModal}
           />
         </div>
       )

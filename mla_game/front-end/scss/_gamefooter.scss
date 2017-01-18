@@ -177,8 +177,8 @@
         width:4em;
       }
     }
-  } 
-  
+  }
+
   // browser resets and visual styling for progress element
   progress {
     background-color:$default;
@@ -210,5 +210,24 @@
       background-color:$progress;
     } 
 
+  }
+}
+
+// help modal styling 
+.modal-close {
+  @include plain-button;
+  width:3em;
+  height:3em;
+  position:absolute;
+  top:1em;
+  right:1em;
+  &:hover {
+    fill:$icon-hover;
+    stroke:$icon-hover;
+  }
+  svg {
+    fill:white;
+    stroke:white;
+    stroke-width:15
   }
 }

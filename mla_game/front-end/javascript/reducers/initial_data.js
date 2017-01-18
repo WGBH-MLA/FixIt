@@ -2,6 +2,7 @@ function initialData(state = {
   loading:true,
   user:null,
   score:null,
+  modalIsOpen:false
 }, action) {
   switch(action.type){
     case 'GET_INITIAL_DATA':
@@ -13,6 +14,10 @@ function initialData(state = {
         loading: false, 
         user:action.user,
         score:action.score
+      }
+    case 'TOGGLE_MODAL':
+      return {...state, 
+        modalIsOpen:action.bool,
       }
     default:
       return state;
