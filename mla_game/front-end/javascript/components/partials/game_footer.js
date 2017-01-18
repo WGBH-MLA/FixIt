@@ -1,7 +1,6 @@
 import React from 'react'
 import Paging from './paginator'
 import Modal from 'react-modal'
-import customStyles from '../../helpers'
 
 class GameFooter extends React.Component{
   constructor(){
@@ -49,7 +48,8 @@ class GameFooter extends React.Component{
           isOpen={this.props.modalIsOpen}
           onRequestClose={this.closeModal}        
           contentLabel="Help FAQ"
-          style={customStyles}
+          className="modal-content"
+          overlayClassName="modal-overlay"
         >
           <h1>Help Information</h1>
           <button className='modal-close' onClick={this.closeModal}>
