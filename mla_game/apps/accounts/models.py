@@ -11,13 +11,32 @@ class Profile(models.Model):
     considered_phrases = models.ManyToManyField('transcript.TranscriptPhrase')
 
     @property
-    def total_score(self):
-        total_score = 0
+    def game_scores(self):
+        game_one_total = 0
+        game_two_total = 0
+        game_three_total = 0
         all_scores = Score.objects.filter(user=self.user)
-        for score in all_scores:
-            total_score += score.score
+        game_one_scores = all_scores.filter(game=1)
+        game_two_scores = all_scores.filter(game=2)
+        game_three_scores = all_scores.filter(game=3)
 
-        return total_score
+        for score in game_one_scores:
+            game_one_total += score.score
+
+        for score in game_two_scores:
+            game_two_total += score.score
+
+        for score in game_three_scores:
+            game_three_total += score.score
+
+        total_score = game_one_total + game_two_total + game_three_total
+
+        return {
+            'total_score': total_score,
+            'game_one_score': game_one_total,
+            'game_two_score': game_two_total,
+            'game_three_score': game_three_total,
+        }
 
     def __str__(self):
         return self.user.username
