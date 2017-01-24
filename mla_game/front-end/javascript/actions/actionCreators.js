@@ -61,11 +61,13 @@ export function fetchData(){
         axios.get('/api/score/')
       ])
       .then(axios.spread(function (profile, score) {
+        const { game_scores, username } = profile.data.results[0]
+        
         dispatch(storeInitialData(profile.data.results, score.data.results))
         // set username
-        dispatch(setUsername(profile.data.results[0].username))
+        dispatch(setUsername(username))
         // set total score
-        dispatch(setTotalScore(profile.data.results[0].total_score))
+        dispatch(setTotalScore(game_scores.total_score))
       }))
   }
 } // <-- end initial data actions
