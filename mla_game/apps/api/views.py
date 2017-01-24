@@ -59,6 +59,20 @@ class TranscriptViewSet(viewsets.ModelViewSet):
             serializer.data[0]['phrases'] = phrase_serializer.data
         return Response(serializer.data)
 
+    @list_route()
+    def game_two(self, request):
+        transcripts, phrases_for_correction = Transcript.objects.game_two(request.user)
+        serializer = self.get_serializer(
+            transcripts, many=True,
+        )
+        for transcript in serializer.data:
+            for phrase in transcript['phrases']:
+                if phrase['pk'] in phrases_for_correction:
+                    phrase['need_correction'] = True
+                else:
+                    phrase['need_correction'] = False
+        return Response(serializer.data)
+
 
 class TranscriptPhraseDownvoteViewSet(viewsets.ModelViewSet):
     queryset = TranscriptPhraseDownvote.objects.all()
