@@ -117,7 +117,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
     def partial_update(self, request, *args, **kwargs):
         kwargs['partial'] = True
-        if request.data['considered_phrases']:
+        if 'considered_phrases' in request.data:
             for phrase in self.get_object().considered_phrases.all():
                 request.data['considered_phrases'].append(phrase.pk)
         return self.update(request, *args, **kwargs)
