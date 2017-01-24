@@ -61,7 +61,6 @@ export function fetchData(){
         axios.get('/api/score/')
       ])
       .then(axios.spread(function (profile, score) {
-        console.log(profile)
         dispatch(storeInitialData(profile.data.results, score.data.results))
         // set username
         dispatch(setUsername(profile.data.results[0].username))

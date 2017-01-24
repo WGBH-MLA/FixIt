@@ -11,12 +11,14 @@ class UserForm extends React.Component {
     event.preventDefault();
     // create object and url for changeing username
     let userPk = this.props.data.user[0].pk
+    
     let username = {
       "username":this.userform[0].value
     }
+    
     // patch username and update in state
-    patchData(`/api/profile/${userPk}/`, username)
     this.props.setUsername(this.userform[0].value)
+    patchData(`/api/profile/${userPk}/`, username)
   }
 
 

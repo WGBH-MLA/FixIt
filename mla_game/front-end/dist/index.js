@@ -1309,12 +1309,14 @@ var UserForm = (function (_React$Component) {
       event.preventDefault();
       // create object and url for changeing username
       var userPk = this.props.data.user[0].pk;
+
       var username = {
         "username": this.userform[0].value
       };
+
       // patch username and update in state
-      (0, _helpers.patchData)('/api/profile/' + userPk + '/', username);
       this.props.setUsername(this.userform[0].value);
+      (0, _helpers.patchData)('/api/profile/' + userPk + '/', username);
     }
   }, {
     key: 'render',
