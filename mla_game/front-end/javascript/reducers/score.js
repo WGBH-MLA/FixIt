@@ -1,4 +1,4 @@
-function totalScore(state = {
+function gameScores(state = {
   total_score:null
 }, action) {
   switch(action.type){
@@ -20,4 +20,4 @@ function totalScore(state = {
       return state;
   }
 }
-export default totalScore;
+export default gameScores;

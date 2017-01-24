@@ -6,7 +6,7 @@ import Base from './base';
 function mapStateToProps(state) {
   return {
     initialData:state.initialData,
-    totalScore:state.totalScore, 
+    gameScores:state.gameScores, 
     gameone:state.gameOne 
   }
 }

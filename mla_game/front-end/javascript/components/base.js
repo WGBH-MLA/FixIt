@@ -29,7 +29,7 @@ class Base extends React.Component {
                 transitionEnterTimeout={500}
                 transitionLeaveTimeout={500}
               >
-               <span key={this.props.totalScore.total_score}>{this.props.totalScore.total_score}</span>
+               <span key={this.props.gameScores.total_score}>{this.props.gameScores.total_score}</span>
               </ReactCSSTransitionGroup>
 
               <ul className='app-navigation'>
