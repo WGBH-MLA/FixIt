@@ -69,11 +69,11 @@ class GameOne extends React.Component{
       this.props.updateTotalScore(10)
       this.props.updateGameScore(10)
 
-      let data = {
+      let segmentScore = {
         game:'1',
         score:10
       }
-      postData('/api/score/', data)
+      postData('/api/score/', segmentScore)
 
     } else {
       this.props.endOfRound(true)
@@ -94,6 +94,13 @@ class GameOne extends React.Component{
         postData('/api/transcriptphrasedownvote/', data);
         this.props.updateTotalScore(1);
         this.props.updateGameScore(1);
+        
+        let phraseScore = {
+          game:'1',
+          score:1
+        }
+        
+        postData('/api/score/', phraseScore)
       }
       // clean state
       this.setState({
