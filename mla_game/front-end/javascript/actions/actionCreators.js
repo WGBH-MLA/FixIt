@@ -46,6 +46,13 @@ function storeInitialData(user, score) {
   }
 }
 
+export function setUsername(user) {
+  return {
+    type: 'SET_USERNAME',
+    user,
+  }
+}
+
 export function fetchData(){
   return (dispatch, getState) => {
     dispatch(requestInitialData(true))
@@ -54,7 +61,9 @@ export function fetchData(){
         axios.get('/api/score/')
       ])
       .then(axios.spread(function (profile, score) {
+        // console.log(profile)
         dispatch(storeInitialData(profile.data.results, score.data.results))
+        dispatch(setUsername(profile.data.results[0].username))
         // set total score
         let total = [];
         for (var i = 0; i < score.data.results.length; i++) {
