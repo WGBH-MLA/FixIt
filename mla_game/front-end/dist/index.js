@@ -1308,16 +1308,14 @@ var UserForm = (function (_React$Component) {
     key: 'changeName',
     value: function changeName(event) {
       event.preventDefault();
-      console.log(this.userform[0].value);
-      this.props.setUsername(this.userform[0].value);
-
+      // create object and url for changeing username
+      var userPk = this.props.data.user[0].pk;
       var username = {
-        username: this.userform[0].value
+        "username": this.userform[0].value
       };
-
-      // putData('/api/profile', username).then(function(repsonse){
-      //   console.log(response)
-      // })
+      // patch username and update in state
+      (0, _helpers.patchData)('/api/profile/' + userPk + '/', username);
+      this.props.setUsername(this.userform[0].value);
     }
   }, {
     key: 'render',
@@ -1331,7 +1329,8 @@ var UserForm = (function (_React$Component) {
           }, onSubmit: function (event) {
             return _this.changeName(event);
           } },
-        _react2['default'].createElement('input', { type: 'text' }),
+        console.log(this.props),
+        _react2['default'].createElement('input', { required: true, type: 'text' }),
         _react2['default'].createElement(
           'button',
           { type: 'submit' },
@@ -1343,6 +1342,10 @@ var UserForm = (function (_React$Component) {
 
   return UserForm;
 })(_react2['default'].Component);
+
+UserForm.proptypes = {
+  setUsername: _react2['default'].PropTypes.func.isRequired
+};
 
 exports['default'] = UserForm;
 module.exports = exports['default'];
@@ -2109,7 +2112,7 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports.getCookie = getCookie;
 exports.postData = postData;
-exports.putData = putData;
+exports.patchData = patchData;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -2149,9 +2152,9 @@ function postData(endpoint, data) {
 
 // post data. helper was created because CSRFToken needs to be set
 
-function putData(endpoint, data) {
+function patchData(endpoint, data) {
   return (0, _axios2['default'])({
-    method: 'PUT',
+    method: 'PATCH',
     url: endpoint,
     data: data,
     headers: {
