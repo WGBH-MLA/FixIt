@@ -68,9 +68,9 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         for transcript in serializer.data:
             for phrase in transcript['phrases']:
                 if phrase['pk'] in phrases_for_correction:
-                    phrase['need_correction'] = True
+                    phrase['needs_correction'] = True
                 else:
-                    phrase['need_correction'] = False
+                    phrase['needs_correction'] = False
         return Response(serializer.data)
 
 
