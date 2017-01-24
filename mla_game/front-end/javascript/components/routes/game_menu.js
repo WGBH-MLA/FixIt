@@ -13,6 +13,11 @@ class GameMenu extends React.Component{
           <li><Link to="gametwo">Game Two</Link></li>
           <li><Link to="gamethree">Game Three</Link></li>
         </ul>
+        <ul>
+          <li>game one score {this.props.gameScores.game_one_score}</li>
+          <li>game two score {this.props.gameScores.game_two_score}</li>
+          <li>game three score {this.props.gameScores.game_three_score}</li>
+        </ul>
       </div>
     )
   }

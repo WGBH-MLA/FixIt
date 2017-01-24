@@ -23,6 +23,15 @@ export function resetGameScore(amount){
   }
 }
 
+function setGameScores(gameone, gametwo, gamethree){
+  return {
+    type:'SET_GAME_SCORES',
+    gameone, 
+    gametwo, 
+    gamethree
+  }
+}
+
 function setTotalScore(score){
   return {
     type:'SET_TOTAL_SCORE',
@@ -63,11 +72,13 @@ export function fetchData(){
       .then(axios.spread(function (profile, score) {
         const { game_scores, username } = profile.data.results[0]
         
+        console.log(game_scores)
         dispatch(storeInitialData(profile.data.results, score.data.results))
         // set username
         dispatch(setUsername(username))
         // set total score
         dispatch(setTotalScore(game_scores.total_score))
+        dispatch(setGameScores(game_scores.game_one_score, game_scores.game_two_score, game_scores.game_three_score))
       }))
   }
 } // <-- end initial data actions
