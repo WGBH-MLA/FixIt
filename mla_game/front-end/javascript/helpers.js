@@ -32,15 +32,12 @@ export function postData(endpoint, data) {
 }
 
 // post data. helper was created because CSRFToken needs to be set
-export function postSData(endpoint, data) {
+export function putData(endpoint, data) {
   return(
     axios({
-      method: 'POST',
+      method: 'PUT',
       url: endpoint,
       data: data,
-      paramsSerializer: function(params) {
-        return Qs.stringify(params, {arrayFormat: 'brackets'})
-      },
       headers: {
         // csrftoken token?
         "X-CSRFToken": getCookie('csrftoken')

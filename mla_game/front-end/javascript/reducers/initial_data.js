@@ -1,6 +1,7 @@
 function initialData(state = {
   loading:true,
   user:null,
+  username:null,
   score:null,
   modalIsOpen:false
 }, action) {
@@ -18,6 +19,10 @@ function initialData(state = {
     case 'TOGGLE_MODAL':
       return {...state, 
         modalIsOpen:action.bool,
+      }
+    case 'SET_USERNAME':
+      return {...state, 
+        username:action.user,
       }
     default:
       return state;
