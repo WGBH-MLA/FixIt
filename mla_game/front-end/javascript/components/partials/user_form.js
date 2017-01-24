@@ -1,5 +1,5 @@
 import React from 'react'
-import { putData } from '../../helpers'
+import { patchData } from '../../helpers'
 
 class UserForm extends React.Component {
   constructor(){
@@ -9,26 +9,30 @@ class UserForm extends React.Component {
 
   changeName(event){
     event.preventDefault();
-    console.log(this.userform[0].value)
-    this.props.setUsername(this.userform[0].value)
-    
+    // create object and url for changeing username
+    let userPk = this.props.data.user[0].pk
     let username = {
-      username:this.userform[0].value
+      "username":this.userform[0].value
     }
-    
-    // putData('/api/profile', username).then(function(repsonse){
-    //   console.log(response)
-    // })
+    // patch username and update in state
+    patchData(`/api/profile/${userPk}/`, username)
+    this.props.setUsername(this.userform[0].value)
   }
 
 
   render(){
     return (
-      <form ref={(input) => this.userform = input } onSubmit={(event) => this.changeName(event)} >
-        <input type="text"/>
+      <form ref={(input) => this.userform = input } onSubmit={(event) => this.changeName(event)}>
+        <input required type="text"/>
         <button type='submit'>Change Username</button>
       </form>
     )
   }
 }
+
+UserForm.proptypes = {
+  setUsername:React.PropTypes.func.isRequired,
+  data:React.PropTypes.object.isRequired,
+}
+
 export default UserForm;

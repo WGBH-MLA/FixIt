@@ -32,10 +32,10 @@ export function postData(endpoint, data) {
 }
 
 // post data. helper was created because CSRFToken needs to be set
-export function putData(endpoint, data) {
+export function patchData(endpoint, data) {
   return(
     axios({
-      method: 'PUT',
+      method: 'PATCH',
       url: endpoint,
       data: data,
       headers: {
