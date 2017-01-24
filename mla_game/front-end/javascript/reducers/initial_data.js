@@ -1,8 +1,6 @@
 function initialData(state = {
   loading:true,
-  user:null,
   username:null,
-  score:null,
   modalIsOpen:false
 }, action) {
   switch(action.type){
