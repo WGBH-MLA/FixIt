@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from rest_framework.validators import UniqueTogetherValidator
+from rest_framework.validators import UniqueValidator, UniqueTogetherValidator
 
 from ..transcript.models import (
     Transcript, TranscriptPhrase, TranscriptMetadata,
@@ -90,6 +90,13 @@ class TopicSerializer(serializers.ModelSerializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(
+        max_length=50,
+        validators=[
+            UniqueValidator(queryset=Profile.objects.all())
+        ]
+    )
+
     class Meta:
         model = Profile
         fields = ('preferred_stations', 'preferred_topics', 'considered_phrases',
