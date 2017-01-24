@@ -10,6 +10,15 @@ class Profile(models.Model):
     preferred_topics = models.ManyToManyField('transcript.Topic')
     considered_phrases = models.ManyToManyField('transcript.TranscriptPhrase')
 
+    @property
+    def total_score(self):
+        total_score = 0
+        all_scores = Score.objects.filter(user=self.user)
+        for score in all_scores:
+            total_score += score.score
+
+        return total_score
+
     def __str__(self):
         return self.user.username
 
