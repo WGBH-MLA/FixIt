@@ -23,7 +23,6 @@ class UserForm extends React.Component {
   render(){
     return (
       <form ref={(input) => this.userform = input } onSubmit={(event) => this.changeName(event)}>
-        {console.log(this.props)}
         <input required type="text"/>
         <button type='submit'>Change Username</button>
       </form>
@@ -33,6 +32,7 @@ class UserForm extends React.Component {
 
 UserForm.proptypes = {
   setUsername:React.PropTypes.func.isRequired,
+  data:React.PropTypes.object.isRequired,
 }
 
 export default UserForm;
