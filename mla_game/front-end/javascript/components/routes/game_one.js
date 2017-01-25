@@ -5,7 +5,6 @@ import GameMeta from '../partials/game_meta'
 import Audio from '../partials/audio'
 import Phrase from '../partials/phrase'
 import Paging from '../partials/paginator'
-import axios from 'axios'
 import { postData } from '../../helpers'
 import GameFooter from '../partials/game_footer'
 

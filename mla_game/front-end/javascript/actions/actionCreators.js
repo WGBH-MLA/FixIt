@@ -228,7 +228,7 @@ export function unMarkPhrase(phrase){
     phrase
   }
 }
-// <-- end  gameone actions
+// <-- end gameone actions
 
 //Modal window and in Game Tip
 export function setModal(bool){
@@ -243,7 +243,7 @@ export function dismissTip(bool){
     type:'DISMISS_TIP',
     bool
   }
-}
+}// <-- end Modal window and in Game Tip
 
 // gametwo initial actions
 function requestGameTwo(bool){
@@ -266,6 +266,17 @@ export function fetchGameTwo(){
     return axios.get('/api/transcript/game_two/')
       .then(function(gameTwoInfo){
         // store data for gameone
+        // let newPhrases = []
+        // for (var i = 0; i < gameTwoInfo.data.length; i++) {
+        //   for (var j = 0; j < gameTwoInfo.data[i].phrases.length; j++) {
+        //     if(gameTwoInfo.data[i].phrases[j].needs_correction) {
+        //       console.log(gameTwoInfo.data[i].phrases[j])
+        //     }
+        //   }
+        // }
+        gameTwoInfo.data.map(function(index, elem) {
+          console.log(index)
+        })
         dispatch(storeGameTwo(gameTwoInfo.data[0]))
         // set start time for for audio based on start time of first phrase
         dispatch(setStartTime(Number(gameTwoInfo.data[0].phrases[0].start_time)))
@@ -283,6 +294,4 @@ export function fetchGameTwo(){
         dispatch(setPhraseList(phrases))
       })
   }
-} 
-
-
+}// <-- end  gametwo actions

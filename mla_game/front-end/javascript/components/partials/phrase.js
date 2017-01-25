@@ -1,6 +1,4 @@
 import React from 'react'
-import CSSTransitionGroup from 'react-addons-css-transition-group';
-
 
 class Phrase extends React.Component{
   constructor(){
