@@ -59,8 +59,6 @@ class TranscriptManager(models.Manager):
                                   if pk not in user_corrected][:20]
         transcripts_to_return = self.filter(
             phrases__in=phrases_for_correction).distinct()
-        for t in transcripts_to_return:
-            django_log.info(t.pk)
         return (transcripts_to_return, phrases_for_correction)
 
     def random_transcript(self):
