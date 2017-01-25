@@ -6,8 +6,9 @@ class Preferences extends React.Component{
   render(){
     return (
       <div className="grid">
-        <h1>{this.props.initialData.username}</h1>
         <h1>Preferences</h1>
+
+        <h4>Your Username: <span className="username">{this.props.initialData.username}</span></h4>
         <UserForm 
           data={this.props.initialData}
           setUsername={this.props.setUsername}

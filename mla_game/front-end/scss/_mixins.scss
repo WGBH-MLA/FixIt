@@ -79,6 +79,16 @@
   }
 }
 
+@mixin light-button {
+  @include plain-button;
+  display: inline-block;
+  font-family:'Bungee', Cursive;
+  background-color:$icon-dark;
+  color:white;
+  padding:.5em 1em;
+  margin-left:1em;
+}
+
 
 // link reset
 @mixin link-reset {

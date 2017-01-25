@@ -71,14 +71,12 @@ export function fetchData(){
       ])
       .then(axios.spread(function (profile, score) {
         const { game_scores, username } = profile.data.results[0]
-        
-        console.log(profile.data.results[0], profile.data.results[0].game_scores, game_scores)
         dispatch(storeInitialData(profile.data.results, score.data.results))
         // set username
         dispatch(setUsername(username))
         // set total score
-        dispatch(setTotalScore(profile.data.results[0].game_scores.total_score))
-        dispatch(setGameScores(profile.data.results[0].game_scores.game_one_score, profile.data.results[0].game_scores.game_two_score, profile.data.results[0].game_scores.game_three_score))
+        dispatch(setTotalScore(game_scores.total_score))
+        dispatch(setGameScores(game_scores.game_one_score, game_scores.game_two_score, game_scores.game_three_score))
       }))
   }
 } // <-- end initial data actions

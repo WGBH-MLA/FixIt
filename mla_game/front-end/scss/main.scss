@@ -356,3 +356,12 @@ button {
   width:10em;
   height:10em;
 }
+
+.user-form {
+  button {
+    @include light-button;
+  }
+  input[type='text'] {
+    padding:.4em 1em;
+  }
+}

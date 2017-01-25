@@ -203,13 +203,12 @@ function fetchData() {
       var game_scores = _profile$data$results$0.game_scores;
       var username = _profile$data$results$0.username;
 
-      console.log(profile.data.results[0], profile.data.results[0].game_scores, game_scores);
       dispatch(storeInitialData(profile.data.results, score.data.results));
       // set username
       dispatch(setUsername(username));
       // set total score
-      dispatch(setTotalScore(profile.data.results[0].game_scores.total_score));
-      dispatch(setGameScores(profile.data.results[0].game_scores.game_one_score, profile.data.results[0].game_scores.game_two_score, profile.data.results[0].game_scores.game_three_score));
+      dispatch(setTotalScore(game_scores.total_score));
+      dispatch(setGameScores(game_scores.game_one_score, game_scores.game_two_score, game_scores.game_three_score));
     }));
   };
 }
@@ -1340,7 +1339,7 @@ var UserForm = (function (_React$Component) {
 
       return _react2['default'].createElement(
         'form',
-        { ref: function (input) {
+        { className: 'user-form', ref: function (input) {
             return _this.userform = input;
           }, onSubmit: function (event) {
             return _this.changeName(event);
@@ -1847,7 +1846,7 @@ var GameOne = (function (_React$Component) {
                 _react2['default'].createElement(
                   'p',
                   null,
-                  'Click to Indentify the line(s) with error'
+                  'Click to Identify the line(s) with error'
                 )
               ) : ''
             )
@@ -2120,12 +2119,17 @@ var Preferences = (function (_React$Component) {
         _react2['default'].createElement(
           'h1',
           null,
-          this.props.initialData.username
+          'Preferences'
         ),
         _react2['default'].createElement(
-          'h1',
+          'h4',
           null,
-          'Preferences'
+          'Your Username: ',
+          _react2['default'].createElement(
+            'span',
+            { className: 'username' },
+            this.props.initialData.username
+          )
         ),
         _react2['default'].createElement(_partialsUser_form2['default'], {
           data: this.props.initialData,

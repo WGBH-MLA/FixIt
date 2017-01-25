@@ -24,7 +24,7 @@ class UserForm extends React.Component {
 
   render(){
     return (
-      <form ref={(input) => this.userform = input } onSubmit={(event) => this.changeName(event)}>
+      <form className='user-form' ref={(input) => this.userform = input } onSubmit={(event) => this.changeName(event)}>
         <input required type="text"/>
         <button type='submit'>Change Username</button>
       </form>
