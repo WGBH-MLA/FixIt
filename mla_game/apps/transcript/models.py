@@ -55,8 +55,12 @@ class TranscriptManager(models.Manager):
         downvoted = set([phrase.transcript_phrase.pk for phrase in
                          TranscriptPhraseDownvote.objects.all()])
         user_corrected = TranscriptPhraseCorrection.objects.filter(user=user)
-        phrases_for_correction = [pk for pk in downvoted if pk not in user_corrected]
-        transcripts_to_return = self.filter(phrases__in=phrases_for_correction)
+        phrases_for_correction = [pk for pk in downvoted
+                                  if pk not in user_corrected][:20]
+        transcripts_to_return = self.filter(
+            phrases__in=phrases_for_correction).distinct()
+        for t in transcripts_to_return:
+            django_log.info(t.pk)
         return (transcripts_to_return, phrases_for_correction)
 
     def random_transcript(self):
