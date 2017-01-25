@@ -7,7 +7,8 @@ function mapStateToProps(state) {
   return {
     initialData:state.initialData,
     gameScores:state.gameScores, 
-    gameone:state.gameOne 
+    gameone:state.gameOne,
+    gametwo:state.gameTwo 
   }
 }
 

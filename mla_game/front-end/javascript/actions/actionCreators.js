@@ -245,4 +245,44 @@ export function dismissTip(bool){
   }
 }
 
+// gametwo initial actions
+function requestGameTwo(bool){
+  return {
+    type: 'GET_GAMETWO',
+    loading:bool
+  }
+}
+
+function storeGameTwo(data) {
+  return {
+    type: 'GET_GAMETWO_SUCCESS',
+    data,
+  }
+}
+
+export function fetchGameTwo(){
+  return (dispatch, getState) => {
+    dispatch(requestGameTwo(true))
+    return axios.get('/api/transcript/game_two/')
+      .then(function(gameTwoInfo){
+        // store data for gameone
+        dispatch(storeGameTwo(gameTwoInfo.data[0]))
+        // set start time for for audio based on start time of first phrase
+        dispatch(setStartTime(Number(gameTwoInfo.data[0].phrases[0].start_time)))
+        // set end time based on forst phrase start time
+        let transcriptEndTime = Number(gameTwoInfo.data[0].phrases[0].start_time) + 1200
+        // grab first twenty minutes of segments and push 
+        // to new array and then state
+        const phrases = [];
+        for (var i = 0; i < gameTwoInfo.data[0].phrases.length; i++) {
+          if(gameTwoInfo.data[0].phrases[i].start_time <= transcriptEndTime) {
+            phrases.push(gameTwoInfo.data[0].phrases[i]);
+          }
+        }
+        // update state with new phrase array with twenty minutes of audio
+        dispatch(setPhraseList(phrases))
+      })
+  }
+} 
+
 
