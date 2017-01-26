@@ -50,17 +50,19 @@ class TranscriptPicks(models.Model):
 class Score(models.Model):
     """
     Participation Points (for playing the game):
-        User gains 10 points for each segment completed
-        User gets 1 point for each action completed (error identified, fix supplied, vote)
-        User gets 100 point bonus for completing the challenge
-        User gets 50 points for continuing to another challenge after completing the first.
+        User gains 10 points for each segment completed (Paul)
+        User gets 1 point for each action completed (error identified, fix supplied, vote) (Paul?)
+        User gets 100 point bonus for completing the challenge (Paul?)
+        User gets 50 points for continuing to another challenge after completing the first. (Paul?)
     Game Points (for actions taken during the game):
-        User gets 10 points for each phrase that is marked as containing an error in Game 1 that gets validated as having an error in Game 3.
-        User gets 10 points for each phrase that a user corrects in Game 2 gets validated as the correct fix in Game 3
-        User gets 10 points for each vote in Game 3 that is the consensus vote
-        User loses 5 points for each incorrectly identified error (game 1)
-        User loses 5 points for each incorrectly supplied fix (game 2)
-        User loses 5 points for each incorrectly validated vote (game 3)
+        User gets 10 points for each phrase that is marked as containing an
+            error in Game 1 that gets validated as having an error in Game 3. (Jay)
+        User gets 10 points for each phrase that a user corrects in Game 2 gets
+            validated as the correct fix in Game 3 (Jay)
+        User gets 10 points for each vote in Game 3 that is the consensus vote (Jay)
+        User loses 5 points for each incorrectly identified error (game 1) (Jay)
+        User loses 5 points for each incorrectly supplied fix (game 2) (Jay)
+        User loses 5 points for each incorrectly validated vote (game 3) (Jay)
     """
     game_choices = (
         1, 'Identify Errors',
