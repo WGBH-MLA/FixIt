@@ -18,7 +18,8 @@ error_log = logging.getLogger('pua_errors')
 
 class TranscriptManager(models.Manager):
     def game_one(self, user):
-        picks, created = TranscriptPicks.objects.get_or_create(user=user).picks
+        picks, created = TranscriptPicks.objects.get_or_create(user=user)
+        picks = picks.picks
         if created:
             return (self.random_transcript(), False)
         elif 'partially_completed_transcripts' in picks:
