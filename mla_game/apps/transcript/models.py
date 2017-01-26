@@ -9,7 +9,6 @@ from django.db import models
 from localflavor.us.models import USStateField
 
 from mla_game.apps.accounts.models import TranscriptPicks, Profile
-from mla_game.apps.accounts.tasks import update_transcript_picks
 
 
 django_log = logging.getLogger('django')
@@ -21,7 +20,6 @@ class TranscriptManager(models.Manager):
     def game_one(self, user):
         picks, created = TranscriptPicks.objects.get_or_create(user=user).picks
         if created:
-            update_transcript_picks(user)
             return (self.random_transcript(), False)
         elif 'partially_completed_transcripts' in picks:
             transcript = self.filter(pk=picks['partially_completed_transcripts'][0])
