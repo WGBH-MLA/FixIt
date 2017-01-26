@@ -9,6 +9,7 @@ from django.db import models
 from localflavor.us.models import USStateField
 
 from mla_game.apps.accounts.models import TranscriptPicks, Profile
+from mla_game.apps.accounts.tasks import update_transcript_picks
 
 
 django_log = logging.getLogger('django')
@@ -18,17 +19,20 @@ error_log = logging.getLogger('pua_errors')
 
 class TranscriptManager(models.Manager):
     def game_one(self, user):
-        picks = TranscriptPicks.objects.get(user=user).picks
-        if picks['partially_completed_transcripts']:
+        picks, created = TranscriptPicks.objects.get_or_create(user=user).picks
+        if created:
+            update_transcript_picks(user)
+            return (self.random_transcript(), False)
+        elif 'partially_completed_transcripts' in picks:
             transcript = self.filter(pk=picks['partially_completed_transcripts'][0])
             phrases = transcript.first().phrases.unseen(user)
             return (transcript, phrases)
-        elif picks['ideal_transcripts']:
+        elif 'ideal_transcripts' in picks:
             return (
                 self.filter(pk=random.choice(picks['ideal_transcripts'])),
                 False
             )
-        elif picks['acceptable_transcripts']:
+        elif 'acceptable_transcripts' in picks:
             return (
                 self.filter(pk=random.choice(picks['acceptable_transcripts'])),
                 False
@@ -38,20 +42,17 @@ class TranscriptManager(models.Manager):
 
     def game_two(self, user):
         '''
-        considerations:
-            - if there's a transcript with many game two ready phrases, we
-            should prefer that transcripts
-            - present the transcript object with a list of segments
-            - segments are the phrase to be corrected with some surrounding
-            context phrases
-            https://atlas.wgbh.org/jira/browse/IMG-89
+        TODO:
+        - if there's a transcript with many game two ready phrases, we
+        should prefer that transcripts
 
-            present entire transcript with additional keys for whether the phrase
-            needs correction
+        - for now we're just going to use any phrase with a downvote,
+        in the future we need to use phrases that have been verified as
+        incorrect using the considered/downvoted ratio
+
+        Returns a tuple containing a queryset of Transcript objects and a list
+        of phrase PKs to annotate
         '''
-        # for now we're just going to use any phrase with a downvote
-        # TODO in the future we need to use phrases that have been verified as
-        # incorrect using the considered/downvoted ratio
         downvoted = set([phrase.transcript_phrase.pk for phrase in
                          TranscriptPhraseDownvote.objects.all()])
         user_corrected = TranscriptPhraseCorrection.objects.filter(user=user)
