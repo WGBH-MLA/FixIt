@@ -26,10 +26,11 @@ class GameFooter extends React.Component{
     return(
       <div className="game-footer">
         <div className="grid">
-          <h2 className='title delta'><span>1</span> Identify Errors</h2>
+          <h2 className='title delta'><span>{this.props.gameNumber}</span> {this.props.gameName}</h2>
           <div className="controls">
             <Paging 
-              goBack={this.props.goBack} 
+              goBack={this.props.goBack}
+              canGoBack={this.props.canGoBack} 
               handleProgress={this.props.handleProgress} 
               waitingUpdate={this.props.waitingUpdate}
               waiting={this.props.waiting}

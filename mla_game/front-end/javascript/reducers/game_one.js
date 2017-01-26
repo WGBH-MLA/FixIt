@@ -1,4 +1,7 @@
 function gameOne(state = {
+  gameNumber:1,
+  gameName:'Identify Errors',
+  canGoBack:false,
   loading:true,
   aapb_link:null,
   media_url: null,
@@ -88,7 +91,7 @@ function gameOne(state = {
       return  {...state, 
         wrongPhrases:action.phrase
       }
-    case 'DISMISS_TIP':
+    case 'DISMISS_TIP_ONE':
       return  {...state, 
         inGameTip:action.bool
       }

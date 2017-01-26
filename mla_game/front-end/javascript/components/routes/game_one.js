@@ -7,6 +7,7 @@ import Phrase from '../partials/phrase'
 import Paging from '../partials/paginator'
 import { postData } from '../../helpers'
 import GameFooter from '../partials/game_footer'
+import GameTip from '../partials/game_tip'
 
 class GameOne extends React.Component{
 
@@ -18,7 +19,6 @@ class GameOne extends React.Component{
     this.goBack = this.goBack.bind(this)
     this.selectPhrase = this.selectPhrase.bind(this)
     this.reload = this.reload.bind(this)
-    this.dismiss = this.dismiss.bind(this)
 
     this.state = {
       wrongPhrases:{}
@@ -49,7 +49,7 @@ class GameOne extends React.Component{
     }
   }
 
-  handleProgress(i) {
+  handleProgress() {
     const { gameone, setIsPlaying, setCurrentTime, playPhrase } = this.props
     // copy state
     const wrongPhrases = {...this.state.wrongPhrases};
@@ -64,7 +64,7 @@ class GameOne extends React.Component{
       media.currentTime = gameone.startSegment;
       media.play();
       
-      this.props.advanceSegment(i)
+      this.props.advanceSegment(3)
       this.props.updateTotalScore(10)
       this.props.updateGameScore(10)
 
@@ -112,14 +112,10 @@ class GameOne extends React.Component{
     window.location.reload();
   }
 
-  dismiss(){
-    this.props.dismissTip(false)
-  }
-
-  goBack(i) {
+  goBack() {
     const { gameone } = this.props
     if(gameone.segment >= 1) {
-      this.props.goBackRound(i)
+      this.props.goBackRound(3)
     } else {
       return
     }
@@ -228,24 +224,18 @@ class GameOne extends React.Component{
                  })}
                 </ul>
                 {gameone.inGameTip ? (
-                  <div className="game-tip">
-                    <button className='dismiss-tip' onClick={() => this.dismiss()} >
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
-                        <title>Dismiss</title>
-                        <path d="M340.2 160l-84.4 84.2-84-83.8-11.8 11.8 84 83.8-84 83.8 11.8 11.8 84-83.8 84.4 84.2 11.8-11.8-84.4-84.2 84.4-84.2"/>
-                      </svg>
-                    </button>
-                    <p>Click to Identify the line(s) with error</p>
-                  </div> 
+                  <GameTip dismissTip={this.props.dismissTipOne} />
                   ) : (
                     ''
                 )}
               </div>    
             )}
           </div>
-          
           <GameFooter
+            gameNumber={gameone.gameNumber}
+            gameName={gameone.gameName}
             goBack={this.goBack}
+            canGoBack={gameone.canGoBack}
             handleProgress={this.handleProgress}
             max={gameone.phrases.length}
             value={gameone.segment + 3}

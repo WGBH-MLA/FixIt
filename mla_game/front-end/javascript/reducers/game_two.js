@@ -1,19 +1,20 @@
 function gameTwo(state = {
+  gameNumber:2,
+  gameName:'Suggest Fixes',
+  canGoBack:true,
   loading:true,
-  aapb_link:null,
-  media_url: null,
-  phrases: [],
-  metadata:{},
   currentTime:0,
   startTime:0,
   isPlaying:false,
   segment:0,
+  current_transcript:0,                                                                                                           
   endSegment:0,
   endOfRound:false,
   startSegment:0,
   gameScore:0,
   waiting:false,
-  inGameTip:true
+  inGameTip:true,
+  transcriptList:null
 }, action) {
   switch(action.type){
     case 'GET_GAMETWO':
@@ -23,14 +24,11 @@ function gameTwo(state = {
     case 'GET_GAMETWO_SUCCESS':
       return {...state, 
         loading: false,
-        aapb_link:action.data.aapb_link,
-        media_url:action.data.media_url,
-        phrases:action.data.phrases,
-        metadata:action.data.metadata,
+        transcriptList:action.data
       }
-    case 'SET_PHRASE_LIST':
+    case 'SET_TRANSCRIPTS':
       return {...state, 
-        phrases:action.newPhrases
+        transcriptList:action.newPhrases
       }
     case 'SET_CURRENTTIME':
       return {...state, 
@@ -63,6 +61,10 @@ function gameTwo(state = {
     case 'ADVANCE_SEGMENT':
       return  {...state, 
         segment:state.segment + action.progress
+      }
+    case 'ADVANCE_TRANSCRIPT':
+      return  {...state, 
+        current_transcript:state.current_transcript + action.progress
       }    
     case 'WAITING_UPDATE':
       return  {...state, 
@@ -88,7 +90,7 @@ function gameTwo(state = {
       return  {...state, 
         wrongPhrases:action.phrase
       }
-    case 'DISMISS_TIP':
+    case 'DISMISS_TIP_TWO':
       return  {...state, 
         inGameTip:action.bool
       }
