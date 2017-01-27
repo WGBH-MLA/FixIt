@@ -1,10 +1,12 @@
 import logging
+import datetime
 
 from django.db.models.signals import m2m_changed
+from django.contrib.auth.models import User
 
-from huey.contrib.djhuey import db_task
+from huey.contrib.djhuey import crontab, db_periodic_task, db_task
 
-from .models import Profile, TranscriptPicks
+from .models import Profile, TranscriptPicks, Score, Leaderboard
 from mla_game.apps.transcript.models import Transcript, TranscriptPhrase
 
 logger = logging.getLogger('django')
@@ -65,6 +67,142 @@ def update_transcript_picks(user, **kwargs):
 
     transcript_picks.save()
     logger.info(picks)
+
+
+@db_periodic_task(crontab(hour='*/2'))
+def update_leaderboard():
+    leaderboard = {}
+    all_score_objects = []
+
+    today = datetime.date.today()
+    one_week_ago = today - datetime.timedelta(days=7)
+    one_month_ago = today - datetime.timedelta(days=30)
+
+    all_scores = Score.objects.all()
+    all_users = User.objects.all()
+
+    for user in all_users:
+        username = Profile.objects.get(user=user).username
+        all_user_scores = all_scores.filter(user=user)
+        weekly_scores = all_user_scores.filter(
+            date__gte=one_week_ago
+        )
+        monthly_scores = all_user_scores.filter(
+            date__gte=one_month_ago
+        )
+        total_score = sum(score.score for score in all_user_scores)
+        weekly_total = sum(
+            score.score for score in weekly_scores
+        )
+        monthly_total = sum(
+            score.score for score in monthly_scores
+        )
+        game_one_total = sum(
+            score.score for score in all_user_scores.filter(game=1)
+        )
+        game_two_total = sum(
+            score.score for score in all_user_scores.filter(game=2)
+        )
+        game_three_total = sum(
+            score.score for score in all_user_scores.filter(game=3)
+        )
+        all_score_objects.append(
+            {
+                'username': username,
+                'total_score': total_score,
+                'weekly_total': weekly_total,
+                'monthly_total': monthly_total,
+                'game_one_total': game_one_total,
+                'game_two_total': game_two_total,
+                'game_three_total': game_three_total
+             }
+        )
+
+    all_time_top_scores = sorted(
+        all_score_objects,
+        key=lambda so: so['total_score'],
+        reverse=True
+    )[:5]
+
+    past_month_top_scores = sorted(
+        all_score_objects,
+        key=lambda so: so['monthly_total'],
+        reverse=True
+    )[:5]
+
+    past_week_top_scores = sorted(
+        all_score_objects,
+        key=lambda so: so['weekly_total'],
+        reverse=True
+    )[:5]
+
+    game_one_all_time_top_scores = sorted(
+        all_score_objects,
+        key=lambda so: so['game_one_total'],
+        reverse=True
+    )[:5]
+
+    game_two_all_time_top_scores = sorted(
+        all_score_objects,
+        key=lambda so: so['game_two_total'],
+        reverse=True
+    )[:5]
+
+    game_three_all_time_top_scores = sorted(
+        all_score_objects,
+        key=lambda so: so['game_three_total'],
+        reverse=True
+    )[:5]
+
+    leaderboard['all_time'] = [
+        {
+            'rank': rank,
+            'username': top_score['username'],
+            'points': top_score['total_score']
+        } for rank, top_score in enumerate(all_time_top_scores, start=1)
+    ]
+
+    leaderboard['past_month'] = [
+        {
+            'rank': rank,
+            'username': top_score['username'],
+            'points': top_score['total_score']
+        } for rank, top_score in enumerate(past_month_top_scores, start=1)
+    ]
+
+    leaderboard['past_week'] = [
+        {
+            'rank': rank,
+            'username': top_score['username'],
+            'points': top_score['total_score']
+        } for rank, top_score in enumerate(past_week_top_scores, start=1)
+    ]
+
+    leaderboard['game_one_all_time'] = [
+        {
+            'rank': rank,
+            'username': top_score['username'],
+            'points': top_score['total_score']
+        } for rank, top_score in enumerate(game_one_all_time_top_scores, start=1)
+    ]
+
+    leaderboard['game_two_all_time'] = [
+        {
+            'rank': rank,
+            'username': top_score['username'],
+            'points': top_score['total_score']
+        } for rank, top_score in enumerate(game_two_all_time_top_scores, start=1)
+    ]
+
+    leaderboard['game_three_all_time'] = [
+        {
+            'rank': rank,
+            'username': top_score['username'],
+            'points': top_score['total_score']
+        } for rank, top_score in enumerate(game_three_all_time_top_scores, start=1)
+    ]
+
+    Leaderboard.objects.create(leaderboard=leaderboard)
 
 
 # m2m_changed.connect(update_transcript_picks, sender=Profile.preferred_stations.through)

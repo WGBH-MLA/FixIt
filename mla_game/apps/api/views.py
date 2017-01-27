@@ -1,6 +1,6 @@
 import logging
 
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 from rest_framework.decorators import list_route
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
@@ -10,7 +10,7 @@ from ..transcript.models import (
     TranscriptPhraseCorrection,
     TranscriptPhraseCorrectionVote
 )
-from ..accounts.models import Profile, Score
+from ..accounts.models import Profile, Score, Leaderboard
 from .serializers import (
     TranscriptSerializer,
     TranscriptPhraseSerializer,
@@ -18,7 +18,8 @@ from .serializers import (
     TranscriptPhraseCorrectionSerializer,
     TranscriptPhraseCorrectionVoteSerializer,
     SourceSerializer, ProfileSerializer,
-    TopicSerializer, ScoreSerializer
+    TopicSerializer, ScoreSerializer,
+    LeaderboardSerializer
 )
 
 django_log = logging.getLogger('django')
@@ -126,3 +127,8 @@ class ProfileViewSet(viewsets.ModelViewSet):
 class ScoreViewSet(viewsets.ModelViewSet):
     queryset = Score.objects.all()
     serializer_class = ScoreSerializer
+
+
+class LeaderboardView(generics.RetrieveAPIView):
+    queryset = Leaderboard.objects.all()
+    serializer_class = LeaderboardSerializer
