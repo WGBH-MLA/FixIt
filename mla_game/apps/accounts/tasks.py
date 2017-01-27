@@ -69,7 +69,7 @@ def update_transcript_picks(user, **kwargs):
     logger.info(picks)
 
 
-@db_periodic_task(crontab(hours='*/2'))
+@db_periodic_task(crontab(hour='*/2'))
 def update_leaderboard():
     leaderboard = {}
     all_score_objects = []
