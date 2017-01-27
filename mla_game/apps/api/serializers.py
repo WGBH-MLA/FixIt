@@ -7,7 +7,7 @@ from ..transcript.models import (
     TranscriptPhraseCorrectionVote, Source, Topic
 )
 
-from ..accounts.models import Profile, Score
+from ..accounts.models import Profile, Score, Leaderboard
 
 
 class TranscriptMetadataSerializer(serializers.ModelSerializer):
@@ -112,3 +112,9 @@ class ScoreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Score
         fields = ('user', 'score', 'game')
+
+
+class LeaderboardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Leaderboard
+        fields = ('leaderboard',)

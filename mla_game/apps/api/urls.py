@@ -5,7 +5,8 @@ from .views import (
     TranscriptViewSet, TranscriptPhraseDownvoteViewSet,
     TranscriptPhraseCorrectionViewSet, SourceViewSet,
     TranscriptPhraseCorrectionVoteViewSet,
-    TopicViewSet, ProfileViewSet, ScoreViewSet
+    TopicViewSet, ProfileViewSet, ScoreViewSet,
+    LeaderboardView
 )
 
 router = routers.DefaultRouter()
@@ -20,4 +21,5 @@ router.register(r'score', ScoreViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),
+    url(r'^leaderboard/$', LeaderboardView.as_view(), {'pk': 1}),
 ]
