@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { getUserEndpoint } from '../helpers'
 import LoadingScreen from './partials/loading_screen'
+import { ResponsiveComponent } from 'react-responsive-component'
 
 class Base extends React.Component {
   
@@ -30,8 +31,7 @@ class Base extends React.Component {
                 transitionLeaveTimeout={500}
               >
                <span key={this.props.gameScores.total_score}>{this.props.gameScores.total_score}</span>
-              </ReactCSSTransitionGroup>
-
+              </ReactCSSTransitionGroup>            
               <ul className='app-navigation'>
                 <li><Link activeClassName="active" to="leaderboard">
                     <svg className='nav-icon' viewBox="0 0 200 200">

@@ -8,7 +8,8 @@ function mapStateToProps(state) {
     initialData:state.initialData,
     gameScores:state.gameScores, 
     gameone:state.gameOne,
-    gametwo:state.gameTwo 
+    gametwo:state.gameTwo,  
+    gamethree:state.gameThree 
   }
 }
 

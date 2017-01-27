@@ -22,8 +22,11 @@ class GameTwo extends React.Component{
 
   handleProgress() {
     this.props.wait(3000)
-    this.props.advanceTranscript(1)
+    // this.props.advanceSegment(3)
+    // this.props.advanceTranscript(1)
+      
   }
+
 
   activePhrase(time, start, end){
     const playingPhrase = time <= start || time >= end; 
@@ -37,7 +40,7 @@ class GameTwo extends React.Component{
       )
     }
   }
-
+  
   playPhrase(callback){
     var media = document.querySelector('.audio-player');
     media.currentTime = callback;
@@ -45,7 +48,7 @@ class GameTwo extends React.Component{
   }
 
   goBack() {
-    if(this.props.gametwo.current_transcript >= 1) {
+    if(this.props.gametwo.currentTranscript >= 1) {
       this.props.advanceTranscript(-1)
     } else {
       return
@@ -55,6 +58,7 @@ class GameTwo extends React.Component{
   componentWillMount(){
     this.props.fetchGameTwo()
   }
+
   
   render(){
     const { gametwo, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegment } = this.props
@@ -68,15 +72,15 @@ class GameTwo extends React.Component{
         <div>
           <div className='grid'>
             
-            <h1>{gametwo.current_transcript} <br/> 
-                {gametwo.currentTime}
+            <h1>
+              {gametwo.currentTranscript} <br/> 
+              {gametwo.currentTime}
             </h1>
             
             {this.props.gametwo.transcriptList.map((index, key) => {
               // get current trancript
               let transcript = Number(key)
-              
-              if(transcript == gametwo.current_transcript) {
+              if(transcript == gametwo.currentTranscript) {
                 return(
                   <div key={key}>
                     <div className="game-meta">
@@ -135,7 +139,7 @@ class GameTwo extends React.Component{
             canGoBack={gametwo.canGoBack}
             handleProgress={this.handleProgress}
             max={gametwo.transcriptList.length}
-            value={gametwo.current_transcript + .5}
+            value={gametwo.currentTranscript + .5}
             waitingUpdate={this.props.waitingUpdate}
             waiting={this.props.gametwo.waiting}
             modalIsOpen={this.props.initialData.modalIsOpen}

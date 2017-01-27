@@ -1,6 +1,6 @@
-function gameTwo(state = {
-  gameNumber:2,
-  gameName:'Suggest Fixes',
+function gameThree(state = {
+  gameNumber:3,
+  gameName:'Validate Fixes',
   canGoBack:true,
   loading:true,
   currentTime:0,
@@ -17,11 +17,11 @@ function gameTwo(state = {
   transcriptList:null
 }, action) {
   switch(action.type){
-    case 'GET_GAMETWO':
+    case 'GET_GAMETHREE':
       return {...state, 
         loading:true
       }
-    case 'GET_GAMETWO_SUCCESS':
+    case 'GET_GAMETHREE_SUCCESS':
       return {...state, 
         loading: false,
         transcriptList:action.data
@@ -90,7 +90,7 @@ function gameTwo(state = {
       return  {...state, 
         wrongPhrases:action.phrase
       }
-    case 'DISMISS_TIP_TWO':
+    case 'DISMISS_TIP_THREE':
       return  {...state, 
         inGameTip:action.bool
       }
@@ -98,4 +98,4 @@ function gameTwo(state = {
       return state;
   }
 }
-export default gameTwo;
+export default gameThree;

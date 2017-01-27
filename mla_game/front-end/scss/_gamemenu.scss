@@ -1,0 +1,44 @@
+.game-navigation{
+  @include plain-list;
+  li {
+    background:$theme-primary;
+    border-radius:.45em;
+    text-align:center;
+    padding:1em 1.5em;
+    margin-bottom:1.5em;
+    white-space: pre-line;
+    h2 {
+      font-family:'Open Sans Condensed', sans-serif;
+      font-weight:700;
+      color:$icon-light;
+      .game-number {
+        @include clearfix;
+        display:inline-block;
+        color:$theme-primary;
+        background-color:$icon-light;
+        border-radius:100%;
+        width:1.65em;
+        height:1.65em;
+        line-height:1.65em;
+        font-family: 'Open Sans', sans-serif;
+      }
+      .game-name {
+        margin-top:.75em;
+        display:block;
+        text-transform: uppercase;
+      }
+    }
+    .game-score {
+      background:lighten($theme-tertiary, 5%);
+      border:1px solid lighten($theme-tertiary, 10%);
+      border-bottom:1px solid lighten($theme-tertiary, 5%);
+      box-shadow: inset 30px -30px 12px -26px #000000;
+
+      color:$icon-light;
+      font-family:'Open Sans Condensed', sans-serif;
+      font-size:3em;
+      padding:.025em;
+      display: block;
+    }
+  }
+}

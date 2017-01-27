@@ -280,16 +280,23 @@ function setTranscriptList(data){
     data,
   }
 }
-
 export function fetchGameTwo(){
   return (dispatch, getState) => {
     dispatch(requestGameTwo(true))
     return axios.get('/api/transcript/game_two/')
       .then(function(gameTwoInfo){
+        // add a length value to each transcript for changing transcript
+        let data = gameTwoInfo.data
+        for (var i = 0; i < data.length; i++) {
+          data[i].phrases_length = data[i].phrases.length
+        }
         // store data for gametwo
-        dispatch(storeGameTwo(gameTwoInfo.data))
+        dispatch(storeGameTwo(data))
         // set start time for for audio based on start time of first phrase
-        dispatch(setStartTime(Number(gameTwoInfo.data[0].phrases[0].start_time)))
+        dispatch(setStartTime(Number(data[0].phrases[0].start_time)))
       })
   }
 }// <-- end  gametwo actions
+
+// gamethree initial actions
+
