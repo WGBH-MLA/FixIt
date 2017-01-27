@@ -130,5 +130,5 @@ class ScoreViewSet(viewsets.ModelViewSet):
 
 
 class LeaderboardView(generics.RetrieveAPIView):
-    queryset = Leaderboard.objects.latest('date')
+    queryset = Leaderboard.objects.all()
     serializer_class = LeaderboardSerializer

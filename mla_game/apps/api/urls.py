@@ -9,6 +9,10 @@ from .views import (
     LeaderboardView
 )
 
+from mla_game.apps.accounts.models import Leaderboard
+
+latest_leaderboard = Leaderboard.objects.latest('date').pk
+
 router = routers.DefaultRouter()
 router.register(r'transcript', TranscriptViewSet)
 router.register(r'transcriptphrasedownvote', TranscriptPhraseDownvoteViewSet)
@@ -21,5 +25,5 @@ router.register(r'score', ScoreViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),
-    url(r'^leaderboard/$', LeaderboardView.as_view(), {'pk': 1}),
+    url(r'^leaderboard/$', LeaderboardView.as_view(), {'pk': latest_leaderboard}),
 ]
