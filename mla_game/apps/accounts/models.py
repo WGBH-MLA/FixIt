@@ -73,3 +73,16 @@ class Score(models.Model):
     score = models.PositiveSmallIntegerField()
     game = models.CharField(max_length=1)
     date = models.DateField(auto_now_add=True)
+
+
+class Leaderboard(models.Model):
+    """
+    Leaderboard shows the following lists:
+    total points
+        All Time (top 5)
+        Monthly (top 5)
+        Weekly (top 5)
+    Game 1, 2, 3 all time point leaders (top 5)
+    """
+    date = models.DateTimeField(auto_now_add=True)
+    leaderboard = JSONField()
