@@ -106,6 +106,9 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports.updateTotalScore = updateTotalScore;
 exports.updateGameScore = updateGameScore;
+exports.updateGameOneScore = updateGameOneScore;
+exports.updateGameTwoScore = updateGameTwoScore;
+exports.updateGameThreeScore = updateGameThreeScore;
 exports.resetGameScore = resetGameScore;
 exports.setUsername = setUsername;
 exports.fetchData = fetchData;
@@ -148,6 +151,27 @@ function updateTotalScore(amount) {
 function updateGameScore(amount) {
   return {
     type: 'UPDATE_GAME_SCORE',
+    amount: amount
+  };
+}
+
+function updateGameOneScore(amount) {
+  return {
+    type: 'UPDATE_GAMEONE_SCORE',
+    amount: amount
+  };
+}
+
+function updateGameTwoScore(amount) {
+  return {
+    type: 'UPDATE_GAMETWO_SCORE',
+    amount: amount
+  };
+}
+
+function updateGameThreeScore(amount) {
+  return {
+    type: 'UPDATE_GAMETHREE_SCORE',
     amount: amount
   };
 }
@@ -1591,6 +1615,11 @@ var GameMenu = (function (_React$Component) {
               gameScores.game_one_score
             ),
             _react2['default'].createElement(
+              'span',
+              { className: 'points' },
+              'Points'
+            ),
+            _react2['default'].createElement(
               _reactRouter.Link,
               { className: 'play-link', to: 'gameone' },
               'Play'
@@ -1620,6 +1649,11 @@ var GameMenu = (function (_React$Component) {
               gameScores.game_two_score
             ),
             _react2['default'].createElement(
+              'span',
+              { className: 'points' },
+              'Points'
+            ),
+            _react2['default'].createElement(
               _reactRouter.Link,
               { className: 'play-link', to: 'gametwo' },
               'Play'
@@ -1647,6 +1681,11 @@ var GameMenu = (function (_React$Component) {
               'span',
               { className: 'game-score' },
               gameScores.game_three_score
+            ),
+            _react2['default'].createElement(
+              'span',
+              { className: 'points' },
+              'Points'
             ),
             _react2['default'].createElement(
               _reactRouter.Link,
@@ -1867,6 +1906,8 @@ var GameOne = (function (_React$Component) {
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
+      // update gameone score in state
+      this.props.updateGameOneScore(this.props.gameone.gameScore);
       // reset state for game
       this.props.resetRound(0);
       this.props.resetGameScore(0);
@@ -2978,7 +3019,7 @@ function gameScores(state, action) {
 
   switch (action.type) {
     case 'SET_TOTAL_SCORE':
-      return _extends({}, state.total_score, {
+      return _extends({}, state, {
         total_score: action.score
       });
     case 'SET_GAME_SCORES':
@@ -2988,8 +3029,20 @@ function gameScores(state, action) {
         game_three_score: action.gamethree
       });
     case 'UPDATE_TOTAL_SCORE':
-      return _extends({}, state.total_score, {
+      return _extends({}, state, {
         total_score: state.total_score + action.amount
+      });
+    case 'UPDATE_GAMEONE_SCORE':
+      return _extends({}, state, {
+        game_one_score: state.game_one_score + action.amount
+      });
+    case 'UPDATE_GAMETWO_SCORE':
+      return _extends({}, state, {
+        game_two_score: state.game_two_score + action.amount
+      });
+    case 'UPDATE_GAMETHREE_SCORE':
+      return _extends({}, state, {
+        game_three_score: state.game_three_score + action.amount
       });
     default:
       return state;

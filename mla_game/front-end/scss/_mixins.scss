@@ -89,6 +89,19 @@
   margin-left:1em;
 }
 
+@mixin call-button {
+  @include plain-button;
+  display: inline-block;
+  font-family:'Bungee', Cursive;
+  background-color:$theme-primary;
+  border:.175em solid $progress;
+  color:$progress;
+  padding:.75em 2em;
+  margin-bottom:3em;
+  &:hover, &:active, &:focus {
+    border:.175em solid $progress;
+  }
+}
 
 // link reset
 @mixin link-reset {

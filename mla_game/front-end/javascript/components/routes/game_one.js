@@ -145,6 +145,8 @@ class GameOne extends React.Component{
   }
 
   componentWillUnmount(){
+    // update gameone score in state
+    this.props.updateGameOneScore(this.props.gameone.gameScore)
     // reset state for game 
     this.props.resetRound(0)
     this.props.resetGameScore(0);

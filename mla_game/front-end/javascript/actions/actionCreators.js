@@ -16,6 +16,28 @@ export function updateGameScore(amount){
   }
 }
 
+export function updateGameOneScore(amount){
+  return {
+    type:'UPDATE_GAMEONE_SCORE',
+    amount
+  }
+}
+
+export function updateGameTwoScore(amount){
+  return {
+    type:'UPDATE_GAMETWO_SCORE',
+    amount
+  }
+}
+
+export function updateGameThreeScore(amount){
+  return {
+    type:'UPDATE_GAMETHREE_SCORE',
+    amount
+  }
+}
+
+
 export function resetGameScore(amount){
   return {
     type:'RESET_GAME_SCORE',

@@ -11,8 +11,8 @@ $theme-primary:#000;
 $theme-secondary:#221e1f;
 $theme-tertiary:#221e1f;
 $icon-muted:#414042;
+$score-background:#2c2d2e;
 
-$icon-dark:#6d6e71;
 $icon-dark:#6d6e71;
 $default:#414042;
 $icon-hover:#939598;
@@ -59,6 +59,14 @@ $map-lg: (
   gutter-position:before,
   gutters:.3
 );
+
+@mixin score-box {
+  background:$score-background;
+  border:1px solid lighten($theme-tertiary, 10%);
+  border-bottom:1px solid lighten($theme-primary, 15%);
+  border-left:1px solid lighten($theme-primary, 15%);
+  box-shadow: inset 30px -30px 12px -26px lighten($theme-primary, 7.5%);
+}
 
 
 // grid

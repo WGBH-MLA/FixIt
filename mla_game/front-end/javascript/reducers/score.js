@@ -6,7 +6,7 @@ function gameScores(state = {
 }, action) {
   switch(action.type){
     case 'SET_TOTAL_SCORE':
-      return {...state.total_score, 
+      return {...state, 
         total_score:action.score
       }
     case 'SET_GAME_SCORES':
@@ -16,8 +16,20 @@ function gameScores(state = {
           game_three_score:action.gamethree,
       }
     case 'UPDATE_TOTAL_SCORE':
-      return {...state.total_score, 
+      return {...state, 
         total_score:state.total_score + action.amount
+      }
+    case 'UPDATE_GAMEONE_SCORE':
+      return {...state, 
+        game_one_score:state.game_one_score + action.amount
+      }
+    case 'UPDATE_GAMETWO_SCORE':
+      return {...state, 
+        game_two_score:state.game_two_score + action.amount
+      }
+    case 'UPDATE_GAMETHREE_SCORE':
+      return {...state, 
+        game_three_score:state.game_three_score + action.amount
       }
     default:
       return state;
