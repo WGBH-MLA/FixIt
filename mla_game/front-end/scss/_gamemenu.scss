@@ -1,5 +1,72 @@
+.preferences-link {
+  background:$theme-primary;
+  border-radius:.35em;
+  text-align:center;
+  padding:.5em 2em;
+  margin-bottom:1.5em;
+  color:$icon-light;
+  display:inline-block;
+}
+
+.user-info {
+  @include clearfix;
+  background:$user;
+  border-radius:.45em;
+  color:$icon-light;
+  fill:$icon-light;
+  padding:1.25em .75em;
+  margin-bottom:1.5em;
+  font-family:'Open Sans Condensed', sans-serif;
+  h2 {
+    text-align: center;
+    font-family:'Open Sans Condensed', sans-serif;
+    font-weight:700;
+    font-size: 1.5em;
+    margin:0; 
+    svg {
+      width:2em;
+      height:2em;
+    }
+    span {
+      margin-top:.5em;
+      display:block;
+    }
+  }
+  dl {
+    @include clearfix;
+    font-size:1.25em;
+    text-align: center;
+    margin:.25em 0 0 0;
+    dt, dd {
+      display:inline-block;
+    }
+    dd {
+      margin-left:.5em;
+    }
+  }
+  @include susy-breakpoint($screen-md-min, $map-md) {
+    h2 {
+      @include span(2.66667);
+      @include first;
+    }
+    dl {
+      @include span(5.3333);
+      @include last;      
+      font-size:1.5em;
+      dt, dd {
+        vertical-align:middle;
+      }
+      dd {
+        font-size:2.5em;
+        margin-left:1.5em;
+      }
+    }
+  }
+}
+
 .game-navigation{
   @include plain-list;
+  @include clearfix;
   li {
     background:$theme-primary;
     border-radius:.45em;
@@ -7,22 +74,10 @@
     padding:1em 1.5em;
     margin-bottom:1.5em;
     color:$icon-light;
-    @include susy-breakpoint($screen-md-min, $map-md) {
-      @include span(2.66667);
-      &:first-child {
-        @include first;
-      }
-      &:last-child {
-        @include last;
-      }
-    }
-    @include susy-breakpoint($screen-lg-min, $map-lg) {
-      @include span(4);
-    }
     h2 {
       font-family:'Open Sans Condensed', sans-serif;
       font-weight:700;
-      font-size:2em;
+      font-size:1.5em;
       .game-number {
         @include clearfix;
         display:inline-block;
@@ -44,7 +99,7 @@
       @include score-box; 
       color:$icon-light;
       font-family:'Open Sans Condensed', sans-serif;
-      font-size:3em;
+      font-size:1.5em;
       line-height:1.35;
       display: block;
       margin-bottom:.2em;
@@ -55,6 +110,24 @@
     }
     .play-link {
       @include call-button;
+    }
+    @include susy-breakpoint($screen-md-min, $map-md) {
+      @include span(2.66667);
+      &:first-child {
+        @include first;
+      }
+      &:last-child {
+        @include last;
+      }
+      h2 {
+        font-size:2em;
+      }
+      .game-score {
+        font-size:3em;
+      }
+    }
+    @include susy-breakpoint($screen-lg-min, $map-lg) {
+      @include span(4);
     }
   }
 }
