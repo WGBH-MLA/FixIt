@@ -50,11 +50,11 @@ class GameOne extends React.Component{
   }
 
   handleProgress() {
-    const { gameone, setIsPlaying, setCurrentTime, playPhrase } = this.props
+    const { gameone, setIsPlaying, setCurrentTime, playPhrase, wait, advanceSegment, updateTotalScore, updateGameScore, endOfRound } = this.props
     // copy state
     const wrongPhrases = {...this.state.wrongPhrases};
     // disable advance round for three seconds when round updates
-    this.props.wait(3000);
+    wait(3000);
     
     // check if the round has ended. if so change state. 
     // if not push other things to state like the score and play the media    
@@ -64,9 +64,9 @@ class GameOne extends React.Component{
       media.currentTime = gameone.startSegment;
       media.play();
       
-      this.props.advanceSegment(3)
-      this.props.updateTotalScore(10)
-      this.props.updateGameScore(10)
+      advanceSegment(3)
+      updateTotalScore(10)
+      updateGameScore(10)
 
       let segmentScore = {
         game:'1',
@@ -75,7 +75,7 @@ class GameOne extends React.Component{
       postData('/api/score/', segmentScore)
 
     } else {
-      this.props.endOfRound(true)
+      endOfRound(true)
     }
 
     // data push for phrases if they exist
