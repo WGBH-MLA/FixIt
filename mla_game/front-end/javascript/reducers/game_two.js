@@ -6,15 +6,17 @@ function gameTwo(state = {
   currentTime:0,
   startTime:0,
   isPlaying:false,
+  gameLength:null,
+  gameProgress:3,
   segment:0,
   currentTranscript:0,
-  endSegment:0,
+  endSegment:1,
   endOfRound:false,
   startSegment:0,
   gameScore:0,
   waiting:false,
   inGameTip:true,
-  transcriptList:null
+  transcripts:null
 }, action) {
   switch(action.type){
     case 'GET_GAMETWO':
@@ -24,15 +26,23 @@ function gameTwo(state = {
     case 'GET_GAMETWO_SUCCESS':
       return {...state, 
         loading: false,
-        transcriptList:action.data
+        transcripts:action.data
       }
     case 'SET_TRANSCRIPTS':
       return {...state, 
-        transcriptList:action.newPhrases
+        phrases:action.data
       }
     case 'SET_CURRENTTIME':
       return {...state, 
         currentTime:action.currentTime
+      }
+    case 'SET_GAME_LENGTH':
+      return {...state, 
+        gameLength:action.data
+      }
+    case 'UPDATE_GAME_PROGRESS':
+      return {...state, 
+        gameProgress:state.gameProgress + action.data
       }
     case 'SET_STARTTIME':
       return {...state, 

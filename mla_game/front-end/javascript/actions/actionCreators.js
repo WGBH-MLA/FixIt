@@ -292,30 +292,89 @@ function requestGameTwo(bool){
 function storeGameTwo(data){
   return {
     type: 'GET_GAMETWO_SUCCESS',
-    data,
+    data
   }
 }
 
-function setTranscriptList(data){
+function setGameLength(data){
   return {
-    type: 'SET_TRANSCRIPTS',
-    data,
+    type: 'SET_GAME_LENGTH',
+    data
   }
 }
+
+export function updateGameProgress(data){
+  return {
+    type: 'UPDATE_GAME_PROGRESS',
+    data
+  }
+}
+
 export function fetchGameTwo(){
   return (dispatch, getState) => {
     dispatch(requestGameTwo(true))
     return axios.get('/api/transcript/game_two/')
       .then(function(gameTwoInfo){
-        // add a length value to each transcript for changing transcript
+        // make data easier to read
         let data = gameTwoInfo.data
-        for (var i = 0; i < data.length; i++) {
+        let phraseLength = 0      
+        // loop for trimming phrases that don't need correction
+        for (var i = 0; i < data.length; i++) {          
+          // create arrays for trimmed phrases
+          let phrases = []
+          
+          // loop through each set and push a phrase if it needs a correction including the one before and the one after
+          for (var j = 0; j < data[i].phrases.length; j++) {
+            // check if the phrase needs a correction            
+            if(data[i].phrases[j].needs_correction){
+              
+              // phrase before  
+              phrases.push(data[i].phrases[j-1])
+              phrases.push(data[i].phrases[j-2])
+
+              // phrase that needs a correction
+              phrases.push(data[i].phrases[j])
+              
+              // phrase after
+              phrases.push(data[i].phrases[j+1])
+              phrases.push(data[i].phrases[j+2])
+
+            }
+          }
+          // check if an items are undefined and if so remove them
+          phrases = phrases.filter( function( el ){ return (typeof el !== "undefined")})
+          // sort the new arrays based on pk time
+          phrases.sort( function(a, b){ 
+            return a.pk - b.pk
+          })
+          
+          for (var h = 0; h < phrases.length-1; h++) {
+            if (phrases[h].pk == phrases[h+1].pk ) {
+              delete phrases[h];
+            }
+          }
+          // scrub undefined items again
+          phrases = phrases.filter( function( el ){ return (typeof el !== "undefined")})
+          
+          // delete the current phrases key with full list phrases
+          delete data[i].phrases
+
+          // create a new key with array of trimmed phrases
+          data[i].phrases = phrases
+          
+          // add all the phrases together to set total 
+          phraseLength += phrases.length
+
+          // create new object called phrase length for detecting the end of a transcript
           data[i].phrases_length = data[i].phrases.length
         }
+        // set the length of the game base on all transcipt phrases combined
+        dispatch(setGameLength(phraseLength))
         // store data for gametwo
         dispatch(storeGameTwo(data))
         // set start time for for audio based on start time of first phrase
-        dispatch(setStartTime(Number(data[0].phrases[0].start_time)))
+        dispatch(setStartTime(Number(data[0].phrases[0].start_time))) 
+
       })
   }
 }// <-- end  gametwo actions

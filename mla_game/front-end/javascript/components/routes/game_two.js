@@ -21,10 +21,39 @@ class GameTwo extends React.Component{
   }
 
   handleProgress() {
-    this.props.wait(3000)
-    // this.props.advanceSegment(3)
-    // this.props.advanceTranscript(1)
-      
+    const { wait, advanceTranscript, advanceSegment, gametwo, updateGameProgress } = this.props
+    let transcriptLength = gametwo.transcripts.length - 2
+    let currentTranscriptLength = gametwo.transcripts[gametwo.currentTranscript].phrases.length
+    // wait(3000)
+    
+    if(gametwo.segment < currentTranscriptLength) {
+      advanceSegment(3)
+      updateGameProgress(3)
+    } else {
+      if(gametwo.currentTranscript <= transcriptLength) {
+        advanceSegment(-currentTranscriptLength)
+        advanceTranscript(1)
+      }
+    }
+  }
+
+  goBack() {
+    const { wait, advanceTranscript, advanceSegment, gametwo, updateGameProgress } = this.props
+    let transcriptLength = gametwo.transcripts.length - 2
+    let currentTranscriptLength = gametwo.transcripts[gametwo.currentTranscript].phrases.length
+    
+    // if(gametwo.segment < currentTranscriptLength) {
+    //   if(this.props.gametwo.currentTranscript >= 1) {
+    //     advanceSegment(-3)
+    //     updateGameProgress(-3)
+    //   }
+    // } else {
+    //   if(gametwo.currentTranscript <= transcriptLength) {
+    //     advanceSegment(-currentTranscriptLength)
+    //     advanceTranscript(1)
+    //   }
+    // }
+    
   }
 
 
@@ -47,14 +76,6 @@ class GameTwo extends React.Component{
     media.play();
   }
 
-  goBack() {
-    if(this.props.gametwo.currentTranscript >= 1) {
-      this.props.advanceTranscript(-1)
-    } else {
-      return
-    }
-  }
-
   componentWillMount(){
     this.props.fetchGameTwo()
   }
@@ -74,10 +95,12 @@ class GameTwo extends React.Component{
             
             <h1>
               {gametwo.currentTranscript} <br/> 
-              {gametwo.currentTime}
+              {gametwo.segment} <br/>
+              {gametwo.gameLength} <br/>
+              {gametwo.gameProgress}
             </h1>
             
-            {this.props.gametwo.transcriptList.map((index, key) => {
+            {this.props.gametwo.transcripts.map((index, key) => {
               // get current trancript
               let transcript = Number(key)
               if(transcript == gametwo.currentTranscript) {
@@ -138,8 +161,8 @@ class GameTwo extends React.Component{
             goBack={this.goBack}
             canGoBack={gametwo.canGoBack}
             handleProgress={this.handleProgress}
-            max={gametwo.transcriptList.length}
-            value={gametwo.currentTranscript + .5}
+            max={gametwo.gameLength - 1}
+            value={gametwo.gameProgress}
             waitingUpdate={this.props.waitingUpdate}
             waiting={this.props.gametwo.waiting}
             modalIsOpen={this.props.initialData.modalIsOpen}

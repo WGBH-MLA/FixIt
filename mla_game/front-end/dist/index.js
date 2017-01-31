@@ -130,6 +130,7 @@ exports.unMarkPhrase = unMarkPhrase;
 exports.setModal = setModal;
 exports.dismissTipOne = dismissTipOne;
 exports.dismissTipTwo = dismissTipTwo;
+exports.updateGameProgress = updateGameProgress;
 exports.fetchGameTwo = fetchGameTwo;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -439,9 +440,16 @@ function storeGameTwo(data) {
   };
 }
 
-function setTranscriptList(data) {
+function setGameLength(data) {
   return {
-    type: 'SET_TRANSCRIPTS',
+    type: 'SET_GAME_LENGTH',
+    data: data
+  };
+}
+
+function updateGameProgress(data) {
+  return {
+    type: 'UPDATE_GAME_PROGRESS',
     data: data
   };
 }
@@ -450,11 +458,64 @@ function fetchGameTwo() {
   return function (dispatch, getState) {
     dispatch(requestGameTwo(true));
     return _axios2['default'].get('/api/transcript/game_two/').then(function (gameTwoInfo) {
-      // add a length value to each transcript for changing transcript
+      // make data easier to read
       var data = gameTwoInfo.data;
+      var phraseLength = 0;
+      // loop for trimming phrases that don't need correction
       for (var i = 0; i < data.length; i++) {
+        // create arrays for trimmed phrases
+        var phrases = [];
+
+        // loop through each set and push a phrase if it needs a correction including the one before and the one after
+        for (var j = 0; j < data[i].phrases.length; j++) {
+          // check if the phrase needs a correction           
+          if (data[i].phrases[j].needs_correction) {
+
+            // phrase before 
+            phrases.push(data[i].phrases[j - 1]);
+            phrases.push(data[i].phrases[j - 2]);
+
+            // phrase that needs a correction
+            phrases.push(data[i].phrases[j]);
+
+            // phrase after
+            phrases.push(data[i].phrases[j + 1]);
+            phrases.push(data[i].phrases[j + 2]);
+          }
+        }
+        // check if an items are undefined and if so remove them
+        phrases = phrases.filter(function (el) {
+          return typeof el !== "undefined";
+        });
+        // sort the new arrays based on pk time
+        phrases.sort(function (a, b) {
+          return a.pk - b.pk;
+        });
+
+        for (var h = 0; h < phrases.length - 1; h++) {
+          if (phrases[h].pk == phrases[h + 1].pk) {
+            delete phrases[h];
+          }
+        }
+        // scrub undefined items again
+        phrases = phrases.filter(function (el) {
+          return typeof el !== "undefined";
+        });
+
+        // delete the current phrases key with full list phrases
+        delete data[i].phrases;
+
+        // create a new key with array of trimmed phrases
+        data[i].phrases = phrases;
+
+        // add all the phrases together to set total
+        phraseLength += phrases.length;
+
+        // create new object called phrase length for detecting the end of a transcript
         data[i].phrases_length = data[i].phrases.length;
       }
+      // set the length of the game base on all transcipt phrases combined
+      dispatch(setGameLength(phraseLength));
       // store data for gametwo
       dispatch(storeGameTwo(data));
       // set start time for for audio based on start time of first phrase
@@ -1837,11 +1898,16 @@ var GameOne = (function (_React$Component) {
       var setIsPlaying = _props.setIsPlaying;
       var setCurrentTime = _props.setCurrentTime;
       var playPhrase = _props.playPhrase;
+      var wait = _props.wait;
+      var advanceSegment = _props.advanceSegment;
+      var updateTotalScore = _props.updateTotalScore;
+      var updateGameScore = _props.updateGameScore;
+      var endOfRound = _props.endOfRound;
 
       // copy state
       var wrongPhrases = _extends({}, this.state.wrongPhrases);
       // disable advance round for three seconds when round updates
-      this.props.wait(3000);
+      wait(3000);
 
       // check if the round has ended. if so change state.
       // if not push other things to state like the score and play the media   
@@ -1851,9 +1917,9 @@ var GameOne = (function (_React$Component) {
         media.currentTime = gameone.startSegment;
         media.play();
 
-        this.props.advanceSegment(3);
-        this.props.updateTotalScore(10);
-        this.props.updateGameScore(10);
+        advanceSegment(3);
+        updateTotalScore(10);
+        updateGameScore(10);
 
         var segmentScore = {
           game: '1',
@@ -1861,7 +1927,7 @@ var GameOne = (function (_React$Component) {
         };
         (0, _helpers.postData)('/api/score/', segmentScore);
       } else {
-        this.props.endOfRound(true);
+        endOfRound(true);
       }
 
       // data push for phrases if they exist
@@ -2218,9 +2284,51 @@ var GameTwo = (function (_React$Component) {
   _createClass(GameTwo, [{
     key: 'handleProgress',
     value: function handleProgress() {
-      this.props.wait(3000);
-      // this.props.advanceSegment(3)
-      // this.props.advanceTranscript(1)
+      var _props = this.props;
+      var wait = _props.wait;
+      var advanceTranscript = _props.advanceTranscript;
+      var advanceSegment = _props.advanceSegment;
+      var gametwo = _props.gametwo;
+      var updateGameProgress = _props.updateGameProgress;
+
+      var transcriptLength = gametwo.transcripts.length - 2;
+      var currentTranscriptLength = gametwo.transcripts[gametwo.currentTranscript].phrases.length;
+      // wait(3000)
+
+      if (gametwo.segment < currentTranscriptLength) {
+        advanceSegment(3);
+        updateGameProgress(3);
+      } else {
+        if (gametwo.currentTranscript <= transcriptLength) {
+          advanceSegment(-currentTranscriptLength);
+          advanceTranscript(1);
+        }
+      }
+    }
+  }, {
+    key: 'goBack',
+    value: function goBack() {
+      var _props2 = this.props;
+      var wait = _props2.wait;
+      var advanceTranscript = _props2.advanceTranscript;
+      var advanceSegment = _props2.advanceSegment;
+      var gametwo = _props2.gametwo;
+      var updateGameProgress = _props2.updateGameProgress;
+
+      var transcriptLength = gametwo.transcripts.length - 2;
+      var currentTranscriptLength = gametwo.transcripts[gametwo.currentTranscript].phrases.length;
+
+      // if(gametwo.segment < currentTranscriptLength) {
+      //   if(this.props.gametwo.currentTranscript >= 1) {
+      //     advanceSegment(-3)
+      //     updateGameProgress(-3)
+      //   }
+      // } else {
+      //   if(gametwo.currentTranscript <= transcriptLength) {
+      //     advanceSegment(-currentTranscriptLength)
+      //     advanceTranscript(1)
+      //   }
+      // }
     }
   }, {
     key: 'activePhrase',
@@ -2240,15 +2348,6 @@ var GameTwo = (function (_React$Component) {
       media.play();
     }
   }, {
-    key: 'goBack',
-    value: function goBack() {
-      if (this.props.gametwo.currentTranscript >= 1) {
-        this.props.advanceTranscript(-1);
-      } else {
-        return;
-      }
-    }
-  }, {
     key: 'componentWillMount',
     value: function componentWillMount() {
       this.props.fetchGameTwo();
@@ -2258,16 +2357,16 @@ var GameTwo = (function (_React$Component) {
     value: function render() {
       var _this = this;
 
-      var _props = this.props;
-      var gametwo = _props.gametwo;
-      var setIsPlaying = _props.setIsPlaying;
-      var setCurrentTime = _props.setCurrentTime;
-      var playPhrase = _props.playPhrase;
-      var selectPhrase = _props.selectPhrase;
-      var waitingUpdate = _props.waitingUpdate;
-      var setSegmentEnd = _props.setSegmentEnd;
-      var setSegmentStart = _props.setSegmentStart;
-      var advanceSegment = _props.advanceSegment;
+      var _props3 = this.props;
+      var gametwo = _props3.gametwo;
+      var setIsPlaying = _props3.setIsPlaying;
+      var setCurrentTime = _props3.setCurrentTime;
+      var playPhrase = _props3.playPhrase;
+      var selectPhrase = _props3.selectPhrase;
+      var waitingUpdate = _props3.waitingUpdate;
+      var setSegmentEnd = _props3.setSegmentEnd;
+      var setSegmentStart = _props3.setSegmentStart;
+      var advanceSegment = _props3.advanceSegment;
 
       if (this.props.gametwo.loading) {
         return _react2['default'].createElement(_partialsLoading_screen2['default'], null);
@@ -2284,9 +2383,15 @@ var GameTwo = (function (_React$Component) {
               gametwo.currentTranscript,
               ' ',
               _react2['default'].createElement('br', null),
-              gametwo.currentTime
+              gametwo.segment,
+              ' ',
+              _react2['default'].createElement('br', null),
+              gametwo.gameLength,
+              ' ',
+              _react2['default'].createElement('br', null),
+              gametwo.gameProgress
             ),
-            this.props.gametwo.transcriptList.map(function (index, key) {
+            this.props.gametwo.transcripts.map(function (index, key) {
               // get current trancript
               var transcript = Number(key);
               if (transcript == gametwo.currentTranscript) {
@@ -2347,8 +2452,8 @@ var GameTwo = (function (_React$Component) {
             goBack: this.goBack,
             canGoBack: gametwo.canGoBack,
             handleProgress: this.handleProgress,
-            max: gametwo.transcriptList.length,
-            value: gametwo.currentTranscript + .5,
+            max: gametwo.gameLength - 1,
+            value: gametwo.gameProgress,
             waitingUpdate: this.props.waitingUpdate,
             waiting: this.props.gametwo.waiting,
             modalIsOpen: this.props.initialData.modalIsOpen,
@@ -2619,7 +2724,7 @@ function gameOne(state, action) {
     currentTime: 0,
     startTime: 0,
     isPlaying: false,
-    segment: 0,
+    segment: 1,
     endSegment: 0,
     endOfRound: false,
     startSegment: 0,
@@ -2844,15 +2949,17 @@ function gameTwo(state, action) {
     currentTime: 0,
     startTime: 0,
     isPlaying: false,
+    gameLength: null,
+    gameProgress: 3,
     segment: 0,
     currentTranscript: 0,
-    endSegment: 0,
+    endSegment: 1,
     endOfRound: false,
     startSegment: 0,
     gameScore: 0,
     waiting: false,
     inGameTip: true,
-    transcriptList: null
+    transcripts: null
   };
 
   switch (action.type) {
@@ -2863,15 +2970,23 @@ function gameTwo(state, action) {
     case 'GET_GAMETWO_SUCCESS':
       return _extends({}, state, {
         loading: false,
-        transcriptList: action.data
+        transcripts: action.data
       });
     case 'SET_TRANSCRIPTS':
       return _extends({}, state, {
-        transcriptList: action.newPhrases
+        phrases: action.data
       });
     case 'SET_CURRENTTIME':
       return _extends({}, state, {
         currentTime: action.currentTime
+      });
+    case 'SET_GAME_LENGTH':
+      return _extends({}, state, {
+        gameLength: action.data
+      });
+    case 'UPDATE_GAME_PROGRESS':
+      return _extends({}, state, {
+        gameProgress: state.gameProgress + action.data
       });
     case 'SET_STARTTIME':
       return _extends({}, state, {
@@ -3098,8 +3213,6 @@ var _reduxLogger = require('redux-logger');
 
 var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 
-var _helpers = require('./helpers');
-
 //import the root reducer
 
 var _reducersIndex = require('./reducers/index');
@@ -3116,7 +3229,7 @@ module.exports = exports['default'];
 
 // loggerMiddleware
 
-},{"./helpers":20,"./reducers/index":24,"redux":361,"redux-logger":354,"redux-thunk":355}],28:[function(require,module,exports){
+},{"./reducers/index":24,"redux":361,"redux-logger":354,"redux-thunk":355}],28:[function(require,module,exports){
 module.exports = require('./lib/axios');
 },{"./lib/axios":30}],29:[function(require,module,exports){
 (function (process){
