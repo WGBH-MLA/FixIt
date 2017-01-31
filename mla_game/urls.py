@@ -21,5 +21,5 @@ urlpatterns = [
     url(r'^transcript/', include('mla_game.apps.transcript.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^logout/$', logout, name='logout', kwargs={'next_page': '/'}),
-    url('', include('social.apps.django_app.urls', namespace='social'))
+    url('', include('social_django.urls', namespace='social'))
 ]
