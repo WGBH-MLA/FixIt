@@ -10,7 +10,7 @@ function gameOne(state = {
   currentTime:0,
   startTime:0,
   isPlaying:false,
-  segment:0,
+  segment:1,
   endSegment:0,
   endOfRound:false,
   startSegment:0,
