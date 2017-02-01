@@ -4,6 +4,7 @@ from rest_framework import viewsets, generics
 from rest_framework.decorators import list_route
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import AllowAny
 
 from ..transcript.models import (
     Transcript, TranscriptPhraseDownvote, Source, Topic,
@@ -21,6 +22,7 @@ from .serializers import (
     TopicSerializer, ScoreSerializer,
     LeaderboardSerializer
 )
+from .permissions import IsOwner, IsOwnerOrReadOnly
 
 django_log = logging.getLogger('django')
 
@@ -32,6 +34,7 @@ class StandardResultsSetPagination(PageNumberPagination):
 
 
 class TranscriptViewSet(viewsets.ModelViewSet):
+    permission_classes = (AllowAny,)
     queryset = Transcript.objects.all()
     serializer_class = TranscriptSerializer
 
@@ -76,6 +79,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 
 
 class TranscriptPhraseDownvoteViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsOwnerOrReadOnly,)
     queryset = TranscriptPhraseDownvote.objects.all()
     serializer_class = TranscriptPhraseDownvoteSerializer
 
@@ -85,6 +89,7 @@ class TranscriptPhraseCorrectionViewSet(viewsets.ModelViewSet):
         return TranscriptPhraseCorrection.objects.filter(
             user=self.request.user
         )
+    permission_classes = (IsOwnerOrReadOnly,)
     queryset = TranscriptPhraseCorrection.objects.all()
     serializer_class = TranscriptPhraseCorrectionSerializer
 
@@ -94,22 +99,26 @@ class TranscriptPhraseCorrectionVoteViewSet(viewsets.ModelViewSet):
         return TranscriptPhraseCorrectionVote.objects.filter(
             user=self.request.user
         )
+    permission_classes = (IsOwnerOrReadOnly,)
     queryset = TranscriptPhraseCorrectionVote.objects.all()
     serializer_class = TranscriptPhraseCorrectionVoteSerializer
 
 
 class SourceViewSet(viewsets.ReadOnlyModelViewSet):
+    permission_classes = (AllowAny,)
     queryset = Source.objects.all()
     serializer_class = SourceSerializer
     pagination_class = StandardResultsSetPagination
 
 
 class TopicViewSet(viewsets.ReadOnlyModelViewSet):
+    permission_classes = (AllowAny,)
     queryset = Topic.objects.all()
     serializer_class = TopicSerializer
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsOwner,)
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
 
@@ -125,10 +134,12 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
 
 class ScoreViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsOwner,)
     queryset = Score.objects.all()
     serializer_class = ScoreSerializer
 
 
 class LeaderboardView(generics.RetrieveAPIView):
+    permission_classes = (AllowAny,)
     queryset = Leaderboard.objects.all()
     serializer_class = LeaderboardSerializer
