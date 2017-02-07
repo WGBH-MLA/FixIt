@@ -10,7 +10,7 @@ function gameOne(state = {
   currentTime:0,
   startTime:0,
   isPlaying:false,
-  segment:1,
+  segment:0,
   endSegment:0,
   endOfRound:false,
   startSegment:0,
@@ -71,15 +71,15 @@ function gameOne(state = {
       return  {...state, 
         waiting:action.waiting
       }
-    case 'SET_END_ROUND':
+    case 'SET_END_ROUND_ONE':
       return  {...state, 
-        endOfRound:action.endOfRound
+        endOfRound:action.bool
       }
     case 'GOBACK_ROUND':
       return  {...state, 
         segment:state.segment - action.progress
       }
-    case 'RESET_ROUND':
+    case 'RESET_SEGMENTS':
       return  {...state, 
         segment:action.progress
       }

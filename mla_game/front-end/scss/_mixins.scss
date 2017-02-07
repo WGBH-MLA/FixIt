@@ -89,6 +89,20 @@
   margin-left:1em;
 }
 
+@mixin border-button($background, $stroke) {
+  @include plain-button;
+  display: inline-block;
+  font-family:'Bungee', Cursive;
+  background-color:$background;
+  border:.175em solid $stroke;
+  color:$stroke;
+  padding:.25em .75em;
+  margin-bottom:.5em;
+  &:hover, &:active, &:focus {
+    border:.175em solid $stroke;
+  }
+}
+
 @mixin call-button {
   @include plain-button;
   display: inline-block;

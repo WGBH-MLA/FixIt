@@ -194,6 +194,9 @@ button {
     @include animated(.25s);
     @include fadeIn;
     @include clearfix;
+    div {
+      position:relative;
+    }
     button {
       @include plain-button;
       color:lighten($theme-tertiary, 50%);
@@ -230,13 +233,14 @@ button {
       width: calc(100% - 2.5em);
       margin-left:.75em;
       @include susy-breakpoint($screen-lg-min, $map-lg) {
-        @include span(6.125 of 7 last);
+        @include span(5.125 of 7);
       }
       span {
         @include transition(background, 300ms, ease-in);
         padding-left:.5em;
         padding-right:.5em;
         float:left;
+        width:100%;
       }
       .context {
         background:$default;
@@ -267,6 +271,28 @@ button {
           font-weight:700;
         }
       }
+      &.corrected {
+        .context, span {
+          background:$transcript-corrected;
+          color:white;
+          font-weight:400;
+        }
+        &:hover {
+          .context, span {
+            background:$transcript-corrected;
+            color:white;
+            font-weight:400;
+          }
+        }
+      }
+      &.not-highlighted {
+        &:hover {
+          .context, span {
+            background:inherit;
+            color:white;
+          }
+        }  
+      }
       &:hover {
         .context, span {
           background:$transcript-error;
@@ -281,38 +307,17 @@ button {
         }
       }
     }
-  }
-
-  .phrase {
-    border:none;
-    padding:.5em;
-    background:none;
-    color:white;
-    &.incorrect {
-      background:red;
-    }
-  }
-  .submit-phrase {
-    display:inline-block;
-    margin-left:1em;
-    @include animated(.25s);
-    @include transition(opacity, 300ms, ease-in);
-    &.submit-phrase-enter{
-      opacity:.01;
-      will-change: transform, opacity, visibility;
-      &.submit-phrase-enter-active {
-        @include slideInRight;
-        opacity:1;
+    .phrase-editing  {
+      @include susy-breakpoint($screen-lg-min, $map-lg) {
+        @include span(1 of 7 last)
       }
     }
-    &.submit-phrase-leave{
-      opacity:1;
-      will-change: transform, opacity, visibility;
-      &.submit-phrase-leave-active {
-        @include slideOutRight;
-        opacity: 0.01;
-      }
-    }   
+    .correct-phrase {
+      @include border-button($theme-secondary, $icon-light)
+    }
+    .fix-phrase {
+      @include light-button;
+    }
   }
 }
 

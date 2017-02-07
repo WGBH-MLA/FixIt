@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import LoadingScreen from '../partials/loading_screen'
 import GameMeta from '../partials/game_meta'
 import Audio from '../partials/audio'
-import Phrase from '../partials/phrase'
+import Phrase from '../partials/game_one_phrase'
 import Paging from '../partials/paginator'
 import { postData } from '../../helpers'
 import GameFooter from '../partials/game_footer'
@@ -50,11 +50,11 @@ class GameOne extends React.Component{
   }
 
   handleProgress() {
-    const { gameone, setIsPlaying, setCurrentTime, playPhrase, wait, advanceSegment, updateTotalScore, updateGameScore, endOfRound } = this.props
+    const { gameone, setIsPlaying, setCurrentTime, playPhrase, wait, advanceSegment, updateTotalScore, updateGameScore, endOfRoundOne } = this.props
     // copy state
     const wrongPhrases = {...this.state.wrongPhrases};
     // disable advance round for three seconds when round updates
-    wait(3000);
+    // wait(3000);
     
     // check if the round has ended. if so change state. 
     // if not push other things to state like the score and play the media    
@@ -75,7 +75,7 @@ class GameOne extends React.Component{
       postData('/api/score/', segmentScore)
 
     } else {
-      endOfRound(true)
+      endOfRoundOne(true)
     }
 
     // data push for phrases if they exist
@@ -109,7 +109,11 @@ class GameOne extends React.Component{
   }
 
   reload(){
-    window.location.reload();
+    this.props.resetSegments(0)
+    this.props.resetGameScore(0)
+    this.props.endOfRoundOne(false)
+    this.props.fetchGameOne()
+    this.props.showTipOne(false)
   }
 
   goBack() {
@@ -148,9 +152,9 @@ class GameOne extends React.Component{
     // update gameone score in state
     this.props.updateGameOneScore(this.props.gameone.gameScore)
     // reset state for game 
-    this.props.resetRound(0)
+    this.props.resetSegments(0)
     this.props.resetGameScore(0);
-    this.props.endOfRound(false)
+    this.props.endOfRoundOne(false)
   }
 
   
