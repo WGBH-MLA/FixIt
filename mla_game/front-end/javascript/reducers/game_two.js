@@ -85,6 +85,10 @@ function gameTwo(state = {
       return  {...state, 
         currentTranscript:state.currentTranscript + action.progress
       }
+    case 'RESET_TRANSCRIPT':
+      return  {...state, 
+        currentTranscript:action.progress
+      }
     case 'WAITING_UPDATE':
       return  {...state, 
         waiting:action.waiting

@@ -263,6 +263,13 @@ button {
             font-weight:400;
           }
         }
+        &.corrected {
+           .context, span {
+            background:none;
+            color:inherit;;
+            font-weight:400;
+          }
+        }
       }
       &.highlighted {
         .context, span {

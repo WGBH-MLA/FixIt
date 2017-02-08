@@ -230,6 +230,14 @@ export function advanceTranscript(progress){
   }
 }
 
+
+export function resetTranscript(progress){
+  return{
+    type:'RESET_TRANSCRIPT',
+    progress
+  }
+}
+
 export function goBackRound(progress){
   return{
     type:'GOBACK_ROUND',

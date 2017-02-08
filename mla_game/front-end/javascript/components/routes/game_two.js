@@ -19,43 +19,36 @@ class GameTwo extends React.Component{
     this.activePhrase = this.activePhrase.bind(this)
     this.playPhrase = this.playPhrase.bind(this)
     this.selectPhrase = this.selectPhrase.bind(this)
+    this.setCorrected = this.setCorrected.bind(this)
+    this.removePhrase = this.removePhrase.bind(this)
     this.reload = this.reload.bind(this)
     
     this.state = {
-      correctedPhrases: {}
+      phrase:null,
+      disableProgress:true
     }
   }
 
+  setCorrected(bool){
+    this.setState({disableProgress:bool})
+  }
 
-  selectPhrase(phrase, pk, button) {
-    // reference state
-    const correctedPhrases = {...this.state.correctedPhrases};
-    // keys
-    let key = `phrase-${pk}`
-    let keyExists = key in correctedPhrases;
-    correctedPhrases[key] = phrase;
-    
-    // push object to state only if it already doesn't exist
-    // and set the class name accordingly
-    if(keyExists){
-      // remove item and set state
-      delete correctedPhrases[key];
-      this.setState({ correctedPhrases });
-
-    } else {
-      this.setState({ correctedPhrases });
-
-    }
-
+  selectPhrase(phrase) {
+    this.setState({phrase:phrase})
+  }
+  
+  removePhrase() {
+    this.setState({
+      phrase:null,
+    })
   }
 
   handleProgress() {
-    const { wait, advanceTranscript, advanceSegment, gametwo, updateGameProgress, skipPhrase, resetSegments, endOfRoundTwo } = this.props
+    const { details, wait, advanceTranscript, advanceSegment, gametwo, updateTotalScore, updateGameScore, updateGameProgress, skipPhrase, resetSegments, endOfRoundTwo } = this.props
     let transcriptLength = gametwo.transcripts.length - 1
     let currentTranscriptLength = gametwo.transcripts[gametwo.currentTranscript].phrases_length- 1
-
-    // wait(3000)
-    
+    let noCorrectionExists = this.state.phrase == null
+      
     if(gametwo.segment <= currentTranscriptLength) {
       if(gametwo.skipPhrase) {
         advanceSegment(2)
@@ -73,6 +66,29 @@ class GameTwo extends React.Component{
         endOfRoundTwo(true)
       }
     }
+
+     // create on object for correction and push it if it exists 
+    if(!noCorrectionExists) {
+      //phrase data from local state
+      let phraseData = {
+        transcript_phrase:this.state.phrase.pk,
+        correction:this.state.phrase.text
+      }
+      // score data
+      let phraseScore = {
+        game:'2',
+        score:11
+      }
+      // post score and phrase
+      postData('/api/transcriptphrasecorrection/', phraseData)
+      postData('/api/score/', phraseScore)
+      // update scores
+      updateTotalScore(11)
+      updateGameScore(11)
+    } 
+
+    // scrub state for phrase correction
+    this.removePhrase()
   }
 
   goBack() {
@@ -84,7 +100,6 @@ class GameTwo extends React.Component{
       advanceSegment(-1)
       updateGameProgress(-1)
     } else {
-      
       if(gametwo.currentTranscript > 0) {
         advanceSegment(0 + transcriptLength)
         advanceTranscript(-1)
@@ -123,18 +138,18 @@ class GameTwo extends React.Component{
     this.props.resetSegments(0)
     this.props.resetGameScore(0)
     this.props.endOfRoundTwo(false)
+    this.props.resetTranscript(0)
     this.props.resetGameProgress(3)
     this.props.fetchGameTwo()
   }
-
-
-  componentWillMount(){
-    this.props.fetchGameTwo()
-  }
-
   
+  componentWillMount(){
+    this.reload()
+  }
+  
+
   render(){
-    const { gametwo, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegment, skipPhrase, setStartTime } = this.props
+    const { gametwo, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegment, advanceTranscript, skipPhrase, setStartTime } = this.props
     
     if(this.props.gametwo.loading) {
       return(
@@ -147,7 +162,9 @@ class GameTwo extends React.Component{
             <h1>
                start Segment: {gametwo.startSegment} <br/>
                end Segment: {gametwo.endSegment} <br/>
-               current time: {gametwo.currentTime}
+               current time: {gametwo.currentTime} <br/>
+               game length: {gametwo.gameLength} <br/>
+               game progress: {gametwo.gameProgress}
             </h1>
             {gametwo.endOfRound ? (
               <div className='roundup'>
@@ -191,7 +208,9 @@ class GameTwo extends React.Component{
                             <li key={key} className={this.activePhrase(gametwo.currentTime, phrase.start_time, phrase.end_time)}>
                               <Phrase
                                selectPhrase={this.selectPhrase}
+                               removePhrase={this.removePhrase}
                                playPhrase={this.playPhrase}
+                               setCorrected={this.setCorrected}
                                time={gametwo.currentTime} 
                                active={gametwo.segment}
                                keys={key}
@@ -199,6 +218,8 @@ class GameTwo extends React.Component{
                                setSegmentStart={setSegmentStart}
                                setSegmentEnd={setSegmentEnd}
                                advanceSegment={advanceSegment}
+                               advanceTranscript={advanceTranscript}
+                               currentLength={gametwo.transcripts[gametwo.currentTranscript].phrases.length - 2}
                                skipPhrase={skipPhrase}
                                setStartTime={setStartTime}
                               />
@@ -215,7 +236,7 @@ class GameTwo extends React.Component{
             )}
             
             {gametwo.inGameTip ? (
-              <GameTip dismissTip={this.props.dismissTipTwo} />
+              <GameTip dismissTip={this.props.showTipTwo} />
             ) : (
               ''
             )}
@@ -229,7 +250,7 @@ class GameTwo extends React.Component{
             max={gametwo.gameLength - 1}
             value={gametwo.gameProgress}
             waitingUpdate={this.props.waitingUpdate}
-            waiting={this.props.gametwo.waiting}
+            waiting={this.state.correct}
             modalIsOpen={this.props.initialData.modalIsOpen}
             setModal={this.props.setModal}
           />

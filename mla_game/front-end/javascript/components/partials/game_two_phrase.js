@@ -30,37 +30,30 @@ class Phrase extends React.Component{
   }
 
   savePhrase(){
-    console.log('saved!')
+    const { details } = this.props
+    
     this.setState({
       editing:false,
       corrected:true,
     })
     this.span.contentEditable = false
-
+    const PhraseCorrected = {
+        pk:details.pk,
+        text:this.span.textContent
+    }
+    this.props.selectPhrase(PhraseCorrected, details.pk)
   }
 
   cancel(){
-    console.log('canceled')
+    const { details } = this.props
     this.setState({
       editing:false,
       corrected:false
     })
     this.span.contentEditable = false
+    this.props.removePhrase(details.pk)
   }
   
-  fixPhrase(){
-    // shortcut for props
-    const { details } = this.props;
-    
-    // create object that gets pushed to state
-    const PhraseMarked = {
-        pk:details.pk,
-        text:details.text
-    }
-    // check and set
-    this.props.selectPhrase(PhraseMarked, details.pk, this.button);
-  }
-
   getStartofContext(){
     const { active, details, keys, setStartTime } = this.props
     // set start time for segment
@@ -90,7 +83,7 @@ class Phrase extends React.Component{
   }
 
   skipCurrentPhrase(){
-    const {details, keys, active, advanceSegment } = this.props;
+    const {details, keys, active, advanceSegment, advanceTranscript, currentLength } = this.props;
     if(keys == active) {
       if(!details.needs_correction) {
         advanceSegment(1)
