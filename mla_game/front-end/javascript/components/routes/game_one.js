@@ -108,14 +108,6 @@ class GameOne extends React.Component{
     }
   }
 
-  reload(){
-    this.props.resetSegments(0)
-    this.props.resetGameScore(0)
-    this.props.endOfRoundOne(false)
-    this.props.fetchGameOne()
-    this.props.showTipOne(false)
-  }
-
   goBack() {
     const { gameone } = this.props
     if(gameone.segment >= 1) {
@@ -143,6 +135,17 @@ class GameOne extends React.Component{
     media.currentTime = callback;
     media.play();
   }
+
+  reload(){
+    let tipDismissed = this.props.gameone.inGameTip
+    this.props.resetSegments(0)
+    this.props.resetGameScore(0)
+    this.props.endOfRoundOne(false)
+    this.props.fetchGameOne()
+    if(tipDismissed) {
+      this.props.showTipTwo(false)
+    }
+  }
   
   componentWillMount(){
     this.props.fetchGameOne()
@@ -151,10 +154,7 @@ class GameOne extends React.Component{
   componentWillUnmount(){
     // update gameone score in state
     this.props.updateGameOneScore(this.props.gameone.gameScore)
-    // reset state for game 
-    this.props.resetSegments(0)
-    this.props.resetGameScore(0);
-    this.props.endOfRoundOne(false)
+    this.reload()
   }
 
   
@@ -230,7 +230,7 @@ class GameOne extends React.Component{
                  })}
                 </ul>
                 {gameone.inGameTip ? (
-                  <GameTip dismissTip={this.props.dismissTipOne} />
+                  <GameTip dismissTip={this.props.showTipOne} />
                   ) : (
                     ''
                 )}

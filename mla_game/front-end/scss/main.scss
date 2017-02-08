@@ -197,7 +197,7 @@ button {
     div {
       position:relative;
     }
-    button {
+    button, .text {
       @include plain-button;
       color:lighten($theme-tertiary, 50%);
       font-family: 'Droid Sans', sans-serif;
@@ -250,29 +250,14 @@ button {
       }
       &:disabled {
         &:hover {
-          span {
-            background:none;
-            cursor:default;
-            color:inherit;
-          }
-        }
-        &.highlighted {
-           .context, span {
-            background:none;
-            color:inherit;;
-            font-weight:400;
-          }
-        }
-        &.corrected {
-           .context, span {
-            background:none;
-            color:inherit;;
-            font-weight:400;
-          }
+          cursor:auto;
         }
       }
       &.highlighted {
-        .context, span {
+        &:hover {
+          cursor:pointer;
+        }
+        .context  {
           background:$transcript-error;
           color:white;
           font-weight:700;
@@ -292,16 +277,22 @@ button {
           }
         }
       }
-      &.not-highlighted {
+      &.editing {
+        .context, span {
+          background:darken($transcript-error, 20%);
+          color:white;
+          font-weight:400;
+        }
         &:hover {
           .context, span {
-            background:inherit;
+            background:darken($transcript-error, 20%);
             color:white;
+            font-weight:400;
           }
-        }  
+        }
       }
       &:hover {
-        .context, span {
+        .context {
           background:$transcript-error;
           color:white;
         }
@@ -314,13 +305,23 @@ button {
         }
       }
     }
+    
+
     .phrase-editing  {
+      text-align: center;
+      clear:both;
+      padding-top:.75em;
       @include susy-breakpoint($screen-lg-min, $map-lg) {
-        @include span(1 of 7 last)
+        @include span(1 of 7 last);
+        padding-top:0;
+        clear:none;
       }
     }
     .correct-phrase {
-      @include border-button($theme-secondary, $icon-light)
+      @include border-button($theme-secondary, $icon-light);
+      &:last-child {
+        margin-left: .5em;
+      }
     }
     .fix-phrase {
       @include light-button;

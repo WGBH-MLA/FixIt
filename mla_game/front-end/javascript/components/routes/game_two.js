@@ -132,18 +132,25 @@ class GameTwo extends React.Component{
 
   reload(){
     let tipDismissed = this.props.gametwo.inGameTip
-    if(tipDismissed) {
-      this.props.showTipTwo(false)
-    }
     this.props.resetSegments(0)
     this.props.resetGameScore(0)
-    this.props.endOfRoundTwo(false)
     this.props.resetTranscript(0)
     this.props.resetGameProgress(3)
+    this.props.endOfRoundTwo(false)
     this.props.fetchGameTwo()
+    if(tipDismissed) {
+      this.props.showTipTwo(true)
+    }
   }
   
   componentWillMount(){
+    this.props.fetchGameTwo()
+  }
+
+  componentWillUnmount(){
+    // update gameone score in state
+    this.props.updateGameTwoScore(this.props.gametwo.gameScore)
+    // reset gamestate
     this.reload()
   }
   
