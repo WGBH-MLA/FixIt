@@ -61,6 +61,27 @@ class TranscriptManager(models.Manager):
             phrases__in=phrases_for_correction).distinct()
         return (transcripts_to_return, phrases_for_correction)
 
+    def game_three(self, user):
+        '''
+        Game three needs to present a transcript with all of the corrections
+
+        Still to do:
+            - if a user has already voted on a set of corrections, they should
+            not see it again in future games
+            - restrict results to 20 phrases
+        '''
+        corrected_phrases = set([phrase.transcript_phrase for phrase in
+                                TranscriptPhraseCorrection.objects.all()])
+        corrections = []
+        for phrase in corrected_phrases:
+            phrase_corrections = TranscriptPhraseCorrection.objects.filter(
+                transcript_phrase=phrase
+            )
+            corrections.append({phrase.pk: phrase_corrections})
+        transcripts = self.filter(
+            phrases__in=corrected_phrases).distinct()
+        return (transcripts, corrections)
+
     def random_transcript(self):
         all_transcripts = self.all().defer('transcript_data_blob')
         number_of_transcripts = all_transcripts.count()

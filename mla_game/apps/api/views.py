@@ -65,7 +65,9 @@ class TranscriptViewSet(viewsets.ModelViewSet):
 
     @list_route()
     def game_two(self, request):
-        transcripts, phrases_for_correction = Transcript.objects.game_two(request.user)
+        transcripts, phrases_for_correction = Transcript.objects.game_two(
+            request.user
+        )
         serializer = self.get_serializer(
             transcripts, many=True,
         )
@@ -75,6 +77,28 @@ class TranscriptViewSet(viewsets.ModelViewSet):
                     phrase['needs_correction'] = True
                 else:
                     phrase['needs_correction'] = False
+        return Response(serializer.data)
+
+    @list_route()
+    def game_three(self, request):
+        transcripts, corrected_phrases = Transcript.objects.game_three(
+            request.user
+        )
+        serializer = self.get_serializer(
+            transcripts, many=True
+        )
+        for transcript in serializer.data:
+            for phrase in transcript['phrases']:
+                for correction in corrected_phrases:
+                    if phrase['pk'] in correction:
+                        phrase['corrections'] = [
+                            {
+                                'pk': correction.pk,
+                                'corrected_text': correction.correction
+                            } for correction in correction[phrase['pk']]
+                        ]
+                        correction[phrase['pk']]
+
         return Response(serializer.data)
 
 
