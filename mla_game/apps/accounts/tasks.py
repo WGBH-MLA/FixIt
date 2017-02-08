@@ -1,7 +1,6 @@
 import logging
 import datetime
 
-from django.db.models.signals import m2m_changed
 from django.contrib.auth.models import User
 
 from huey.contrib.djhuey import crontab, db_periodic_task, db_task
@@ -13,7 +12,67 @@ logger = logging.getLogger('django')
 
 
 @db_task()
+def update_partial_or_complete_transcripts(user, pk_set, **kwargs):
+    '''
+    When a user considers a phrase in game one, the considered phrase is recorded
+    and the set of considered phrases is used to determine a list of partially
+    and fully completed transcripts.
+
+    If a transcript gets added to the completed transcripts, trigger
+    update_transcript_picks so it gets removed from transcripts user will see.
+
+    This task gets triggered whenever Profile.considered_phrases is updated
+    '''
+    profile = Profile.objects.get(user=user)
+
+    transcript_picks, created = TranscriptPicks.objects.get_or_create(user=user)
+    picks = transcript_picks.picks
+
+    partial_transcripts = set([phrase.transcript.pk for phrase in
+                               profile.considered_phrases.all()])
+    considered_phrases = [phrase.pk for phrase in
+                          profile.considered_phrases.all()]
+
+    if 'completed_transcripts' in picks:
+        completed_transcripts = picks['completed_transcripts']
+    else:
+        completed_transcripts = []
+
+    completed_transcripts_original = completed_transcripts[:]
+
+    for transcript in partial_transcripts:
+        all_phrases = [phrase.pk for phrase in
+                       TranscriptPhrase.objects.filter(transcript=transcript)]
+        seen = []
+        unseen = []
+        for phrase in all_phrases:
+            if phrase in considered_phrases:
+                seen.append(phrase)
+            else:
+                unseen.append(phrase)
+
+        if len(seen) == len(all_phrases):
+            completed_transcripts.append(transcript)
+        else:
+            pass
+
+    picks['partially_completed_transcripts'] = [transcript for transcript in partial_transcripts
+                                                if transcript not in completed_transcripts]
+    picks['completed_transcripts'] = completed_transcripts
+
+    transcript_picks.save()
+
+    if picks['completed_transcripts'] != completed_transcripts_original:
+        update_transcript_picks(user)
+
+
+@db_task()
 def update_transcript_picks(user, **kwargs):
+    '''
+    When a user updates their preferred topics or stations, we need to create
+    lists of 'ideal' (matches both) and 'acceptable' (matches either)
+    transcripts.
+    '''
     profile = Profile.objects.get(user=user)
 
     transcript_picks, created = TranscriptPicks.objects.get_or_create(user=user)
@@ -30,28 +89,10 @@ def update_transcript_picks(user, **kwargs):
         for topic in profile.preferred_topics.all():
             topic_transcripts = topic_transcripts | topic.transcripts.all()
 
-    partial_transcripts = set([phrase.transcript.pk for phrase in profile.considered_phrases.all()])
-    considered_phrases = [phrase.pk for phrase in profile.considered_phrases.all()]
-    completed_transcripts = []
-
-    for transcript in partial_transcripts:
-        all_phrases = [phrase.pk for phrase in
-                       TranscriptPhrase.objects.filter(transcript=transcript)]
-        seen = []
-        unseen = []
-        for phrase in all_phrases:
-            if phrase in considered_phrases:
-                seen.append(phrase)
-            else:
-                unseen.append(phrase)
-
-        # percent_complete = len(seen)/len(all_phrases)
-
-        if len(seen) == len(all_phrases):
-            completed_transcripts.append(transcript)
-        else:
-            pass
-            # logger.info('transcript {} is {} percent complete'.format(transcript, percent_complete))
+    if 'completed_transcripts' in picks:
+        completed_transcripts = picks['completed_transcripts']
+    else:
+        completed_transcripts = []
 
     picks['station_transcripts'] = [transcript.pk for transcript in station_transcripts
                                     if transcript.pk not in completed_transcripts]
@@ -61,12 +102,8 @@ def update_transcript_picks(user, **kwargs):
         set(picks['topic_transcripts'])))
     picks['acceptable_transcripts'] = [t for t in picks['station_transcripts'] + picks['topic_transcripts']
                                        if t not in picks['ideal_transcripts']]
-    picks['partially_completed_transcripts'] = [transcript for transcript in partial_transcripts
-                                                if transcript not in completed_transcripts]
-    picks['completed_transcripts'] = completed_transcripts
 
     transcript_picks.save()
-    logger.info(picks)
 
 
 @db_periodic_task(crontab(hour='*/2'))
@@ -203,6 +240,3 @@ def update_leaderboard():
     ]
 
     Leaderboard.objects.create(leaderboard=leaderboard)
-
-
-# m2m_changed.connect(update_transcript_picks, sender=Profile.preferred_stations.through)

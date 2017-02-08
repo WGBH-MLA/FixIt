@@ -4,6 +4,9 @@ from django.contrib.postgres.fields import JSONField
 
 
 class Profile(models.Model):
+    '''
+    Extends the Django-provided User model
+    '''
     user = models.OneToOneField(User)
     username = models.CharField(max_length=50, default='')
     preferred_stations = models.ManyToManyField('transcript.Source')
@@ -43,6 +46,18 @@ class Profile(models.Model):
 
 
 class TranscriptPicks(models.Model):
+    '''
+    This is the data that drives narrowing down the transcripts a user might see
+    in game one.
+
+    Roughly, 'picks' is a dict containing:
+    'station_transcripts': list of suitable transcripts based on station prefs
+    'topic_transcripts': list of suitable transcripts based on topic prefs
+    'ideal_transcripts' intersection of above two
+    'acceptable_transcripts': symmetric difference of station/topic transcripts
+    'partially_completed_transcripts': list of partially complete transcripts
+    'completed_transcripts': list of complete transcripts
+    '''
     user = models.OneToOneField(User)
     picks = JSONField(default={})
 
