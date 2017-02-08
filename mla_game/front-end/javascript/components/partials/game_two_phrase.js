@@ -42,6 +42,7 @@ class Phrase extends React.Component{
         text:this.span.textContent
     }
     this.props.selectPhrase(PhraseCorrected, details.pk)
+    this.props.setCorrected(false)
   }
 
   cancel(){
@@ -52,6 +53,7 @@ class Phrase extends React.Component{
     })
     this.span.contentEditable = false
     this.props.removePhrase(details.pk)
+    this.props.setCorrected(true)
   }
   
   getStartofContext(){

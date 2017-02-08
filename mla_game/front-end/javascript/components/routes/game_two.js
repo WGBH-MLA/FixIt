@@ -166,13 +166,6 @@ class GameTwo extends React.Component{
       return(
         <div>
           <div className='grid'>
-            <h1>
-               start Segment: {gametwo.startSegment} <br/>
-               end Segment: {gametwo.endSegment} <br/>
-               current time: {gametwo.currentTime} <br/>
-               game length: {gametwo.gameLength} <br/>
-               game progress: {gametwo.gameProgress}
-            </h1>
             {gametwo.endOfRound ? (
               <div className='roundup'>
                 <h1>End Of Round</h1>
@@ -257,7 +250,7 @@ class GameTwo extends React.Component{
             max={gametwo.gameLength - 1}
             value={gametwo.gameProgress}
             waitingUpdate={this.props.waitingUpdate}
-            waiting={this.state.correct}
+            waiting={this.state.disableProgress}
             modalIsOpen={this.props.initialData.modalIsOpen}
             setModal={this.props.setModal}
           />

@@ -1470,6 +1470,7 @@ var Phrase = (function (_React$Component) {
         text: this.span.textContent
       };
       this.props.selectPhrase(PhraseCorrected, details.pk);
+      this.props.setCorrected(false);
     }
   }, {
     key: 'cancel',
@@ -1482,6 +1483,7 @@ var Phrase = (function (_React$Component) {
       });
       this.span.contentEditable = false;
       this.props.removePhrase(details.pk);
+      this.props.setCorrected(true);
     }
   }, {
     key: 'getStartofContext',
@@ -2768,28 +2770,6 @@ var GameTwo = (function (_React$Component) {
           _react2['default'].createElement(
             'div',
             { className: 'grid' },
-            _react2['default'].createElement(
-              'h1',
-              null,
-              'start Segment: ',
-              gametwo.startSegment,
-              ' ',
-              _react2['default'].createElement('br', null),
-              'end Segment: ',
-              gametwo.endSegment,
-              ' ',
-              _react2['default'].createElement('br', null),
-              'current time: ',
-              gametwo.currentTime,
-              ' ',
-              _react2['default'].createElement('br', null),
-              'game length: ',
-              gametwo.gameLength,
-              ' ',
-              _react2['default'].createElement('br', null),
-              'game progress: ',
-              gametwo.gameProgress
-            ),
             gametwo.endOfRound ? _react2['default'].createElement(
               'div',
               { className: 'roundup' },
@@ -2916,7 +2896,7 @@ var GameTwo = (function (_React$Component) {
             max: gametwo.gameLength - 1,
             value: gametwo.gameProgress,
             waitingUpdate: this.props.waitingUpdate,
-            waiting: this.state.correct,
+            waiting: this.state.disableProgress,
             modalIsOpen: this.props.initialData.modalIsOpen,
             setModal: this.props.setModal
           })
