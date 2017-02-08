@@ -1,7 +1,7 @@
 function gameTwo(state = {
   gameNumber:2,
   gameName:'Suggest Fixes',
-  canGoBack:true,
+  canGoBack:false,
   loading:true,
   currentTime:0,
   startTime:0,
@@ -13,6 +13,7 @@ function gameTwo(state = {
   endSegment:1,
   endOfRound:false,
   startSegment:0,
+  skipPhrase:false,
   gameScore:0,
   waiting:false,
   inGameTip:true,
@@ -43,6 +44,14 @@ function gameTwo(state = {
     case 'UPDATE_GAME_PROGRESS':
       return {...state, 
         gameProgress:state.gameProgress + action.data
+      }
+    case 'RESET_GAME_PROGRESS':
+      return {...state, 
+        gameProgress:action.data
+      }
+    case 'SKIP_CORRECT_PHRASE':
+      return {...state, 
+        skipPhrase:action.bool
       }
     case 'SET_STARTTIME':
       return {...state, 
@@ -76,29 +85,21 @@ function gameTwo(state = {
       return  {...state, 
         currentTranscript:state.currentTranscript + action.progress
       }
+    case 'RESET_TRANSCRIPT':
+      return  {...state, 
+        currentTranscript:action.progress
+      }
     case 'WAITING_UPDATE':
       return  {...state, 
         waiting:action.waiting
       }
-    case 'SET_END_ROUND':
+    case 'SET_END_ROUND_TWO':
       return  {...state, 
-        endOfRound:action.endOfRound
+        endOfRound:action.bool
       }
-    case 'GOBACK_ROUND':
-      return  {...state, 
-        segment:state.segment - action.progress
-      }
-    case 'RESET_ROUND':
+    case 'RESET_SEGMENTS':
       return  {...state, 
         segment:action.progress
-      }
-    case 'MARK_INCORRECT':
-      return  {...state.wrongPhrases,
-        wrongPhrases:action.phrase
-      }
-    case 'UNMARK_PHRASE':
-      return  {...state, 
-        wrongPhrases:action.phrase
       }
     case 'DISMISS_TIP_TWO':
       return  {...state, 
