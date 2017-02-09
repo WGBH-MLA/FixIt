@@ -19,18 +19,13 @@ class GameTwo extends React.Component{
     this.activePhrase = this.activePhrase.bind(this)
     this.playPhrase = this.playPhrase.bind(this)
     this.selectPhrase = this.selectPhrase.bind(this)
-    this.setCorrected = this.setCorrected.bind(this)
     this.removePhrase = this.removePhrase.bind(this)
     this.reload = this.reload.bind(this)
     
     this.state = {
       phrase:null,
-      disableProgress:true
     }
-  }
 
-  setCorrected(bool){
-    this.setState({disableProgress:bool})
   }
 
   selectPhrase(phrase) {
@@ -85,6 +80,7 @@ class GameTwo extends React.Component{
       // update scores
       updateTotalScore(11)
       updateGameScore(11)
+      this.props.disableProgress(true)
     } 
 
     // scrub state for phrase correction
@@ -137,6 +133,7 @@ class GameTwo extends React.Component{
     this.props.resetTranscript(0)
     this.props.resetGameProgress(3)
     this.props.endOfRoundTwo(false)
+
     this.props.fetchGameTwo()
     if(tipDismissed) {
       this.props.showTipTwo(true)
@@ -156,7 +153,7 @@ class GameTwo extends React.Component{
   
 
   render(){
-    const { gametwo, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegment, advanceTranscript, skipPhrase, setStartTime } = this.props
+    const { gametwo, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegment, advanceTranscript, skipPhrase, setStartTime, disableProgress } = this.props
     
     if(this.props.gametwo.loading) {
       return(
@@ -166,6 +163,8 @@ class GameTwo extends React.Component{
       return(
         <div>
           <div className='grid'>
+            <h1>
+            </h1>
             {gametwo.endOfRound ? (
               <div className='roundup'>
                 <h1>End Of Round</h1>
@@ -210,7 +209,7 @@ class GameTwo extends React.Component{
                                selectPhrase={this.selectPhrase}
                                removePhrase={this.removePhrase}
                                playPhrase={this.playPhrase}
-                               setCorrected={this.setCorrected}
+                               disableProgress={disableProgress}
                                time={gametwo.currentTime} 
                                active={gametwo.segment}
                                keys={key}
@@ -250,7 +249,7 @@ class GameTwo extends React.Component{
             max={gametwo.gameLength - 1}
             value={gametwo.gameProgress}
             waitingUpdate={this.props.waitingUpdate}
-            waiting={this.state.disableProgress}
+            waiting={gametwo.disableProgress}
             modalIsOpen={this.props.initialData.modalIsOpen}
             setModal={this.props.setModal}
           />

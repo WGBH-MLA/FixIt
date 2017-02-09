@@ -216,6 +216,13 @@ export function wait(time){
   }
 }
 
+export function disableProgress(bool){
+  return{
+    type:'DISABLE_PROGRESS',
+    bool
+  }
+}
+
 export function advanceSegment(progress){
   return{
     type:'ADVANCE_SEGMENT',

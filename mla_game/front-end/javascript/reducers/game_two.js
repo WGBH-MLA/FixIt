@@ -8,6 +8,7 @@ function gameTwo(state = {
   isPlaying:false,
   gameLength:null,
   gameProgress:3,
+  disableProgress:true,
   segment:0,
   currentTranscript:0,
   endSegment:1,
@@ -44,6 +45,10 @@ function gameTwo(state = {
     case 'UPDATE_GAME_PROGRESS':
       return {...state, 
         gameProgress:state.gameProgress + action.data
+      }
+    case 'DISABLE_PROGRESS':
+      return {...state, 
+        disableProgress:action.bool
       }
     case 'RESET_GAME_PROGRESS':
       return {...state, 

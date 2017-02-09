@@ -121,6 +121,7 @@ exports.setIsPlaying = setIsPlaying;
 exports.endOfRoundOne = endOfRoundOne;
 exports.waitingUpdate = waitingUpdate;
 exports.wait = wait;
+exports.disableProgress = disableProgress;
 exports.advanceSegment = advanceSegment;
 exports.advanceTranscript = advanceTranscript;
 exports.resetTranscript = resetTranscript;
@@ -357,6 +358,13 @@ function wait(time) {
     }).then(function () {
       dispatch(waitingUpdate(false));
     });
+  };
+}
+
+function disableProgress(bool) {
+  return {
+    type: 'DISABLE_PROGRESS',
+    bool: bool
   };
 }
 
@@ -1470,7 +1478,7 @@ var Phrase = (function (_React$Component) {
         text: this.span.textContent
       };
       this.props.selectPhrase(PhraseCorrected, details.pk);
-      this.props.setCorrected(false);
+      this.props.disableProgress(false);
     }
   }, {
     key: 'cancel',
@@ -1483,7 +1491,7 @@ var Phrase = (function (_React$Component) {
       });
       this.span.contentEditable = false;
       this.props.removePhrase(details.pk);
-      this.props.setCorrected(true);
+      this.props.disableProgress(true);
     }
   }, {
     key: 'getStartofContext',
@@ -2585,22 +2593,15 @@ var GameTwo = (function (_React$Component) {
     this.activePhrase = this.activePhrase.bind(this);
     this.playPhrase = this.playPhrase.bind(this);
     this.selectPhrase = this.selectPhrase.bind(this);
-    this.setCorrected = this.setCorrected.bind(this);
     this.removePhrase = this.removePhrase.bind(this);
     this.reload = this.reload.bind(this);
 
     this.state = {
-      phrase: null,
-      disableProgress: true
+      phrase: null
     };
   }
 
   _createClass(GameTwo, [{
-    key: 'setCorrected',
-    value: function setCorrected(bool) {
-      this.setState({ disableProgress: bool });
-    }
-  }, {
     key: 'selectPhrase',
     value: function selectPhrase(phrase) {
       this.setState({ phrase: phrase });
@@ -2668,6 +2669,7 @@ var GameTwo = (function (_React$Component) {
         // update scores
         updateTotalScore(11);
         updateGameScore(11);
+        this.props.disableProgress(true);
       }
 
       // scrub state for phrase correction
@@ -2724,6 +2726,7 @@ var GameTwo = (function (_React$Component) {
       this.props.resetTranscript(0);
       this.props.resetGameProgress(3);
       this.props.endOfRoundTwo(false);
+
       this.props.fetchGameTwo();
       if (tipDismissed) {
         this.props.showTipTwo(true);
@@ -2760,6 +2763,7 @@ var GameTwo = (function (_React$Component) {
       var advanceTranscript = _props3.advanceTranscript;
       var skipPhrase = _props3.skipPhrase;
       var setStartTime = _props3.setStartTime;
+      var disableProgress = _props3.disableProgress;
 
       if (this.props.gametwo.loading) {
         return _react2['default'].createElement(_partialsLoading_screen2['default'], null);
@@ -2770,6 +2774,7 @@ var GameTwo = (function (_React$Component) {
           _react2['default'].createElement(
             'div',
             { className: 'grid' },
+            _react2['default'].createElement('h1', null),
             gametwo.endOfRound ? _react2['default'].createElement(
               'div',
               { className: 'roundup' },
@@ -2864,7 +2869,7 @@ var GameTwo = (function (_React$Component) {
                               selectPhrase: _this.selectPhrase,
                               removePhrase: _this.removePhrase,
                               playPhrase: _this.playPhrase,
-                              setCorrected: _this.setCorrected,
+                              disableProgress: disableProgress,
                               time: gametwo.currentTime,
                               active: gametwo.segment,
                               keys: key,
@@ -2896,7 +2901,7 @@ var GameTwo = (function (_React$Component) {
             max: gametwo.gameLength - 1,
             value: gametwo.gameProgress,
             waitingUpdate: this.props.waitingUpdate,
-            waiting: this.state.disableProgress,
+            waiting: gametwo.disableProgress,
             modalIsOpen: this.props.initialData.modalIsOpen,
             setModal: this.props.setModal
           })
@@ -3392,6 +3397,7 @@ function gameTwo(state, action) {
     isPlaying: false,
     gameLength: null,
     gameProgress: 3,
+    disableProgress: true,
     segment: 0,
     currentTranscript: 0,
     endSegment: 1,
@@ -3429,6 +3435,10 @@ function gameTwo(state, action) {
     case 'UPDATE_GAME_PROGRESS':
       return _extends({}, state, {
         gameProgress: state.gameProgress + action.data
+      });
+    case 'DISABLE_PROGRESS':
+      return _extends({}, state, {
+        disableProgress: action.bool
       });
     case 'RESET_GAME_PROGRESS':
       return _extends({}, state, {
