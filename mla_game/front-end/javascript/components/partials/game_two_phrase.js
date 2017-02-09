@@ -11,6 +11,7 @@ class Phrase extends React.Component{
     this.getStartofContext = this.getStartofContext.bind(this)
     this.setSkipPhrase = this.setSkipPhrase.bind(this)
     this.skipCurrentPhrase = this.skipCurrentPhrase.bind(this)
+    this.skipLastPhrase = this.skipLastPhrase.bind(this)
 
     this.state = {
       editing:false,
@@ -74,7 +75,7 @@ class Phrase extends React.Component{
   }
 
   setSkipPhrase(){
-    const {details, keys, active, skipPhrase, currentLength } = this.props;
+    const {details, keys, active, skipPhrase } = this.props;
     if(keys == active + 1) {
       if(details.needs_correction) {
         skipPhrase(false)
@@ -85,11 +86,25 @@ class Phrase extends React.Component{
   }
 
   skipCurrentPhrase(){
-    const {details, keys, active, advanceSegment, advanceTranscript, currentLength } = this.props;
+    const {details, keys, active, advanceSegment, advanceTranscript } = this.props
     if(keys == active) {
       if(!details.needs_correction) {
         advanceSegment(1)
       }
+    }
+  }
+
+  skipLastPhrase(newProps){
+    const { active, advanceTranscript, phrasesLength, skipPhrase, resetSegments, gameLength, currentTranscript, endOfRoundTwo } = newProps
+    if(active == phrasesLength + 1) {
+      if(currentTranscript < gameLength) {
+        skipPhrase(false)
+        resetSegments(0)
+        advanceTranscript(1)
+      } else {
+        endOfRoundTwo(true)
+      }
+
     }
   }
   
@@ -98,6 +113,10 @@ class Phrase extends React.Component{
     this.getStartofContext()
     this.setSkipPhrase()
     this.skipCurrentPhrase()
+  }
+
+  componentWillReceiveProps(nextProps){
+   this.skipLastPhrase(nextProps)
   }
   
   render(){
@@ -135,7 +154,6 @@ class Phrase extends React.Component{
                     </div>
     }
 
-    
     return(
       <div>
         <button className='play-phrase' onClick={() => this.props.playPhrase(details.start_time)} id={`phraseEnd-${details.end_time}`}>

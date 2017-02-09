@@ -1444,6 +1444,7 @@ var Phrase = (function (_React$Component) {
     this.getStartofContext = this.getStartofContext.bind(this);
     this.setSkipPhrase = this.setSkipPhrase.bind(this);
     this.skipCurrentPhrase = this.skipCurrentPhrase.bind(this);
+    this.skipLastPhrase = this.skipLastPhrase.bind(this);
 
     this.state = {
       editing: false,
@@ -1529,7 +1530,6 @@ var Phrase = (function (_React$Component) {
       var keys = _props3.keys;
       var active = _props3.active;
       var skipPhrase = _props3.skipPhrase;
-      var currentLength = _props3.currentLength;
 
       if (keys == active + 1) {
         if (details.needs_correction) {
@@ -1548,11 +1548,32 @@ var Phrase = (function (_React$Component) {
       var active = _props4.active;
       var advanceSegment = _props4.advanceSegment;
       var advanceTranscript = _props4.advanceTranscript;
-      var currentLength = _props4.currentLength;
 
       if (keys == active) {
         if (!details.needs_correction) {
           advanceSegment(1);
+        }
+      }
+    }
+  }, {
+    key: 'skipLastPhrase',
+    value: function skipLastPhrase(newProps) {
+      var active = newProps.active;
+      var advanceTranscript = newProps.advanceTranscript;
+      var phrasesLength = newProps.phrasesLength;
+      var skipPhrase = newProps.skipPhrase;
+      var resetSegments = newProps.resetSegments;
+      var gameLength = newProps.gameLength;
+      var currentTranscript = newProps.currentTranscript;
+      var endOfRoundTwo = newProps.endOfRoundTwo;
+
+      if (active == phrasesLength + 1) {
+        if (currentTranscript < gameLength) {
+          skipPhrase(false);
+          resetSegments(0);
+          advanceTranscript(1);
+        } else {
+          endOfRoundTwo(true);
         }
       }
     }
@@ -1563,6 +1584,11 @@ var Phrase = (function (_React$Component) {
       this.getStartofContext();
       this.setSkipPhrase();
       this.skipCurrentPhrase();
+    }
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      this.skipLastPhrase(nextProps);
     }
   }, {
     key: 'render',
@@ -2625,29 +2651,23 @@ var GameTwo = (function (_React$Component) {
       var updateTotalScore = _props.updateTotalScore;
       var updateGameScore = _props.updateGameScore;
       var updateGameProgress = _props.updateGameProgress;
-      var skipPhrase = _props.skipPhrase;
-      var resetSegments = _props.resetSegments;
-      var endOfRoundTwo = _props.endOfRoundTwo;
 
-      var transcriptLength = gametwo.transcripts.length - 1;
       var currentTranscriptLength = gametwo.transcripts[gametwo.currentTranscript].phrases_length - 1;
       var noCorrectionExists = this.state.phrase == null;
+      var media = document.querySelector('.audio-player');
+
+      // console.log(gametwo.transcripts[gametwo.currentTranscript].phrases[gametwo.segment + 1])
 
       if (gametwo.segment <= currentTranscriptLength) {
         if (gametwo.skipPhrase) {
           advanceSegment(2);
           updateGameProgress(2);
         } else {
+          media.currentTime = gametwo.startTime;
+          // media.play();
+
           advanceSegment(1);
           updateGameProgress(1);
-        }
-      } else {
-        if (gametwo.currentTranscript < transcriptLength) {
-          skipPhrase(false);
-          resetSegments(0);
-          advanceTranscript(1);
-        } else {
-          endOfRoundTwo(true);
         }
       }
 
@@ -2764,6 +2784,8 @@ var GameTwo = (function (_React$Component) {
       var skipPhrase = _props3.skipPhrase;
       var setStartTime = _props3.setStartTime;
       var disableProgress = _props3.disableProgress;
+      var resetSegments = _props3.resetSegments;
+      var endOfRoundTwo = _props3.endOfRoundTwo;
 
       if (this.props.gametwo.loading) {
         return _react2['default'].createElement(_partialsLoading_screen2['default'], null);
@@ -2774,7 +2796,6 @@ var GameTwo = (function (_React$Component) {
           _react2['default'].createElement(
             'div',
             { className: 'grid' },
-            _react2['default'].createElement('h1', null),
             gametwo.endOfRound ? _react2['default'].createElement(
               'div',
               { className: 'roundup' },
@@ -2877,8 +2898,12 @@ var GameTwo = (function (_React$Component) {
                               setSegmentStart: setSegmentStart,
                               setSegmentEnd: setSegmentEnd,
                               advanceSegment: advanceSegment,
+                              endOfRoundTwo: endOfRoundTwo,
+                              currentTranscript: gametwo.currentTranscript,
+                              gameLength: gametwo.transcripts.length - 1,
+                              phrasesLength: gametwo.transcripts[gametwo.currentTranscript].phrases_length - 1,
                               advanceTranscript: advanceTranscript,
-                              currentLength: gametwo.transcripts[gametwo.currentTranscript].phrases.length - 2,
+                              resetSegments: resetSegments,
                               skipPhrase: skipPhrase,
                               setStartTime: setStartTime
                             })
