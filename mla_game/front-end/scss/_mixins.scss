@@ -117,26 +117,7 @@
   }
 }
 
-@mixin game-number-abs($background:null, $color:null, $font:null, $size:null) {
-  display:inline-block;
-  position:relative;
-  margin-right:.65em;
-  color:#{$color};
-  font-size:#{$size};
-  font-family:#{$font};
-  &:after {
-    @include center;
-    z-index:-1;
-    content:'';
-    display:inline-block;
-    border-radius:100%;
-    width:1.65em;
-    height:1.65em;
-    background-color:#{$background};
-  }
-}
-
-@mixin game-number-inline($background:null, $color:null, $font:null, $size:null) {
+@mixin game-number($background:null, $color:null, $font:null, $size:null) {
   text-align:center;
   display:inline-block;
   border-radius:100%;

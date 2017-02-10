@@ -80,7 +80,7 @@
       font-size:1.5em;
       .game-number {
         @include clearfix;
-        @include game-number-inline($icon-light, $theme-primary, "'Open Sans', sans-serif"); 
+        @include game-number($icon-light, $theme-primary, "'Open Sans', sans-serif"); 
       }
       .game-name {
         margin:.5em 0 1.5em 0;

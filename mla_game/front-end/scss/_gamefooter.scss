@@ -21,7 +21,7 @@
     line-height:1.5;
     margin-bottom:0;
     span {
-      @include game-number-abs($progress, $theme-primary, "'Open Sans Condensed', sans-serif", "1em") 
+      @include game-number($progress, $theme-primary) 
     }
     @include susy-breakpoint($screen-sm-min, $map-sm) {
       padding:1em .5em .25em .5em;
