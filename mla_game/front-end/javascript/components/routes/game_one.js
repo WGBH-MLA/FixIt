@@ -230,7 +230,10 @@ class GameOne extends React.Component{
                  })}
                 </ul>
                 {gameone.inGameTip ? (
-                  <GameTip dismissTip={this.props.showTipOne} />
+                  <GameTip 
+                    dismissTip={this.props.showTipOne}
+                    text={'Click a highlighted transcript line(s) to indicate it contains errors. Click the speaker icon to listen to a specific line again. Click the Next button to continue to the next set of transcript phrases.'}
+                  />
                   ) : (
                     ''
                 )}

@@ -3,14 +3,12 @@ import { Link } from 'react-router'
 import GameNav from '../partials/game_navigation'
 
 class GameMenu extends React.Component {
-  componentDidMount(){
-    console.log(this.props)
-  }
   
   render() {
     const { gameScores, gameone, gametwo, gamethree } = this.props
     return (
       <div className='grid'> 
+        <h1>Game Menu</h1>
         <Link className='preferences-link' to="preferences">Preferences</Link> 
         <div className="user-info">
             <h2>

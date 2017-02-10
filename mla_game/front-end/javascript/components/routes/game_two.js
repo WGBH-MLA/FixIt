@@ -43,19 +43,17 @@ class GameTwo extends React.Component{
     let currentTranscriptLength = gametwo.transcripts[gametwo.currentTranscript].phrases_length - 1
     let noCorrectionExists = this.state.phrase == null
     let media = document.querySelector('.audio-player')
-
-    // console.log(gametwo.transcripts[gametwo.currentTranscript].phrases[gametwo.segment + 1])
+    
+    // this.props.setSegmentStart(Number(gametwo.transcripts[gametwo.currentTranscript].phrases[gametwo.segment + 1].start_time))
 
     if(gametwo.segment <= currentTranscriptLength) {
       if(gametwo.skipPhrase) {
         advanceSegment(2)
         updateGameProgress(2)
       } else {
-        media.currentTime = gametwo.startTime;
-        // media.play();
-        
         advanceSegment(1)
         updateGameProgress(1)
+
       }
     } 
     
@@ -77,7 +75,7 @@ class GameTwo extends React.Component{
       // update scores
       updateTotalScore(11)
       updateGameScore(11)
-      this.props.disableProgress(true)
+      // this.props.disableProgress(true)
     } 
 
     // scrub state for phrase correction
@@ -130,8 +128,8 @@ class GameTwo extends React.Component{
     this.props.resetTranscript(0)
     this.props.resetGameProgress(3)
     this.props.endOfRoundTwo(false)
-
     this.props.fetchGameTwo()
+    
     if(tipDismissed) {
       this.props.showTipTwo(true)
     }
@@ -160,6 +158,11 @@ class GameTwo extends React.Component{
       return(
         <div>
           <div className='grid'>
+            <h1>
+               end Segment: {gametwo.endSegment} <br/>
+               current time: {gametwo.currentTime} <br/>
+               segment: {gametwo.segment}
+            </h1>
             {gametwo.endOfRound ? (
               <div className='roundup'>
                 <h1>End Of Round</h1>
@@ -210,6 +213,7 @@ class GameTwo extends React.Component{
                                keys={key}
                                details={phrase}
                                setSegmentStart={setSegmentStart}
+                               startSegment={gametwo.startSegment}
                                setSegmentEnd={setSegmentEnd}
                                advanceSegment={advanceSegment}
                                endOfRoundTwo={endOfRoundTwo}
@@ -218,7 +222,8 @@ class GameTwo extends React.Component{
                                phrasesLength={gametwo.transcripts[gametwo.currentTranscript].phrases_length - 1}
                                advanceTranscript={advanceTranscript}
                                resetSegments={resetSegments}
-                               skipPhrase={skipPhrase}
+                               setSkipPhrase={skipPhrase}
+                               skipPhrase={gametwo.skipPhrase}
                                setStartTime={setStartTime}
                               />
                             </li>
@@ -234,7 +239,10 @@ class GameTwo extends React.Component{
             )}
             
             {gametwo.inGameTip ? (
-              <GameTip dismissTip={this.props.showTipTwo} />
+              <GameTip 
+                dismissTip={this.props.showTipTwo}
+                text={'Intructions for game two go here'} 
+              />
             ) : (
               ''
             )}

@@ -26,9 +26,9 @@ html{
 body {
   position: relative;
   color:white;
-  @include susy-breakpoint($screen-jb-min) {
-    font-size:1.1em
-  }
+  // @include susy-breakpoint($screen-jb-min) {
+  //   font-size:1.1em
+  // }
 }
 
 a {
