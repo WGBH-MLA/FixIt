@@ -49,11 +49,17 @@ class TranscriptManager(models.Manager):
         in the future we need to use phrases that have been verified as
         incorrect using the considered/downvoted ratio
 
+        - we should accept up to three corrections for a phrase before removing
+        it from game two
+
         Returns a tuple containing a queryset of Transcript objects and a list
         of phrase PKs to annotate
         '''
         downvoted = set([phrase.transcript_phrase.pk for phrase in
                          TranscriptPhraseDownvote.objects.all()])
+        for phrase_pk in downvoted.copy():
+            if TranscriptPhrase.objects.get(pk=phrase_pk).corrections >= 3:
+                downvoted.remove(phrase_pk)
         user_corrected = TranscriptPhraseCorrection.objects.filter(user=user)
         phrases_for_correction = [pk for pk in downvoted
                                   if pk not in user_corrected][:20]
@@ -69,15 +75,17 @@ class TranscriptManager(models.Manager):
             - if a user has already voted on a set of corrections, they should
             not see it again in future games
             - restrict results to 20 phrases
+            - only display if number of submitted corrections >= 2
         '''
         corrected_phrases = set([phrase.transcript_phrase for phrase in
                                 TranscriptPhraseCorrection.objects.all()])
         corrections = []
         for phrase in corrected_phrases:
-            phrase_corrections = TranscriptPhraseCorrection.objects.filter(
-                transcript_phrase=phrase
-            )
-            corrections.append({phrase.pk: phrase_corrections})
+            if phrase.corrections >= 2:
+                phrase_corrections = TranscriptPhraseCorrection.objects.filter(
+                    transcript_phrase=phrase
+                )
+                corrections.append({phrase.pk: phrase_corrections})
         transcripts = self.filter(
             phrases__in=corrected_phrases).distinct()
         return (transcripts, corrections)
@@ -209,7 +217,12 @@ class TranscriptPhrase(models.Model):
 
     @property
     def downvotes(self):
-        return TranscriptPhraseDownvote.objects.get(transcript_phrase=self.pk).count()
+        return TranscriptPhraseDownvote.objects.get(
+            transcript_phrase=self.pk).count()
+
+    @property
+    def corrections(self):
+        return self.transcript_phrase_correction.all().count()
 
     @property
     def total_length(self):
