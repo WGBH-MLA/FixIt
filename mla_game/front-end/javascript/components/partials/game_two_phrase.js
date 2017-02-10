@@ -66,7 +66,7 @@ class Phrase extends React.Component{
       setSegmentStart(Number(details.start_time))
       media.currentTime = startSegment
     }
-  
+
   }
 
   getEndOfContext(){
@@ -135,11 +135,11 @@ class Phrase extends React.Component{
     let phrase
     if(currentSegment) {
       phrase = <span className={phraseState} onClick={() => this.markPhrase()} id={details.pk}>
-                <span ref={(span) => {this.span = span}} className='context'>{details.text} | {details.start_time}</span> 
+                <span ref={(span) => {this.span = span}} className='context'>{details.text}</span> 
               </span>
     } else {
       phrase = <span className='text'id={details.pk}>
-                <span>{details.text} | {details.start_time}</span> 
+                <span>{details.text}</span> 
               </span>
     }
 
