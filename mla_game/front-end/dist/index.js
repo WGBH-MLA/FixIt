@@ -2976,20 +2976,6 @@ var GameTwo = (function (_React$Component) {
           _react2['default'].createElement(
             'div',
             { className: 'grid' },
-            _react2['default'].createElement(
-              'h1',
-              null,
-              'end Segment: ',
-              gametwo.endSegment,
-              ' ',
-              _react2['default'].createElement('br', null),
-              'current time: ',
-              gametwo.currentTime,
-              ' ',
-              _react2['default'].createElement('br', null),
-              'segment: ',
-              gametwo.segment
-            ),
             gametwo.endOfRound ? _react2['default'].createElement(
               'div',
               { className: 'roundup' },

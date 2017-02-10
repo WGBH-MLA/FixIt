@@ -158,11 +158,6 @@ class GameTwo extends React.Component{
       return(
         <div>
           <div className='grid'>
-            <h1>
-               end Segment: {gametwo.endSegment} <br/>
-               current time: {gametwo.currentTime} <br/>
-               segment: {gametwo.segment}
-            </h1>
             {gametwo.endOfRound ? (
               <div className='roundup'>
                 <h1>End Of Round</h1>
