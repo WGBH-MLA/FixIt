@@ -81,10 +81,11 @@ class TranscriptManager(models.Manager):
                                 TranscriptPhraseCorrection.objects.all()])
         corrections = []
         for phrase in corrected_phrases:
-            phrase_corrections = TranscriptPhraseCorrection.objects.filter(
-                transcript_phrase=phrase
-            )
-            corrections.append({phrase.pk: phrase_corrections})
+            if phrase.corrections >= 2:
+                phrase_corrections = TranscriptPhraseCorrection.objects.filter(
+                    transcript_phrase=phrase
+                )
+                corrections.append({phrase.pk: phrase_corrections})
         transcripts = self.filter(
             phrases__in=corrected_phrases).distinct()
         return (transcripts, corrections)
