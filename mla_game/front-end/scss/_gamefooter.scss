@@ -267,3 +267,9 @@
     }
   }
 }
+@media screen and (min-height:60.5em ){
+    .game-footer {
+      position: inherit;
+      margin-top:$v-rhythm*2;
+    }
+}
