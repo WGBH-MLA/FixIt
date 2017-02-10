@@ -54,6 +54,18 @@ function setGameScores(gameone, gametwo, gamethree){
   }
 }
 
+function setLeaderboard(past_month, past_week, all_time, game_one_all_time, game_two_all_time, game_three_all_time){
+  return {
+    type:'SET_LEADERBOARD',
+    past_month,
+    past_week,
+    all_time,
+    game_one_all_time, 
+    game_two_all_time, 
+    game_three_all_time,
+  }
+}
+
 function setTotalScore(score){
   return {
     type:'SET_TOTAL_SCORE',
@@ -89,10 +101,14 @@ export function fetchData(){
     dispatch(requestInitialData(true))
     return axios.all([
         axios.get('/api/profile'),
-        axios.get('/api/score/')
+        axios.get('/api/score/'),
+        axios.get('/api/leaderboard/')
       ])
-      .then(axios.spread(function (profile, score) {
+      .then(axios.spread(function (profile, score, leaders) {
+
         const { game_scores, username } = profile.data.results[0]
+        const leaderData =  leaders.data.leaderboard
+        dispatch(setLeaderboard(leaderData.past_month, leaderData.past_week, leaderData.all_time, leaderData.game_one_all_time, leaderData.game_two_all_time, leaderData.game_three_all_time))
         dispatch(storeInitialData(profile.data.results, score.data.results))
         // set username
         dispatch(setUsername(username))

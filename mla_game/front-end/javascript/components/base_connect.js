@@ -19,10 +19,11 @@ console.error = (function() {
 function mapStateToProps(state) {
   return {
     initialData:state.initialData,
-    gameScores:state.gameScores, 
+    gameScores:state.gameScores,
+    leaderboard:state.leaderboard,
     gameone:state.gameOne,
     gametwo:state.gameTwo,  
-    gamethree:state.gameThree 
+    gamethree:state.gameThree
   }
 }
 

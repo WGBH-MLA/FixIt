@@ -24,14 +24,6 @@ import GameThree from './components/routes/game_three'
 const appTarget = document.getElementById('app');
 const store = configureStore()
 
-// Component names should always begin with an uppercase letter
-/* use an underscore as a prefix for custom functions
-   // custom function
-   _clickHandler(){} 
-   // native method to react    
-   componentDidMount(){}
-*/
-
 const App = (
   <Provider store={store}>
     <Router history={browserHistory}>

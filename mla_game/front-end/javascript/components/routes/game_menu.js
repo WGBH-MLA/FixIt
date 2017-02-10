@@ -1,7 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router'
+import GameNav from '../partials/game_navigation'
 
-class GameMenu extends React.Component{
+class GameMenu extends React.Component {
+  componentDidMount(){
+    console.log(this.props)
+  }
   
   render() {
     const { gameScores, gameone, gametwo, gamethree } = this.props
@@ -21,26 +25,12 @@ class GameMenu extends React.Component{
               <dd>{gameScores.total_score}</dd>
             </dl>
         </div>
-        <ul className='game-navigation'>
-          <li>
-            <h2><span className='game-number'>{gameone.gameNumber}</span> <span className='game-name'>{gameone.gameName}</span></h2>
-            <span className='game-score'>{gameScores.game_one_score}</span>
-            <span className='points'>Points</span>
-            <Link className='play-link' to="gameone">Play</Link>
-          </li>
-          <li>
-            <h2><span className='game-number'>{gametwo.gameNumber}</span> <span className='game-name'>{gametwo.gameName}</span></h2>
-            <span className='game-score'>{gameScores.game_two_score}</span>
-            <span className='points'>Points</span>
-            <Link className='play-link' to="gametwo">Play</Link>
-          </li>
-          <li>
-            <h2><span className='game-number'>{gamethree.gameNumber}</span> <span className='game-name'>{gamethree.gameName}</span></h2>
-            <span className='game-score'>{gameScores.game_three_score}</span>
-            <span className='points'>Points</span>
-            <Link className='play-link' to="gamethree">Play</Link>
-          </li>
-        </ul>
+        <GameNav 
+          gameScores={gameScores}
+          gameone={gameone}
+          gametwo={gametwo}
+          gamethree={gamethree}
+        />
       </div>
     )
   }
