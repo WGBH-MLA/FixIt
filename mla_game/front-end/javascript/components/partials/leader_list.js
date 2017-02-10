@@ -6,7 +6,7 @@ class LeaderList extends React.Component {
     
     let user = list.map((index, keys) => {
       return(
-        <li key={keys}>{index.username} {index.points}</li>
+        <li key={keys}>{index.username} <span className='points'>{index.points}</span></li>
       )
     })
 

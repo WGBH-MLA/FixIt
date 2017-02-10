@@ -80,14 +80,7 @@
       font-size:1.5em;
       .game-number {
         @include clearfix;
-        display:inline-block;
-        color:$theme-primary;
-        background-color:$icon-light;
-        border-radius:100%;
-        width:1.65em;
-        height:1.65em;
-        line-height:1.65em;
-        font-family: 'Open Sans', sans-serif;
+        @include game-number-inline($icon-light, $theme-primary, "'Open Sans', sans-serif"); 
       }
       .game-name {
         margin:.5em 0 1.5em 0;

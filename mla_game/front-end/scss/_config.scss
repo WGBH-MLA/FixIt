@@ -40,8 +40,8 @@ $susy: (
   container:90em,
   gutter-position:inside,
   math: fluid,
-  output: float,
-  // debug:(image:show)
+  output: overlay,
+  // debug:(image:show),
 );
 
 $map-sm: (

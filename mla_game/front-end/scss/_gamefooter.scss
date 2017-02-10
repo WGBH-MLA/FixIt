@@ -21,21 +21,7 @@
     line-height:1.5;
     margin-bottom:0;
     span {
-      display: inline-block;
-      color:$theme-primary;
-      position: relative;
-      z-index:1;
-      margin-right:.5em;
-      &:before {
-        z-index: -1;
-        content:'';
-        display: inline-block;
-        @include center;
-        background:$progress;
-        width:1.5em;
-        height:1.5em;
-        border-radius:100%;
-      }
+      @include game-number-abs($progress, $theme-primary, "'Open Sans Condensed', sans-serif", "1em") 
     }
     @include susy-breakpoint($screen-sm-min, $map-sm) {
       padding:1em .5em .25em .5em;

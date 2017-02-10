@@ -8,7 +8,7 @@
     @include grid;
     padding:0 5%;
     @include susy-breakpoint($screen-jb-min) {
-      padding:0;
+      padding:0 2.5%;
     }
   }
   & + div {
