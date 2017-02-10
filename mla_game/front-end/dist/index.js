@@ -2869,7 +2869,7 @@ var GameTwo = (function (_React$Component) {
         // update scores
         updateTotalScore(11);
         updateGameScore(11);
-        // this.props.disableProgress(true)
+        this.props.disableProgress(true);
       }
 
       // scrub state for phrase correction
