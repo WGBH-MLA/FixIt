@@ -1556,7 +1556,7 @@ var GameTip = (function (_React$Component) {
         _react2['default'].createElement(
           'p',
           null,
-          'Click to Identify the line(s) with error'
+          this.props.text
         )
       );
     }
@@ -1564,6 +1564,11 @@ var GameTip = (function (_React$Component) {
 
   return GameTip;
 })(_react2['default'].Component);
+
+GameTip.proptypes = {
+  text: _react2['default'].PropTypes.string.isRequired,
+  dismissTip: _react2['default'].PropTypes.func.isRequired
+};
 
 exports['default'] = GameTip;
 module.exports = exports['default'];
@@ -1630,7 +1635,10 @@ var Phrase = (function (_React$Component) {
   }, {
     key: 'savePhrase',
     value: function savePhrase() {
-      var details = this.props.details;
+      var _props = this.props;
+      var details = _props.details;
+      var selectPhrase = _props.selectPhrase;
+      var disableProgress = _props.disableProgress;
 
       this.setState({
         editing: false,
@@ -1641,76 +1649,85 @@ var Phrase = (function (_React$Component) {
         pk: details.pk,
         text: this.span.textContent
       };
-      this.props.selectPhrase(PhraseCorrected, details.pk);
-      this.props.disableProgress(false);
+      selectPhrase(PhraseCorrected, details.pk);
+      disableProgress(false);
     }
   }, {
     key: 'cancel',
     value: function cancel() {
-      var details = this.props.details;
+      var _props2 = this.props;
+      var details = _props2.details;
+      var removePhrase = _props2.removePhrase;
+      var disableProgress = _props2.disableProgress;
 
       this.setState({
         editing: false,
         corrected: false
       });
       this.span.contentEditable = false;
-      this.props.removePhrase(details.pk);
-      this.props.disableProgress(true);
+      removePhrase(details.pk);
+      disableProgress(true);
     }
   }, {
     key: 'getStartofContext',
     value: function getStartofContext() {
-      var _props = this.props;
-      var active = _props.active;
-      var details = _props.details;
-      var keys = _props.keys;
-      var setStartTime = _props.setStartTime;
+      var _props3 = this.props;
+      var active = _props3.active;
+      var details = _props3.details;
+      var keys = _props3.keys;
+      var setStartTime = _props3.setStartTime;
+      var setSegmentStart = _props3.setSegmentStart;
+      var startSegment = _props3.startSegment;
+      var skipPhrase = _props3.skipPhrase;
 
-      // set start time for segment
-      if (keys == active) {
-        setStartTime(details.start_time);
-        this.props.setSegmentStart(Number(details.start_time));
+      var media = document.querySelector('.audio-player');
+
+      if (active - 1) {
+        setStartTime(Number(details.start_time));
+        setSegmentStart(Number(details.start_time));
+        media.currentTime = startSegment;
       }
     }
   }, {
     key: 'getEndOfContext',
     value: function getEndOfContext() {
-      var _props2 = this.props;
-      var active = _props2.active;
-      var details = _props2.details;
-      var keys = _props2.keys;
+      var _props4 = this.props;
+      var active = _props4.active;
+      var details = _props4.details;
+      var keys = _props4.keys;
+      var setSegmentEnd = _props4.setSegmentEnd;
 
       // set end time for segment
-      if (keys == active + 1) {
-        this.props.setSegmentEnd(Number(details.end_time));
+      if (keys === active + 1) {
+        setSegmentEnd(Number(details.end_time));
       }
     }
   }, {
     key: 'setSkipPhrase',
     value: function setSkipPhrase() {
-      var _props3 = this.props;
-      var details = _props3.details;
-      var keys = _props3.keys;
-      var active = _props3.active;
-      var skipPhrase = _props3.skipPhrase;
+      var _props5 = this.props;
+      var details = _props5.details;
+      var keys = _props5.keys;
+      var active = _props5.active;
+      var setSkipPhrase = _props5.setSkipPhrase;
 
-      if (keys == active + 1) {
+      if (keys === active + 1) {
         if (details.needs_correction) {
-          skipPhrase(false);
+          setSkipPhrase(false);
         } else {
-          skipPhrase(true);
+          setSkipPhrase(true);
         }
       }
     }
   }, {
     key: 'skipCurrentPhrase',
     value: function skipCurrentPhrase() {
-      var _props4 = this.props;
-      var details = _props4.details;
-      var keys = _props4.keys;
-      var active = _props4.active;
-      var advanceSegment = _props4.advanceSegment;
-      var advanceTranscript = _props4.advanceTranscript;
+      var _props6 = this.props;
+      var details = _props6.details;
+      var keys = _props6.keys;
+      var active = _props6.active;
+      var advanceSegment = _props6.advanceSegment;
+      var advanceTranscript = _props6.advanceTranscript;
 
       if (keys == active) {
         if (!details.needs_correction) {
@@ -1724,7 +1741,7 @@ var Phrase = (function (_React$Component) {
       var active = newProps.active;
       var advanceTranscript = newProps.advanceTranscript;
       var phrasesLength = newProps.phrasesLength;
-      var skipPhrase = newProps.skipPhrase;
+      var setSkipPhrase = newProps.setSkipPhrase;
       var resetSegments = newProps.resetSegments;
       var gameLength = newProps.gameLength;
       var currentTranscript = newProps.currentTranscript;
@@ -1732,7 +1749,7 @@ var Phrase = (function (_React$Component) {
 
       if (active == phrasesLength + 1) {
         if (currentTranscript < gameLength) {
-          skipPhrase(false);
+          setSkipPhrase(false);
           resetSegments(0);
           advanceTranscript(1);
         } else {
@@ -1758,12 +1775,12 @@ var Phrase = (function (_React$Component) {
     value: function render() {
       var _this = this;
 
-      var _props5 = this.props;
-      var details = _props5.details;
-      var time = _props5.time;
-      var active = _props5.active;
-      var keys = _props5.keys;
-      var editingPhrase = _props5.editingPhrase;
+      var _props7 = this.props;
+      var details = _props7.details;
+      var time = _props7.time;
+      var active = _props7.active;
+      var keys = _props7.keys;
+      var editingPhrase = _props7.editingPhrase;
 
       var currentSegment = active === keys;
 
@@ -2216,11 +2233,6 @@ var GameMenu = (function (_React$Component) {
   }
 
   _createClass(GameMenu, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      console.log(this.props);
-    }
-  }, {
     key: 'render',
     value: function render() {
       var _props = this.props;
@@ -2232,6 +2244,11 @@ var GameMenu = (function (_React$Component) {
       return _react2['default'].createElement(
         'div',
         { className: 'grid' },
+        _react2['default'].createElement(
+          'h1',
+          null,
+          'Game Menu'
+        ),
         _react2['default'].createElement(
           _reactRouter.Link,
           { className: 'preferences-link', to: 'preferences' },
@@ -2638,7 +2655,10 @@ var GameOne = (function (_React$Component) {
                   }
                 })
               ),
-              gameone.inGameTip ? _react2['default'].createElement(_partialsGame_tip2['default'], { dismissTip: this.props.showTipOne }) : ''
+              gameone.inGameTip ? _react2['default'].createElement(_partialsGame_tip2['default'], {
+                dismissTip: this.props.showTipOne,
+                text: 'Click a highlighted transcript line(s) to indicate it contains errors. Click the speaker icon to listen to a specific line again. Click the Next button to continue to the next set of transcript phrases.'
+              }) : ''
             )
           ),
           _react2['default'].createElement(_partialsGame_footer2['default'], {
@@ -2819,16 +2839,13 @@ var GameTwo = (function (_React$Component) {
       var noCorrectionExists = this.state.phrase == null;
       var media = document.querySelector('.audio-player');
 
-      // console.log(gametwo.transcripts[gametwo.currentTranscript].phrases[gametwo.segment + 1])
+      // this.props.setSegmentStart(Number(gametwo.transcripts[gametwo.currentTranscript].phrases[gametwo.segment + 1].start_time))
 
       if (gametwo.segment <= currentTranscriptLength) {
         if (gametwo.skipPhrase) {
           advanceSegment(2);
           updateGameProgress(2);
         } else {
-          media.currentTime = gametwo.startTime;
-          // media.play();
-
           advanceSegment(1);
           updateGameProgress(1);
         }
@@ -2909,8 +2926,8 @@ var GameTwo = (function (_React$Component) {
       this.props.resetTranscript(0);
       this.props.resetGameProgress(3);
       this.props.endOfRoundTwo(false);
-
       this.props.fetchGameTwo();
+
       if (tipDismissed) {
         this.props.showTipTwo(true);
       }
@@ -3059,6 +3076,7 @@ var GameTwo = (function (_React$Component) {
                               keys: key,
                               details: phrase,
                               setSegmentStart: setSegmentStart,
+                              startSegment: gametwo.startSegment,
                               setSegmentEnd: setSegmentEnd,
                               advanceSegment: advanceSegment,
                               endOfRoundTwo: endOfRoundTwo,
@@ -3067,7 +3085,8 @@ var GameTwo = (function (_React$Component) {
                               phrasesLength: gametwo.transcripts[gametwo.currentTranscript].phrases_length - 1,
                               advanceTranscript: advanceTranscript,
                               resetSegments: resetSegments,
-                              skipPhrase: skipPhrase,
+                              setSkipPhrase: skipPhrase,
+                              skipPhrase: gametwo.skipPhrase,
                               setStartTime: setStartTime
                             })
                           );
@@ -3078,7 +3097,10 @@ var GameTwo = (function (_React$Component) {
                 }
               })
             ),
-            gametwo.inGameTip ? _react2['default'].createElement(_partialsGame_tip2['default'], { dismissTip: this.props.showTipTwo }) : ''
+            gametwo.inGameTip ? _react2['default'].createElement(_partialsGame_tip2['default'], {
+              dismissTip: this.props.showTipTwo,
+              text: 'Intructions for game two go here'
+            }) : ''
           ),
           _react2['default'].createElement(_partialsGame_footer2['default'], {
             gameNumber: gametwo.gameNumber,

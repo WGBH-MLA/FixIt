@@ -26,9 +26,9 @@ html{
 body {
   position: relative;
   color:white;
-  @include susy-breakpoint($screen-jb-min) {
-    font-size:1.1em
-  }
+  // @include susy-breakpoint($screen-jb-min) {
+  //   font-size:1.1em
+  // }
 }
 
 a {
@@ -309,14 +309,16 @@ button {
         }
       }
     }
-    
-
     .phrase-editing  {
       text-align: center;
       clear:both;
       padding-top:.75em;
+      button {
+        font-size:1em;
+      }
       @include susy-breakpoint($screen-lg-min, $map-lg) {
         @include span(1 of 7 last);
+        text-align:left;
         padding-top:0;
         clear:none;
       }
@@ -325,6 +327,9 @@ button {
       @include border-button($theme-secondary, $icon-light);
       &:last-child {
         margin-left: .5em;
+        @include susy-breakpoint($screen-lg-min, $map-lg) {
+          margin-left:0;
+        }
       }
     }
     .fix-phrase {

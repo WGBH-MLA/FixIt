@@ -31,7 +31,7 @@ class Phrase extends React.Component{
   }
 
   savePhrase(){
-    const { details } = this.props
+    const { details, selectPhrase, disableProgress } = this.props
     
     this.setState({
       editing:false,
@@ -42,45 +42,48 @@ class Phrase extends React.Component{
         pk:details.pk,
         text:this.span.textContent
     }
-    this.props.selectPhrase(PhraseCorrected, details.pk)
-    this.props.disableProgress(false)
+    selectPhrase(PhraseCorrected, details.pk)
+    disableProgress(false)
   }
 
   cancel(){
-    const { details } = this.props
+    const { details, removePhrase, disableProgress } = this.props
     this.setState({
       editing:false,
       corrected:false
     })
     this.span.contentEditable = false
-    this.props.removePhrase(details.pk)
-    this.props.disableProgress(true)
+    removePhrase(details.pk)
+    disableProgress(true)
   }
   
   getStartofContext(){
-    const { active, details, keys, setStartTime } = this.props
-    // set start time for segment
-    if(keys == active){
-      setStartTime(details.start_time)
-      this.props.setSegmentStart(Number(details.start_time))
+    const { active, details, keys, setStartTime, setSegmentStart, startSegment, skipPhrase } = this.props
+    let media = document.querySelector('.audio-player')
+
+    if(active - 1) {
+      setStartTime(Number(details.start_time))
+      setSegmentStart(Number(details.start_time))
+      media.currentTime = startSegment
     }
+
   }
 
   getEndOfContext(){
-    const { active, details, keys } = this.props
+    const { active, details, keys, setSegmentEnd } = this.props
     // set end time for segment
-    if(keys == active + 1) {
-      this.props.setSegmentEnd(Number(details.end_time))
+    if(keys === active + 1) {
+      setSegmentEnd(Number(details.end_time))
     }
   }
 
   setSkipPhrase(){
-    const {details, keys, active, skipPhrase } = this.props;
-    if(keys == active + 1) {
+    const {details, keys, active, setSkipPhrase } = this.props;
+    if(keys === active + 1) {
       if(details.needs_correction) {
-        skipPhrase(false)
+        setSkipPhrase(false)
       } else {
-        skipPhrase(true)
+        setSkipPhrase(true)
       }
     }
   }
@@ -95,10 +98,10 @@ class Phrase extends React.Component{
   }
 
   skipLastPhrase(newProps){
-    const { active, advanceTranscript, phrasesLength, skipPhrase, resetSegments, gameLength, currentTranscript, endOfRoundTwo } = newProps
+    const { active, advanceTranscript, phrasesLength, setSkipPhrase, resetSegments, gameLength, currentTranscript, endOfRoundTwo } = newProps
     if(active == phrasesLength + 1) {
       if(currentTranscript < gameLength) {
-        skipPhrase(false)
+        setSkipPhrase(false)
         resetSegments(0)
         advanceTranscript(1)
       } else {
