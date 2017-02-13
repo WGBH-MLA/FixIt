@@ -52,6 +52,8 @@ class TranscriptManager(models.Manager):
         - we should accept up to three corrections for a phrase before removing
         it from game two
 
+        - users should not see a phrase again after correcting it
+
         Returns a tuple containing a queryset of Transcript objects and a list
         of phrase PKs to annotate
         '''
@@ -76,11 +78,21 @@ class TranscriptManager(models.Manager):
             not see it again in future games
             - restrict results to 20 phrases
             - only display if number of submitted corrections >= 2
+            - user should only vote on phrases they have not corrected. possible
+            solution - submitting a correction automatically votes for the correction
         '''
         corrected_phrases = set([phrase.transcript_phrase for phrase in
                                 TranscriptPhraseCorrection.objects.all()])
+        already_voted_phrases = [
+            vote.original_phrase for vote in
+            TranscriptPhraseCorrectionVote.objects.filter(
+                user=user
+            )
+        ]
         corrections = []
         for phrase in corrected_phrases:
+            if phrase in already_voted_phrases:
+                pass
             if phrase.corrections >= 2:
                 phrase_corrections = TranscriptPhraseCorrection.objects.filter(
                     transcript_phrase=phrase
@@ -247,7 +259,7 @@ class TranscriptPhraseCorrection(models.Model):
 
     @property
     def votes(self):
-        return TranscriptPhraseCorrectionVote.filter(
+        return TranscriptPhraseCorrectionVote.objects.filter(
             transcript_phrase_correction=self.pk
         ).count()
 
@@ -258,6 +270,10 @@ class TranscriptPhraseCorrection(models.Model):
 class TranscriptPhraseCorrectionVote(models.Model):
     transcript_phrase_correction = models.ForeignKey(TranscriptPhraseCorrection)
     user = models.ForeignKey(User)
+
+    @property
+    def original_phrase(self):
+        return self.transcript_phrase_correction.transcript_phrase
 
 
 class TranscriptMetadata(models.Model):
