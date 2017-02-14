@@ -62,7 +62,10 @@ class TranscriptManager(models.Manager):
         for phrase_pk in downvoted.copy():
             if TranscriptPhrase.objects.get(pk=phrase_pk).corrections >= 3:
                 downvoted.remove(phrase_pk)
-        user_corrected = TranscriptPhraseCorrection.objects.filter(user=user)
+        user_corrected = [
+            correction.transcript_phrase.pk for correction in
+            TranscriptPhraseCorrection.objects.filter(user=user)
+        ]
         phrases_for_correction = [pk for pk in downvoted
                                   if pk not in user_corrected][:20]
         transcripts_to_return = self.filter(
