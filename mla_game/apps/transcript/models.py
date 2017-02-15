@@ -83,9 +83,10 @@ class TranscriptManager(models.Manager):
             - only display if number of submitted corrections >= 2
             - user should only vote on phrases they have not corrected. possible
             solution - submitting a correction automatically votes for the correction
-
-        Still to do:
             - restrict results to 20 phrases
+
+        Returns a tuple containing a queryset of Transcript objects and a list
+        of dicts containing corrections for phrases in the Transcripts
         '''
         corrected_phrases = set([phrase.transcript_phrase for phrase in
                                 TranscriptPhraseCorrection.objects.all()])
@@ -102,24 +103,25 @@ class TranscriptManager(models.Manager):
             if phrase in already_voted_phrases:
                 pass
             if phrase.corrections >= 2:
-                django_log.info('{} has not been voted on'.format(phrase.pk))
                 phrase_corrections = TranscriptPhraseCorrection.objects.filter(
                     transcript_phrase=phrase
                 )
-                corrections.append({phrase.pk: phrase_corrections})
+                corrections.append(
+                    {phrase.pk: phrase_corrections,
+                     'transcript': phrase.transcript.pk}
+                )
                 associated_transcripts.append(phrase.transcript.pk)
 
         associated_transcripts.sort(
             key=Counter(associated_transcripts).get, reverse=True
         )
+
         transcripts = self.filter(
             pk__in=associated_transcripts[:20]).distinct()
 
-        django_log.info(associated_transcripts)
-        django_log.info(['transcript {} has {} corrected phrases'.format(t.pk, t.corrected_phrases)
-                         for t in transcripts])
-
-        django_log.info('returning {} transcripts'.format(transcripts.count()))
+        corrections = [correction for correction in corrections
+                       if correction['transcript']
+                       in associated_transcripts[:20]][:20]
 
         return (transcripts, corrections)
 
