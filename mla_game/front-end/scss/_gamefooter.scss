@@ -47,7 +47,6 @@
       @include clearfix;
       button {
         float:left;
-        width:3em;
         @include plain-button;
         svg {
           width:2em;
@@ -63,7 +62,19 @@
             stroke:$default;
             @include transition(fill, 300ms, ease-in);
           }
-          &:hover {
+          
+        }
+        span {
+          @include transition(color, 300ms, ease-in);
+          display:inline-block;
+          font-family:'Bungee', Cursive;
+          margin-right:.5em;
+          font-size:1.15em;
+          color:$default;
+          vertical-align:middle;
+        }
+        &:hover {
+          svg {
             fill:$icon-hover;
             polygon {
               fill:$icon-hover;
@@ -72,9 +83,10 @@
               stroke:$icon-hover;
             }
           }
+          span {
+            color:$icon-hover;
+          }
         }
-      }
-      .next {
         &:disabled {
           cursor:default;
           svg {
@@ -82,6 +94,9 @@
             polygon {
               fill:$transcript-error;
             }
+          }
+          span {
+            color:$default;
           }
         }
       }
@@ -99,33 +114,24 @@
     @include susy-breakpoint($screen-lg-min, $map-lg) {
       @include span(7 of 12);
       progress {
-        width:70%;
-        @include center;
+        width:calc(100% - 10em);
+        @include center(false, true);
       }
       .pagination {
-        .prev, .next {
+        .next {
           @include center(false, true);
-        }
-        .prev {
-          left:0;
         }
         .next {
           right:0;
-          &:disabled {
-            cursor:default;
-            svg {
-              fill:$transcript-error;
-              polygon {
-                fill:$transcript-error;
-              }
-            }
-          }
         }
         button {
           width:inherit;
+          span {
+            margin-right:1em;
+          }
           svg {
-            width:4em;
-            height:4em;
+            width:3.125em;
+            height:3.125em;
           }
         }
       }
@@ -159,8 +165,8 @@
       top:0;
       right:0;
       svg {
-        height:4em;
-        width:4em;
+        height:3.125em;
+        width:3.125em;
       }
     }
   }
