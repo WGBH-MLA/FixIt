@@ -1,11 +1,28 @@
 .preferences-link {
+  @include transition(fill, 300ms, ease-in);
   background:$theme-primary;
   border-radius:.35em;
   text-align:center;
-  padding:.5em 2em;
+  padding:.5em 1.5em;
   margin-bottom:1.5em;
   color:$icon-light;
   display:inline-block;
+  svg {
+    display:inline-block;
+    fill:$icon-light;
+    width:1.5em;
+    height:1.5em;
+    margin-right:.5em;
+  }
+  * {
+    vertical-align: middle;
+  }
+  &:hover {
+    color:$progress;
+    svg {
+      fill:$progress;
+    }
+  }
 }
 
 .user-info {
