@@ -134,7 +134,7 @@ class Phrase extends React.Component{
 
     let phrase
     if(currentSegment) {
-      phrase = <span className={phraseState} onClick={() => this.markPhrase()} id={details.pk}>
+      phrase = <span className={phraseState} id={details.pk}>
                 <span ref={(span) => {this.span = span}} className='context'>{details.text}</span> 
               </span>
     } else {
