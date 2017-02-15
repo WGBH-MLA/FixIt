@@ -258,9 +258,6 @@ button {
         }
       }
       &.highlighted {
-        &:hover {
-          cursor:pointer;
-        }
         .context  {
           background:$transcript-error;
           color:white;

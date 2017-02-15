@@ -1794,9 +1794,7 @@ var Phrase = (function (_React$Component) {
       if (currentSegment) {
         phrase = _react2['default'].createElement(
           'span',
-          { className: phraseState, onClick: function () {
-              return _this.markPhrase();
-            }, id: details.pk },
+          { className: phraseState, id: details.pk },
           _react2['default'].createElement(
             'span',
             { ref: function (span) {
