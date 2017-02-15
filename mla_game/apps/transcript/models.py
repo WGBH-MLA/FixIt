@@ -2,6 +2,7 @@ import logging
 import requests
 import random
 from random import randint
+from collections import Counter
 
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import JSONField
@@ -49,9 +50,9 @@ class TranscriptManager(models.Manager):
         in the future we need to use phrases that have been verified as
         incorrect using the considered/downvoted ratio
 
+        Done, but needs testing:
         - we should accept up to three corrections for a phrase before removing
         it from game two
-
         - users should not see a phrase again after correcting it
 
         Returns a tuple containing a queryset of Transcript objects and a list
@@ -76,33 +77,50 @@ class TranscriptManager(models.Manager):
         '''
         Game three needs to present a transcript with all of the corrections
 
-        Still to do:
+        Done, but needs testing:
             - if a user has already voted on a set of corrections, they should
             not see it again in future games
-            - restrict results to 20 phrases
             - only display if number of submitted corrections >= 2
             - user should only vote on phrases they have not corrected. possible
             solution - submitting a correction automatically votes for the correction
+
+        Still to do:
+            - restrict results to 20 phrases
         '''
         corrected_phrases = set([phrase.transcript_phrase for phrase in
                                 TranscriptPhraseCorrection.objects.all()])
-        already_voted_phrases = [
+        already_voted_phrases = set([
             vote.original_phrase for vote in
             TranscriptPhraseCorrectionVote.objects.filter(
                 user=user
             )
-        ]
+        ])
         corrections = []
+        associated_transcripts = []
+
         for phrase in corrected_phrases:
             if phrase in already_voted_phrases:
                 pass
             if phrase.corrections >= 2:
+                django_log.info('{} has not been voted on'.format(phrase.pk))
                 phrase_corrections = TranscriptPhraseCorrection.objects.filter(
                     transcript_phrase=phrase
                 )
                 corrections.append({phrase.pk: phrase_corrections})
+                associated_transcripts.append(phrase.transcript.pk)
+
+        associated_transcripts.sort(
+            key=Counter(associated_transcripts).get, reverse=True
+        )
         transcripts = self.filter(
-            phrases__in=corrected_phrases).distinct()
+            pk__in=associated_transcripts[:20]).distinct()
+
+        django_log.info(associated_transcripts)
+        django_log.info(['transcript {} has {} corrected phrases'.format(t.pk, t.corrected_phrases)
+                         for t in transcripts])
+
+        django_log.info('returning {} transcripts'.format(transcripts.count()))
+
         return (transcripts, corrections)
 
     def random_transcript(self):
@@ -156,6 +174,15 @@ class Transcript(models.Model):
             return media_request.headers['Location']
         else:
             return None
+
+    @property
+    def corrected_phrases(self):
+        corrected_phrases = 0
+        for phrase in self.phrases.all():
+            if phrase.corrections > 0:
+                corrected_phrases += 1
+
+        return corrected_phrases
 
     def process_transcript_data_blob(self):
         data = self.transcript_data_blob
