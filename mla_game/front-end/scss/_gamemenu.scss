@@ -1,5 +1,5 @@
 .preferences-link {
-  @include transition(fill, 300ms, ease-in);
+  @include transition(color, 300ms, ease-in);
   background:$theme-primary;
   border-radius:.35em;
   text-align:center;
@@ -8,6 +8,7 @@
   color:$icon-light;
   display:inline-block;
   svg {
+    @include transition(fill, 300ms, ease-in);
     display:inline-block;
     fill:$icon-light;
     width:1.5em;
