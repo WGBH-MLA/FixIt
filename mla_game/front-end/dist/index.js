@@ -1041,6 +1041,8 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
@@ -1055,23 +1057,79 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
 var Corrections = (function (_React$Component) {
   _inherits(Corrections, _React$Component);
 
   function Corrections() {
     _classCallCheck(this, Corrections);
 
-    _get(Object.getPrototypeOf(Corrections.prototype), 'constructor', this).apply(this, arguments);
+    _get(Object.getPrototypeOf(Corrections.prototype), 'constructor', this).call(this);
+    this.selectVote = this.selectVote.bind(this);
+
+    this.state = {
+      corrected_vote: 0
+    };
   }
 
   _createClass(Corrections, [{
+    key: 'selectVote',
+    value: function selectVote(text, pk) {
+      var vote = _extends({}, this.state);
+      var phrase = {
+        text: text,
+        pk: pk
+      };
+      this.props.selectPhrase(phrase);
+      this.props.setActive(pk);
+      this.setState({
+        corrected_vote: pk
+      });
+    }
+  }, {
     key: 'render',
     value: function render() {
-      console.log(this.props);
+      var _this = this;
+
+      var currentlySelected = this.state.corrected_vote === this.props.active;
+      var voteState = (0, _classnames2['default'])({
+        'vote-option': true,
+        'vote': currentlySelected
+      });
+
       return _react2['default'].createElement(
         'div',
-        null,
-        this.props.text
+        { className: 'vote-options' },
+        _react2['default'].createElement(
+          'button',
+          { className: voteState, ref: function (button) {
+              _this.button = button;
+            }, onClick: function () {
+              return _this.selectVote(_this.button.textContent, _this.button.id);
+            }, id: this.props.pk },
+          this.props.text
+        ),
+        currentlySelected ? _react2['default'].createElement(
+          'div',
+          { className: 'phrase-editing' },
+          _react2['default'].createElement(
+            'button',
+            { className: 'correct-phrase', onClick: function () {
+                return _this.props.savePhrase();
+              } },
+            'Save'
+          ),
+          _react2['default'].createElement(
+            'button',
+            { className: 'correct-phrase', onClick: function () {
+                return _this.props.cancel();
+              } },
+            'Cancel'
+          )
+        ) : ''
       );
     }
   }]);
@@ -1082,7 +1140,7 @@ var Corrections = (function (_React$Component) {
 exports['default'] = Corrections;
 module.exports = exports['default'];
 
-},{"react":356}],7:[function(require,module,exports){
+},{"classnames":59,"react":356}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1680,7 +1738,6 @@ var Phrase = (function (_React$Component) {
     this.setSkipPhrase = this.setSkipPhrase.bind(this);
     this.skipCurrentPhrase = this.skipCurrentPhrase.bind(this);
     this.skipLastPhrase = this.skipLastPhrase.bind(this);
-    this.correctedPhrases = this.correctedPhrases.bind(this);
 
     this.state = {
       editing: false,
@@ -1709,11 +1766,6 @@ var Phrase = (function (_React$Component) {
         editing: false,
         corrected: true
       });
-      var PhraseCorrected = {
-        pk: details.pk,
-        text: this.span.textContent
-      };
-      selectPhrase(PhraseCorrected, details.pk);
       disableProgress(false);
     }
   }, {
@@ -1723,6 +1775,7 @@ var Phrase = (function (_React$Component) {
       var details = _props2.details;
       var removePhrase = _props2.removePhrase;
       var disableProgress = _props2.disableProgress;
+      var setActive = _props2.setActive;
 
       this.setState({
         editing: false,
@@ -1730,6 +1783,7 @@ var Phrase = (function (_React$Component) {
       });
       removePhrase(details.pk);
       disableProgress(true);
+      setActive(null);
     }
   }, {
     key: 'getStartofContext',
@@ -1816,29 +1870,8 @@ var Phrase = (function (_React$Component) {
           resetSegments(0);
           advanceTranscript(1);
         } else {
-          endOfRoundTwo(true);
+          endOfRoundThree(true);
         }
-      }
-    }
-  }, {
-    key: 'correctedPhrases',
-    value: function correctedPhrases() {
-      var _props7 = this.props;
-      var details = _props7.details;
-      var active = _props7.active;
-      var keys = _props7.keys;
-
-      if (details.corrections) {
-        console.log(details.corrections);
-
-        details.corrections.map(function (index, elem) {
-          _react2['default'].createElement(
-            'li',
-            { key: index.pk },
-            index.pk,
-            ' hello'
-          );
-        });
       }
     }
   }, {
@@ -1859,12 +1892,17 @@ var Phrase = (function (_React$Component) {
     value: function render() {
       var _this = this;
 
-      var _props8 = this.props;
-      var details = _props8.details;
-      var time = _props8.time;
-      var active = _props8.active;
-      var keys = _props8.keys;
-      var editingPhrase = _props8.editingPhrase;
+      var _props7 = this.props;
+      var details = _props7.details;
+      var time = _props7.time;
+      var active = _props7.active;
+      var keys = _props7.keys;
+      var editingPhrase = _props7.editingPhrase;
+      var selectPhrase = _props7.selectPhrase;
+      var activeVote = _props7.activeVote;
+      var setActive = _props7.setActive;
+      var cancel = this.cancel;
+      var savePhrase = this.savePhrase;
 
       var currentSegment = active === keys;
 
@@ -1888,7 +1926,7 @@ var Phrase = (function (_React$Component) {
           ),
           this.state.editing ? _react2['default'].createElement(
             'div',
-            null,
+            { className: 'corrections' },
             details.corrections ? _react2['default'].createElement(
               'ul',
               null,
@@ -1897,7 +1935,13 @@ var Phrase = (function (_React$Component) {
                   'li',
                   { key: key },
                   _react2['default'].createElement(_corrections2['default'], {
-                    text: index.corrected_text
+                    text: index.corrected_text,
+                    pk: index.pk,
+                    selectPhrase: selectPhrase,
+                    setActive: setActive,
+                    active: activeVote,
+                    cancel: cancel,
+                    savePhrase: savePhrase
                   })
                 );
               })
@@ -1921,24 +1965,7 @@ var Phrase = (function (_React$Component) {
         fixPhraseUi = _react2['default'].createElement(
           'div',
           { className: 'phrase-editing' },
-          this.state.editing ? _react2['default'].createElement(
-            'div',
-            null,
-            _react2['default'].createElement(
-              'button',
-              { className: 'correct-phrase', onClick: function () {
-                  return _this.savePhrase();
-                } },
-              'Save'
-            ),
-            _react2['default'].createElement(
-              'button',
-              { className: 'correct-phrase', onClick: function () {
-                  return _this.cancel();
-                } },
-              'Cancel'
-            )
-          ) : _react2['default'].createElement(
+          this.state.editing ? null : _react2['default'].createElement(
             'button',
             { className: 'fix-phrase', onClick: function () {
                 return _this.markPhrase();
@@ -3238,12 +3265,13 @@ var GameThree = (function (_React$Component) {
     this.activePhrase = this.activePhrase.bind(this);
     this.playPhrase = this.playPhrase.bind(this);
     this.selectPhrase = this.selectPhrase.bind(this);
+    this.setActive = this.setActive.bind(this);
     this.removePhrase = this.removePhrase.bind(this);
     this.reload = this.reload.bind(this);
-    this.corrections = this.corrections.bind(this);
 
     this.state = {
-      phrase: null
+      phrase: null,
+      active: null
     };
   }
 
@@ -3253,25 +3281,16 @@ var GameThree = (function (_React$Component) {
       this.setState({ phrase: phrase });
     }
   }, {
+    key: 'setActive',
+    value: function setActive(pk) {
+      this.setState({ active: pk });
+    }
+  }, {
     key: 'removePhrase',
     value: function removePhrase() {
       this.setState({
         phrase: null
       });
-    }
-  }, {
-    key: 'corrections',
-    value: function corrections() {
-      var gamethree = this.props.gamethree;
-
-      // if(gamethree.transcripts[gamethree.currentTranscript].phrases[gamethree.segment].corrections) {
-      //   let current = gamethree.transcripts[gamethree.currentTranscript].phrases[gamethree.segment].corrections.map(function(index, key){
-      //     return(
-      //       <li key={key}>index.corrected_text</li>
-      //     )
-      //   })
-      //   console.log(current)
-      // }
     }
   }, {
     key: 'handleProgress',
@@ -3303,21 +3322,23 @@ var GameThree = (function (_React$Component) {
       if (!noCorrectionExists) {
         //phrase data from local state
         var phraseData = {
-          transcript_phrase: this.state.phrase.pk,
-          correction: this.state.phrase.text
+          transcript_phrase: this.state.phrase.pk
         };
         // score data
         var phraseScore = {
-          game: '2',
+          game: '3',
           score: 11
         };
         // post score and phrase
-        (0, _helpers.postData)('/api/transcriptphrasecorrection/', phraseData);
+        (0, _helpers.postData)('/api/transcriptphrasecorrection/', phraseData).then(function (data) {
+          console.log(data);
+        });
         (0, _helpers.postData)('/api/score/', phraseScore);
         // update scores
         updateTotalScore(11);
         updateGameScore(11);
         this.props.disableProgress(true);
+        this.setActive(null);
       }
       // scrub state for phrase correction
       this.removePhrase();
@@ -3407,7 +3428,7 @@ var GameThree = (function (_React$Component) {
                   this.props.initialData.user[0].username
                 ),
                 ' Just Scored: ',
-                gamethree2.gameScore,
+                gamethree.gameScore,
                 ' Points'
               ),
               _react2['default'].createElement(
@@ -3427,7 +3448,7 @@ var GameThree = (function (_React$Component) {
                   null,
                   _react2['default'].createElement(
                     _reactRouter.Link,
-                    { to: 'gamethree' },
+                    { to: 'gametwo' },
                     'Game Two'
                   )
                 ),
@@ -3446,7 +3467,6 @@ var GameThree = (function (_React$Component) {
             ) : _react2['default'].createElement(
               'div',
               null,
-              this.corrections(),
               gamethree.transcripts.map(function (index, key) {
                 // get current trancript
                 var transcript = Number(key);
@@ -3487,7 +3507,9 @@ var GameThree = (function (_React$Component) {
                             'li',
                             { key: key, className: _this.activePhrase(gamethree.currentTime, phrase.start_time, phrase.end_time) },
                             _react2['default'].createElement(_partialsGame_three_phrase2['default'], {
+                              activeVote: _this.state.active,
                               selectPhrase: _this.selectPhrase,
+                              setActive: _this.setActive,
                               removePhrase: _this.removePhrase,
                               playPhrase: _this.playPhrase,
                               disableProgress: disableProgress,

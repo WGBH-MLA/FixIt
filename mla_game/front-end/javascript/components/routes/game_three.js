@@ -18,12 +18,13 @@ class GameThree extends React.Component{
     this.activePhrase = this.activePhrase.bind(this)
     this.playPhrase = this.playPhrase.bind(this)
     this.selectPhrase = this.selectPhrase.bind(this)
+    this.setActive = this.setActive.bind(this)
     this.removePhrase = this.removePhrase.bind(this)
     this.reload = this.reload.bind(this)
-    this.corrections = this.corrections.bind(this)
 
     this.state = {
       phrase:null,
+      active:null,
     }
 
   }
@@ -31,29 +32,17 @@ class GameThree extends React.Component{
   selectPhrase(phrase) {
     this.setState({phrase:phrase})
   }
+
+  setActive(pk){
+    this.setState({active:pk})
+  }
   
   removePhrase() {
     this.setState({
       phrase:null,
     })
   }
-
-  corrections(){
-    const {gamethree} = this.props
-
-    // if(gamethree.transcripts[gamethree.currentTranscript].phrases[gamethree.segment].corrections) {
-    //   let current = gamethree.transcripts[gamethree.currentTranscript].phrases[gamethree.segment].corrections.map(function(index, key){
-    //     return(
-    //       <li key={key}>index.corrected_text</li>
-    //     )
-    //   })
-    //   console.log(current)
-    // }
-
-    
-
-  }
-
+  
   handleProgress() {
     const { details, wait, advanceTranscript, advanceSegment, gamethree, updateTotalScore, updateGameScore, updateGameProgress } = this.props
     let currentTranscriptLength = gamethree.transcripts[gamethree.currentTranscript].phrases_length - 1
@@ -74,21 +63,23 @@ class GameThree extends React.Component{
     if(!noCorrectionExists) {
       //phrase data from local state
       let phraseData = {
-        transcript_phrase:this.state.phrase.pk,
-        correction:this.state.phrase.text
+        transcript_phrase:this.state.phrase.pk
       }
       // score data
       let phraseScore = {
-        game:'2',
+        game:'3',
         score:11
       }
       // post score and phrase
-      postData('/api/transcriptphrasecorrection/', phraseData)
+      postData('/api/transcriptphrasecorrection/', phraseData).then(function(data){
+        console.log(data)
+      })
       postData('/api/score/', phraseScore)
       // update scores
       updateTotalScore(11)
       updateGameScore(11)
       this.props.disableProgress(true)
+      this.setActive(null)
     } 
     // scrub state for phrase correction
     this.removePhrase()
@@ -146,16 +137,15 @@ class GameThree extends React.Component{
             {gamethree.endOfRound ? (
               <div className='roundup'>
                 <h1>End Of Round</h1>
-                <h2><span className='username'>{this.props.initialData.user[0].username}</span> Just Scored: {gamethree2.gameScore} Points</h2>
+                <h2><span className='username'>{this.props.initialData.user[0].username}</span> Just Scored: {gamethree.gameScore} Points</h2>
                 <ul className='game-navigation'>
                   <li><Link to="gameone">Game One</Link></li>
-                  <li><Link to="gamethree">Game Two</Link></li>
+                  <li><Link to="gametwo">Game Two</Link></li>
                   <li><Link onClick={() => this.reload()} to="gamethree">Game Three</Link></li>
                 </ul>
               </div>
             ) : (
               <div>
-                { this.corrections()}
                 {gamethree.transcripts.map((index, key) => {
                 // get current trancript
                 let transcript = Number(key)
@@ -186,7 +176,9 @@ class GameThree extends React.Component{
                           return(
                             <li key={key} className={this.activePhrase(gamethree.currentTime, phrase.start_time, phrase.end_time)}>
                               <Phrase
+                               activeVote={this.state.active}
                                selectPhrase={this.selectPhrase}
+                               setActive={this.setActive}
                                removePhrase={this.removePhrase}
                                playPhrase={this.playPhrase}
                                disableProgress={disableProgress}

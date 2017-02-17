@@ -277,5 +277,12 @@
     .game-footer {
       position: inherit;
       margin-top:$v-rhythm*2;
+      &:after {
+        content:'';
+        display:inline-block;
+        height:100vh;
+        width:100%;
+        background:$theme-primary;
+      }
     }
 }

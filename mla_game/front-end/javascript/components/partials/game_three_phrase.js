@@ -4,7 +4,7 @@ import Corrections  from './corrections'
 
 class Phrase extends React.Component{
   constructor(){
-    super();
+    super()
     this.markPhrase = this.markPhrase.bind(this)
     this.savePhrase = this.savePhrase.bind(this)
     this.cancel = this.cancel.bind(this)
@@ -13,11 +13,10 @@ class Phrase extends React.Component{
     this.setSkipPhrase = this.setSkipPhrase.bind(this)
     this.skipCurrentPhrase = this.skipCurrentPhrase.bind(this)
     this.skipLastPhrase = this.skipLastPhrase.bind(this)
-    this.correctedPhrases = this.correctedPhrases.bind(this)
 
     this.state = {
       editing:false,
-      corrected:false
+      corrected:false,
     }
   }
 
@@ -28,30 +27,25 @@ class Phrase extends React.Component{
       this.setState({editing:true})
     }
   }
-
+  
   savePhrase(){
     const { details, selectPhrase, disableProgress } = this.props
-    
     this.setState({
       editing:false,
       corrected:true,
     })
-    const PhraseCorrected = {
-        pk:details.pk,
-        text:this.span.textContent
-    }
-    selectPhrase(PhraseCorrected, details.pk)
     disableProgress(false)
   }
 
   cancel(){
-    const { details, removePhrase, disableProgress } = this.props
+    const { details, removePhrase, disableProgress, setActive } = this.props
     this.setState({
       editing:false,
       corrected:false
     })
     removePhrase(details.pk)
     disableProgress(true)
+    setActive(null)
   }
   
   getStartofContext(){
@@ -102,20 +96,9 @@ class Phrase extends React.Component{
         resetSegments(0)
         advanceTranscript(1)
       } else {
-        endOfRoundTwo(true)
+        endOfRoundThree(true)
       }
 
-    }
-  }
-
-  correctedPhrases(){
-    const {details, active, keys} = this.props
-    if(details.corrections) {
-      console.log(details.corrections)
-      
-      details.corrections.map(function(index, elem) {
-        <li key={index.pk}>{index.pk} hello</li>
-      })   
     }
   }
   
@@ -131,7 +114,8 @@ class Phrase extends React.Component{
   }
   
   render(){
-    const {details, time, active, keys, editingPhrase} = this.props
+    const {details, time, active, keys, editingPhrase, selectPhrase, activeVote, setActive } = this.props
+    const { cancel, savePhrase} = this
     let currentSegment = active === keys
 
     let phraseState = classNames({
@@ -145,14 +129,20 @@ class Phrase extends React.Component{
       phrase = <span className={phraseState} id={details.pk}>
                 <span ref={(span) => {this.span = span}} className='context'>{details.text}</span>
                 {this.state.editing ?(
-                  <div>
+                  <div className="corrections">
                     {details.corrections ? (
                        <ul>
                         {details.corrections.map(function(index, key){
                           return(
                             <li key={key}>
-                              <Corrections 
+                              <Corrections
                                 text={index.corrected_text}
+                                pk={index.pk}
+                                selectPhrase={selectPhrase}
+                                setActive={setActive}
+                                active={activeVote}
+                                cancel={cancel}
+                                savePhrase={savePhrase}
                               />
                             </li>
                             )
@@ -176,10 +166,7 @@ class Phrase extends React.Component{
     if(currentSegment) {
       fixPhraseUi = <div className="phrase-editing">
                       {this.state.editing ? (
-                          <div>
-                          <button className='correct-phrase' onClick={() => this.savePhrase()}>Save</button>
-                          <button className='correct-phrase' onClick={() => this.cancel()}>Cancel</button>
-                        </div>
+                        null
                       ):(
                         <button className="fix-phrase" onClick={() => this.markPhrase()} >Validate</button>
                       )}

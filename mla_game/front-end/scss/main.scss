@@ -335,6 +335,28 @@ button {
       @include light-button;
       margin-left:0;
     }
+    .corrections {
+      clear:both;
+      margin-top:2em;
+    }
+    .vote-options {
+      text-align:left;
+      .vote-option {
+        border-radius:.5em;
+        font-size:1em;
+        background:$phrase-vote;
+        color:$default;
+        padding:.15em .75em;
+        &.vote {
+          background:white;
+        }
+      }
+      .phrase-editing {
+        @include susy-breakpoint($screen-lg-min, $map-lg) {
+           margin-right:-15%;
+        }
+      }
+    }
   }
 }
 
