@@ -232,6 +232,7 @@ button {
       }
     }
     .text {
+      display:block;
       text-align: left;
       float: left;
       width: calc(100% - 2.5em);
@@ -311,13 +312,14 @@ button {
       clear:both;
       padding-top:.75em;
       button {
-        font-size:1em;
+        font-size:.95em;
       }
       @include susy-breakpoint($screen-lg-min, $map-lg) {
-        @include span(1 of 7 last);
         text-align:left;
         padding-top:0;
         clear:none;
+        float:right;
+        width:13%;
       }
     }
     .correct-phrase {
@@ -331,6 +333,7 @@ button {
     }
     .fix-phrase {
       @include light-button;
+      margin-left:0;
     }
   }
 }

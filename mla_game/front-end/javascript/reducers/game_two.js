@@ -1,7 +1,6 @@
 function gameTwo(state = {
   gameNumber:2,
   gameName:'Suggest Fixes',
-  canGoBack:false,
   loading:true,
   currentTime:0,
   startTime:0,
@@ -38,7 +37,7 @@ function gameTwo(state = {
       return {...state, 
         currentTime:action.currentTime
       }
-    case 'SET_GAME_LENGTH':
+    case 'SET_GAME_LENGTH_TWO':
       return {...state, 
         gameLength:action.data
       }

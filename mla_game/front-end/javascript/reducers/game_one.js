@@ -1,7 +1,6 @@
 function gameOne(state = {
   gameNumber:1,
   gameName:'Identify Errors',
-  canGoBack:false,
   loading:true,
   aapb_link:null,
   media_url: null,

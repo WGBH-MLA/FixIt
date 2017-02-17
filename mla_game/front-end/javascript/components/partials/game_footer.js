@@ -29,8 +29,6 @@ class GameFooter extends React.Component{
           <h2 className='title delta'><span>{this.props.gameNumber}</span> {this.props.gameName}</h2>
           <div className="controls">
             <Paging 
-              goBack={this.props.goBack}
-              canGoBack={this.props.canGoBack} 
               handleProgress={this.props.handleProgress} 
               waitingUpdate={this.props.waitingUpdate}
               waiting={this.props.waiting}

@@ -15,7 +15,6 @@ class GameTwo extends React.Component{
     super()
 
     this.handleProgress = this.handleProgress.bind(this)
-    this.goBack = this.goBack.bind(this)
     this.activePhrase = this.activePhrase.bind(this)
     this.playPhrase = this.playPhrase.bind(this)
     this.selectPhrase = this.selectPhrase.bind(this)
@@ -42,9 +41,6 @@ class GameTwo extends React.Component{
     const { details, wait, advanceTranscript, advanceSegment, gametwo, updateTotalScore, updateGameScore, updateGameProgress } = this.props
     let currentTranscriptLength = gametwo.transcripts[gametwo.currentTranscript].phrases_length - 1
     let noCorrectionExists = this.state.phrase == null
-    let media = document.querySelector('.audio-player')
-    
-    // this.props.setSegmentStart(Number(gametwo.transcripts[gametwo.currentTranscript].phrases[gametwo.segment + 1].start_time))
 
     if(gametwo.segment <= currentTranscriptLength) {
       if(gametwo.skipPhrase) {
@@ -81,26 +77,6 @@ class GameTwo extends React.Component{
     // scrub state for phrase correction
     this.removePhrase()
   }
-
-  goBack() {
-    const { wait, advanceTranscript, advanceSegment, gametwo, updateGameProgress } = this.props
-    let transcriptLength = gametwo.transcripts.length - 1
-    let currentTranscriptLength = gametwo.transcripts[gametwo.currentTranscript].phrases.length - 1
-    
-    if(gametwo.segment > 0) {
-      advanceSegment(-1)
-      updateGameProgress(-1)
-    } else {
-      if(gametwo.currentTranscript > 0) {
-        advanceSegment(0 + transcriptLength)
-        advanceTranscript(-1)
-      } else {
-        return
-      }
-    }
-
-  }
-
 
   activePhrase(time, start, end){
     const playingPhrase = time <= start || time >= end; 
@@ -245,7 +221,6 @@ class GameTwo extends React.Component{
            <GameFooter
             gameNumber={gametwo.gameNumber}
             gameName={gametwo.gameName}
-            goBack={this.goBack}
             canGoBack={gametwo.canGoBack}
             handleProgress={this.handleProgress}
             max={gametwo.gameLength - 1}
