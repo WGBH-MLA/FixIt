@@ -71,9 +71,7 @@ class GameThree extends React.Component{
         score:11
       }
       // post score and phrase
-      postData('/api/transcriptphrasecorrection/', phraseData).then(function(data){
-        console.log(data)
-      })
+      postData('/api/transcriptphrasecorrection/', phraseData)
       postData('/api/score/', phraseScore)
       // update scores
       updateTotalScore(11)
@@ -152,7 +150,6 @@ class GameThree extends React.Component{
                 if(transcript == gamethree.currentTranscript) {
                   return(
                     <div key={key}>
-                      <pre>{JSON.stringify(this.state, null, 2)}</pre>
                       <div className="game-meta">
                         <Audio 
                           isPlaying={gamethree.isPlaying}

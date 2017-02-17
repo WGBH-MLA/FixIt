@@ -336,12 +336,15 @@ button {
       margin-left:0;
     }
     .corrections {
-      clear:both;
-      margin-top:2em;
+      margin-top:.75em;
+      float:left;
+      ul {
+        @include clearfix;
+      }
     }
     .vote-options {
-      text-align:left;
       .vote-option {
+        text-align:left;
         border-radius:.5em;
         font-size:1em;
         background:$phrase-vote;
