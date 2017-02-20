@@ -71,7 +71,7 @@ class GameTwo extends React.Component{
       // update scores
       updateTotalScore(11)
       updateGameScore(11)
-      this.props.disableProgress(true)
+      // this.props.disableProgress(true)
     } 
 
     // scrub state for phrase correction
@@ -124,8 +124,7 @@ class GameTwo extends React.Component{
   
 
   render(){
-    const { gametwo, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegment, advanceTranscript, skipPhrase, setStartTime, disableProgress, resetSegments, endOfRoundTwo } = this.props
-    
+    const { gametwo, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegment, advanceTranscript, skipPhrase, setStartTime, disableProgress, resetSegments, endOfRoundTwo, updateGameProgress } = this.props
     if(this.props.gametwo.loading) {
       return(
         <LoadingScreen />
@@ -191,6 +190,7 @@ class GameTwo extends React.Component{
                                currentTranscript={gametwo.currentTranscript}
                                gameLength={gametwo.transcripts.length - 1}
                                phrasesLength={gametwo.transcripts[gametwo.currentTranscript].phrases_length - 1}
+                               updateGameProgress={updateGameProgress}
                                advanceTranscript={advanceTranscript}
                                resetSegments={resetSegments}
                                setSkipPhrase={skipPhrase}
@@ -223,7 +223,7 @@ class GameTwo extends React.Component{
             gameName={gametwo.gameName}
             canGoBack={gametwo.canGoBack}
             handleProgress={this.handleProgress}
-            max={gametwo.gameLength - 1}
+            max={gametwo.gameLength}
             value={gametwo.gameProgress}
             waitingUpdate={this.props.waitingUpdate}
             waiting={gametwo.disableProgress}

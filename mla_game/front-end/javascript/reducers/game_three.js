@@ -6,7 +6,7 @@ function gameThree(state = {
   startTime:0,
   isPlaying:false,
   gameLength:null,
-  gameProgress:3,
+  gameProgress:0,
   disableProgress:true,
   segment:0,
   currentTranscript:0,

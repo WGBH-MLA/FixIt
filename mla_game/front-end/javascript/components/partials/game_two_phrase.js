@@ -89,10 +89,11 @@ class Phrase extends React.Component{
   }
 
   skipCurrentPhrase(){
-    const {details, keys, active, advanceSegment, advanceTranscript } = this.props
+    const {details, keys, active, advanceSegment, advanceTranscript, updateGameProgress } = this.props
     if(keys == active) {
       if(!details.needs_correction) {
         advanceSegment(1)
+        updateGameProgress(1)
       }
     }
   }

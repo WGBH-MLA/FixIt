@@ -2242,10 +2242,12 @@ var Phrase = (function (_React$Component) {
       var active = _props6.active;
       var advanceSegment = _props6.advanceSegment;
       var advanceTranscript = _props6.advanceTranscript;
+      var updateGameProgress = _props6.updateGameProgress;
 
       if (keys == active) {
         if (!details.needs_correction) {
           advanceSegment(1);
+          updateGameProgress(1);
         }
       }
     }
@@ -3689,7 +3691,7 @@ var GameTwo = (function (_React$Component) {
         // update scores
         updateTotalScore(11);
         updateGameScore(11);
-        this.props.disableProgress(true);
+        // this.props.disableProgress(true)
       }
 
       // scrub state for phrase correction
@@ -3761,6 +3763,7 @@ var GameTwo = (function (_React$Component) {
       var disableProgress = _props2.disableProgress;
       var resetSegments = _props2.resetSegments;
       var endOfRoundTwo = _props2.endOfRoundTwo;
+      var updateGameProgress = _props2.updateGameProgress;
 
       if (this.props.gametwo.loading) {
         return _react2['default'].createElement(_partialsLoading_screen2['default'], null);
@@ -3878,6 +3881,7 @@ var GameTwo = (function (_React$Component) {
                               currentTranscript: gametwo.currentTranscript,
                               gameLength: gametwo.transcripts.length - 1,
                               phrasesLength: gametwo.transcripts[gametwo.currentTranscript].phrases_length - 1,
+                              updateGameProgress: updateGameProgress,
                               advanceTranscript: advanceTranscript,
                               resetSegments: resetSegments,
                               setSkipPhrase: skipPhrase,
@@ -3902,7 +3906,7 @@ var GameTwo = (function (_React$Component) {
             gameName: gametwo.gameName,
             canGoBack: gametwo.canGoBack,
             handleProgress: this.handleProgress,
-            max: gametwo.gameLength - 1,
+            max: gametwo.gameLength,
             value: gametwo.gameProgress,
             waitingUpdate: this.props.waitingUpdate,
             waiting: gametwo.disableProgress,
@@ -4338,7 +4342,7 @@ function gameThree(state, action) {
     startTime: 0,
     isPlaying: false,
     gameLength: null,
-    gameProgress: 3,
+    gameProgress: 0,
     disableProgress: true,
     segment: 0,
     currentTranscript: 0,
@@ -4467,7 +4471,7 @@ function gameTwo(state, action) {
     startTime: 0,
     isPlaying: false,
     gameLength: null,
-    gameProgress: 3,
+    gameProgress: 0,
     disableProgress: true,
     segment: 0,
     currentTranscript: 0,
