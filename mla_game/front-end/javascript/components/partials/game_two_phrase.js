@@ -153,7 +153,7 @@ class Phrase extends React.Component{
                           <button className='correct-phrase' onClick={() => this.cancel()}>Cancel</button>
                         </div>
                       ):(
-                        <button className="fix-phrase" onClick={() => this.markPhrase()} >Fix</button>
+                        <button className="fix-phrase" onClick={() => this.markPhrase()} >{this.state.corrected ? 'Edit' : 'Fix'}</button>
                       )}
                     </div>
     }

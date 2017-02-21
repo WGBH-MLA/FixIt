@@ -121,7 +121,7 @@ class Phrase extends React.Component{
 
     let phraseState = classNames({
       'text highlighted': true,
-      'corrected': this.state.corrected,
+      // 'corrected': this.state.corrected,
       'editing': this.state.editing
     })
 
@@ -169,7 +169,7 @@ class Phrase extends React.Component{
                       {this.state.editing ? (
                         null
                       ):(
-                        <button className="fix-phrase" onClick={() => this.markPhrase()} >Validate</button>
+                        <button className="fix-phrase" onClick={() => this.markPhrase()} >{this.state.corrected ? 'Edit' : 'Validate'}</button>
                       )}
                     </div>
     }

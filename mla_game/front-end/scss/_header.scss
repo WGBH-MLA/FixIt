@@ -95,12 +95,15 @@
   li {
     float:left;
     text-align:center;
-    width:33%;
+    width:25%;
     line-height:1; 
     a {
+      @include transition(color, 300ms, ease-in);
       color:white;
       text-decoration:none;
       display:block;
+      color:$icon-dark;
+      font-family:'Open Sans Condensed', sans-serif;
       .nav-icon {
         @include transition(fill, 300ms, ease-in);
         height:1.85em;
@@ -109,6 +112,7 @@
         fill:$icon-dark;
       }
       &:hover {
+        color:$progress;
         .nav-icon {
           fill:$progress;
         }
@@ -128,10 +132,10 @@
     @include span(2 of 4);
     margin-top:0;
     li {
-      width:20%;
       padding-top:.5em;
-      &:first-of-type{
-        margin-left:40%;
+      &:last-of-type {
+        display:inline-block;
+        padding-top:1em;
       }
     }
   }
@@ -140,5 +144,16 @@
   }
   @include susy-breakpoint($screen-lg-min, $map-lg) {
     @include span(3 of 12);
+
+    li {
+      width:20%;
+      &:first-of-type{
+        margin-left:40%;
+      }
+      &:last-of-type {
+        margin-right:-25%;
+        margin-left:3%;
+      }
+    }
   }
 }
