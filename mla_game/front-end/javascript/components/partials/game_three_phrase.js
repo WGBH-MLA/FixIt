@@ -71,7 +71,7 @@ class Phrase extends React.Component{
   setSkipPhrase(){
     const {details, keys, active, setSkipPhrase } = this.props;
     if(keys === active + 1) {
-      if(details.needs_correction) {
+      if(details.corrections) {
         setSkipPhrase(false)
       } else {
         setSkipPhrase(true)
@@ -80,10 +80,11 @@ class Phrase extends React.Component{
   }
 
   skipCurrentPhrase(){
-    const {details, keys, active, advanceSegment, advanceTranscript } = this.props
+    const {details, keys, active, advanceSegment, advanceTranscript, updateGameProgress } = this.props
     if(keys == active) {
-      if(!details.needs_correction) {
+      if(!details.corrections) {
         advanceSegment(1)
+        updateGameProgress(1)
       }
     }
   }

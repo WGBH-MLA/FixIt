@@ -29,10 +29,6 @@ function gameThree(state = {
         loading: false,
         transcripts:action.data
       }
-    case 'SET_TRANSCRIPTS':
-      return {...state, 
-        phrases:action.data
-      }
     case 'SET_CURRENTTIME':
       return {...state, 
         currentTime:action.currentTime
@@ -41,7 +37,7 @@ function gameThree(state = {
       return {...state, 
         gameLength:action.data
       }
-    case 'UPDATE_GAME_PROGRESS':
+    case 'UPDATE_GAME_PROGRESS_THREE':
       return {...state, 
         gameProgress:state.gameProgress + action.data
       }
@@ -49,7 +45,7 @@ function gameThree(state = {
       return {...state, 
         disableProgress:action.bool
       }
-    case 'RESET_GAME_PROGRESS':
+    case 'RESET_GAME_PROGRESS_THREE':
       return {...state, 
         gameProgress:action.data
       }
@@ -69,7 +65,7 @@ function gameThree(state = {
       return {...state, 
         gameScore:state.gameScore + action.amount
       }
-    case 'RESET_GAME_SCORE':
+    case 'RESET_GAME_SCORE_THREE':
       return {...state, 
         gameScore:action.amount
       }
@@ -81,15 +77,15 @@ function gameThree(state = {
       return {...state,
         endSegment:action.segmentEnd
       }
-    case 'ADVANCE_SEGMENT':
+    case 'ADVANCE_SEGMENT_THREE':
       return  {...state, 
         segment:state.segment + action.progress
       }
-    case 'ADVANCE_TRANSCRIPT':
+    case 'ADVANCE_TRANSCRIPT_THREE':
       return  {...state, 
         currentTranscript:state.currentTranscript + action.progress
       }
-    case 'RESET_TRANSCRIPT':
+    case 'RESET_TRANSCRIPT_THREE':
       return  {...state, 
         currentTranscript:action.progress
       }
@@ -101,7 +97,7 @@ function gameThree(state = {
       return  {...state, 
         endOfRound:action.bool
       }
-    case 'RESET_SEGMENTS':
+    case 'RESET_SEGMENTS_THREE':
       return  {...state, 
         segment:action.progress
       }

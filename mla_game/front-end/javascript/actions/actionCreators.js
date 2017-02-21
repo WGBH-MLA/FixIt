@@ -45,6 +45,20 @@ export function resetGameScore(amount){
   }
 }
 
+export function resetGameScoreTwo(amount){
+  return {
+    type:'RESET_GAME_SCORE_TWO',
+    amount
+  }
+}
+
+export function resetGameScoreThree(amount){
+  return {
+    type:'RESET_GAME_SCORE_THREE',
+    amount
+  }
+}
+
 function setGameScores(gameone, gametwo, gamethree){
   return {
     type:'SET_GAME_SCORES',
@@ -246,24 +260,45 @@ export function advanceSegment(progress){
   }
 }
 
-export function advanceTranscript(progress){
+export function advanceSegmentTwo(progress){
   return{
-    type:'ADVANCE_TRANSCRIPT',
+    type:'ADVANCE_SEGMENT_TWO',
+    progress
+  }
+}
+
+export function advanceSegmentThree(progress){
+  return{
+    type:'ADVANCE_SEGMENT_THREE',
+    progress
+  }
+}
+
+export function advanceTranscriptTwo(progress){
+  return{
+    type:'ADVANCE_TRANSCRIPT_TWO',
+    progress
+  }
+}
+
+export function advanceTranscriptThree(progress){
+  return{
+    type:'ADVANCE_TRANSCRIPT_THREE',
     progress
   }
 }
 
 
-export function resetTranscript(progress){
+export function resetTranscriptTwo(progress){
   return{
-    type:'RESET_TRANSCRIPT',
+    type:'RESET_TRANSCRIPT_TWO',
     progress
   }
 }
 
-export function goBackRound(progress){
+export function resetTranscriptThree(progress){
   return{
-    type:'GOBACK_ROUND',
+    type:'RESET_TRANSCRIPT_THREE',
     progress
   }
 }
@@ -271,6 +306,20 @@ export function goBackRound(progress){
 export function resetSegments(progress){
   return{
     type:'RESET_SEGMENTS',
+    progress
+  }
+}
+
+export function resetSegmentsTwo(progress){
+  return{
+    type:'RESET_SEGMENTS_TWO',
+    progress
+  }
+}
+
+export function resetSegmentsThree(progress){
+  return{
+    type:'RESET_SEGMENTS_THREE',
     progress
   }
 }
@@ -348,9 +397,30 @@ export function updateGameProgress(data){
   }
 }
 
-export function resetGameProgress(data){
+export function updateGameProgressTwo(data){
   return {
-    type: 'RESET_GAME_PROGRESS',
+    type: 'UPDATE_GAME_PROGRESS_TWO',
+    data
+  }
+}
+
+export function updateGameProgressThree(data){
+  return {
+    type: 'UPDATE_GAME_PROGRESS_THREE',
+    data
+  }
+}
+
+export function resetGameProgressTwo(data){
+  return {
+    type: 'RESET_GAME_PROGRESS_TWO',
+    data
+  }
+}
+
+export function resetGameProgressThree(data){
+  return {
+    type: 'RESET_GAME_PROGRESS_THREE',
     data
   }
 }

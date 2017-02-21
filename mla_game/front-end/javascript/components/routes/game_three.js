@@ -44,18 +44,17 @@ class GameThree extends React.Component{
   }
   
   handleProgress() {
-    const { details, wait, advanceTranscript, advanceSegment, gamethree, updateTotalScore, updateGameScore, updateGameProgress } = this.props
+    const { details, wait, advanceTranscript, advanceSegmentThree, gamethree, updateTotalScore, updateGameScore, updateGameProgressThree } = this.props
     let currentTranscriptLength = gamethree.transcripts[gamethree.currentTranscript].phrases_length - 1
     let noCorrectionExists = this.state.phrase == null
 
     if(gamethree.segment <= currentTranscriptLength) {
       if(gamethree.skipPhrase) {
-        advanceSegment(2)
-        updateGameProgress(2)
+        advanceSegmentThree(2)
+        updateGameProgressThree(2)
       } else {
-        advanceSegment(1)
-        updateGameProgress(1)
-
+        advanceSegmentThree(1)
+        updateGameProgressThree(1)
       }
     } 
     
@@ -76,7 +75,7 @@ class GameThree extends React.Component{
       // update scores
       updateTotalScore(11)
       updateGameScore(11)
-      this.props.disableProgress(true)
+      // this.props.disableProgress(true)
       this.setActive(null)
     } 
     // scrub state for phrase correction
@@ -104,12 +103,13 @@ class GameThree extends React.Component{
 
   reload(){
     let tipDismissed = this.props.gamethree.inGameTip
-    this.props.resetSegments(0)
-    this.props.resetGameScore(0)
-    this.props.resetTranscript(0)
-    this.props.resetGameProgress(3)
+    this.props.resetSegmentsThree(0)
+    this.props.resetGameScoreThree(0)
+    this.props.resetTranscriptThree(0)
+    this.props.resetGameProgressThree(0)
     this.props.endOfRoundThree(false)
     this.props.fetchGameThree()
+    
     
     if(tipDismissed) {
       this.props.showTipThree(true)
@@ -120,9 +120,16 @@ class GameThree extends React.Component{
     this.props.fetchGameThree()
   }
 
+  componentWillUnmount(){
+    // update gameone score in state
+    this.props.updateGameThreeScore(this.props.gamethree.gameScore)
+    // reset gamestate
+    this.reload()
+  }
+
   
   render(){
-    const { gamethree, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegment, advanceTranscript, skipPhrase, setStartTime, disableProgress, resetSegments, endOfRoundThree} = this.props
+    const { gamethree, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegmentThree, advanceTranscriptThree, skipPhrase, setStartTime, disableProgress, resetSegmentsThree, endOfRoundThree, updateGameProgressThree} = this.props
     
     if(this.props.gamethree.loading) {
       return(
@@ -132,6 +139,14 @@ class GameThree extends React.Component{
       return (
         <div>
           <div className='grid'>
+              <h1>
+               end Segment: {gamethree.endSegment} <br/>
+               current time: {gamethree.currentTime} <br/>
+               segment: {gamethree.segment} <br/>
+               transcript: {gamethree.currentTranscript} <br/>
+               Game Length: {gamethree.gameLength} <br/>
+               Game Progress: {gamethree.gameProgress}
+            </h1>
             {gamethree.endOfRound ? (
               <div className='roundup'>
                 <h1>End Of Round</h1>
@@ -186,13 +201,14 @@ class GameThree extends React.Component{
                                setSegmentStart={setSegmentStart}
                                startSegment={gamethree.startSegment}
                                setSegmentEnd={setSegmentEnd}
-                               advanceSegment={advanceSegment}
+                               advanceSegment={advanceSegmentThree}
                                endOfRoundThree={endOfRoundThree}
                                currentTranscript={gamethree.currentTranscript}
                                gameLength={gamethree.transcripts.length - 1}
                                phrasesLength={gamethree.transcripts[gamethree.currentTranscript].phrases_length - 1}
-                               advanceTranscript={advanceTranscript}
-                               resetSegments={resetSegments}
+                               updateGameProgress={updateGameProgressThree}
+                               advanceTranscript={advanceTranscriptThree}
+                               resetSegments={resetSegmentsThree}
                                setSkipPhrase={skipPhrase}
                                skipPhrase={gamethree.skipPhrase}
                                setStartTime={setStartTime}

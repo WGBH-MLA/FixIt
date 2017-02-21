@@ -38,18 +38,17 @@ class GameTwo extends React.Component{
   }
 
   handleProgress() {
-    const { details, wait, advanceTranscript, advanceSegment, gametwo, updateTotalScore, updateGameScore, updateGameProgress } = this.props
+    const { details, wait, advanceTranscript, advanceSegmentTwo, gametwo, updateTotalScore, updateGameScore, updateGameProgressTwo } = this.props
     let currentTranscriptLength = gametwo.transcripts[gametwo.currentTranscript].phrases_length - 1
     let noCorrectionExists = this.state.phrase == null
 
     if(gametwo.segment <= currentTranscriptLength) {
       if(gametwo.skipPhrase) {
-        advanceSegment(2)
-        updateGameProgress(2)
+        advanceSegmentTwo(2)
+        updateGameProgressTwo(2)
       } else {
-        advanceSegment(1)
-        updateGameProgress(1)
-
+        advanceSegmentTwo(1)
+        updateGameProgressTwo(1)
       }
     } 
     
@@ -99,10 +98,10 @@ class GameTwo extends React.Component{
 
   reload(){
     let tipDismissed = this.props.gametwo.inGameTip
-    this.props.resetSegments(0)
-    this.props.resetGameScore(0)
-    this.props.resetTranscript(0)
-    this.props.resetGameProgress(3)
+    this.props.resetSegmentsTwo(0)
+    this.props.resetGameScoreTwo(0)
+    this.props.resetTranscriptTwo(0)
+    this.props.resetGameProgressTwo(0)
     this.props.endOfRoundTwo(false)
     this.props.fetchGameTwo()
     
@@ -124,7 +123,7 @@ class GameTwo extends React.Component{
   
 
   render(){
-    const { gametwo, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegment, advanceTranscript, skipPhrase, setStartTime, disableProgress, resetSegments, endOfRoundTwo, updateGameProgress } = this.props
+    const { gametwo, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegmentTwo, advanceTranscriptTwo, skipPhrase, setStartTime, disableProgress, resetSegmentsTwo, endOfRoundTwo, updateGameProgress } = this.props
     if(this.props.gametwo.loading) {
       return(
         <LoadingScreen />
@@ -133,6 +132,14 @@ class GameTwo extends React.Component{
       return(
         <div>
           <div className='grid'>
+              <h1>
+               end Segment: {gametwo.endSegment} <br/>
+               current time: {gametwo.currentTime} <br/>
+               segment: {gametwo.segment} <br/>
+               transcript: {gametwo.currentTranscript} <br/>
+               Game Length: {gametwo.gameLength} <br/>
+               Game Progress: {gametwo.gameProgress}
+            </h1> 
             {gametwo.endOfRound ? (
               <div className='roundup'>
                 <h1>End Of Round</h1>
@@ -185,14 +192,14 @@ class GameTwo extends React.Component{
                                setSegmentStart={setSegmentStart}
                                startSegment={gametwo.startSegment}
                                setSegmentEnd={setSegmentEnd}
-                               advanceSegment={advanceSegment}
+                               advanceSegment={advanceSegmentTwo}
                                endOfRoundTwo={endOfRoundTwo}
                                currentTranscript={gametwo.currentTranscript}
                                gameLength={gametwo.transcripts.length - 1}
                                phrasesLength={gametwo.transcripts[gametwo.currentTranscript].phrases_length - 1}
                                updateGameProgress={updateGameProgress}
-                               advanceTranscript={advanceTranscript}
-                               resetSegments={resetSegments}
+                               advanceTranscript={advanceTranscriptTwo}
+                               resetSegments={resetSegmentsTwo}
                                setSkipPhrase={skipPhrase}
                                skipPhrase={gametwo.skipPhrase}
                                setStartTime={setStartTime}
