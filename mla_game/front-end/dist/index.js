@@ -599,7 +599,6 @@ function fetchGameTwo() {
       for (var i = 0; i < data.length; i++) {
         // create arrays for trimmed phrases
         var phrases = [];
-
         // loop through each set and push a phrase if it needs a correction including the one before and the one after
         for (var j = 0; j < data[i].phrases.length; j++) {
           // check if the phrase needs a correction           
@@ -3419,7 +3418,7 @@ var GameThree = (function (_React$Component) {
         // update scores
         updateTotalScore(11);
         updateGameScore(11);
-        // this.props.disableProgress(true)
+        this.props.disableProgress(true);
         this.setActive(null);
       }
       // scrub state for phrase correction
@@ -3502,32 +3501,6 @@ var GameThree = (function (_React$Component) {
           _react2['default'].createElement(
             'div',
             { className: 'grid' },
-            _react2['default'].createElement(
-              'h1',
-              null,
-              'end Segment: ',
-              gamethree.endSegment,
-              ' ',
-              _react2['default'].createElement('br', null),
-              'current time: ',
-              gamethree.currentTime,
-              ' ',
-              _react2['default'].createElement('br', null),
-              'segment: ',
-              gamethree.segment,
-              ' ',
-              _react2['default'].createElement('br', null),
-              'transcript: ',
-              gamethree.currentTranscript,
-              ' ',
-              _react2['default'].createElement('br', null),
-              'Game Length: ',
-              gamethree.gameLength,
-              ' ',
-              _react2['default'].createElement('br', null),
-              'Game Progress: ',
-              gamethree.gameProgress
-            ),
             gamethree.endOfRound ? _react2['default'].createElement(
               'div',
               { className: 'roundup' },
@@ -3809,7 +3782,7 @@ var GameTwo = (function (_React$Component) {
         // update scores
         updateTotalScore(11);
         updateGameScore(11);
-        // this.props.disableProgress(true)
+        this.props.disableProgress(true);
       }
 
       // scrub state for phrase correction
@@ -3892,32 +3865,6 @@ var GameTwo = (function (_React$Component) {
           _react2['default'].createElement(
             'div',
             { className: 'grid' },
-            _react2['default'].createElement(
-              'h1',
-              null,
-              'end Segment: ',
-              gametwo.endSegment,
-              ' ',
-              _react2['default'].createElement('br', null),
-              'current time: ',
-              gametwo.currentTime,
-              ' ',
-              _react2['default'].createElement('br', null),
-              'segment: ',
-              gametwo.segment,
-              ' ',
-              _react2['default'].createElement('br', null),
-              'transcript: ',
-              gametwo.currentTranscript,
-              ' ',
-              _react2['default'].createElement('br', null),
-              'Game Length: ',
-              gametwo.gameLength,
-              ' ',
-              _react2['default'].createElement('br', null),
-              'Game Progress: ',
-              gametwo.gameProgress
-            ),
             gametwo.endOfRound ? _react2['default'].createElement(
               'div',
               { className: 'roundup' },

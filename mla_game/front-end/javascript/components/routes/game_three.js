@@ -75,7 +75,7 @@ class GameThree extends React.Component{
       // update scores
       updateTotalScore(11)
       updateGameScore(11)
-      // this.props.disableProgress(true)
+      this.props.disableProgress(true)
       this.setActive(null)
     } 
     // scrub state for phrase correction
@@ -139,14 +139,6 @@ class GameThree extends React.Component{
       return (
         <div>
           <div className='grid'>
-              <h1>
-               end Segment: {gamethree.endSegment} <br/>
-               current time: {gamethree.currentTime} <br/>
-               segment: {gamethree.segment} <br/>
-               transcript: {gamethree.currentTranscript} <br/>
-               Game Length: {gamethree.gameLength} <br/>
-               Game Progress: {gamethree.gameProgress}
-            </h1>
             {gamethree.endOfRound ? (
               <div className='roundup'>
                 <h1>End Of Round</h1>
