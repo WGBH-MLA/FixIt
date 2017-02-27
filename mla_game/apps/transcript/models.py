@@ -77,6 +77,8 @@ class TranscriptManager(models.Manager):
         '''
         Game three needs to present a transcript with all of the corrections
 
+        TODO: exclude not_an_error corrections (maybe already works)
+
         Done, but needs testing:
             - if a user has already voted on a set of corrections, they should
             not see it again in future games
@@ -253,6 +255,7 @@ class TranscriptPhrase(models.Model):
     end_time = models.DecimalField(max_digits=12, decimal_places=2)
     speaker_id = models.IntegerField()
     transcript = models.ForeignKey(Transcript, related_name='phrases')
+    confidence = models.FloatField(default=0)
 
     objects = TranscriptPhraseManager()
 
@@ -265,8 +268,12 @@ class TranscriptPhrase(models.Model):
             transcript_phrase=self.pk).count()
 
     @property
+    def considered_by_count(self):
+        return self.profile_set.all().count()
+
+    @property
     def corrections(self):
-        return self.transcript_phrase_correction.all().count()
+        return self.transcript_phrase_correction.filter(not_an_error=False).count()
 
     @property
     def total_length(self):
@@ -283,14 +290,15 @@ class TranscriptPhraseDownvote(models.Model):
 
 class TranscriptPhraseCorrection(models.Model):
     correction = models.CharField(max_length=500, blank=True, null=True)
+    not_an_error = models.BooleanField(default=False)
     no_words = models.BooleanField(default=False)
-    confidence = models.FloatField(default=-1.0)
+    confidence = models.FloatField(default=0)
     appearances = models.IntegerField(default=0)
     transcript_phrase = models.ForeignKey(TranscriptPhrase, related_name='transcript_phrase_correction')
     user = models.ForeignKey(User, default=None)
 
     @property
-    def votes(self):
+    def votes_count(self):
         return TranscriptPhraseCorrectionVote.objects.filter(
             transcript_phrase_correction=self.pk
         ).count()
