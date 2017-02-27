@@ -45,6 +45,7 @@ class TranscriptPhraseCorrectionSerializer(serializers.ModelSerializer):
         model = TranscriptPhraseCorrection
         fields = (
             'correction',
+            'not_an_error',
             'transcript_phrase',
             'user',
         )
@@ -57,7 +58,7 @@ class TranscriptPhraseCorrectionVoteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TranscriptPhraseCorrectionVote
-        fields = ('transcript_phrase_correction', 'user')
+        fields = ('transcript_phrase_correction', 'user', 'upvote')
 
 
 class TranscriptPhraseDownvoteSerializer(serializers.ModelSerializer):

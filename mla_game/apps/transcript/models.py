@@ -309,6 +309,7 @@ class TranscriptPhraseCorrection(models.Model):
 
 class TranscriptPhraseCorrectionVote(models.Model):
     transcript_phrase_correction = models.ForeignKey(TranscriptPhraseCorrection)
+    upvote = models.BooleanField(default=False)
     user = models.ForeignKey(User)
 
     @property
