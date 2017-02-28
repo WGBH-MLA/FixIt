@@ -1,4 +1,5 @@
 import logging
+import time
 from datetime import datetime
 
 from django.conf import settings
@@ -44,5 +45,5 @@ class Command(BaseCommand):
                 if not all_transcripts.filter(
                         id_number=item, collection_id=collection.collection
                 ).exists():
-                        print(collection.collection, item)
-                        process_transcript(item, collection.collection)
+                    time.sleep(5)
+                    process_transcript(item, collection.collection)

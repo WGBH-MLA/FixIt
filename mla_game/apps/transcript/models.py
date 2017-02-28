@@ -263,8 +263,8 @@ class TranscriptPhrase(models.Model):
         ordering = ['start_time']
 
     @property
-    def downvotes(self):
-        return TranscriptPhraseDownvote.objects.get(
+    def downvotes_count(self):
+        return TranscriptPhraseDownvote.objects.filter(
             transcript_phrase=self.pk).count()
 
     @property

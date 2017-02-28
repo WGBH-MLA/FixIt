@@ -102,8 +102,6 @@ class Command(BaseCommand):
             for child in root.iter(
                     '{http://www.pbcore.org/PBCore/PBCoreNamespace.html}pbcoreAnnotation'):
                 if child.attrib['annotationType'] == 'organization':
-                        child.text, transcript
-                    ))
                     source_candidates.append(child.text)
         except:
             pass
