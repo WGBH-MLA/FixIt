@@ -1,0 +1,83 @@
+.app-header {
+  & + .preferences {
+      margin-top:4em;
+  }
+}
+
+.preferences {
+  color:$theme-primary;
+  &:after {
+    content:'';
+    display:inline-block;
+    position:absolute;
+    background:white;
+    height:100vh;
+    width:100%;
+    top:-5.5em;
+    left:0;
+    z-index:-1;
+  }
+}
+
+.user-form {
+  background-color:$preferences-background;
+  border-bottom:1px solid black;
+  padding:$v-rhythm*2 0;
+  .user {
+    margin-bottom:$v-rhythm;
+    font-weight:700;
+    font-size:1.25em;
+    @include susy-breakpoint($screen-md-min, $map-md) {
+      @include span(3 first);
+      margin-left:0;
+      margin-bottom:0;
+      padding-top:.45em;
+    }
+    @include susy-breakpoint($screen-lg-min, $map-lg) {
+      @include span(3 first);
+    }
+  }
+  form {
+    font-size:1.25em;
+    text-align:center;
+    button {
+      @include light-button;
+      margin-left:0;
+      @include susy-breakpoint($screen-sm-min, $map-sm) {
+        float:left;
+        margin-left:5%;
+      }
+      @include susy-breakpoint($screen-md-min, $map-md) {
+        margin-left:2.5%;
+      }
+      @include susy-breakpoint($screen-md-min, $map-md) {
+        float:right;
+      }
+    }
+    input[type='text'] {
+      padding:.4em 1em;
+      border-radius:.625em;
+      border: 1px solid black;
+      display:block;
+      width:100%;
+    }
+    .input-container {
+      margin-bottom:$v-rhythm/2;
+      @include susy-breakpoint($screen-sm-min, $map-sm) {
+        @include span(2 first)
+      }
+      @include susy-breakpoint($screen-md-min, $map-md) {
+        @include span(4);
+        input {
+          @include span(3 of 4 first);
+        }
+      }
+      @include susy-breakpoint($screen-lg-min, $map-lg) {
+        @include span(4);
+        input {
+          @include span(full);
+        }
+      }
+    }
+  }
+}

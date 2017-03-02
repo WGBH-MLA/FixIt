@@ -2764,16 +2764,20 @@ var UserForm = (function (_React$Component) {
 
       return _react2['default'].createElement(
         'form',
-        { className: 'user-form', ref: function (input) {
+        { ref: function (input) {
             return _this.userform = input;
           }, onSubmit: function (event) {
             return _this.changeName(event);
           } },
-        _react2['default'].createElement('input', { required: true, type: 'text' }),
+        _react2['default'].createElement(
+          'div',
+          { className: 'input-container' },
+          _react2['default'].createElement('input', { required: true, type: 'text', placeholder: 'Username' })
+        ),
         _react2['default'].createElement(
           'button',
           { type: 'submit' },
-          'Change Username'
+          'Save'
         )
       );
     }
@@ -4220,26 +4224,24 @@ var Preferences = (function (_React$Component) {
     value: function render() {
       return _react2['default'].createElement(
         'div',
-        { className: 'grid' },
+        { className: 'preferences' },
         _react2['default'].createElement(
-          'h1',
-          null,
-          'Preferences'
-        ),
-        _react2['default'].createElement(
-          'h4',
-          null,
-          'Your Username: ',
+          'div',
+          { className: 'user-form' },
           _react2['default'].createElement(
-            'span',
-            { className: 'username' },
-            this.props.initialData.username
+            'div',
+            { className: 'grid' },
+            _react2['default'].createElement(
+              'span',
+              { className: 'user' },
+              this.props.initialData.username
+            ),
+            _react2['default'].createElement(_partialsUser_form2['default'], {
+              data: this.props.initialData,
+              setUsername: this.props.setUsername
+            })
           )
-        ),
-        _react2['default'].createElement(_partialsUser_form2['default'], {
-          data: this.props.initialData,
-          setUsername: this.props.setUsername
-        })
+        )
       );
     }
   }]);

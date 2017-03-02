@@ -10,6 +10,7 @@
 @import 'gamefooter';
 @import 'gamemenu';
 @import 'leaderboard';
+@import 'preferences';
 
 :root{
   background:$theme-secondary;
@@ -26,9 +27,6 @@ html{
 body {
   position: relative;
   color:white;
-  // @include susy-breakpoint($screen-jb-min) {
-  //   font-size:1.1em
-  // }
 }
 
 a {
@@ -403,13 +401,4 @@ button {
   @include center();
   width:10em;
   height:10em;
-}
-
-.user-form {
-  button {
-    @include light-button;
-  }
-  input[type='text'] {
-    padding:.4em 1em;
-  }
 }
