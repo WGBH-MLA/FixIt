@@ -48,6 +48,7 @@ pool = ConnectionPool(
 HUEY = {
     'name': 'mla',
     'always_eager': False,
+    'connection': {'connection_pool': pool},
     'consumer': {'workers': 16},
 }
 
