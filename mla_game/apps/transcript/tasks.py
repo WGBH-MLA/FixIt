@@ -7,7 +7,10 @@ from django.core.management import call_command
 from huey.contrib.djhuey import db_task, db_periodic_task, crontab
 from popuparchive.client import Client
 
-from .models import Transcript, TranscriptPhraseCorrection, TranscriptPhraseCorrectionVote
+from .models import (
+    Transcript, TranscriptPhrase,
+    TranscriptPhraseCorrection, TranscriptPhraseCorrectionVote
+)
 
 django_log = logging.getLogger('django')
 logger = logging.getLogger('pua_scraper')
@@ -23,26 +26,28 @@ def calculate_correction_confidence(correction):
     downvotes = votes.count() - upvotes
     total_votes = votes.count()
     if downvotes == 0:
-        correction.confidence = 1
+        confidence = 1
     elif upvotes > downvotes:
-        correction.confidence = upvotes / total_votes
+        confidence = upvotes / total_votes
     elif downvotes > upvotes:
-        correction.confidence = -(downvotes / total_votes)
+        confidence = -(downvotes / total_votes)
     elif downvotes == upvotes:
-        correction.confidence = 0
+        confidence = 0
 
     django_log.info(
         'Correction: {}\nUp: {}\nDown: {}\nConfidence: {}\n\n'.format(
             correction,
             upvotes,
             downvotes,
-            correction.confidence
+            confidence
         )
     )
+    TranscriptPhraseCorrection.objects.filter(
+        pk=correction.pk).update(confidence=confidence)
 
 
 @db_task()
-def calculate_confidence(phrase):
+def calculate_phrase_confidence(phrase):
     # todo: reconcile considerations and game two upvotes
     downvotes = phrase.downvotes_count
     considerations = phrase.considered_by_count
@@ -52,23 +57,23 @@ def calculate_confidence(phrase):
     ).count()
     total_votes = considerations + game_two_upvotes
     upvotes = total_votes - downvotes
-    if downvotes == 0:
-        phrase.confidence = 1
+    if downvotes == upvotes:
+        confidence = 0
+    elif downvotes == 0:
+        confidence = 1
     elif upvotes > downvotes:
-        phrase.confidence = upvotes/total_votes
+        confidence = upvotes/total_votes
     elif downvotes > upvotes:
-        phrase.confidence = -(downvotes/total_votes)
-    elif downvotes == upvotes:
-        phrase.confidence = 0
+        confidence = -(downvotes/total_votes)
     django_log.info(
         'Phrase: {}\nUp: {}\nDown: {}\nConfidence: {}\n\n'.format(
             phrase,
             upvotes,
             downvotes,
-            phrase.confidence
+            confidence
         )
     )
-    phrase.save()
+    TranscriptPhrase.objects.filter(pk=phrase.pk).update(confidence=confidence)
 
 
 @db_task()
