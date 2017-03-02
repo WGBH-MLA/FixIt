@@ -1,5 +1,4 @@
 import React from 'react'
-import axios from 'axios'
 import LeaderList from '../partials/leader_list'
 
 class LeaderBoard extends React.Component {
