@@ -8,7 +8,7 @@ from huey.contrib.djhuey import crontab, db_periodic_task, db_task
 from .models import Profile, TranscriptPicks, Score, Leaderboard
 from mla_game.apps.transcript.models import Transcript, TranscriptPhrase
 
-logger = logging.getLogger('django')
+django_log = logging.getLogger('django')
 
 
 @db_task()
