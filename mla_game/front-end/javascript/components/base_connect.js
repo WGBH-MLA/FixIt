@@ -19,8 +19,9 @@ console.error = (function() {
 function mapStateToProps(state) {
   return {
     initialData:state.initialData,
-    gameScores:state.gameScores,
     leaderboard:state.leaderboard,
+    preferencesOptions:state.preferencesOptions,
+    gameScores:state.gameScores,
     gameone:state.gameOne,
     gametwo:state.gameTwo,  
     gamethree:state.gameThree

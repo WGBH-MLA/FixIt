@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import GameNav from '../partials/game_navigation'
 
 class GameMenu extends React.Component {
-  
+
   render() {
     const { gameScores, gameone, gametwo, gamethree } = this.props
     return (

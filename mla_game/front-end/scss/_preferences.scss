@@ -81,3 +81,93 @@
     }
   }
 }
+
+.preferences-form {
+  padding:$v-rhythm*2 0;
+  input[type='checkbox'] {
+    margin-right:.25em;
+  }
+  background:white;
+  text-align:right;
+  fieldset {
+    margin:0;
+    padding:0;
+    border:0;
+    text-align:left;
+  }
+  .topics-set {
+    margin-bottom:$v-rhythm*2;
+    legend {
+      font-weight:700;
+      font-size:1.25em;
+      margin-bottom:$v-rhythm/2;
+    }
+    .topic {
+      display:block;
+      font-weight:700;
+      @include susy-breakpoint($screen-md-min, $map-sm) {
+        @include gallery(2 of 4)
+      }
+
+      @include susy-breakpoint($screen-md-min, $map-md) {
+        display:inline-block;
+        float:none;
+        width:inherit;
+        margin-left:0;
+        margin-right:0;
+        &:not(:first-of-type) {
+          margin-left:2em;
+        }
+        &:nth-child(n) {
+          margin-right:0
+        }
+      }
+    }
+  }
+  .sources-set {
+    legend {
+      font-weight:700;
+      font-size:1.45em;
+      margin-bottom:$v-rhythm
+    }
+    label {
+      display:inline-block;
+      width:100%;
+      @include clearfix;
+    }
+    .source {
+      display:block;
+      .checkbox {
+        text-align:center;
+        width:1em;
+        float:left;
+        margin-top:.4em;
+      }
+      .state {
+        width:3em;
+        float:left;
+        padding-left:.75em;
+      }
+      .name {
+        float:left;
+        width:calc(100% - 5em)
+      }
+
+      @include susy-breakpoint($screen-sm-min, $map-sm) {
+        @include gallery(2 of 4)
+      }
+
+      @include susy-breakpoint($screen-md-min, $map-md) {
+        @include gallery(4 of 8)
+      }
+
+      @include susy-breakpoint($screen-lg-min, $map-lg) {
+        @include gallery(4 of 12)
+      }   
+    }
+  }
+  button {
+    @include border-button(white, $icon-dark);
+    font-size:1.25em;
+  }
+}
