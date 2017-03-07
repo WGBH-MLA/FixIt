@@ -6,9 +6,13 @@ from django.contrib.auth.models import User
 from huey.contrib.djhuey import crontab, db_periodic_task, db_task
 
 from .models import Profile, TranscriptPicks, Score, Leaderboard
-from mla_game.apps.transcript.models import Transcript, TranscriptPhrase
+from mla_game.apps.transcript.models import (
+    Transcript, TranscriptPhrase, TranscriptPhraseCorrection,
+    TranscriptPhraseCorrectionVote, TranscriptPhraseDownvote,
+)
 
 django_log = logging.getLogger('django')
+score_log = logging.getLogger('scores')
 
 
 @db_task()
@@ -240,3 +244,242 @@ def update_leaderboard():
     ]
 
     Leaderboard.objects.create(leaderboard=leaderboard)
+
+
+@db_task()
+def phrase_confidence_exceeds_positive_threshold(phrase):
+    '''
+    Triggered when the confidence of a TranscriptPhrase reaches above some set
+    threshold, and each time the confidence changes and stays above the
+    threshold.
+
+    Awards points:
+        +10 for users who upvoted
+        -5 for users who downvoted
+    '''
+    upvoters = [correction.user for correction in
+                TranscriptPhraseCorrection.objects.filter(
+                    transcript_phrase=phrase,
+                    not_an_error=True)
+                ]
+    downvoters = [downvote.user for downvote in
+                  TranscriptPhraseDownvote.objects.filter(phrase=phrase)
+                  ]
+
+    for user in upvoters:
+        score, created = Score.objects.get_or_create(
+            user=user,
+            score=10,
+            phrase=phrase,
+            justification=3
+        )
+        if created:
+            score_log.info(
+                'User {} got 10 points for helping phrase {} exceed positive '
+                'threshold'.format(
+                    user, phrase
+                )
+            )
+    for user in downvoters:
+        score, created = Score.objects.get_or_create(
+            user=user,
+            score=-5,
+            phrase=phrase,
+            justification=3
+        )
+        if created:
+            score_log.info(
+                'User {} got 10 points for helping phrase {} exceed positive '
+                'threshold'.format(
+                    user, phrase
+                )
+            )
+
+
+@db_task()
+def phrase_confidence_recedes_from_positive_threshold(phrase):
+    '''
+    Triggered when confidence in a TranscriptPhrase recedes from the threshold
+    after exceeding it.
+
+    Revokes points from phrase_confidence_exceeds_positive_threshold.
+    '''
+    score_log.info('Revoking scores for {} - fell below +threshold'.format(phrase))
+    Score.objects.filter(
+        phrase=phrase,
+        justification=3
+    ).delete()
+
+
+@db_task()
+def phrase_confidence_exceeds_negative_threshold(phrase):
+    '''
+    Triggered when confidence in a TranscriptPhrase exceeds the negative
+    threshold, and each time the confidence changes and continues to exceed
+    the negative threshold.
+
+    Awards points:
+        -5 points for users who upvoted
+
+    Points for users who contributed to negative confidence rating are awarded
+    in correction_confidence_exceeds_positive_threshold.
+    '''
+    upvoters = [correction.user for correction in
+                TranscriptPhraseCorrection.objects.filter(
+                    transcript_phrase=phrase,
+                    not_an_error=True)
+                ]
+    for user in upvoters:
+        Score.objects.get_or_create(
+            user=user,
+            score=-5,
+            phrase=phrase,
+            justification=2
+        )
+
+
+@db_task()
+def phrase_confidence_recedes_from_negative_threshold(phrase):
+    '''
+    Triggered when confidence in a Transcript phrase recedes from the negative
+    threshold after exceeding it.
+
+    Revoked points from phrase_confidence_exceeds_negative_threshold.
+    '''
+    Score.objects.filter(
+        phrase=phrase,
+        justification=2
+    ).delete()
+
+
+@db_task()
+def correction_confidence_exceeds_positive_threshold(correction):
+    '''
+    Triggered when confidence in a correction exceeds the positive threshold.
+
+    Awards points:
+        10 points to user who authored the correction
+        -5 points to users who authored competing corrections
+
+        10 points to users who upvoted the correction
+        -5 points to users who downvoted the correction
+
+        10 points to users who downvoted original TranscriptPhrase
+        -5 points to users who upvoted original TranscriptPhrase
+    '''
+    original_phrase = correction.transcript_phrase
+    correction_votes = TranscriptPhraseCorrectionVote.objects.filter(
+        transcript_phrase_correction=correction
+    )
+    competing_corrections = TranscriptPhraseCorrection.objects.filter(
+        transcript_phrase=original_phrase,
+        not_an_error=False,
+    ).exclude(pk=correction.pk)
+
+    author_score, created = Score.objects.get_or_create(
+        user=correction.user,
+        score=10,
+        game=2,
+        justification=1,
+        correction=correction
+    )
+    if created:
+        score_log.info(
+            '{} +10 points for authoring popular correction {}'.format(
+                correction.user, correction
+            )
+        )
+
+    for vote in correction_votes.filter(upvote=True):
+        score, created = Score.objects.get_or_create(
+            user=vote.user,
+            score=10,
+            game=3,
+            justification=1,
+            correction=correction
+        )
+        if created:
+            score_log.info(
+                '{} +10 points for contributing to {} confidence'.format(
+                    vote.user, correction
+                )
+            )
+
+    for vote in correction_votes.filter(upvote=False):
+        score, created = Score.objects.get_or_create(
+            user=vote.user,
+            score=-5,
+            game=3,
+            justification=1,
+            correction=correction
+        )
+        if created:
+            score_log.info(
+                '{} -5 points for voting against {} confidence'.format(
+                    vote.user, correction
+                )
+            )
+
+    for competitor in competing_corrections:
+        score, created = Score.objects.get_or_create(
+            user=competitor.user,
+            score=-5,
+            game=2,
+            justification=1,
+            correction=correction
+        )
+        if created:
+            score_log.info(
+                '{} -5 points for submitting {} against {}'.format(
+                    competitor.user, competitor, correction
+                )
+            )
+
+    for vote in TranscriptPhraseDownvote.objects.filter(transcript_phrase=original_phrase):
+        score, created = Score.objects.get_or_create(
+            user=vote.user,
+            score=10,
+            game=1,
+            justification=1,
+            phrase=vote.transcript_phrase,
+            correction=correction
+        )
+        if created:
+            score_log.info(
+                '{} +10 points for downvoting {}'.format(
+                    vote.user, original_phrase
+                )
+            )
+
+    for vote in TranscriptPhraseCorrection.objects.filter(
+        transcript_phrase=original_phrase,
+        not_an_error=True
+    ):
+        score, created = Score.objects.get_or_create(
+            user=vote.user,
+            score=-5,
+            game=1,
+            justification=1,
+            phrase=original_phrase,
+            correction=correction
+        )
+        if created:
+            score_log.info(
+                '{} -5 points for upvoting {}'.format(
+                    vote.user, original_phrase
+                )
+            )
+
+
+@db_task()
+def correction_confidence_recedes_from_positive_threshold(correction):
+    '''
+    Triggered when confidence in a correction recedes from the positive
+    threshold.
+
+    Revokes points awarded by correction_confidence_exceeds_positive_threshold.
+    '''
+    Score.objects.filter(
+        correction=correction,
+        justification=1
+    ).delete()
