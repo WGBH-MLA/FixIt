@@ -86,8 +86,16 @@ function setTotalScore(score){
     score
   }
 }// <-- end score actions
- 
- //fetch initial data actions
+
+function storePreferenceOptions(source, topics){
+  return {
+    type:'GET_PREFERENCE_OPTIONS_SUCCESS',
+    source,
+    topics
+  }
+}
+
+//fetch initial data actions
 function requestInitialData(bool){
   return {
     type: 'GET_INITIAL_DATA',
@@ -116,12 +124,16 @@ export function fetchData(){
     return axios.all([
         axios.get('/api/profile'),
         axios.get('/api/score/'),
-        axios.get('/api/leaderboard/')
+        axios.get('/api/leaderboard/'),
+        axios.get('/api/source/'),
+        axios.get('/api/topic/')
       ])
-      .then(axios.spread(function (profile, score, leaders) {
-
+      .then(axios.spread(function (profile, score, leaders, source, topic) {
         const { game_scores, username } = profile.data.results[0]
         const leaderData =  leaders.data.leaderboard
+        
+        dispatch(storePreferenceOptions(source.data.results, topic.data.results))
+
         dispatch(setLeaderboard(leaderData.past_month, leaderData.past_week, leaderData.all_time, leaderData.game_one_all_time, leaderData.game_two_all_time, leaderData.game_three_all_time))
         dispatch(storeInitialData(profile.data.results, score.data.results))
         // set username
