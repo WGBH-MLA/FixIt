@@ -11,7 +11,7 @@ from ...models import (
 
 
 class Command(BaseCommand):
-    help = 'oneoff'
+    help = 'Creates random votes for all phrases in a random transcript'
 
     def handle(self, *args, **options):
         users = User.objects.all()
