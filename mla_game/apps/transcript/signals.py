@@ -6,7 +6,7 @@ from django.dispatch import receiver
 
 from .models import (
     TranscriptPhraseCorrection, TranscriptPhraseCorrectionVote,
-    TranscriptPhraseDownvote
+    TranscriptPhraseDownvote, TranscriptPhrase
 )
 from .tasks import calculate_phrase_confidence, calculate_correction_confidence
 
@@ -35,10 +35,24 @@ def update_phrase_confidence(sender, instance, **kwargs):
             calculate_phrase_confidence(instance.transcript_phrase)
 
 
+@receiver(post_save, sender=TranscriptPhraseCorrection)
+def update_num_corrections(sender, instance, **kwargs):
+    if instance.not_an_error is False:
+        corrections = TranscriptPhraseCorrection.objects.filter(
+            transcript_phrase=instance.transcript_phrase,
+            not_an_error=False
+        ).count()
+        django_log.info('updating phrase {} with {} corrections'.format(
+            instance.transcript_phrase, corrections
+        ))
+        TranscriptPhrase.objects.filter(
+            pk=instance.transcript_phrase.pk).update(num_corrections=corrections)
+
+
 @receiver(post_save, sender=TranscriptPhraseCorrectionVote)
 def update_correction_confidence(sender, instance, **kwargs):
     sample_size = TranscriptPhraseCorrectionVote.objects.filter(
         transcript_phrase_correction=instance.transcript_phrase_correction
-    )
+    ).count()
     if sample_size > min_samples:
         calculate_correction_confidence(instance.transcript_phrase_correction)
