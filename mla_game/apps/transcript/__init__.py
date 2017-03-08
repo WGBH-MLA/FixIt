@@ -1,1 +1,1 @@
-default_app_config = 'mla_game.app_config.TranscriptAppConfig'
+default_app_config = 'mla_game.apps.transcript.apps.TranscriptAppConfig'
