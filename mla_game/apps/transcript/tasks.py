@@ -21,11 +21,9 @@ from mla_game.apps.accounts.tasks import (
     correction_confidence_recedes_from_positive_threshold,
 )
 
-min_samples = settings.MINIMUM_SAMPLE_SIZE
 phrase_positive_limit = settings.TRANSCRIPT_PHRASE_POSITIVE_CONFIDENCE_LIMIT
 phrase_negative_limit = settings.TRANSCRIPT_PHRASE_NEGATIVE_CONFIDENCE_LIMIT
 correction_lower_limit = settings.TRANSCRIPT_PHRASE_CORRECTION_LOWER_LIMIT
-correction_upper_limit = settings.TRANSCRIPT_PHRASE_CORRECTION_UPPER_LIMIT
 
 django_log = logging.getLogger('django')
 logger = logging.getLogger('pua_scraper')
@@ -45,8 +43,6 @@ def calculate_confidence(upvotes, downvotes):
 
 @db_task()
 def calculate_phrase_confidence(phrase):
-    # todo: reconcile considerations and game two upvotes
-    # create a correction for every considered phrase
     downvotes = phrase.downvotes_count
     upvotes = TranscriptPhraseCorrection.objects.filter(
         transcript_phrase=phrase,
@@ -57,19 +53,15 @@ def calculate_phrase_confidence(phrase):
 
     TranscriptPhrase.objects.filter(pk=phrase.pk).update(confidence=new_confidence)
 
-    # scenario A
     if new_confidence >= phrase_positive_limit:
         phrase_confidence_exceeds_positive_threshold(phrase)
 
-    # scenario C
     if new_confidence <= phrase_negative_limit:
         phrase_confidence_exceeds_negative_threshold(phrase)
 
-    # scenario B
     if original_confidence >= phrase_positive_limit and new_confidence < phrase_positive_limit:
         phrase_confidence_recedes_from_positive_threshold(phrase)
 
-    # scenario D
     if original_confidence <= phrase_negative_limit and new_confidence > phrase_negative_limit:
         phrase_confidence_recedes_from_negative_threshold(phrase)
 
@@ -92,10 +84,6 @@ def calculate_correction_confidence(correction):
 
     if original_confidence >= correction_lower_limit and new_confidence < correction_lower_limit:
         correction_confidence_recedes_from_positive_threshold(correction)
-
-
-# correction_lower_limit = settings.TRANSCRIPT_PHRASE_CORRECTION_LOWER_LIMIT
-# correction_upper_limit = settings.TRANSCRIPT_PHRASE_CORRECTION_UPPER_LIMIT
 
 
 @db_task()
