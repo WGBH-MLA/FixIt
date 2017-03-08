@@ -71,6 +71,28 @@ def update_partial_or_complete_transcripts(user, pk_set, **kwargs):
 
 
 @db_task()
+def create_explicit_upvotes_from_implied_upvotes(user, pk_set, **kwargs):
+    '''
+    When a user declines to downvote a phrase in game one, we infer that if
+    presented the same phrase in game two, she would choose 'not an error'.
+    Therefore, a 'not an error' correction is equivalent to an upvote for the
+    phrase.
+    '''
+    user_downvotes = TranscriptPhraseDownvote.objects.filter(user=user)
+    downvoted_phrases = [
+        downvote.transcript_phrase.pk for downvote in user_downvotes
+    ]
+    upvoted_phrases = [pk for pk in pk_set if pk not in downvoted_phrases]
+    for phrase in upvoted_phrases:
+        TranscriptPhraseCorrection.objects.get_or_create(
+            user=user,
+            not_an_error=True,
+            transcript_phrase=phrase
+        )
+        django_log.info('created correction upvote for {}'.format(phrase))
+
+
+@db_task()
 def update_transcript_picks(user, **kwargs):
     '''
     When a user updates their preferred topics or stations, we need to create
