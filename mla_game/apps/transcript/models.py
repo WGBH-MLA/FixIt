@@ -24,6 +24,10 @@ error_log = logging.getLogger('pua_errors')
 
 class TranscriptManager(models.Manager):
     def game_one(self, user):
+        '''
+        Returns a transcript based on user's preferences and/or past progress.
+        If no suitable transcript is found, returns a random transcript.
+        '''
         picks, created = TranscriptPicks.objects.get_or_create(user=user)
         picks = picks.picks
         if created:
@@ -80,16 +84,6 @@ class TranscriptManager(models.Manager):
     def game_three(self, user):
         '''
         Game three needs to present a transcript with all of the corrections
-
-        TODO: exclude not_an_error corrections (maybe already works)
-
-        Done, but needs testing:
-            - if a user has already voted on a set of corrections, they should
-            not see it again in future games
-            - only display if number of submitted corrections >= 2
-            - user should only vote on phrases they have not corrected. possible
-            solution - submitting a correction automatically votes for the correction
-            - restrict results to 20 phrases
 
         Returns a tuple containing a queryset of Transcript objects and a list
         of dicts containing corrections for phrases in the Transcripts
