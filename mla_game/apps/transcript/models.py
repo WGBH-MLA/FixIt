@@ -4,6 +4,7 @@ import random
 from random import randint
 from collections import Counter
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import JSONField
 from django.db import models
@@ -11,6 +12,10 @@ from localflavor.us.models import USStateField
 
 from mla_game.apps.accounts.models import TranscriptPicks, Profile
 
+phrase_positive_limit = settings.TRANSCRIPT_PHRASE_POSITIVE_CONFIDENCE_LIMIT
+phrase_negative_limit = settings.TRANSCRIPT_PHRASE_NEGATIVE_CONFIDENCE_LIMIT
+correction_lower_limit = settings.TRANSCRIPT_PHRASE_CORRECTION_LOWER_LIMIT
+correction_upper_limit = settings.TRANSCRIPT_PHRASE_CORRECTION_UPPER_LIMIT
 
 django_log = logging.getLogger('django')
 scraper_log = logging.getLogger('pua_scraper')
@@ -42,36 +47,35 @@ class TranscriptManager(models.Manager):
 
     def game_two(self, user):
         '''
-        TODO:
-        - if there's a transcript with many game two ready phrases, we
-        should prefer that transcripts
-
-        - for now we're just going to use any phrase with a downvote,
-        in the future we need to use phrases that have been verified as
-        incorrect using the considered/downvoted ratio
-
-        Done, but needs testing:
-        - we should accept up to three corrections for a phrase before removing
-        it from game two
-        - users should not see a phrase again after correcting it
-
         Returns a tuple containing a queryset of Transcript objects and a list
-        of phrase PKs to annotate
+        of phrase PKs to annotate.
         '''
-        downvoted = set([phrase.transcript_phrase.pk for phrase in
-                         TranscriptPhraseDownvote.objects.all()])
-        for phrase_pk in downvoted.copy():
-            if TranscriptPhrase.objects.get(pk=phrase_pk).corrections >= 3:
-                downvoted.remove(phrase_pk)
         user_corrected = [
             correction.transcript_phrase.pk for correction in
             TranscriptPhraseCorrection.objects.filter(user=user)
         ]
-        phrases_for_correction = [pk for pk in downvoted
-                                  if pk not in user_corrected][:20]
+        eligible_phrases = TranscriptPhrase.objects.filter(
+                confidence__lte=phrase_negative_limit,
+                num_corrections__lt=3
+            ).exclude(pk__in=user_corrected)
+        counter = Counter(phrase.transcript for phrase in eligible_phrases).most_common()
+        total = 0
+        transcripts = []
+
+        for transcript, count in counter:
+            transcripts.append(transcript)
+            total += count
+            if total >= 20:
+                break
+
+        game_two_ready_phrases = [
+            phrase.pk for phrase in eligible_phrases.filter(transcript__in=transcripts)
+        ][:20]
+
         transcripts_to_return = self.filter(
-            phrases__in=phrases_for_correction).distinct()
-        return (transcripts_to_return, phrases_for_correction)
+            phrases__in=game_two_ready_phrases).distinct()
+
+        return (transcripts_to_return, game_two_ready_phrases)
 
     def game_three(self, user):
         '''
@@ -256,6 +260,7 @@ class TranscriptPhrase(models.Model):
     speaker_id = models.IntegerField()
     transcript = models.ForeignKey(Transcript, related_name='phrases')
     confidence = models.FloatField(default=0)
+    num_corrections = models.SmallIntegerField(default=0)
 
     objects = TranscriptPhraseManager()
 
@@ -311,6 +316,9 @@ class TranscriptPhraseCorrectionVote(models.Model):
     transcript_phrase_correction = models.ForeignKey(TranscriptPhraseCorrection)
     upvote = models.BooleanField(default=False)
     user = models.ForeignKey(User)
+
+    class Meta:
+        unique_together = ('user', 'transcript_phrase_correction')
 
     @property
     def original_phrase(self):
