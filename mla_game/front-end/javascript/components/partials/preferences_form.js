@@ -1,49 +1,75 @@
 import React from 'react'
 import { patchData } from '../../helpers'
+import TopicsInput from './topics_input'
+import SourcesInput from './sources_input'
+import axios from 'axios'
 
 class PreferencesForm extends React.Component {
   constructor(){
     super()
     this.changePreferences = this.changePreferences.bind(this)
-    this.checkSources = this.checkSources.bind(this)
-    this.checkTopics = this.checkTopics.bind(this)
+    this.selectTopic = this.selectTopic.bind(this)
+    this.selectSource = this.selectSource.bind(this)
+    this.state = {
+      sources:[],
+      topics:[]
+    }
+  }
+
+
+  selectTopic(pk){
+    // reference state
+    const topics = [...this.state.topics];
+    let topicIsSet = topics.includes(pk)
+    
+    if(topicIsSet){
+      let index = topics.indexOf(pk);
+      topics.splice(index, 1);
+      this.setState({topics:topics})
+    } else {
+      topics.push(pk)
+      this.setState({topics:topics})
+    }
+  }
+
+  selectSource(pk){
+    // reference state
+    const sources = [...this.state.sources];
+    let sourceIsSet = sources.includes(pk)
+    
+    if(sourceIsSet){
+      let index = sources.indexOf(pk);
+      sources.splice(index, 1);
+      this.setState({sources:sources})
+    } else {
+      sources.push(pk)
+      this.setState({sources:sources})
+    }
   }
 
   componentDidMount(){
-  }
-
-  checkSources(pk) {
-
-  }
-
-  checkTopics(pk) {
-    this.props.preferred_topics.map((index, key) => {
-      if(index === pk) {
-        return(
-          <span>checked</span>
-        )
-      } else {
-        return(
-          <span>Not checked</span>
-        )
-      }
+    this.setState({
+      topics:this.props.preferred_topics,
+      sources:this.props.preferred_stations
     })
   }
-
-
   
   changePreferences(event){
     event.preventDefault();
-    // // create object and url for changeing username
-    // let userPk = this.props.data.user[0].pk
+    // profile to patch to
+    let userPk = this.props.user
     
-    // let username = {
-    //   "username":this.userform[0].value
-    // }
-    
-    // // patch username and update in state
-    // this.props.setUsername(this.userform[0].value)
-    // patchData(`/api/profile/${userPk}/`, username)
+    // objects preferences to patch
+    let preferred_topics = {
+      "preferred_topics":this.state.topics
+    }
+    let preferred_stations = {
+      "preferred_topics":this.state.sources
+    }
+    patchData(`/api/profile/${userPk}/`, preferred_topics).then(function(response){
+      console.log(response)
+    })
+    patchData(`/api/profile/${userPk}/`, preferred_stations)
   }
 
 
@@ -52,25 +78,28 @@ class PreferencesForm extends React.Component {
 
     let topicOptions = topics.map((index, key) => {
       return(
-        <span className="topic" key={key}>
-          {this.checkTopics(index.pk)}
-          <label>
-            <input id={index.pk} type="checkbox"/>
-            {index.topic}
-          </label>
-        </span>
+        <TopicsInput 
+          selectTopic={this.selectTopic}
+          key={key} 
+          pk={index.pk}
+          topic={index.topic}
+          topics={this.props.preferred_topics}
+          stateTopics={this.state.topics}
+        />
       )
     })
 
     let sources = source.map((index, key) => {
       return(
-        <span className='source' key={key}>
-          <label>
-            <input className="checkbox" id={index.pk} type="checkbox"/>
-            <span className="state">{index.state}</span>
-            <span className="name">{index.source}</span>
-          </label>
-        </span>
+        <SourcesInput 
+          selectSource={this.selectSource}
+          key={key} 
+          pk={index.pk}
+          state={index.state}
+          source={index.source}
+          sources={this.props.preferred_stations}
+          stateSources={this.state.sources}
+        />
       )
     })
 
@@ -78,6 +107,7 @@ class PreferencesForm extends React.Component {
     return (
       <div className="preferences-form">
         <form className='grid' ref={(input) => this.preferencesForm = input } onSubmit={(event) => this.changePreferences(event)}>
+          <pre>{JSON.stringify(this.state, 2, null)}</pre>
           <fieldset className='topics-set'>
             <legend>Topic</legend>
             <div>
