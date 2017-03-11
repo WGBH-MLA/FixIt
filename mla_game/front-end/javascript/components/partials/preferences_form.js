@@ -2,7 +2,6 @@ import React from 'react'
 import { patchData } from '../../helpers'
 import TopicsInput from './topics_input'
 import SourcesInput from './sources_input'
-import axios from 'axios'
 
 class PreferencesForm extends React.Component {
   constructor(){
@@ -58,6 +57,8 @@ class PreferencesForm extends React.Component {
     event.preventDefault();
     // profile to patch to
     let userPk = this.props.user
+    let sourcesEmpty = this.state.sources.length === 0
+    let topicsEmpty = this.state.topics.length === 0
     
     // objects preferences to patch
     let preferred_topics = {
@@ -66,16 +67,16 @@ class PreferencesForm extends React.Component {
     let preferred_stations = {
       "preferred_stations":this.state.sources
     }
-    patchData(`/api/profile/${userPk}/`, preferred_topics).then(function(response){
-      console.log(response)
-    })
 
-    if(!this.state.sources) {
-      console.log('not Empty!')
+    if(topicsEmpty) {
+      //do something to object preferred_topics make sure we can patch an empty array
     }
-    patchData(`/api/profile/${userPk}/`, preferred_stations).then(function(response){
-      console.log(response)
-    })
+    patchData(`/api/profile/${userPk}/`, preferred_topics)
+    
+    if(sourcesEmpty) {
+      //do something to preferred_stations to make sure we can patch an empty array
+    }
+    patchData(`/api/profile/${userPk}/`, preferred_stations)
   }
 
 
@@ -113,7 +114,6 @@ class PreferencesForm extends React.Component {
     return (
       <div className="preferences-form">
         <form className='grid' ref={(input) => this.preferencesForm = input } onSubmit={(event) => this.changePreferences(event)}>
-          <pre>{JSON.stringify(this.state, 2, null)}</pre>
           <fieldset className='topics-set'>
             <legend>Topic</legend>
             <div>

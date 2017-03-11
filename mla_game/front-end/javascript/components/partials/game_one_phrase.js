@@ -1,5 +1,5 @@
 import React from 'react'
-import axios from 'axios'
+import { patchData } from '../../helpers'
 
 class Phrase extends React.Component{
   constructor(){
@@ -7,6 +7,7 @@ class Phrase extends React.Component{
     this.markPhrases = this.markPhrases.bind(this)
     this.getEndOfContext = this.getEndOfContext.bind(this)
     this.getStartofContext = this.getStartofContext.bind(this)
+    this.considerPhrase = this.considerPhrase.bind(this)
   }
   
   markPhrases(){
@@ -37,11 +38,20 @@ class Phrase extends React.Component{
       this.props.setSegmentEnd(Number(details.end_time))
     }
   }
+
+  considerPhrase(){
+    let userPk = this.props.user
+    let considered_phrase = {
+      "considered_phrases":[this.props.details.pk]
+    }
+    patchData(`/api/profile/${userPk}/`, considered_phrase)
+  }
+
   
   componentDidMount(){
     this.getEndOfContext()
     this.getStartofContext()
-    console.log(this.props.details)
+    this.considerPhrase()
   }
 
   render(){

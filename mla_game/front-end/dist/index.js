@@ -1680,9 +1680,7 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _axios = require('axios');
-
-var _axios2 = _interopRequireDefault(_axios);
+var _helpers = require('../../helpers');
 
 var Phrase = (function (_React$Component) {
   _inherits(Phrase, _React$Component);
@@ -1694,6 +1692,7 @@ var Phrase = (function (_React$Component) {
     this.markPhrases = this.markPhrases.bind(this);
     this.getEndOfContext = this.getEndOfContext.bind(this);
     this.getStartofContext = this.getStartofContext.bind(this);
+    this.considerPhrase = this.considerPhrase.bind(this);
   }
 
   _createClass(Phrase, [{
@@ -1739,11 +1738,20 @@ var Phrase = (function (_React$Component) {
       }
     }
   }, {
+    key: 'considerPhrase',
+    value: function considerPhrase() {
+      var userPk = this.props.user;
+      var considered_phrase = {
+        "considered_phrases": [this.props.details.pk]
+      };
+      (0, _helpers.patchData)('/api/profile/' + userPk + '/', considered_phrase);
+    }
+  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.getEndOfContext();
       this.getStartofContext();
-      console.log(this.props.details);
+      this.considerPhrase();
     }
   }, {
     key: 'render',
@@ -1800,7 +1808,7 @@ var Phrase = (function (_React$Component) {
 exports['default'] = Phrase;
 module.exports = exports['default'];
 
-},{"axios":38,"react":360}],11:[function(require,module,exports){
+},{"../../helpers":28,"react":360}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -2759,10 +2767,6 @@ var _sources_input = require('./sources_input');
 
 var _sources_input2 = _interopRequireDefault(_sources_input);
 
-var _axios = require('axios');
-
-var _axios2 = _interopRequireDefault(_axios);
-
 var PreferencesForm = (function (_React$Component) {
   _inherits(PreferencesForm, _React$Component);
 
@@ -2825,6 +2829,8 @@ var PreferencesForm = (function (_React$Component) {
       event.preventDefault();
       // profile to patch to
       var userPk = this.props.user;
+      var sourcesEmpty = this.state.sources.length === 0;
+      var topicsEmpty = this.state.topics.length === 0;
 
       // objects preferences to patch
       var preferred_topics = {
@@ -2833,16 +2839,16 @@ var PreferencesForm = (function (_React$Component) {
       var preferred_stations = {
         "preferred_stations": this.state.sources
       };
-      (0, _helpers.patchData)('/api/profile/' + userPk + '/', preferred_topics).then(function (response) {
-        console.log(response);
-      });
 
-      if (!this.state.sources) {
-        console.log('not Empty!');
+      if (topicsEmpty) {
+        //do something to object preferred_topics make sure we can patch an empty array
       }
-      (0, _helpers.patchData)('/api/profile/' + userPk + '/', preferred_stations).then(function (response) {
-        console.log(response);
-      });
+      (0, _helpers.patchData)('/api/profile/' + userPk + '/', preferred_topics);
+
+      if (sourcesEmpty) {
+        //do something to preferred_stations to make sure we can patch an empty array
+      }
+      (0, _helpers.patchData)('/api/profile/' + userPk + '/', preferred_stations);
     }
   }, {
     key: 'render',
@@ -2886,11 +2892,6 @@ var PreferencesForm = (function (_React$Component) {
             }, onSubmit: function (event) {
               return _this.changePreferences(event);
             } },
-          _react2['default'].createElement(
-            'pre',
-            null,
-            JSON.stringify(this.state, 2, null)
-          ),
           _react2['default'].createElement(
             'fieldset',
             { className: 'topics-set' },
@@ -2940,7 +2941,7 @@ PreferencesForm.proptypes = {
 exports['default'] = PreferencesForm;
 module.exports = exports['default'];
 
-},{"../../helpers":28,"./sources_input":18,"./topics_input":19,"axios":38,"react":360}],18:[function(require,module,exports){
+},{"../../helpers":28,"./sources_input":18,"./topics_input":19,"react":360}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -3719,7 +3720,8 @@ var GameOne = (function (_React$Component) {
                         wrongPhrases: gameone.wrongPhrases,
                         setSegmentStart: setSegmentStart,
                         setSegmentEnd: setSegmentEnd,
-                        advanceSegment: advanceSegment
+                        advanceSegment: advanceSegment,
+                        user: _this.props.initialData.user[0].pk
                       })
                     );
                   }

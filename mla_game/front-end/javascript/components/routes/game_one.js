@@ -222,6 +222,7 @@ class GameOne extends React.Component{
                            setSegmentStart={setSegmentStart}
                            setSegmentEnd={setSegmentEnd}
                            advanceSegment={advanceSegment}
+                           user={this.props.initialData.user[0].pk}
                         />
                       </li>
                      )
