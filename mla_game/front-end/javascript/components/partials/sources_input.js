@@ -23,12 +23,10 @@ class SourcesInput extends React.Component {
     } else {
       this.setState({checked:true})
     }
-    console.log(this)
   }
 
   checkSources(){
     this.props.sources.map((index, elem) => {
-      console.log(index, elem)
       if(index === this.props.pk) {
         this.setState({
           checked:true
@@ -46,7 +44,7 @@ class SourcesInput extends React.Component {
     return(
         <span className='source'>
           <label>
-            <input className="checkbox" id={pk} type="checkbox"/>
+            <input className="checkbox" id={pk} type="checkbox" onChange={ ()=> this.toggleSource() } checked={this.state.checked}/>
             <span className="state">{state}</span>
             <span className="name">{source}</span>
           </label>

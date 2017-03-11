@@ -82,8 +82,7 @@ class GameOne extends React.Component{
     let noPhrases = Object.keys(wrongPhrases).length === 0 && wrongPhrases.constructor === Object
     if(noPhrases) {
       return
-    } 
-    else {
+    } else {
       for(let key in wrongPhrases){
         // construct object for downvote
         let data = {

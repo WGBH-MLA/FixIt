@@ -310,7 +310,7 @@ function storeGameOne(data) {
 function fetchGameOne() {
   return function (dispatch, getState) {
     dispatch(requestGameOne(true));
-    return _axios2['default'].get('/api/transcript/random/').then(function (gameOneInfo) {
+    return _axios2['default'].get('/api/transcript/game_one/').then(function (gameOneInfo) {
       // store data for gameone
       dispatch(storeGameOne(gameOneInfo.data[0]));
       // set start time for for audio based on start time of first phrase
@@ -1680,6 +1680,10 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
 var Phrase = (function (_React$Component) {
   _inherits(Phrase, _React$Component);
 
@@ -1739,6 +1743,7 @@ var Phrase = (function (_React$Component) {
     value: function componentDidMount() {
       this.getEndOfContext();
       this.getStartofContext();
+      console.log(this.props.details);
     }
   }, {
     key: 'render',
@@ -1795,7 +1800,7 @@ var Phrase = (function (_React$Component) {
 exports['default'] = Phrase;
 module.exports = exports['default'];
 
-},{"react":360}],11:[function(require,module,exports){
+},{"axios":38,"react":360}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -2826,12 +2831,18 @@ var PreferencesForm = (function (_React$Component) {
         "preferred_topics": this.state.topics
       };
       var preferred_stations = {
-        "preferred_topics": this.state.sources
+        "preferred_stations": this.state.sources
       };
       (0, _helpers.patchData)('/api/profile/' + userPk + '/', preferred_topics).then(function (response) {
         console.log(response);
       });
-      (0, _helpers.patchData)('/api/profile/' + userPk + '/', preferred_stations);
+
+      if (!this.state.sources) {
+        console.log('not Empty!');
+      }
+      (0, _helpers.patchData)('/api/profile/' + userPk + '/', preferred_stations).then(function (response) {
+        console.log(response);
+      });
     }
   }, {
     key: 'render',
@@ -2982,7 +2993,6 @@ var SourcesInput = (function (_React$Component) {
       } else {
         this.setState({ checked: true });
       }
-      console.log(this);
     }
   }, {
     key: 'checkSources',
@@ -2990,7 +3000,6 @@ var SourcesInput = (function (_React$Component) {
       var _this = this;
 
       this.props.sources.map(function (index, elem) {
-        console.log(index, elem);
         if (index === _this.props.pk) {
           _this.setState({
             checked: true
@@ -3006,6 +3015,8 @@ var SourcesInput = (function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       var _props2 = this.props;
       var pk = _props2.pk;
       var source = _props2.source;
@@ -3017,7 +3028,9 @@ var SourcesInput = (function (_React$Component) {
         _react2['default'].createElement(
           'label',
           null,
-          _react2['default'].createElement('input', { className: 'checkbox', id: pk, type: 'checkbox' }),
+          _react2['default'].createElement('input', { className: 'checkbox', id: pk, type: 'checkbox', onChange: function () {
+              return _this2.toggleSource();
+            }, checked: this.state.checked }),
           _react2['default'].createElement(
             'span',
             { className: 'state' },

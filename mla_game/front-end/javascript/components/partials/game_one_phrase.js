@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios'
 
 class Phrase extends React.Component{
   constructor(){
@@ -40,6 +41,7 @@ class Phrase extends React.Component{
   componentDidMount(){
     this.getEndOfContext()
     this.getStartofContext()
+    console.log(this.props.details)
   }
 
   render(){

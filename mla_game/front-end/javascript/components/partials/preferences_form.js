@@ -64,12 +64,18 @@ class PreferencesForm extends React.Component {
       "preferred_topics":this.state.topics
     }
     let preferred_stations = {
-      "preferred_topics":this.state.sources
+      "preferred_stations":this.state.sources
     }
     patchData(`/api/profile/${userPk}/`, preferred_topics).then(function(response){
       console.log(response)
     })
-    patchData(`/api/profile/${userPk}/`, preferred_stations)
+
+    if(!this.state.sources) {
+      console.log('not Empty!')
+    }
+    patchData(`/api/profile/${userPk}/`, preferred_stations).then(function(response){
+      console.log(response)
+    })
   }
 
 
