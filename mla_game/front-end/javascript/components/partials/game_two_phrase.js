@@ -136,11 +136,11 @@ class Phrase extends React.Component{
     let phrase
     if(currentSegment) {
       phrase = <span className={phraseState} id={details.pk}>
-                <span ref={(span) => {this.span = span}} className='context'>{details.text} {details.needs_correction ? 'this phrase needs correction' : 'this phrase is correct' }</span> 
+                <span ref={(span) => {this.span = span}} className='context'>{details.text} {details.needs_correction ? '||| this phrase needs correction' : '||| this phrase is correct' }</span> 
               </span>
     } else {
       phrase = <span className='text'id={details.pk}>
-                <span>{details.text}</span> 
+                <span>{details.text} {details.needs_correction ? '||| this phrase needs correction' : '||| this phrase is correct' }</span> 
               </span>
     }
 
