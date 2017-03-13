@@ -239,7 +239,7 @@
   margin-right: -50%;
   margin-top:3em;
   background:$theme-secondary;
-  max-width: 42.5em;
+  max-width: 55em;
   max-height: 100vh;
   overflow: scroll;
   border:1px solid white;
@@ -250,6 +250,9 @@
   }
   h1 {
     width:calc(100% - 2.5em);
+  }
+  .list-tips {
+    list-style:lower-alpha;
   }
 }
 

@@ -181,6 +181,7 @@ button {
 .game-phrase-list {
   @include plain-list;
   padding:1em 0;
+  padding-bottom:10em;
   
   @include susy-breakpoint($screen-md-min, $map-md) {
     @include span(8 of 12);
@@ -363,6 +364,7 @@ button {
   padding:.5em;
   text-align: right;
   font-family: 'Droid Sans', sans-serif;
+  margin-bottom:10em;
   button {
     @include plain-button;
     padding:0;

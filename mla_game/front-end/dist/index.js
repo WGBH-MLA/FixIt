@@ -1379,22 +1379,90 @@ var GameFooter = (function (_React$Component) {
           _react2['default'].createElement(
             'p',
             null,
-            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s'
+            'When playing FixIt, use these guidelines as you listen and make judgment calls about errors and corrections: When playing FixIt, use these guidelines as you listen and make judgment calls about errors and corrections:'
           ),
           _react2['default'].createElement(
-            'p',
-            null,
-            ' but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.'
-          ),
-          _react2['default'].createElement(
-            'p',
-            null,
-            'eady. Think of a news blog that\'s filled with content hourly on the day of going live. However, reviewers tend to be distracted by comprehensible content, say, a random text copied from a'
-          ),
-          _react2['default'].createElement(
-            'p',
-            null,
-            'ontent. It\'s also called placeholder (or filler) text. It\'s a convenient tool for mock-ups. It helps to outline the visual elements of a document or presentation, eg typography, font, or layout. Lorem ipsum is mostly a part of a Latin '
+            'ul',
+            { className: 'list-tips' },
+            _react2['default'].createElement(
+              'li',
+              null,
+              'Transcripts should have correct punctuation throughout the transcripts.'
+            ),
+            _react2['default'].createElement(
+              'li',
+              null,
+              'Transcripts should contain no misspellings.'
+            ),
+            _react2['default'].createElement(
+              'li',
+              null,
+              'Contractions should be transcribed as the listener hears them, "didn\'t" or "shoulda." '
+            ),
+            _react2['default'].createElement(
+              'li',
+              null,
+              'Numbers should be transcribed in numerals, "40 years old or 40th Street." '
+            ),
+            _react2['default'].createElement(
+              'li',
+              null,
+              'Pauses and hesitations should be transcribed as the user hears them, "ah" or "um."'
+            ),
+            _react2['default'].createElement(
+              'li',
+              null,
+              'Noise should be transcribed in brackets using descriptive language, "[dog barks]" or "[gunshots]."'
+            ),
+            _react2['default'].createElement(
+              'li',
+              null,
+              'Partial words should be transcribed with as much as the speaker says followed with a dash, "Tes- testing" or "Absolu- Absolutely."'
+            ),
+            _react2['default'].createElement(
+              'li',
+              null,
+              'If multiple speakers are speaking, indicate with brackets, e.g., ',
+              _react2['default'].createElement('br', null),
+              '[All speaking at once]: ',
+              _react2['default'].createElement('br', null),
+              _react2['default'].createElement(
+                'strong',
+                null,
+                'Bob:'
+              ),
+              ' You shut up! ',
+              _react2['default'].createElement('br', null),
+              _react2['default'].createElement(
+                'strong',
+                null,
+                'Jim:'
+              ),
+              ' No, you shut up! ',
+              _react2['default'].createElement('br', null),
+              _react2['default'].createElement(
+                'strong',
+                null,
+                'Nancy:'
+              ),
+              ' You\'re both being stupid! ',
+              _react2['default'].createElement('br', null)
+            ),
+            _react2['default'].createElement(
+              'li',
+              null,
+              'If a speaker is speaking in a language other than English, it should be transcribed as best as possible in the appropriate language. If you are presented with audio in a language that you do not understand or do not feel comfortable working on, skip the challenge and start the game over.'
+            ),
+            _react2['default'].createElement(
+              'li',
+              null,
+              'For songs, the title of the song should be written in brackets followed by the lyrics verbatim. If you\'re dealing with an instrumental piece, just the title should be written in brackets.  If it\'s important to convey other information, such as if the piece is being played by a specific orchestra, the correct transcript should provide that info as well e.g., [Schumann’s Symphony #3, Leonard Bernstein conducting the New York Philharmonic, 1968]'
+            ),
+            _react2['default'].createElement(
+              'li',
+              null,
+              'If you do not know how to spell a word or name and you are playing the Identify Errors game, note that line as having an error. If you are playing the Correct Errors game and do not know how to spell the word or name, it should be transcribed as best as possible. Feel free to pause the audio and try to figure out how to spell the word. If you still cannot spell the word, spell it as best as you can.'
+            )
           )
         )
       );
