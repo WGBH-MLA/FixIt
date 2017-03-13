@@ -7,68 +7,83 @@ from django.core.management import call_command
 from huey.contrib.djhuey import db_task, db_periodic_task, crontab
 from popuparchive.client import Client
 
-from .models import Transcript, TranscriptPhraseCorrection, TranscriptPhraseCorrectionVote
+from .models import (
+    Transcript, TranscriptPhrase,
+    TranscriptPhraseCorrection, TranscriptPhraseCorrectionVote
+)
+
+from mla_game.apps.accounts.tasks import (
+    phrase_confidence_exceeds_positive_threshold,
+    phrase_confidence_recedes_from_positive_threshold,
+    phrase_confidence_exceeds_negative_threshold,
+    phrase_confidence_recedes_from_negative_threshold,
+    correction_confidence_exceeds_positive_threshold,
+    correction_confidence_recedes_from_positive_threshold,
+)
+
+phrase_positive_limit = settings.TRANSCRIPT_PHRASE_POSITIVE_CONFIDENCE_LIMIT
+phrase_negative_limit = settings.TRANSCRIPT_PHRASE_NEGATIVE_CONFIDENCE_LIMIT
+correction_lower_limit = settings.TRANSCRIPT_PHRASE_CORRECTION_LOWER_LIMIT
 
 django_log = logging.getLogger('django')
 logger = logging.getLogger('pua_scraper')
 error_log = logging.getLogger('pua_errors')
 
 
+def calculate_confidence(upvotes, downvotes):
+    total_votes = upvotes + downvotes
+    if downvotes == upvotes:
+        confidence = 0
+    elif upvotes > downvotes:
+        confidence = upvotes/total_votes
+    elif downvotes > upvotes:
+        confidence = -(downvotes/total_votes)
+    return confidence
+
+
+@db_task()
+def calculate_phrase_confidence(phrase):
+    downvotes = phrase.downvotes_count
+    upvotes = TranscriptPhraseCorrection.objects.filter(
+        transcript_phrase=phrase,
+        not_an_error=True
+    ).count()
+    original_confidence = phrase.confidence
+    new_confidence = calculate_confidence(upvotes, downvotes)
+
+    TranscriptPhrase.objects.filter(pk=phrase.pk).update(confidence=new_confidence)
+
+    if new_confidence >= phrase_positive_limit:
+        phrase_confidence_exceeds_positive_threshold(phrase)
+
+    if new_confidence <= phrase_negative_limit:
+        phrase_confidence_exceeds_negative_threshold(phrase)
+
+    if original_confidence >= phrase_positive_limit and new_confidence < phrase_positive_limit:
+        phrase_confidence_recedes_from_positive_threshold(phrase)
+
+    if original_confidence <= phrase_negative_limit and new_confidence > phrase_negative_limit:
+        phrase_confidence_recedes_from_negative_threshold(phrase)
+
+
 @db_task()
 def calculate_correction_confidence(correction):
+    original_confidence = correction.confidence
     votes = TranscriptPhraseCorrectionVote.objects.filter(
         transcript_phrase_correction=correction
     )
     upvotes = votes.filter(upvote=True).count()
     downvotes = votes.count() - upvotes
-    total_votes = votes.count()
-    if downvotes == 0:
-        correction.confidence = 1
-    elif upvotes > downvotes:
-        correction.confidence = upvotes / total_votes
-    elif downvotes > upvotes:
-        correction.confidence = -(downvotes / total_votes)
-    elif downvotes == upvotes:
-        correction.confidence = 0
+    new_confidence = calculate_confidence(upvotes, downvotes)
 
-    django_log.info(
-        'Correction: {}\nUp: {}\nDown: {}\nConfidence: {}\n\n'.format(
-            correction,
-            upvotes,
-            downvotes,
-            correction.confidence
-        )
-    )
+    TranscriptPhraseCorrection.objects.filter(
+        pk=correction.pk).update(confidence=new_confidence)
 
+    if new_confidence >= correction_lower_limit:
+        correction_confidence_exceeds_positive_threshold(correction)
 
-@db_task()
-def calculate_confidence(phrase):
-    # todo: reconcile considerations and game two upvotes
-    downvotes = phrase.downvotes_count
-    considerations = phrase.considered_by_count
-    game_two_upvotes = TranscriptPhraseCorrection.objects.filter(
-        transcript_phrase=phrase,
-        not_an_error=True
-    ).count()
-    total_votes = considerations + game_two_upvotes
-    upvotes = total_votes - downvotes
-    if downvotes == 0:
-        phrase.confidence = 1
-    elif upvotes > downvotes:
-        phrase.confidence = upvotes/total_votes
-    elif downvotes > upvotes:
-        phrase.confidence = -(downvotes/total_votes)
-    elif downvotes == upvotes:
-        phrase.confidence = 0
-    django_log.info(
-        'Phrase: {}\nUp: {}\nDown: {}\nConfidence: {}\n\n'.format(
-            phrase,
-            upvotes,
-            downvotes,
-            phrase.confidence
-        )
-    )
-    phrase.save()
+    if original_confidence >= correction_lower_limit and new_confidence < correction_lower_limit:
+        correction_confidence_recedes_from_positive_threshold(correction)
 
 
 @db_task()

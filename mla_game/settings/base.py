@@ -19,6 +19,19 @@ PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 ALLOWED_HOSTS = []
 
+# how many data points are enough to calculate confidence?
+MINIMUM_SAMPLE_SIZE = 10
+
+# original phrase is good enough for export
+TRANSCRIPT_PHRASE_POSITIVE_CONFIDENCE_LIMIT = .75
+# original phrase needs correction
+TRANSCRIPT_PHRASE_NEGATIVE_CONFIDENCE_LIMIT = -.6
+
+# correction is good enough to award points and export data
+TRANSCRIPT_PHRASE_CORRECTION_LOWER_LIMIT = .6
+# correction no longer needs votes and can replace original phrase
+TRANSCRIPT_PHRASE_CORRECTION_UPPER_LIMIT = .8
+
 LOGIN_URL = '/admin/login/'
 
 AUTHENTICATION_BACKENDS = [
@@ -48,6 +61,7 @@ pool = ConnectionPool(
 HUEY = {
     'name': 'mla',
     'always_eager': False,
+    'connection': {'connection_pool': pool},
     'consumer': {'workers': 16},
 }
 
