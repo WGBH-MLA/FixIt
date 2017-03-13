@@ -6,9 +6,7 @@ class Preferences extends React.Component{
 
   componentWillUnmount(){
     this.props.fetchData()
-    console.log('pref unmounted!')
   }
-
   
   render(){
     return (
@@ -23,6 +21,7 @@ class Preferences extends React.Component{
           </div>
         </div>
         <PreferencesForm 
+          user={this.props.initialData.user[0].pk}
           topics={this.props.preferencesOptions.topics}
           source={this.props.preferencesOptions.source}
           preferred_topics={this.props.initialData.user[0].preferred_topics}

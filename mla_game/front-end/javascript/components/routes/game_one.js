@@ -82,8 +82,7 @@ class GameOne extends React.Component{
     let noPhrases = Object.keys(wrongPhrases).length === 0 && wrongPhrases.constructor === Object
     if(noPhrases) {
       return
-    } 
-    else {
+    } else {
       for(let key in wrongPhrases){
         // construct object for downvote
         let data = {
@@ -223,6 +222,7 @@ class GameOne extends React.Component{
                            setSegmentStart={setSegmentStart}
                            setSegmentEnd={setSegmentEnd}
                            advanceSegment={advanceSegment}
+                           user={this.props.initialData.user[0].pk}
                         />
                       </li>
                      )

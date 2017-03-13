@@ -164,7 +164,7 @@ function storeGameOne(data) {
 export function fetchGameOne(){
   return (dispatch, getState) => {
     dispatch(requestGameOne(true))
-    return axios.get('/api/transcript/random/')
+    return axios.get('/api/transcript/game_one/')
       .then(function(gameOneInfo){
         // store data for gameone
         dispatch(storeGameOne(gameOneInfo.data[0]))
