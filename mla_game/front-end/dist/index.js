@@ -2106,7 +2106,9 @@ var Phrase = (function (_React$Component) {
             { ref: function (span) {
                 _this.span = span;
               }, className: 'context' },
-            details.text
+            details.text,
+            ' ',
+            details.corrections ? 'this phrase has corrections' : 'this phrase is correct'
           ),
           this.state.editing ? _react2['default'].createElement(
             'div',
@@ -2500,7 +2502,9 @@ var Phrase = (function (_React$Component) {
             { ref: function (span) {
                 _this.span = span;
               }, className: 'context' },
-            details.text
+            details.text,
+            ' ',
+            details.needs_correction ? 'this phrase needs correction' : 'this phrase is correct'
           )
         );
       } else {
@@ -4107,6 +4111,32 @@ var GameThree = (function (_React$Component) {
                     'div',
                     { key: key },
                     _react2['default'].createElement(
+                      'h2',
+                      null,
+                      'end Segment: ',
+                      gamethree.endSegment,
+                      ' ',
+                      _react2['default'].createElement('br', null),
+                      'current time: ',
+                      gamethree.currentTime,
+                      ' ',
+                      _react2['default'].createElement('br', null),
+                      'segment: ',
+                      gamethree.segment,
+                      ' ',
+                      _react2['default'].createElement('br', null),
+                      'transcript: ',
+                      gamethree.currentTranscript,
+                      ' ',
+                      _react2['default'].createElement('br', null),
+                      'Game Length: ',
+                      gamethree.gameLength,
+                      ' ',
+                      _react2['default'].createElement('br', null),
+                      'Game Progress: ',
+                      gamethree.gameProgress
+                    ),
+                    _react2['default'].createElement(
                       'div',
                       { className: 'game-meta' },
                       _react2['default'].createElement(_partialsAudio2['default'], {
@@ -4470,6 +4500,27 @@ var GameTwo = (function (_React$Component) {
                   return _react2['default'].createElement(
                     'div',
                     { key: key },
+                    _react2['default'].createElement(
+                      'h2',
+                      null,
+                      'end Segment: ',
+                      gametwo.endSegment,
+                      _react2['default'].createElement('br', null),
+                      'current time: ',
+                      gametwo.currentTime,
+                      _react2['default'].createElement('br', null),
+                      'segment: ',
+                      gametwo.segment,
+                      _react2['default'].createElement('br', null),
+                      'transcript: ',
+                      gametwo.currentTranscript,
+                      _react2['default'].createElement('br', null),
+                      'Game Length: ',
+                      gametwo.gameLength,
+                      _react2['default'].createElement('br', null),
+                      'Game Progress: ',
+                      gametwo.gameProgress
+                    ),
                     _react2['default'].createElement(
                       'div',
                       { className: 'game-meta' },

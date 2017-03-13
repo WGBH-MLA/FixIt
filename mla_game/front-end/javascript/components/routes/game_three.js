@@ -157,6 +157,14 @@ class GameThree extends React.Component{
                 if(transcript == gamethree.currentTranscript) {
                   return(
                     <div key={key}>
+                      <h2>
+                         end Segment: {gamethree.endSegment} <br/>
+                         current time: {gamethree.currentTime} <br/>
+                         segment: {gamethree.segment} <br/>
+                         transcript: {gamethree.currentTranscript} <br/>
+                         Game Length: {gamethree.gameLength} <br/>
+                         Game Progress: {gamethree.gameProgress}
+                      </h2>                       
                       <div className="game-meta">
                         <Audio 
                           isPlaying={gamethree.isPlaying}
