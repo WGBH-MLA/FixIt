@@ -219,7 +219,7 @@ class GameTwo extends React.Component{
             {gametwo.inGameTip ? (
               <GameTip 
                 dismissTip={this.props.showTipTwo}
-                text={'Intructions for game two go here'} 
+                text={'Click the Fix button to suggest a fix for a transcript phrase. After entering a fix, click Save or Cancel. If the phrase does not contain an error, click Not an Error. Click the speaker icon to listen to a specific line again. Click the Next button to continue to the next set of transcript phrases.'} 
               />
             ) : (
               ''

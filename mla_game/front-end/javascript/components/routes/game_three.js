@@ -228,7 +228,7 @@ class GameThree extends React.Component{
             {gamethree.inGameTip ? (
               <GameTip 
                 dismissTip={this.props.showTipThree}
-                text={'Intructions for game three go here'} 
+                text={'Click the Validate button to vote on transcript phrase corrections. Click on the option that contains an accurate correction. Click None of the Above if none of the options contain an accurate correction. Click the speaker icon to listen to a specific line again. Click the Next button to continue to the next set of transcript phrases.'} 
               />
             ) : (
               ''

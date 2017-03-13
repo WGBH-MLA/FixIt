@@ -3,7 +3,7 @@ import classNames from 'classnames'
 
 class Phrase extends React.Component{
   constructor(){
-    super();
+    super()
     this.markPhrase = this.markPhrase.bind(this)
     this.savePhrase = this.savePhrase.bind(this)
     this.cancel = this.cancel.bind(this)
@@ -108,7 +108,6 @@ class Phrase extends React.Component{
       } else {
         endOfRoundTwo(true)
       }
-
     }
   }
   

@@ -16,7 +16,6 @@ class GameOne extends React.Component{
     this.activePhrase = this.activePhrase.bind(this)
     this.playPhrase = this.playPhrase.bind(this)
     this.handleProgress = this.handleProgress.bind(this)
-    this.goBack = this.goBack.bind(this)
     this.selectPhrase = this.selectPhrase.bind(this)
     this.reload = this.reload.bind(this)
 
@@ -54,7 +53,7 @@ class GameOne extends React.Component{
     // copy state
     const wrongPhrases = {...this.state.wrongPhrases};
     // disable advance round for three seconds when round updates
-    wait(3000);
+    // wait(3000);
     
     // check if the round has ended. if so change state. 
     // if not push other things to state like the score and play the media    
@@ -104,15 +103,6 @@ class GameOne extends React.Component{
       this.setState({
         wrongPhrases:{}
       })
-    }
-  }
-
-  goBack() {
-    const { gameone } = this.props
-    if(gameone.segment >= 1) {
-      this.props.goBackRound(3)
-    } else {
-      return
     }
   }
 
