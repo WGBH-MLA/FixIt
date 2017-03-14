@@ -4463,7 +4463,9 @@ var GameTwo = (function (_React$Component) {
           score: 11
         };
         // post score and phrase
-        (0, _helpers.postData)('/api/transcriptphrasecorrection/', phraseData);
+        (0, _helpers.postData)('/api/transcriptphrasecorrection/', phraseData).then(function (response) {
+          console.log(response);
+        });
         (0, _helpers.postData)('/api/score/', phraseScore);
         // update scores
         updateTotalScore(11);
