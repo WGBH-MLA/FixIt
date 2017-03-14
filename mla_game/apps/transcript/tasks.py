@@ -1,4 +1,5 @@
-import json
+# import json
+import time
 import logging
 import sys
 
@@ -92,23 +93,32 @@ def process_transcript(item_id, collection_id):
         settings.PUA_KEY,
         settings.PUA_SECRET,
     )
-    try:
-        transcript_data = client.get_item(collection_id, item_id)
-        new_transcript = Transcript(
-            name=transcript_data['title'],
-            id_number=transcript_data['id'],
-            collection_id=transcript_data['collection_id'],
-            url=json.dumps(transcript_data['urls']),
-            transcript_data_blob=transcript_data
-        )
-        new_transcript.save()
-    except:
-        error_log.info('=' * 80)
-        error_log.info(
-            'Could not make transcript from item {} in collection {}'.format(
-                item_id, collection_id)
-        )
-        error_log.info(sys.exc_info())
+    transcript_data = client.get_item(collection_id, item_id)
+    time.sleep(10)
+    print(transcript_data.status_code)
+    if transcript_data.status_code == 200:
+        try:
+            transcript_data = transcript_data.json()
+            new_transcript = Transcript(
+                name=transcript_data['title'],
+                id_number=transcript_data['id'],
+                asset_name='',
+                collection_id=transcript_data['collection_id'],
+                url=transcript_data['urls'],
+                transcript_data_blob=transcript_data
+            )
+            new_transcript.save()
+        except:
+            error_log.info('=' * 80)
+            error_log.info(
+                'Could not make transcript from item {} in collection {}'.format(
+                    item_id, collection_id)
+            )
+            error_log.info(sys.exc_info()[0])
+            error_log.info(sys.exc_info()[1])
+            error_log.info(sys.exc_info()[2])
+    else:
+        error_log.info(transcript_data.status_code)
 
 
 @db_task()
