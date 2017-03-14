@@ -70,13 +70,25 @@ button {
 .social-login {
   position: relative;
   height:100vh;
+  @include grid;
   p {
     @include center;
+    text-align: center;
     a {
-      display:inline-block;
+      display:block;
       margin:1em;
-      padding:1em 2em;
-      background:$help;
+      svg {
+        display:block;
+        height:2.1875em;
+        width:6.25em;
+      }
+      @include susy-breakpoint($screen-sm-min, $map-sm) {
+        display:inline-block;
+        svg {
+          height:4.375em;
+          width:12.5em;
+        }
+      }
     }
   }
 }
