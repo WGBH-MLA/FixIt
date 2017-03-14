@@ -2398,8 +2398,8 @@ var Phrase = (function (_React$Component) {
     _classCallCheck(this, Phrase);
 
     _get(Object.getPrototypeOf(Phrase.prototype), 'constructor', this).call(this);
-    this.markPhrase = this.markPhrase.bind(this);
     this.savePhrase = this.savePhrase.bind(this);
+    this.notError = this.notError.bind(this);
     this.cancel = this.cancel.bind(this);
     this.getEndOfContext = this.getEndOfContext.bind(this);
     this.getStartofContext = this.getStartofContext.bind(this);
@@ -2446,12 +2446,32 @@ var Phrase = (function (_React$Component) {
       disableProgress(false);
     }
   }, {
-    key: 'cancel',
-    value: function cancel() {
+    key: 'notError',
+    value: function notError() {
       var _props2 = this.props;
       var details = _props2.details;
-      var removePhrase = _props2.removePhrase;
+      var selectPhrase = _props2.selectPhrase;
       var disableProgress = _props2.disableProgress;
+
+      this.setState({
+        editing: false,
+        corrected: true
+      });
+      this.span.contentEditable = false;
+      var notAnError = {
+        pk: details.pk,
+        not_an_error: true
+      };
+      selectPhrase(notAnError, details.pk);
+      disableProgress(false);
+    }
+  }, {
+    key: 'cancel',
+    value: function cancel() {
+      var _props3 = this.props;
+      var details = _props3.details;
+      var removePhrase = _props3.removePhrase;
+      var disableProgress = _props3.disableProgress;
 
       this.setState({
         editing: false,
@@ -2464,14 +2484,14 @@ var Phrase = (function (_React$Component) {
   }, {
     key: 'getStartofContext',
     value: function getStartofContext() {
-      var _props3 = this.props;
-      var active = _props3.active;
-      var details = _props3.details;
-      var keys = _props3.keys;
-      var setStartTime = _props3.setStartTime;
-      var setSegmentStart = _props3.setSegmentStart;
-      var startSegment = _props3.startSegment;
-      var skipPhrase = _props3.skipPhrase;
+      var _props4 = this.props;
+      var active = _props4.active;
+      var details = _props4.details;
+      var keys = _props4.keys;
+      var setStartTime = _props4.setStartTime;
+      var setSegmentStart = _props4.setSegmentStart;
+      var startSegment = _props4.startSegment;
+      var skipPhrase = _props4.skipPhrase;
 
       var media = document.querySelector('.audio-player');
 
@@ -2484,11 +2504,11 @@ var Phrase = (function (_React$Component) {
   }, {
     key: 'getEndOfContext',
     value: function getEndOfContext() {
-      var _props4 = this.props;
-      var active = _props4.active;
-      var details = _props4.details;
-      var keys = _props4.keys;
-      var setSegmentEnd = _props4.setSegmentEnd;
+      var _props5 = this.props;
+      var active = _props5.active;
+      var details = _props5.details;
+      var keys = _props5.keys;
+      var setSegmentEnd = _props5.setSegmentEnd;
 
       // set end time for segment
       if (keys === active + 1) {
@@ -2498,11 +2518,11 @@ var Phrase = (function (_React$Component) {
   }, {
     key: 'setSkipPhrase',
     value: function setSkipPhrase() {
-      var _props5 = this.props;
-      var details = _props5.details;
-      var keys = _props5.keys;
-      var active = _props5.active;
-      var setSkipPhrase = _props5.setSkipPhrase;
+      var _props6 = this.props;
+      var details = _props6.details;
+      var keys = _props6.keys;
+      var active = _props6.active;
+      var setSkipPhrase = _props6.setSkipPhrase;
 
       if (keys === active + 1) {
         if (details.needs_correction) {
@@ -2515,13 +2535,13 @@ var Phrase = (function (_React$Component) {
   }, {
     key: 'skipCurrentPhrase',
     value: function skipCurrentPhrase() {
-      var _props6 = this.props;
-      var details = _props6.details;
-      var keys = _props6.keys;
-      var active = _props6.active;
-      var advanceSegment = _props6.advanceSegment;
-      var advanceTranscript = _props6.advanceTranscript;
-      var updateGameProgress = _props6.updateGameProgress;
+      var _props7 = this.props;
+      var details = _props7.details;
+      var keys = _props7.keys;
+      var active = _props7.active;
+      var advanceSegment = _props7.advanceSegment;
+      var advanceTranscript = _props7.advanceTranscript;
+      var updateGameProgress = _props7.updateGameProgress;
 
       if (keys == active) {
         if (!details.needs_correction) {
@@ -2570,12 +2590,12 @@ var Phrase = (function (_React$Component) {
     value: function render() {
       var _this = this;
 
-      var _props7 = this.props;
-      var details = _props7.details;
-      var time = _props7.time;
-      var active = _props7.active;
-      var keys = _props7.keys;
-      var editingPhrase = _props7.editingPhrase;
+      var _props8 = this.props;
+      var details = _props8.details;
+      var time = _props8.time;
+      var active = _props8.active;
+      var keys = _props8.keys;
+      var editingPhrase = _props8.editingPhrase;
 
       var currentSegment = active === keys;
 
@@ -2637,11 +2657,22 @@ var Phrase = (function (_React$Component) {
               'Cancel'
             )
           ) : _react2['default'].createElement(
-            'button',
-            { className: 'fix-phrase', onClick: function () {
-                return _this.markPhrase();
-              } },
-            this.state.corrected ? 'Edit' : 'Fix'
+            'div',
+            null,
+            _react2['default'].createElement(
+              'button',
+              { className: 'fix-phrase', onClick: function () {
+                  return _this.markPhrase();
+                } },
+              this.state.corrected ? 'Edit' : 'Fix'
+            ),
+            _react2['default'].createElement(
+              'button',
+              { className: 'fix-phrase not-error', onClick: function () {
+                  return _this.notError();
+                } },
+              'Not An Error'
+            )
           )
         );
       }
@@ -4583,6 +4614,11 @@ var GameTwo = (function (_React$Component) {
                   return _react2['default'].createElement(
                     'div',
                     { key: key },
+                    _react2['default'].createElement(
+                      'pre',
+                      null,
+                      JSON.stringify(_this.state, null, 2)
+                    ),
                     _react2['default'].createElement(
                       'h2',
                       null,

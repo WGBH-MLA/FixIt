@@ -343,7 +343,23 @@ button {
     }
     .fix-phrase {
       @include light-button;
-      margin-left:0;
+      &:last-child {
+        margin-left: .5em;
+      }
+      @include susy-breakpoint($screen-lg-min, $map-lg) {
+        margin-left:0;
+        &:first-child {
+          margin-bottom:.5em;
+        }
+        &:last-child {
+          margin-left:0;
+        }
+        &.not-error {
+          font-size: .85em;
+          padding:.2em;
+          line-height:1.35;
+        }
+      }
     }
     .corrections {
       margin-top:.75em;
@@ -365,6 +381,7 @@ button {
         }
       }
       .phrase-editing {
+        font-size:.87em;
         @include susy-breakpoint($screen-lg-min, $map-lg) {
            margin-right:-15%;
         }

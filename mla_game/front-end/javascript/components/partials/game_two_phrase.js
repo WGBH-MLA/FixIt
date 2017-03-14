@@ -4,8 +4,8 @@ import classNames from 'classnames'
 class Phrase extends React.Component{
   constructor(){
     super()
-    this.markPhrase = this.markPhrase.bind(this)
     this.savePhrase = this.savePhrase.bind(this)
+    this.notError = this.notError.bind(this)
     this.cancel = this.cancel.bind(this)
     this.getEndOfContext = this.getEndOfContext.bind(this)
     this.getStartofContext = this.getStartofContext.bind(this)
@@ -43,6 +43,22 @@ class Phrase extends React.Component{
         text:this.span.textContent
     }
     selectPhrase(PhraseCorrected, details.pk)
+    disableProgress(false)
+  }
+
+  notError(){
+    const { details, selectPhrase, disableProgress } = this.props
+    
+    this.setState({
+      editing:false,
+      corrected:true,
+    })
+    this.span.contentEditable = false
+    const notAnError = {
+        pk:details.pk,
+        not_an_error:true
+    }
+    selectPhrase(notAnError, details.pk)
     disableProgress(false)
   }
 
@@ -152,7 +168,10 @@ class Phrase extends React.Component{
                           <button className='correct-phrase' onClick={() => this.cancel()}>Cancel</button>
                         </div>
                       ):(
-                        <button className="fix-phrase" onClick={() => this.markPhrase()} >{this.state.corrected ? 'Edit' : 'Fix'}</button>
+                        <div>
+                          <button className='fix-phrase' onClick={() => this.markPhrase()} >{this.state.corrected ? 'Edit' : 'Fix'}</button>
+                          <button className='fix-phrase not-error' onClick={() => this.notError()}>Not An Error</button>
+                        </div>
                       )}
                     </div>
     }

@@ -65,7 +65,9 @@ class GameTwo extends React.Component{
         score:11
       }
       // post score and phrase
-      postData('/api/transcriptphrasecorrection/', phraseData)
+      postData('/api/transcriptphrasecorrection/', phraseData).then(function(response){
+        console.log(response)
+      })
       postData('/api/score/', phraseScore)
       // update scores
       updateTotalScore(11)
@@ -150,6 +152,7 @@ class GameTwo extends React.Component{
                 if(transcript == gametwo.currentTranscript) {
                   return(
                     <div key={key}>
+                      <pre>{JSON.stringify(this.state, null, 2)}</pre>
                       <h2>
                          end Segment: {gametwo.endSegment}<br/>
                          current time: {gametwo.currentTime}<br/>
