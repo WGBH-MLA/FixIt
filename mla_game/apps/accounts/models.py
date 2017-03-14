@@ -5,7 +5,9 @@ from django.contrib.postgres.fields import JSONField
 
 class Profile(models.Model):
     '''
-    Extends the Django-provided User model
+    Extends the Django-provided User model.
+    Stores the users preferred topics and stations, and which phrases they've
+    seen in game one.
     '''
     user = models.OneToOneField(User)
     username = models.CharField(max_length=50, default='')
@@ -121,12 +123,9 @@ class Score(models.Model):
 
 class Leaderboard(models.Model):
     """
-    Leaderboard shows the following lists:
-    total points
-        All Time (top 5)
-        Monthly (top 5)
-        Weekly (top 5)
-    Game 1, 2, 3 all time point leaders (top 5)
+    A simple model to store the result of
+    mla_game.apps.accounts.tasks.update_leaderboard, because it's resource
+    intensive.
     """
     date = models.DateTimeField(auto_now_add=True)
     leaderboard = JSONField()
