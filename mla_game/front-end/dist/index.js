@@ -817,10 +817,27 @@ var Base = (function (_React$Component) {
             { className: 'app-header' },
             _react2['default'].createElement(
               'div',
-              null,
+              { className: 'grid' },
               _react2['default'].createElement(
                 'h1',
                 { className: 'game-title' },
+                _react2['default'].createElement(
+                  'a',
+                  { className: 'aapb-link', href: 'https://ndsr.americanarchive.org/' },
+                  _react2['default'].createElement(
+                    'span',
+                    { className: 'aapb-logo' },
+                    _react2['default'].createElement(
+                      'span',
+                      { className: 'assistive-text' },
+                      _react2['default'].createElement(
+                        'abbr',
+                        { title: 'American Archive of Public Broadcasting' },
+                        'AAPB Logo'
+                      )
+                    )
+                  )
+                ),
                 _react2['default'].createElement(
                   _reactRouter.Link,
                   { to: '/', onlyActiveOnIndex: true },

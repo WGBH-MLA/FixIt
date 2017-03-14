@@ -21,8 +21,9 @@ class Base extends React.Component {
       return(
         <div>
           <header className='app-header'>
-            <div>
+            <div className="grid">
               <h1 className='game-title'>
+                <a className='aapb-link' href="https://ndsr.americanarchive.org/"><span className='aapb-logo'><span className="assistive-text"><abbr title="American Archive of Public Broadcasting">AAPB Logo</abbr></span></span></a>
                 <Link to='/' onlyActiveOnIndex>Fix It</Link>
               </h1>
               <ReactCSSTransitionGroup 

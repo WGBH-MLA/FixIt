@@ -101,6 +101,9 @@ button {
 .grid {
   @include grid;
   padding:0 5%;
+  @include susy-breakpoint($screen-md-min, $map-md) {
+    padding:0 10%;
+  }
   @include susy-breakpoint($screen-jb-min) {
     padding:0 2.5%;
   }

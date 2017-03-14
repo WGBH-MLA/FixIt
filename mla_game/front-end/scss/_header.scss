@@ -4,13 +4,6 @@
   width:100%;
   top:0;
   z-index:1;
-  div {
-    @include grid;
-    padding:0 5%;
-    @include susy-breakpoint($screen-jb-min) {
-      padding:0 2.5%;
-    }
-  }
   & + div {
     margin-top:5.5em;
   }
@@ -19,15 +12,34 @@
 .game-title {
   float:left;
   width:30%;
+  position: relative;
+  padding-left: 1.5em;
   a {
     @include link-reset;
     color:$progress;
   }
+  .aapb-link {
+    display:block;
+    @include center(false, true);
+    left:0;
+  }
+  .aapb-logo {
+    display:block;
+    width:1.25em;
+    height:1.25em;
+    background:url('../javascript/images/logo_aapb_small.png'), no-repeat;
+    background-size:1.25em;
+  }
   @include susy-breakpoint($screen-sm-min, $map-sm) {
     @include span(1 of 4 first);
+    padding-left: 2em;
   }
   @include susy-breakpoint($screen-md-min, $map-md) {
     @include span(3 of 8 first);
+    padding-left:0;
+    .aapb-link {
+      left:-2.15em;
+    }
   }
   @include susy-breakpoint($screen-lg-min, $map-lg) {
     @include span(8 of 12 first);
