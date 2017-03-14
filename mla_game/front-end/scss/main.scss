@@ -366,19 +366,7 @@ button {
       float:left;
       ul {
         @include clearfix;
-      }
-    }
-    .vote-options {
-      .vote-option {
-        text-align:left;
-        border-radius:.5em;
-        font-size:1em;
-        background:$phrase-vote;
-        color:$default;
-        padding:.15em .75em;
-        &.vote {
-          background:white;
-        }
+        @include plain-list;
       }
       .phrase-editing {
         font-size:.87em;
@@ -386,6 +374,24 @@ button {
            margin-right:-15%;
         }
       }
+    }
+  }
+  .vote-options {
+    margin-left:1em;
+  }
+  .vote-option {
+    text-align:left;
+    border-radius:.5em;
+    font-size:1em;
+    background:$phrase-vote;
+    color:$default;
+    padding:.15em .75em;
+    &.none-of-above {
+      font-weight:700;
+      text-transform:uppercase;
+    }
+    &.vote {
+      background:white;
     }
   }
 }

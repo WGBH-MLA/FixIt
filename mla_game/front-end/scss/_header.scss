@@ -25,6 +25,11 @@
     vertical-align: middle;
     margin-left:.5em;
     padding:0;
+    &:hover {
+      .nav-icon {
+        fill:$progress;
+      }
+    }
   }
   .nav-icon {
     @include transition(fill, 300ms, ease-in);
@@ -37,6 +42,12 @@
     display:block;
     @include center(false, true);
     left:0;
+    &:hover {
+      .aapb-logo {
+        background:url('../javascript/images/logo_aapb.png'), no-repeat;
+        background-size:1.25em;
+      }
+    }
   }
   .aapb-logo {
     display:block;

@@ -20,6 +20,7 @@ class Corrections extends React.Component {
     }
     this.props.selectPhrase(phrase)
     this.props.setActive(pk)
+    this.props.removeNone()
     this.setState({
       corrected_vote:pk
     })
