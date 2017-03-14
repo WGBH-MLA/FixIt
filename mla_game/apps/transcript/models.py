@@ -37,10 +37,11 @@ class TranscriptManager(models.Manager):
             phrases = transcript.first().phrases.unseen(user)
             return (transcript, phrases)
         elif 'ideal_transcripts' in picks:
-            return (
-                self.filter(pk=random.choice(picks['ideal_transcripts'])),
-                False
-            )
+            if picks['ideal_transcripts']:
+                return (
+                    self.filter(pk=random.choice(picks['ideal_transcripts'])),
+                    False
+                )
         elif 'acceptable_transcripts' in picks:
             return (
                 self.filter(pk=random.choice(picks['acceptable_transcripts'])),
