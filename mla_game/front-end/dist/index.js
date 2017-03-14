@@ -128,7 +128,6 @@ exports.resetSegmentsTwo = resetSegmentsTwo;
 exports.resetSegmentsThree = resetSegmentsThree;
 exports.markIncorrect = markIncorrect;
 exports.unMarkPhrase = unMarkPhrase;
-exports.setModal = setModal;
 exports.showTipOne = showTipOne;
 exports.showTipTwo = showTipTwo;
 exports.showTipThree = showTipThree;
@@ -498,14 +497,7 @@ function unMarkPhrase(phrase) {
 
 // <-- end gameone actions
 
-//Modal window and in Game Tip
-
-function setModal(bool) {
-  return {
-    type: 'TOGGLE_MODAL',
-    bool: bool
-  };
-}
+//in Game Tips
 
 function showTipOne(bool) {
   return {
@@ -788,16 +780,41 @@ var _partialsLoading_screen2 = _interopRequireDefault(_partialsLoading_screen);
 
 var _reactResponsiveComponent = require('react-responsive-component');
 
+var _reactModal = require('react-modal');
+
+var _reactModal2 = _interopRequireDefault(_reactModal);
+
 var Base = (function (_React$Component) {
   _inherits(Base, _React$Component);
 
   function Base() {
     _classCallCheck(this, Base);
 
-    _get(Object.getPrototypeOf(Base.prototype), 'constructor', this).apply(this, arguments);
+    _get(Object.getPrototypeOf(Base.prototype), 'constructor', this).call(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.setModal = this.setModal.bind(this);
+
+    this.state = {
+      modalOpen: false
+    };
   }
 
   _createClass(Base, [{
+    key: 'setModal',
+    value: function setModal() {
+      var open = this.state.modalOpen;
+      if (open) {
+        this.setState({ modalOpen: false });
+      } else {
+        this.setState({ modalOpen: true });
+      }
+    }
+  }, {
+    key: 'closeModal',
+    value: function closeModal() {
+      this.setState({ modalOpen: false });
+    }
+  }, {
     key: 'componentWillMount',
     value: function componentWillMount() {
       this.props.fetchData();
@@ -805,6 +822,8 @@ var Base = (function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      var _this = this;
+
       var loading = this.props.initialData.loading;
       if (loading) {
         return _react2['default'].createElement(_partialsLoading_screen2['default'], null);
@@ -842,6 +861,19 @@ var Base = (function (_React$Component) {
                   _reactRouter.Link,
                   { to: '/', onlyActiveOnIndex: true },
                   'Fix It'
+                ),
+                _react2['default'].createElement(
+                  'button',
+                  { className: 'info-button', onClick: function () {
+                      return _this.setModal();
+                    } },
+                  _react2['default'].createElement(
+                    'svg',
+                    { className: 'nav-icon', xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 200 200' },
+                    _react2['default'].createElement('path', { fill: '#929497', d: 'M100 199.79c-26.655 0-51.714-10.38-70.562-29.228S.21 126.655.21 100s10.38-51.714 29.228-70.562S73.345.21 100 .21s51.714 10.38 70.563 29.228C189.41 48.286 199.79 73.345 199.79 100s-10.38 51.714-29.228 70.563C151.714 189.41 126.655 199.79 100 199.79zm0-192.587c-24.787 0-48.09 9.652-65.617 27.18C16.856 51.91 7.203 75.213 7.203 100c0 24.787 9.652 48.09 27.18 65.617 17.526 17.528 40.83 27.18 65.617 27.18 24.787 0 48.09-9.652 65.617-27.18 17.528-17.526 27.18-40.83 27.18-65.617 0-24.787-9.652-48.09-27.18-65.617C148.09 16.856 124.787 7.203 100 7.203z' }),
+                    _react2['default'].createElement('path', { fill: '#929497', d: 'M90.157 92.51h23.538v64.73H90.157z' }),
+                    _react2['default'].createElement('ellipse', { cx: '101.926', cy: '63.194', fill: '#929497', rx: '16.049', ry: '16.049' })
+                  )
                 )
               ),
               _react2['default'].createElement(
@@ -934,7 +966,46 @@ var Base = (function (_React$Component) {
               )
             )
           ),
-          _react2['default'].cloneElement(this.props.children, this.props)
+          _react2['default'].cloneElement(this.props.children, this.props),
+          _react2['default'].createElement(
+            'div',
+            null,
+            _react2['default'].createElement(
+              _reactModal2['default'],
+              {
+                isOpen: this.state.modalOpen,
+                onRequestClose: this.closeModal,
+                contentLabel: 'Game Information',
+                className: 'modal-content',
+                overlayClassName: 'modal-overlay'
+              },
+              _react2['default'].createElement(
+                'button',
+                { className: 'modal-close', onClick: this.closeModal },
+                _react2['default'].createElement(
+                  'svg',
+                  { xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 500 500' },
+                  _react2['default'].createElement(
+                    'title',
+                    null,
+                    'Close Modal'
+                  ),
+                  _react2['default'].createElement('path', { d: 'M403.1 108.9c-81.2-81.2-212.9-81.2-294.2 0s-81.2 212.9 0 294.2c81.2 81.2 212.9 81.2 294.2 0s81.2-213 0-294.2zm-12.3 281.9c-74.3 74.3-195.3 74.3-269.6 0-74.3-74.3-74.3-195.3 0-269.6s195.3-74.3 269.6 0c74.4 74.3 74.4 195.3 0 269.6z' }),
+                  _react2['default'].createElement('path', { d: 'M340.2 160l-84.4 84.2-84-83.8-11.8 11.8 84 83.8-84 83.8 11.8 11.8 84-83.8 84.4 84.2 11.8-11.8-84.4-84.2 84.4-84.2' })
+                )
+              ),
+              _react2['default'].createElement(
+                'h1',
+                null,
+                'Game Information'
+              ),
+              _react2['default'].createElement(
+                'p',
+                null,
+                'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.'
+              )
+            )
+          )
         );
       }
     }
@@ -946,7 +1017,7 @@ var Base = (function (_React$Component) {
 exports['default'] = Base;
 module.exports = exports['default'];
 
-},{"../helpers":28,"./partials/loading_screen":15,"react":360,"react-addons-css-transition-group":120,"react-responsive-component":284,"react-router":320}],4:[function(require,module,exports){
+},{"../helpers":28,"./partials/loading_screen":15,"react":360,"react-addons-css-transition-group":120,"react-modal":258,"react-responsive-component":284,"react-router":320}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1296,23 +1367,26 @@ var GameFooter = (function (_React$Component) {
     _get(Object.getPrototypeOf(GameFooter.prototype), 'constructor', this).call(this);
     this.setModal = this.setModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+
+    this.state = {
+      modalOpen: false
+    };
   }
 
   _createClass(GameFooter, [{
     key: 'setModal',
     value: function setModal() {
-      var modalIsOpen = this.props.modalIsOpen;
-
-      if (modalIsOpen) {
-        this.props.setModal(false);
+      var open = this.state.modalOpen;
+      if (open) {
+        this.setState({ modalOpen: false });
       } else {
-        this.props.setModal(true);
+        this.setState({ modalOpen: true });
       }
     }
   }, {
     key: 'closeModal',
     value: function closeModal() {
-      this.props.setModal(false);
+      this.setState({ modalOpen: false });
     }
   }, {
     key: 'render',
@@ -1367,7 +1441,7 @@ var GameFooter = (function (_React$Component) {
         _react2['default'].createElement(
           _reactModal2['default'],
           {
-            isOpen: this.props.modalIsOpen,
+            isOpen: this.state.modalOpen,
             onRequestClose: this.closeModal,
             contentLabel: 'Help FAQ',
             className: 'modal-content',
@@ -5345,7 +5419,8 @@ function initialData(state, action) {
   if (state === undefined) state = {
     loading: true,
     username: null,
-    modalIsOpen: false
+    modalIsOpen: false,
+    modalIsOpenAbout: false
   };
 
   switch (action.type) {
@@ -5358,10 +5433,6 @@ function initialData(state, action) {
         loading: false,
         user: action.user,
         score: action.score
-      });
-    case 'TOGGLE_MODAL':
-      return _extends({}, state, {
-        modalIsOpen: action.bool
       });
     case 'SET_USERNAME':
       return _extends({}, state, {

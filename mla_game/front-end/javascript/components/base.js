@@ -4,9 +4,33 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { getUserEndpoint } from '../helpers'
 import LoadingScreen from './partials/loading_screen'
 import { ResponsiveComponent } from 'react-responsive-component'
+import Modal from 'react-modal'
 
 class Base extends React.Component {
-  
+
+  constructor(){
+    super()
+    this.closeModal = this.closeModal.bind(this)
+    this.setModal = this.setModal.bind(this)
+
+    this.state = {
+      modalOpen:false
+    }
+  }
+
+  setModal(){
+    let open = this.state.modalOpen
+    if(open) {
+      this.setState({modalOpen:false})
+    } else {
+      this.setState({modalOpen:true})
+    }
+  }
+
+  closeModal(){
+    this.setState({modalOpen:false})
+  }
+
   componentWillMount(){
     this.props.fetchData()
   }
@@ -25,6 +49,13 @@ class Base extends React.Component {
               <h1 className='game-title'>
                 <a className='aapb-link' href="https://ndsr.americanarchive.org/"><span className='aapb-logo'><span className="assistive-text"><abbr title="American Archive of Public Broadcasting">AAPB Logo</abbr></span></span></a>
                 <Link to='/' onlyActiveOnIndex>Fix It</Link>
+                <button className="info-button" onClick={() => this.setModal()}>
+                  <svg className="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+                    <path fill="#929497" d="M100 199.79c-26.655 0-51.714-10.38-70.562-29.228S.21 126.655.21 100s10.38-51.714 29.228-70.562S73.345.21 100 .21s51.714 10.38 70.563 29.228C189.41 48.286 199.79 73.345 199.79 100s-10.38 51.714-29.228 70.563C151.714 189.41 126.655 199.79 100 199.79zm0-192.587c-24.787 0-48.09 9.652-65.617 27.18C16.856 51.91 7.203 75.213 7.203 100c0 24.787 9.652 48.09 27.18 65.617 17.526 17.528 40.83 27.18 65.617 27.18 24.787 0 48.09-9.652 65.617-27.18 17.528-17.526 27.18-40.83 27.18-65.617 0-24.787-9.652-48.09-27.18-65.617C148.09 16.856 124.787 7.203 100 7.203z"/>
+                    <path fill="#929497" d="M90.157 92.51h23.538v64.73H90.157z"/>
+                    <ellipse cx="101.926" cy="63.194" fill="#929497" rx="16.049" ry="16.049"/>
+                  </svg>
+                </button>
               </h1>
               <ReactCSSTransitionGroup 
                 component="span"
@@ -70,7 +101,27 @@ class Base extends React.Component {
             </div>
           </header>
           {React.cloneElement(this.props.children, this.props)}
+          <div>
+          <Modal
+            isOpen={this.state.modalOpen}
+            onRequestClose={this.closeModal}        
+            contentLabel="Game Information"
+            className="modal-content"
+            overlayClassName="modal-overlay"
+          >
+            <button className='modal-close' onClick={this.closeModal}>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+                <title>Close Modal</title>
+                <path d="M403.1 108.9c-81.2-81.2-212.9-81.2-294.2 0s-81.2 212.9 0 294.2c81.2 81.2 212.9 81.2 294.2 0s81.2-213 0-294.2zm-12.3 281.9c-74.3 74.3-195.3 74.3-269.6 0-74.3-74.3-74.3-195.3 0-269.6s195.3-74.3 269.6 0c74.4 74.3 74.4 195.3 0 269.6z"/>
+                <path d="M340.2 160l-84.4 84.2-84-83.8-11.8 11.8 84 83.8-84 83.8 11.8 11.8 84-83.8 84.4 84.2 11.8-11.8-84.4-84.2 84.4-84.2"/>
+              </svg>
+            </button>
+            <h1>Game Information</h1>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+          </Modal>
+          </div>
         </div>
+
       )
     }
   }

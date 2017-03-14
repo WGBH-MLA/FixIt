@@ -7,19 +7,23 @@ class GameFooter extends React.Component{
     super()
     this.setModal = this.setModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
+    
+    this.state = {
+      modalOpen:false
+    }
   }
-  
+
   setModal(){
-    const { modalIsOpen } = this.props
-    if(modalIsOpen) {
-      this.props.setModal(false)
+    let open = this.state.modalOpen
+    if(open) {
+      this.setState({modalOpen:false})
     } else {
-      this.props.setModal(true)
+      this.setState({modalOpen:true})
     }
   }
 
   closeModal(){
-    this.props.setModal(false)
+    this.setState({modalOpen:false})
   }
 
   render(){
@@ -44,7 +48,7 @@ class GameFooter extends React.Component{
           </button>              
         </div>
         <Modal
-          isOpen={this.props.modalIsOpen}
+          isOpen={this.state.modalOpen}
           onRequestClose={this.closeModal}        
           contentLabel="Help FAQ"
           className="modal-content"

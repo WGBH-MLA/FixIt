@@ -17,6 +17,21 @@
   a {
     @include link-reset;
     color:$progress;
+
+  }
+  .info-button {
+    @include plain-button;
+    display:inline-block;
+    vertical-align: middle;
+    margin-left:.5em;
+    padding:0;
+  }
+  .nav-icon {
+    @include transition(fill, 300ms, ease-in);
+    height:1.2em;
+    width:1.2em;
+    display:block;
+    fill:$icon-dark;
   }
   .aapb-link {
     display:block;
