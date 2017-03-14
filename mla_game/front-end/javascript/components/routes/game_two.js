@@ -152,7 +152,6 @@ class GameTwo extends React.Component{
                 if(transcript == gametwo.currentTranscript) {
                   return(
                     <div key={key}>
-                      <pre>{JSON.stringify(this.state, null, 2)}</pre>
                       <h2>
                          end Segment: {gametwo.endSegment}<br/>
                          current time: {gametwo.currentTime}<br/>
