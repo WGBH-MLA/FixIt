@@ -1,7 +1,6 @@
-# import json
+import requests
 import time
 import logging
-import sys
 
 from django.conf import settings
 from django.core.management import call_command
@@ -94,9 +93,7 @@ def process_transcript(item_id, collection_id):
         settings.PUA_SECRET,
     )
     transcript_data = client.get_item(collection_id, item_id)
-    time.sleep(10)
-    print(transcript_data.status_code)
-    if transcript_data.status_code == 200:
+    if transcript_data.status_code == requests.codes.ok:
         try:
             transcript_data = transcript_data.json()
             new_transcript = Transcript(
@@ -114,11 +111,13 @@ def process_transcript(item_id, collection_id):
                 'Could not make transcript from item {} in collection {}'.format(
                     item_id, collection_id)
             )
-            error_log.info(sys.exc_info()[0])
-            error_log.info(sys.exc_info()[1])
-            error_log.info(sys.exc_info()[2])
     else:
-        error_log.info(transcript_data.status_code)
+        error_log.info('=' * 80)
+        error_log.info(
+            'Failed to get item {} in collection {} - error code {}'.format(
+                item_id, collection_id, transcript_data.status_code
+            )
+        )
 
 
 @db_task()
