@@ -128,7 +128,6 @@ exports.resetSegmentsTwo = resetSegmentsTwo;
 exports.resetSegmentsThree = resetSegmentsThree;
 exports.markIncorrect = markIncorrect;
 exports.unMarkPhrase = unMarkPhrase;
-exports.setModal = setModal;
 exports.showTipOne = showTipOne;
 exports.showTipTwo = showTipTwo;
 exports.showTipThree = showTipThree;
@@ -498,14 +497,7 @@ function unMarkPhrase(phrase) {
 
 // <-- end gameone actions
 
-//Modal window and in Game Tip
-
-function setModal(bool) {
-  return {
-    type: 'TOGGLE_MODAL',
-    bool: bool
-  };
-}
+//in Game Tips
 
 function showTipOne(bool) {
   return {
@@ -788,16 +780,41 @@ var _partialsLoading_screen2 = _interopRequireDefault(_partialsLoading_screen);
 
 var _reactResponsiveComponent = require('react-responsive-component');
 
+var _reactModal = require('react-modal');
+
+var _reactModal2 = _interopRequireDefault(_reactModal);
+
 var Base = (function (_React$Component) {
   _inherits(Base, _React$Component);
 
   function Base() {
     _classCallCheck(this, Base);
 
-    _get(Object.getPrototypeOf(Base.prototype), 'constructor', this).apply(this, arguments);
+    _get(Object.getPrototypeOf(Base.prototype), 'constructor', this).call(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.setModal = this.setModal.bind(this);
+
+    this.state = {
+      modalOpen: false
+    };
   }
 
   _createClass(Base, [{
+    key: 'setModal',
+    value: function setModal() {
+      var open = this.state.modalOpen;
+      if (open) {
+        this.setState({ modalOpen: false });
+      } else {
+        this.setState({ modalOpen: true });
+      }
+    }
+  }, {
+    key: 'closeModal',
+    value: function closeModal() {
+      this.setState({ modalOpen: false });
+    }
+  }, {
     key: 'componentWillMount',
     value: function componentWillMount() {
       this.props.fetchData();
@@ -805,6 +822,8 @@ var Base = (function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      var _this = this;
+
       var loading = this.props.initialData.loading;
       if (loading) {
         return _react2['default'].createElement(_partialsLoading_screen2['default'], null);
@@ -842,6 +861,19 @@ var Base = (function (_React$Component) {
                   _reactRouter.Link,
                   { to: '/', onlyActiveOnIndex: true },
                   'Fix It'
+                ),
+                _react2['default'].createElement(
+                  'button',
+                  { className: 'info-button', onClick: function () {
+                      return _this.setModal();
+                    } },
+                  _react2['default'].createElement(
+                    'svg',
+                    { className: 'nav-icon', xmlns: 'http://www.w3.org/2000/svg', viewBox: '10.6 100.6 590.8 590.8' },
+                    _react2['default'].createElement('path', { d: 'M306 691.4c-78.904 0-153.085-30.727-208.88-86.52C41.328 549.085 10.6 474.903 10.6 396s30.727-153.085 86.52-208.88C152.916 131.328 227.097 100.6 306 100.6s153.086 30.727 208.88 86.52C570.674 242.916 601.4 317.097 601.4 396s-30.727 153.086-86.52 208.88S384.903 691.4 306 691.4zm0-550.8c-68.22 0-132.356 26.566-180.595 74.805C77.167 263.645 50.6 327.78 50.6 396s26.566 132.356 74.805 180.596C173.645 624.834 237.78 651.4 306 651.4s132.356-26.566 180.596-74.805C534.834 528.355 561.4 464.22 561.4 396s-26.566-132.356-74.805-180.595C438.355 167.167 374.22 140.6 306 140.6z' }),
+                    _react2['default'].createElement('path', { d: 'M277.848 374.58h67.32v185.13h-67.32z' }),
+                    _react2['default'].createElement('circle', { cx: '311.508', cy: '290.736', r: '45.9' })
+                  )
                 )
               ),
               _react2['default'].createElement(
@@ -934,7 +966,46 @@ var Base = (function (_React$Component) {
               )
             )
           ),
-          _react2['default'].cloneElement(this.props.children, this.props)
+          _react2['default'].cloneElement(this.props.children, this.props),
+          _react2['default'].createElement(
+            'div',
+            null,
+            _react2['default'].createElement(
+              _reactModal2['default'],
+              {
+                isOpen: this.state.modalOpen,
+                onRequestClose: this.closeModal,
+                contentLabel: 'Game Information',
+                className: 'modal-content',
+                overlayClassName: 'modal-overlay'
+              },
+              _react2['default'].createElement(
+                'button',
+                { className: 'modal-close', onClick: this.closeModal },
+                _react2['default'].createElement(
+                  'svg',
+                  { xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 500 500' },
+                  _react2['default'].createElement(
+                    'title',
+                    null,
+                    'Close Modal'
+                  ),
+                  _react2['default'].createElement('path', { d: 'M403.1 108.9c-81.2-81.2-212.9-81.2-294.2 0s-81.2 212.9 0 294.2c81.2 81.2 212.9 81.2 294.2 0s81.2-213 0-294.2zm-12.3 281.9c-74.3 74.3-195.3 74.3-269.6 0-74.3-74.3-74.3-195.3 0-269.6s195.3-74.3 269.6 0c74.4 74.3 74.4 195.3 0 269.6z' }),
+                  _react2['default'].createElement('path', { d: 'M340.2 160l-84.4 84.2-84-83.8-11.8 11.8 84 83.8-84 83.8 11.8 11.8 84-83.8 84.4 84.2 11.8-11.8-84.4-84.2 84.4-84.2' })
+                )
+              ),
+              _react2['default'].createElement(
+                'h1',
+                null,
+                'Game Information'
+              ),
+              _react2['default'].createElement(
+                'p',
+                null,
+                'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.'
+              )
+            )
+          )
         );
       }
     }
@@ -946,7 +1017,7 @@ var Base = (function (_React$Component) {
 exports['default'] = Base;
 module.exports = exports['default'];
 
-},{"../helpers":28,"./partials/loading_screen":15,"react":360,"react-addons-css-transition-group":120,"react-responsive-component":284,"react-router":320}],4:[function(require,module,exports){
+},{"../helpers":28,"./partials/loading_screen":15,"react":360,"react-addons-css-transition-group":120,"react-modal":258,"react-responsive-component":284,"react-router":320}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1203,6 +1274,7 @@ var Corrections = (function (_React$Component) {
       };
       this.props.selectPhrase(phrase);
       this.props.setActive(pk);
+      this.props.removeNone();
       this.setState({
         corrected_vote: pk
       });
@@ -1296,23 +1368,26 @@ var GameFooter = (function (_React$Component) {
     _get(Object.getPrototypeOf(GameFooter.prototype), 'constructor', this).call(this);
     this.setModal = this.setModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+
+    this.state = {
+      modalOpen: false
+    };
   }
 
   _createClass(GameFooter, [{
     key: 'setModal',
     value: function setModal() {
-      var modalIsOpen = this.props.modalIsOpen;
-
-      if (modalIsOpen) {
-        this.props.setModal(false);
+      var open = this.state.modalOpen;
+      if (open) {
+        this.setState({ modalOpen: false });
       } else {
-        this.props.setModal(true);
+        this.setState({ modalOpen: true });
       }
     }
   }, {
     key: 'closeModal',
     value: function closeModal() {
-      this.props.setModal(false);
+      this.setState({ modalOpen: false });
     }
   }, {
     key: 'render',
@@ -1367,7 +1442,7 @@ var GameFooter = (function (_React$Component) {
         _react2['default'].createElement(
           _reactModal2['default'],
           {
-            isOpen: this.props.modalIsOpen,
+            isOpen: this.state.modalOpen,
             onRequestClose: this.closeModal,
             contentLabel: 'Help FAQ',
             className: 'modal-content',
@@ -1937,10 +2012,13 @@ var Phrase = (function (_React$Component) {
     this.setSkipPhrase = this.setSkipPhrase.bind(this);
     this.skipCurrentPhrase = this.skipCurrentPhrase.bind(this);
     this.skipLastPhrase = this.skipLastPhrase.bind(this);
+    this.noneVote = this.noneVote.bind(this);
+    this.removeNone = this.removeNone.bind(this);
 
     this.state = {
       editing: false,
-      corrected: false
+      corrected: false,
+      no_correction: null
     };
   }
 
@@ -1952,6 +2030,22 @@ var Phrase = (function (_React$Component) {
       } else {
         this.setState({ editing: true });
       }
+    }
+  }, {
+    key: 'noneVote',
+    value: function noneVote(pk) {
+      this.props.selectPhrase('none');
+      this.props.setActive('none');
+      this.setState({
+        no_correction: true
+      });
+    }
+  }, {
+    key: 'removeNone',
+    value: function removeNone() {
+      this.setState({
+        no_correction: null
+      });
     }
   }, {
     key: 'savePhrase',
@@ -2104,13 +2198,18 @@ var Phrase = (function (_React$Component) {
       var setActive = _props7.setActive;
       var cancel = this.cancel;
       var savePhrase = this.savePhrase;
+      var removeNone = this.removeNone;
 
       var currentSegment = active === keys;
 
       var phraseState = (0, _classnames2['default'])({
         'text highlighted': true,
-        // 'corrected': this.state.corrected,
         'editing': this.state.editing
+      });
+
+      var voteState = (0, _classnames2['default'])({
+        'vote-option none-of-above': true,
+        'vote': this.state.no_correction
       });
 
       var phrase = undefined;
@@ -2131,23 +2230,57 @@ var Phrase = (function (_React$Component) {
             'div',
             { className: 'corrections' },
             details.corrections ? _react2['default'].createElement(
-              'ul',
+              'div',
               null,
-              details.corrections.map(function (index, key) {
-                return _react2['default'].createElement(
-                  'li',
-                  { key: key },
-                  _react2['default'].createElement(_corrections2['default'], {
-                    text: index.corrected_text,
-                    pk: index.pk,
-                    selectPhrase: selectPhrase,
-                    setActive: setActive,
-                    active: activeVote,
-                    cancel: cancel,
-                    savePhrase: savePhrase
-                  })
-                );
-              })
+              _react2['default'].createElement(
+                'ul',
+                null,
+                details.corrections.map(function (index, key) {
+                  return _react2['default'].createElement(
+                    'li',
+                    { key: key },
+                    _react2['default'].createElement(_corrections2['default'], {
+                      cancel: cancel,
+                      savePhrase: savePhrase,
+                      removeNone: removeNone,
+                      text: index.corrected_text,
+                      pk: index.pk,
+                      selectPhrase: selectPhrase,
+                      setActive: setActive,
+                      active: activeVote
+                    })
+                  );
+                })
+              ),
+              _react2['default'].createElement(
+                'div',
+                { className: 'vote-options' },
+                _react2['default'].createElement(
+                  'button',
+                  { className: voteState, onClick: function () {
+                      return _this.noneVote(details.pk);
+                    } },
+                  'None of the Above'
+                ),
+                this.state.no_correction ? _react2['default'].createElement(
+                  'div',
+                  { className: 'phrase-editing' },
+                  _react2['default'].createElement(
+                    'button',
+                    { className: 'correct-phrase', onClick: function () {
+                        return _this.savePhrase();
+                      } },
+                    'Save'
+                  ),
+                  _react2['default'].createElement(
+                    'button',
+                    { className: 'correct-phrase', onClick: function () {
+                        return _this.cancel();
+                      } },
+                    'Cancel'
+                  )
+                ) : ''
+              )
             ) : ''
           ) : ''
         );
@@ -2324,8 +2457,8 @@ var Phrase = (function (_React$Component) {
     _classCallCheck(this, Phrase);
 
     _get(Object.getPrototypeOf(Phrase.prototype), 'constructor', this).call(this);
-    this.markPhrase = this.markPhrase.bind(this);
     this.savePhrase = this.savePhrase.bind(this);
+    this.notError = this.notError.bind(this);
     this.cancel = this.cancel.bind(this);
     this.getEndOfContext = this.getEndOfContext.bind(this);
     this.getStartofContext = this.getStartofContext.bind(this);
@@ -2372,12 +2505,32 @@ var Phrase = (function (_React$Component) {
       disableProgress(false);
     }
   }, {
-    key: 'cancel',
-    value: function cancel() {
+    key: 'notError',
+    value: function notError() {
       var _props2 = this.props;
       var details = _props2.details;
-      var removePhrase = _props2.removePhrase;
+      var selectPhrase = _props2.selectPhrase;
       var disableProgress = _props2.disableProgress;
+
+      this.setState({
+        editing: false,
+        corrected: true
+      });
+      this.span.contentEditable = false;
+      var notAnError = {
+        pk: details.pk,
+        not_an_error: true
+      };
+      selectPhrase(notAnError, details.pk);
+      disableProgress(false);
+    }
+  }, {
+    key: 'cancel',
+    value: function cancel() {
+      var _props3 = this.props;
+      var details = _props3.details;
+      var removePhrase = _props3.removePhrase;
+      var disableProgress = _props3.disableProgress;
 
       this.setState({
         editing: false,
@@ -2390,14 +2543,14 @@ var Phrase = (function (_React$Component) {
   }, {
     key: 'getStartofContext',
     value: function getStartofContext() {
-      var _props3 = this.props;
-      var active = _props3.active;
-      var details = _props3.details;
-      var keys = _props3.keys;
-      var setStartTime = _props3.setStartTime;
-      var setSegmentStart = _props3.setSegmentStart;
-      var startSegment = _props3.startSegment;
-      var skipPhrase = _props3.skipPhrase;
+      var _props4 = this.props;
+      var active = _props4.active;
+      var details = _props4.details;
+      var keys = _props4.keys;
+      var setStartTime = _props4.setStartTime;
+      var setSegmentStart = _props4.setSegmentStart;
+      var startSegment = _props4.startSegment;
+      var skipPhrase = _props4.skipPhrase;
 
       var media = document.querySelector('.audio-player');
 
@@ -2410,11 +2563,11 @@ var Phrase = (function (_React$Component) {
   }, {
     key: 'getEndOfContext',
     value: function getEndOfContext() {
-      var _props4 = this.props;
-      var active = _props4.active;
-      var details = _props4.details;
-      var keys = _props4.keys;
-      var setSegmentEnd = _props4.setSegmentEnd;
+      var _props5 = this.props;
+      var active = _props5.active;
+      var details = _props5.details;
+      var keys = _props5.keys;
+      var setSegmentEnd = _props5.setSegmentEnd;
 
       // set end time for segment
       if (keys === active + 1) {
@@ -2424,11 +2577,11 @@ var Phrase = (function (_React$Component) {
   }, {
     key: 'setSkipPhrase',
     value: function setSkipPhrase() {
-      var _props5 = this.props;
-      var details = _props5.details;
-      var keys = _props5.keys;
-      var active = _props5.active;
-      var setSkipPhrase = _props5.setSkipPhrase;
+      var _props6 = this.props;
+      var details = _props6.details;
+      var keys = _props6.keys;
+      var active = _props6.active;
+      var setSkipPhrase = _props6.setSkipPhrase;
 
       if (keys === active + 1) {
         if (details.needs_correction) {
@@ -2441,13 +2594,13 @@ var Phrase = (function (_React$Component) {
   }, {
     key: 'skipCurrentPhrase',
     value: function skipCurrentPhrase() {
-      var _props6 = this.props;
-      var details = _props6.details;
-      var keys = _props6.keys;
-      var active = _props6.active;
-      var advanceSegment = _props6.advanceSegment;
-      var advanceTranscript = _props6.advanceTranscript;
-      var updateGameProgress = _props6.updateGameProgress;
+      var _props7 = this.props;
+      var details = _props7.details;
+      var keys = _props7.keys;
+      var active = _props7.active;
+      var advanceSegment = _props7.advanceSegment;
+      var advanceTranscript = _props7.advanceTranscript;
+      var updateGameProgress = _props7.updateGameProgress;
 
       if (keys == active) {
         if (!details.needs_correction) {
@@ -2496,12 +2649,12 @@ var Phrase = (function (_React$Component) {
     value: function render() {
       var _this = this;
 
-      var _props7 = this.props;
-      var details = _props7.details;
-      var time = _props7.time;
-      var active = _props7.active;
-      var keys = _props7.keys;
-      var editingPhrase = _props7.editingPhrase;
+      var _props8 = this.props;
+      var details = _props8.details;
+      var time = _props8.time;
+      var active = _props8.active;
+      var keys = _props8.keys;
+      var editingPhrase = _props8.editingPhrase;
 
       var currentSegment = active === keys;
 
@@ -2563,11 +2716,22 @@ var Phrase = (function (_React$Component) {
               'Cancel'
             )
           ) : _react2['default'].createElement(
-            'button',
-            { className: 'fix-phrase', onClick: function () {
-                return _this.markPhrase();
-              } },
-            this.state.corrected ? 'Edit' : 'Fix'
+            'div',
+            null,
+            _react2['default'].createElement(
+              'button',
+              { className: 'fix-phrase', onClick: function () {
+                  return _this.markPhrase();
+                } },
+              this.state.corrected ? 'Edit' : 'Fix'
+            ),
+            _react2['default'].createElement(
+              'button',
+              { className: 'fix-phrase not-error', onClick: function () {
+                  return _this.notError();
+                } },
+              'Not An Error'
+            )
           )
         );
       }
@@ -3960,15 +4124,19 @@ var GameThree = (function (_React$Component) {
       if (!noCorrectionExists) {
         //phrase data from local state
         var phraseData = {
-          transcript_phrase: this.state.phrase.pk
+          upvote: true,
+          transcript_phrase_correction: this.state.phrase.pk
         };
         // score data
         var phraseScore = {
           game: '3',
           score: 11
         };
+        console.log(phraseData);
         // post score and phrase
-        (0, _helpers.postData)('/api/transcriptphrasecorrection/', phraseData);
+        (0, _helpers.postData)('/api/transcriptphrasecorrection/', phraseData).then(function (response) {
+          console.log(response);
+        });
         (0, _helpers.postData)('/api/score/', phraseScore);
         // update scores
         updateTotalScore(11);
@@ -4119,6 +4287,7 @@ var GameThree = (function (_React$Component) {
                   return _react2['default'].createElement(
                     'div',
                     { key: key },
+                    JSON.stringify(_this.state, null, 2),
                     _react2['default'].createElement(
                       'h2',
                       null,
@@ -4358,7 +4527,9 @@ var GameTwo = (function (_React$Component) {
           score: 11
         };
         // post score and phrase
-        (0, _helpers.postData)('/api/transcriptphrasecorrection/', phraseData);
+        (0, _helpers.postData)('/api/transcriptphrasecorrection/', phraseData).then(function (response) {
+          console.log(response);
+        });
         (0, _helpers.postData)('/api/score/', phraseScore);
         // update scores
         updateTotalScore(11);
@@ -5345,7 +5516,8 @@ function initialData(state, action) {
   if (state === undefined) state = {
     loading: true,
     username: null,
-    modalIsOpen: false
+    modalIsOpen: false,
+    modalIsOpenAbout: false
   };
 
   switch (action.type) {
@@ -5358,10 +5530,6 @@ function initialData(state, action) {
         loading: false,
         user: action.user,
         score: action.score
-      });
-    case 'TOGGLE_MODAL':
-      return _extends({}, state, {
-        modalIsOpen: action.bool
       });
     case 'SET_USERNAME':
       return _extends({}, state, {

@@ -351,14 +351,7 @@ export function unMarkPhrase(phrase){
 }
 // <-- end gameone actions
 
-//Modal window and in Game Tip
-export function setModal(bool){
-  return {
-    type:'TOGGLE_MODAL',
-    bool
-  }
-}
-
+//in Game Tips
 export function showTipOne(bool){
   return {
     type:'DISMISS_TIP_ONE',

@@ -62,15 +62,19 @@ class GameThree extends React.Component{
     if(!noCorrectionExists) {
       //phrase data from local state
       let phraseData = {
-        transcript_phrase:this.state.phrase.pk
+        upvote:true,
+        transcript_phrase_correction:this.state.phrase.pk
       }
       // score data
       let phraseScore = {
         game:'3',
         score:11
       }
+      console.log(phraseData)
       // post score and phrase
-      postData('/api/transcriptphrasecorrection/', phraseData)
+      postData('/api/transcriptphrasecorrection/', phraseData).then(function(response){
+        console.log(response)
+      })
       postData('/api/score/', phraseScore)
       // update scores
       updateTotalScore(11)
@@ -157,6 +161,7 @@ class GameThree extends React.Component{
                 if(transcript == gamethree.currentTranscript) {
                   return(
                     <div key={key}>
+                      {JSON.stringify(this.state, null, 2)}
                       <h2>
                          end Segment: {gamethree.endSegment} <br/>
                          current time: {gamethree.currentTime} <br/>

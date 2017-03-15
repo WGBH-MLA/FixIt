@@ -343,32 +343,55 @@ button {
     }
     .fix-phrase {
       @include light-button;
-      margin-left:0;
+      &:last-child {
+        margin-left: .5em;
+      }
+      @include susy-breakpoint($screen-lg-min, $map-lg) {
+        margin-left:0;
+        &:first-child {
+          margin-bottom:.5em;
+        }
+        &:last-child {
+          margin-left:0;
+        }
+        &.not-error {
+          font-size: .85em;
+          padding:.2em;
+          line-height:1.35;
+        }
+      }
     }
     .corrections {
       margin-top:.75em;
       float:left;
       ul {
         @include clearfix;
-      }
-    }
-    .vote-options {
-      .vote-option {
-        text-align:left;
-        border-radius:.5em;
-        font-size:1em;
-        background:$phrase-vote;
-        color:$default;
-        padding:.15em .75em;
-        &.vote {
-          background:white;
-        }
+        @include plain-list;
       }
       .phrase-editing {
+        font-size:.87em;
         @include susy-breakpoint($screen-lg-min, $map-lg) {
            margin-right:-15%;
         }
       }
+    }
+  }
+  .vote-options {
+    margin-left:1em;
+  }
+  .vote-option {
+    text-align:left;
+    border-radius:.5em;
+    font-size:1em;
+    background:$phrase-vote;
+    color:$default;
+    padding:.15em .75em;
+    &.none-of-above {
+      font-weight:700;
+      text-transform:uppercase;
+    }
+    &.vote {
+      background:white;
     }
   }
 }
@@ -414,4 +437,73 @@ button {
   @include center();
   width:10em;
   height:10em;
+}
+
+
+.ReactModalPortal {
+  .modal-content {
+    @include animated(200ms);
+    &.ReactModal__Content--after-open {
+      @include fadeIn;
+    }
+  }
+}
+
+.ReactModal__Body--open {
+  overflow:hidden;
+}
+
+// help modal styling 
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color:rgba(0, 0, 0, 0.75);
+  z-index:5;
+  overflow:hidden;
+}
+
+.modal-content {
+  position: relative;
+  margin:0 auto;
+  background:$theme-secondary;
+  height:100vh;
+  width:100%;
+  max-width:55em;
+  overflow: scroll;
+  border:1px solid white;
+  border-radius:4px;
+  padding:1em 1.5em;
+  &:focus {
+    outline:0;
+  }
+  h1 {
+    width:calc(100% - 2.5em);
+  }
+  .list-tips {
+    list-style:lower-alpha;
+  }
+}
+
+.modal-close {
+  @include plain-button;
+  position:absolute;
+  top:1em;
+  right:1em;
+  svg {
+    width:2.5em;
+    height:2.5em;
+    @include transition(fill, 300ms, ease-in);
+    fill:white;
+    stroke:white;
+    stroke-width:15
+  }
+  &:hover {
+    svg {
+      fill:$icon-hover;
+      stroke:$icon-hover;
+    }
+  }
 }

@@ -65,7 +65,9 @@ class GameTwo extends React.Component{
         score:11
       }
       // post score and phrase
-      postData('/api/transcriptphrasecorrection/', phraseData)
+      postData('/api/transcriptphrasecorrection/', phraseData).then(function(response){
+        console.log(response)
+      })
       postData('/api/score/', phraseScore)
       // update scores
       updateTotalScore(11)

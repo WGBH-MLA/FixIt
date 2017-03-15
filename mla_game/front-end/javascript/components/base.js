@@ -4,9 +4,33 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { getUserEndpoint } from '../helpers'
 import LoadingScreen from './partials/loading_screen'
 import { ResponsiveComponent } from 'react-responsive-component'
+import Modal from 'react-modal'
 
 class Base extends React.Component {
-  
+
+  constructor(){
+    super()
+    this.closeModal = this.closeModal.bind(this)
+    this.setModal = this.setModal.bind(this)
+
+    this.state = {
+      modalOpen:false
+    }
+  }
+
+  setModal(){
+    let open = this.state.modalOpen
+    if(open) {
+      this.setState({modalOpen:false})
+    } else {
+      this.setState({modalOpen:true})
+    }
+  }
+
+  closeModal(){
+    this.setState({modalOpen:false})
+  }
+
   componentWillMount(){
     this.props.fetchData()
   }
@@ -25,6 +49,13 @@ class Base extends React.Component {
               <h1 className='game-title'>
                 <a className='aapb-link' href="https://ndsr.americanarchive.org/"><span className='aapb-logo'><span className="assistive-text"><abbr title="American Archive of Public Broadcasting">AAPB Logo</abbr></span></span></a>
                 <Link to='/' onlyActiveOnIndex>Fix It</Link>
+                <button className="info-button" onClick={() => this.setModal()}>
+                  <svg className='nav-icon' xmlns="http://www.w3.org/2000/svg" viewBox="10.6 100.6 590.8 590.8">
+                    <path d="M306 691.4c-78.904 0-153.085-30.727-208.88-86.52C41.328 549.085 10.6 474.903 10.6 396s30.727-153.085 86.52-208.88C152.916 131.328 227.097 100.6 306 100.6s153.086 30.727 208.88 86.52C570.674 242.916 601.4 317.097 601.4 396s-30.727 153.086-86.52 208.88S384.903 691.4 306 691.4zm0-550.8c-68.22 0-132.356 26.566-180.595 74.805C77.167 263.645 50.6 327.78 50.6 396s26.566 132.356 74.805 180.596C173.645 624.834 237.78 651.4 306 651.4s132.356-26.566 180.596-74.805C534.834 528.355 561.4 464.22 561.4 396s-26.566-132.356-74.805-180.595C438.355 167.167 374.22 140.6 306 140.6z"/>
+                    <path d="M277.848 374.58h67.32v185.13h-67.32z"/>
+                    <circle cx="311.508" cy="290.736" r="45.9"/>
+                  </svg>
+                </button>
               </h1>
               <ReactCSSTransitionGroup 
                 component="span"
@@ -70,7 +101,27 @@ class Base extends React.Component {
             </div>
           </header>
           {React.cloneElement(this.props.children, this.props)}
+          <div>
+          <Modal
+            isOpen={this.state.modalOpen}
+            onRequestClose={this.closeModal}        
+            contentLabel="Game Information"
+            className="modal-content"
+            overlayClassName="modal-overlay"
+          >
+            <button className='modal-close' onClick={this.closeModal}>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+                <title>Close Modal</title>
+                <path d="M403.1 108.9c-81.2-81.2-212.9-81.2-294.2 0s-81.2 212.9 0 294.2c81.2 81.2 212.9 81.2 294.2 0s81.2-213 0-294.2zm-12.3 281.9c-74.3 74.3-195.3 74.3-269.6 0-74.3-74.3-74.3-195.3 0-269.6s195.3-74.3 269.6 0c74.4 74.3 74.4 195.3 0 269.6z"/>
+                <path d="M340.2 160l-84.4 84.2-84-83.8-11.8 11.8 84 83.8-84 83.8 11.8 11.8 84-83.8 84.4 84.2 11.8-11.8-84.4-84.2 84.4-84.2"/>
+              </svg>
+            </button>
+            <h1>Game Information</h1>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+          </Modal>
+          </div>
         </div>
+
       )
     }
   }

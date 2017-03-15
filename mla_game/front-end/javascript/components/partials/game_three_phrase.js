@@ -13,10 +13,13 @@ class Phrase extends React.Component{
     this.setSkipPhrase = this.setSkipPhrase.bind(this)
     this.skipCurrentPhrase = this.skipCurrentPhrase.bind(this)
     this.skipLastPhrase = this.skipLastPhrase.bind(this)
-
+    this.noneVote = this.noneVote.bind(this);
+    this.removeNone = this.removeNone.bind(this);
+    
     this.state = {
       editing:false,
       corrected:false,
+      no_correction:null
     }
   }
 
@@ -26,6 +29,20 @@ class Phrase extends React.Component{
     } else {
       this.setState({editing:true})
     }
+  }
+
+  noneVote(pk){
+    this.props.selectPhrase('none')
+    this.props.setActive('none')
+    this.setState({
+      no_correction:true
+    })
+  }
+
+  removeNone(){
+    this.setState({
+      no_correction:null
+    })
   }
   
   savePhrase(){
@@ -116,13 +133,17 @@ class Phrase extends React.Component{
   
   render(){
     const {details, time, active, keys, editingPhrase, selectPhrase, activeVote, setActive } = this.props
-    const { cancel, savePhrase} = this
+    const { cancel, savePhrase, removeNone} = this
     let currentSegment = active === keys
 
     let phraseState = classNames({
       'text highlighted': true,
-      // 'corrected': this.state.corrected,
       'editing': this.state.editing
+    })
+
+    let voteState = classNames({
+      'vote-option none-of-above':true,
+      'vote':this.state.no_correction
     })
 
     let phrase
@@ -132,23 +153,37 @@ class Phrase extends React.Component{
                 {this.state.editing ?(
                   <div className="corrections">
                     {details.corrections ? (
-                       <ul>
-                        {details.corrections.map(function(index, key){
-                          return(
-                            <li key={key}>
-                              <Corrections
-                                text={index.corrected_text}
-                                pk={index.pk}
-                                selectPhrase={selectPhrase}
-                                setActive={setActive}
-                                active={activeVote}
-                                cancel={cancel}
-                                savePhrase={savePhrase}
-                              />
-                            </li>
-                            )
-                        })}
-                      </ul>
+                      <div>
+                         <ul>
+                          {details.corrections.map(function(index, key){
+                            return(
+                              <li key={key}>
+                                <Corrections
+                                  cancel={cancel}
+                                  savePhrase={savePhrase} 
+                                  removeNone={removeNone}
+                                  text={index.corrected_text}
+                                  pk={index.pk}
+                                  selectPhrase={selectPhrase}
+                                  setActive={setActive}
+                                  active={activeVote}           
+                                />
+                              </li>
+                              )
+                          })}
+                        </ul>
+                        <div className="vote-options">
+                          <button className={voteState} onClick={()=> this.noneVote(details.pk)}>None of the Above</button>
+                          {this.state.no_correction ? (
+                            <div className='phrase-editing'>
+                              <button className='correct-phrase' onClick={() => this.savePhrase()}>Save</button>
+                              <button className='correct-phrase' onClick={() => this.cancel()}>Cancel</button>
+                            </div>
+                          ):(
+                            ''
+                          )}                      
+                        </div>
+                      </div>
                     ) : (
                       ''
                     )}
