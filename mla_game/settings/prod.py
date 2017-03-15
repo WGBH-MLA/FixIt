@@ -17,7 +17,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'HOST': os.environ['PG_HOST'],
-        'NAME': 'fixit_test',
+        'NAME': 'fixit',
         'USER': 'wgbh',
         'PASSWORD': os.environ['PG_PASS'],
     },
