@@ -13,6 +13,8 @@ django-rest-swagger==2.1.1
 django-tag-parser==2.1
 djangorestframework==3.5.3
 dominate==2.1.17
+gevent==1.2.1
+greenlet==0.4.12
 huey==1.2.3
 ipython-genutils==0.1.0
 ipython==5.1.0
