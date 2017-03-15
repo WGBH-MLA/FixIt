@@ -16,7 +16,7 @@ PUA_CACHE_DIRECTORY = '/home/wgbh/pua_cache/'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': 'fixit-test2.cmrjt7rckp5r.us-east-1.rds.amazonaws.com',
+        'HOST': os.environ['PG_HOST'],
         'NAME': 'fixit_test',
         'USER': 'wgbh',
         'PASSWORD': os.environ['PG_PASS'],
