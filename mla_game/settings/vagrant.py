@@ -13,6 +13,8 @@ STATIC_ROOT = '/var/nginx/webroot/static'
 
 PUA_CACHE_DIRECTORY = '/home/vagrant/pua_cache/'
 
+GA_CODE = 'none'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',

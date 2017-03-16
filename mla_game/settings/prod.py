@@ -13,6 +13,8 @@ STATIC_ROOT = '/var/nginx/webroot/static'
 
 PUA_CACHE_DIRECTORY = '/home/wgbh/pua_cache/'
 
+GA_CODE = os.environ['GA_CODE']
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
