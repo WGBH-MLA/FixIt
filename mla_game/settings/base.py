@@ -64,7 +64,6 @@ HUEY = {
     'connection': {'connection_pool': pool},
     'consumer': {
         'workers': 16,
-        'worker_type': 'greenlet',
     },
 }
 
