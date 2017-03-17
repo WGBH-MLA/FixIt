@@ -34,8 +34,8 @@ REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = (
     'rest_framework.renderers.JSONRenderer',
 )
 
-NEWRELIC_CONFIG_PATH = os.environ('NEWRELIC_CONFIG_PATH')
-NEWRELIC_ENV = os.environ('NEWRELIC_ENV')
+NEWRELIC_CONFIG_PATH = os.environ['NEWRELIC_CONFIG_PATH']
+NEWRELIC_ENV = os.environ['NEWRELIC_ENV']
 
 DATABASES = {
     'default': {
