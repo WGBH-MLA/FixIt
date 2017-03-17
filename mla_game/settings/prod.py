@@ -30,6 +30,10 @@ AWS_S3_CUSTOM_DOMAIN = 's3.amazonaws.com/{}'.format(
 STATIC_URL = 'https://s3.amazonaws.com/{}/'.format(AWS_S3_CUSTOM_DOMAIN)
 STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
+REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = (
+    'rest_framework.renderers.JSONRenderer',
+)
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
