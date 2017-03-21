@@ -15,7 +15,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         users = User.objects.all()
-        transcript = Transcript.objects.random()
+        transcript = Transcript.objects.random_transcript()
         for phrase in transcript.phrases.all():
             for user in users:
                 profile = Profile.objects.get(user=user)
