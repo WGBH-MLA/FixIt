@@ -1840,8 +1840,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _helpers = require('../../helpers');
-
 var Phrase = (function (_React$Component) {
   _inherits(Phrase, _React$Component);
 
@@ -1852,7 +1850,6 @@ var Phrase = (function (_React$Component) {
     this.markPhrases = this.markPhrases.bind(this);
     this.getEndOfContext = this.getEndOfContext.bind(this);
     this.getStartofContext = this.getStartofContext.bind(this);
-    this.considerPhrase = this.considerPhrase.bind(this);
   }
 
   _createClass(Phrase, [{
@@ -1898,20 +1895,10 @@ var Phrase = (function (_React$Component) {
       }
     }
   }, {
-    key: 'considerPhrase',
-    value: function considerPhrase() {
-      var userPk = this.props.user;
-      var considered_phrase = {
-        "considered_phrases": [this.props.details.pk]
-      };
-      (0, _helpers.patchData)('/api/profile/' + userPk + '/', considered_phrase);
-    }
-  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.getEndOfContext();
       this.getStartofContext();
-      this.considerPhrase();
     }
   }, {
     key: 'render',
@@ -1968,7 +1955,7 @@ var Phrase = (function (_React$Component) {
 exports['default'] = Phrase;
 module.exports = exports['default'];
 
-},{"../../helpers":28,"react":360}],11:[function(require,module,exports){
+},{"react":360}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -3702,9 +3689,11 @@ var GameOne = (function (_React$Component) {
     this.handleProgress = this.handleProgress.bind(this);
     this.selectPhrase = this.selectPhrase.bind(this);
     this.reload = this.reload.bind(this);
+    this.considerPhrases = this.considerPhrases.bind(this);
 
     this.state = {
-      wrongPhrases: {}
+      wrongPhrases: {},
+      consideredPhrases: []
     };
   }
 
@@ -3748,6 +3737,26 @@ var GameOne = (function (_React$Component) {
 
       // copy state
       var wrongPhrases = _extends({}, this.state.wrongPhrases);
+      var userPk = this.props.initialData.user[0].pk;
+      var consideredPhrases = [];
+
+      gameone.phrases.map(function (index, keys) {
+        var active = gameone.segment,
+            currentSegment = active === keys || active === keys + 1 || active === keys - 1;
+        if (currentSegment) {
+          consideredPhrases.push(index.pk);
+        }
+      });
+      var considered_phrases = {
+        "considered_phrases": consideredPhrases
+      };
+
+      console.log(considered_phrases, 'hello?');
+
+      (0, _helpers.patchData)('/api/profile/' + userPk + '/', considered_phrases).then(function (response) {
+        console.log(response);
+      });
+
       // disable advance round for three seconds when round updates
       // wait(3000);
 
@@ -3818,6 +3827,15 @@ var GameOne = (function (_React$Component) {
       media.play();
     }
   }, {
+    key: 'considerPhrases',
+    value: function considerPhrases() {
+      // let userPk = this.props.user
+      // let considered_phrase = {
+      //   "considered_phrases":[this.props.details.pk]
+      // }
+      //
+    }
+  }, {
     key: 'reload',
     value: function reload() {
       var tipDismissed = this.props.gameone.inGameTip;
@@ -3829,6 +3847,16 @@ var GameOne = (function (_React$Component) {
         this.props.showTipTwo(false);
       }
     }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.considerPhrases();
+    }
+
+    // componentDidUpdate(){
+    //   this.considerPhrases()
+    // }
+
   }, {
     key: 'componentWillMount',
     value: function componentWillMount() {
@@ -3965,8 +3993,7 @@ var GameOne = (function (_React$Component) {
                         wrongPhrases: gameone.wrongPhrases,
                         setSegmentStart: setSegmentStart,
                         setSegmentEnd: setSegmentEnd,
-                        advanceSegment: advanceSegment,
-                        user: _this.props.initialData.user[0].pk
+                        advanceSegment: advanceSegment
                       })
                     );
                   }

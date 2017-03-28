@@ -8,6 +8,7 @@ import Paging from '../partials/paginator'
 import { postData } from '../../helpers'
 import GameFooter from '../partials/game_footer'
 import GameTip from '../partials/game_tip'
+import { patchData } from '../../helpers'
 
 class GameOne extends React.Component{
 
@@ -18,9 +19,11 @@ class GameOne extends React.Component{
     this.handleProgress = this.handleProgress.bind(this)
     this.selectPhrase = this.selectPhrase.bind(this)
     this.reload = this.reload.bind(this)
+    this.considerPhrases = this.considerPhrases.bind(this)
 
     this.state = {
-      wrongPhrases:{}
+      wrongPhrases:{},
+      consideredPhrases:[]
     }  
 
   }
@@ -51,7 +54,25 @@ class GameOne extends React.Component{
   handleProgress() {
     const { gameone, setIsPlaying, setCurrentTime, playPhrase, wait, advanceSegment, updateTotalScore, updateGameScore, endOfRoundOne } = this.props
     // copy state
-    const wrongPhrases = {...this.state.wrongPhrases};
+    const wrongPhrases = {...this.state.wrongPhrases}
+    let userPk = this.props.initialData.user[0].pk
+    let consideredPhrases = []
+    
+    gameone.phrases.map(function(index, keys) {
+      let active = gameone.segment,
+          currentSegment = active === keys || active === keys + 1 || active === keys -1
+      if(currentSegment) {
+        consideredPhrases.push(index.pk)
+      }
+    })
+    let considered_phrases = {
+      "considered_phrases":consideredPhrases
+    }
+    patchData(`/api/profile/${userPk}/`, considered_phrases).then(function(response){
+      console.log(response)
+    })
+
+
     // disable advance round for three seconds when round updates
     // wait(3000);
     
@@ -125,6 +146,14 @@ class GameOne extends React.Component{
     media.play();
   }
 
+  considerPhrases(){
+    // let userPk = this.props.user
+    // let considered_phrase = {
+    //   "considered_phrases":[this.props.details.pk]
+    // }
+    // 
+  }
+
   reload(){
     let tipDismissed = this.props.gameone.inGameTip
     this.props.resetSegments(0)
@@ -135,6 +164,14 @@ class GameOne extends React.Component{
       this.props.showTipTwo(false)
     }
   }
+
+  componentDidMount(){
+    this.considerPhrases()
+  }
+
+  // componentDidUpdate(){
+  //   this.considerPhrases()
+  // }
   
   componentWillMount(){
     this.props.fetchGameOne()
@@ -212,7 +249,6 @@ class GameOne extends React.Component{
                            setSegmentStart={setSegmentStart}
                            setSegmentEnd={setSegmentEnd}
                            advanceSegment={advanceSegment}
-                           user={this.props.initialData.user[0].pk}
                         />
                       </li>
                      )
