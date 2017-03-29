@@ -32,23 +32,25 @@ class TranscriptManager(models.Manager):
         picks = picks.picks
         if created:
             return (self.random_transcript(), False)
-        elif 'partially_completed_transcripts' in picks:
-            transcript = self.filter(pk=picks['partially_completed_transcripts'][0])
-            phrases = transcript.first().phrases.unseen(user)
-            return (transcript, phrases)
-        elif 'ideal_transcripts' in picks:
-            if picks['ideal_transcripts']:
-                return (
-                    self.filter(pk=random.choice(picks['ideal_transcripts'])),
-                    False
-                )
-        elif 'acceptable_transcripts' in picks:
-            return (
-                self.filter(pk=random.choice(picks['acceptable_transcripts'])),
-                False
-            )
         else:
-            return (self.random_transcript(), False)
+            try:
+                transcript = self.filter(pk=picks['partially_completed_transcripts'][0])
+                phrases = transcript.first().phrases.unseen(user)
+                django_log.info('using partial')
+                return (transcript, phrases)
+            except:
+                pass
+            try:
+                transcript = self.filter(pk=random.choice(picks['ideal_transcripts']))
+                return (transcript, False)
+            except:
+                pass
+            try:
+                transcript = self.filter(pk=random.choice(picks['acceptable_transcripts']))
+                return (transcript, False)
+            except:
+                pass
+        return (self.random_transcript(), False)
 
     def game_two(self, user):
         '''
