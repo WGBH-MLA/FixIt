@@ -9,10 +9,20 @@ LOG_DIRECTORY = '/home/wgbh/logs'
 
 STATIC_ROOT = '/home/wgbh/webroot/static'
 
+ALLOWED_HOSTS = ['mlagame-dev.wgbhdigital.org', 'mlagame.wgbhdigital.org']
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {'read_default_file': '/home/wgbh/.my-stage.cnf'},
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': 'localhost',
+        'NAME': 'mla',
+        'USER': 'mla',
+        'PASSWORD': os.environ['PG_PASS'],
+        'TEST': {
+            'NAME': 'mla-test',
+        },
     },
 }
 
