@@ -66,15 +66,12 @@ class GameOne extends React.Component{
       }
     })
     let considered_phrases = {
-      "considered_phrases":consideredPhrases
+      "considered_phrases":[consideredPhrases]
     }
-    patchData(`/api/profile/${userPk}/`, considered_phrases).then(function(response){
-      console.log(response)
-    })
-
-
+    patchData(`/api/profile/${userPk}/`, consideredPhrases)
+    
     // disable advance round for three seconds when round updates
-    // wait(3000);
+    wait(3000)
     
     // check if the round has ended. if so change state. 
     // if not push other things to state like the score and play the media    

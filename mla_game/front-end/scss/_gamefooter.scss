@@ -90,13 +90,10 @@
         &:disabled {
           cursor:default;
           svg {
-            fill:$transcript-error;
-            polygon {
-              fill:$transcript-error;
-            }
+            display:none;
           }
           span {
-            color:$default;
+            display:none;
           }
         }
       }

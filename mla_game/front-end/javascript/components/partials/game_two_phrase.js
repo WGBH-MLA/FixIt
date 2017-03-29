@@ -40,7 +40,7 @@ class Phrase extends React.Component{
     this.span.contentEditable = false
     const PhraseCorrected = {
         transcript_phrase:details.pk,
-        text:this.span.textContent
+        correction:this.span.textContent
     }
     selectPhrase(PhraseCorrected, details.pk)
     disableProgress(false)
@@ -151,11 +151,11 @@ class Phrase extends React.Component{
     let phrase
     if(currentSegment) {
       phrase = <span className={phraseState} id={details.pk}>
-                <span ref={(span) => {this.span = span}} className='context'>{details.text} {details.needs_correction ? '||| this phrase needs correction' : '||| this phrase is correct' }</span> 
+                <span ref={(span) => {this.span = span}} className='context' id={ details.needs_correction ? 'not_correct' : 'correct'}>{details.text}</span> 
               </span>
     } else {
       phrase = <span className='text'id={details.pk}>
-                <span>{details.text} {details.needs_correction ? '||| this phrase needs correction' : '||| this phrase is correct' }</span> 
+                <span id={ details.needs_correction ? 'not_correct' : 'correct'}>{details.text}</span> 
               </span>
     }
 

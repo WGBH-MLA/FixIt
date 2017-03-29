@@ -151,15 +151,6 @@ class GameTwo extends React.Component{
                 if(transcript == gametwo.currentTranscript) {
                   return(
                     <div key={key}>
-                      <h2>
-                         end Segment: {gametwo.endSegment}<br/>
-                         current time: {gametwo.currentTime}<br/>
-                         segment: {gametwo.segment}<br/>
-                         transcript: {gametwo.currentTranscript}<br/>
-                         Game Length: {gametwo.gameLength}<br/>
-                         Game Progress: {gametwo.gameProgress}
-                      </h2>
-                      <pre>{JSON.stringify(this.state, 2, null)}</pre>
                       <div className="game-meta">
                         <Audio 
                           isPlaying={gametwo.isPlaying}
