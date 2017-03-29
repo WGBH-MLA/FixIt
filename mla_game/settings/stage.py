@@ -13,8 +13,6 @@ ALLOWED_HOSTS = ['mlagame-dev.wgbhdigital.org', 'mlagame.wgbhdigital.org']
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'OPTIONS': {'read_default_file': '/home/wgbh/.my-stage.cnf'},
         'ENGINE': 'django.db.backends.postgresql',
         'HOST': 'localhost',
         'NAME': 'mla',
