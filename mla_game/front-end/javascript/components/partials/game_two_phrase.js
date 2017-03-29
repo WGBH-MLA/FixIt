@@ -39,7 +39,7 @@ class Phrase extends React.Component{
     })
     this.span.contentEditable = false
     const PhraseCorrected = {
-        pk:details.pk,
+        transcript_phrase:details.pk,
         text:this.span.textContent
     }
     selectPhrase(PhraseCorrected, details.pk)
@@ -55,7 +55,7 @@ class Phrase extends React.Component{
     })
     this.span.contentEditable = false
     const notAnError = {
-        pk:details.pk,
+        transcript_phrase:details.pk,
         not_an_error:true
     }
     selectPhrase(notAnError, details.pk)

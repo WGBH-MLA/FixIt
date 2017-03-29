@@ -2485,7 +2485,7 @@ var Phrase = (function (_React$Component) {
       });
       this.span.contentEditable = false;
       var PhraseCorrected = {
-        pk: details.pk,
+        transcript_phrase: details.pk,
         text: this.span.textContent
       };
       selectPhrase(PhraseCorrected, details.pk);
@@ -2505,7 +2505,7 @@ var Phrase = (function (_React$Component) {
       });
       this.span.contentEditable = false;
       var notAnError = {
-        pk: details.pk,
+        transcript_phrase: details.pk,
         not_an_error: true
       };
       selectPhrase(notAnError, details.pk);
@@ -3750,9 +3750,6 @@ var GameOne = (function (_React$Component) {
       var considered_phrases = {
         "considered_phrases": consideredPhrases
       };
-
-      console.log(considered_phrases, 'hello?');
-
       (0, _helpers.patchData)('/api/profile/' + userPk + '/', considered_phrases).then(function (response) {
         console.log(response);
       });
@@ -4544,15 +4541,14 @@ var GameTwo = (function (_React$Component) {
       // create on object for correction and push it if it exists
       if (!noCorrectionExists) {
         //phrase data from local state
-        var phraseData = {
-          transcript_phrase: this.state.phrase.pk,
-          correction: this.state.phrase.text
-        };
+        var phraseData = this.state.phrase;
+
         // score data
         var phraseScore = {
           game: '2',
           score: 11
         };
+        console.log(phraseData);
         // post score and phrase
         (0, _helpers.postData)('/api/transcriptphrasecorrection/', phraseData).then(function (response) {
           console.log(response);
@@ -4727,6 +4723,11 @@ var GameTwo = (function (_React$Component) {
                       _react2['default'].createElement('br', null),
                       'Game Progress: ',
                       gametwo.gameProgress
+                    ),
+                    _react2['default'].createElement(
+                      'pre',
+                      null,
+                      JSON.stringify(_this.state, 2, null)
                     ),
                     _react2['default'].createElement(
                       'div',

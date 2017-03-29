@@ -55,15 +55,14 @@ class GameTwo extends React.Component{
     // create on object for correction and push it if it exists 
     if(!noCorrectionExists) {
       //phrase data from local state
-      let phraseData = {
-        transcript_phrase:this.state.phrase.pk,
-        correction:this.state.phrase.text
-      }
+      let phraseData = this.state.phrase
+
       // score data
       let phraseScore = {
         game:'2',
         score:11
       }
+      console.log(phraseData)
       // post score and phrase
       postData('/api/transcriptphrasecorrection/', phraseData).then(function(response){
         console.log(response)
@@ -159,7 +158,8 @@ class GameTwo extends React.Component{
                          transcript: {gametwo.currentTranscript}<br/>
                          Game Length: {gametwo.gameLength}<br/>
                          Game Progress: {gametwo.gameProgress}
-                      </h2>                     
+                      </h2>
+                      <pre>{JSON.stringify(this.state, 2, null)}</pre>
                       <div className="game-meta">
                         <Audio 
                           isPlaying={gametwo.isPlaying}
