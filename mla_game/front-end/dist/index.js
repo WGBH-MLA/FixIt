@@ -3744,7 +3744,7 @@ var GameOne = (function (_React$Component) {
         }
       });
       var considered_phrases = {
-        "considered_phrases": [consideredPhrases]
+        "considered_phrases": consideredPhrases
       };
       (0, _helpers.patchData)('/api/profile/' + userPk + '/', consideredPhrases);
 

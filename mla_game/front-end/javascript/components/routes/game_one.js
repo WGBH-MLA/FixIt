@@ -66,7 +66,7 @@ class GameOne extends React.Component{
       }
     })
     let considered_phrases = {
-      "considered_phrases":[consideredPhrases]
+      "considered_phrases":consideredPhrases
     }
     patchData(`/api/profile/${userPk}/`, consideredPhrases)
     
