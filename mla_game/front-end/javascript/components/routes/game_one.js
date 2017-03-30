@@ -19,7 +19,6 @@ class GameOne extends React.Component{
     this.handleProgress = this.handleProgress.bind(this)
     this.selectPhrase = this.selectPhrase.bind(this)
     this.reload = this.reload.bind(this)
-    this.considerPhrases = this.considerPhrases.bind(this)
 
     this.state = {
       wrongPhrases:{},
@@ -146,15 +145,7 @@ class GameOne extends React.Component{
     media.currentTime = callback;
     media.play();
   }
-
-  considerPhrases(){
-    // let userPk = this.props.user
-    // let considered_phrase = {
-    //   "considered_phrases":[this.props.details.pk]
-    // }
-    // 
-  }
-
+  
   reload(){
     let tipDismissed = this.props.gameone.inGameTip
     this.props.resetSegments(0)
@@ -166,14 +157,6 @@ class GameOne extends React.Component{
     }
   }
 
-  componentDidMount(){
-    this.considerPhrases()
-  }
-
-  // componentDidUpdate(){
-  //   this.considerPhrases()
-  // }
-  
   componentWillMount(){
     this.props.fetchGameOne()
   }

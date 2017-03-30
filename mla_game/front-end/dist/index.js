@@ -3733,7 +3733,6 @@ var GameOne = (function (_React$Component) {
     this.handleProgress = this.handleProgress.bind(this);
     this.selectPhrase = this.selectPhrase.bind(this);
     this.reload = this.reload.bind(this);
-    this.considerPhrases = this.considerPhrases.bind(this);
 
     this.state = {
       wrongPhrases: {},
@@ -3870,15 +3869,6 @@ var GameOne = (function (_React$Component) {
       media.play();
     }
   }, {
-    key: 'considerPhrases',
-    value: function considerPhrases() {
-      // let userPk = this.props.user
-      // let considered_phrase = {
-      //   "considered_phrases":[this.props.details.pk]
-      // }
-      //
-    }
-  }, {
     key: 'reload',
     value: function reload() {
       var tipDismissed = this.props.gameone.inGameTip;
@@ -3890,16 +3880,6 @@ var GameOne = (function (_React$Component) {
         this.props.showTipTwo(false);
       }
     }
-  }, {
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      this.considerPhrases();
-    }
-
-    // componentDidUpdate(){
-    //   this.considerPhrases()
-    // }
-
   }, {
     key: 'componentWillMount',
     value: function componentWillMount() {
