@@ -1,24 +1,11 @@
-import logging
 import random
-import time
 import datetime
-from pprint import pprint
-import json
 
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
-from django.conf import settings
 
-from popuparchive.client import Client
-
-from mla_game.apps.accounts.tasks import update_transcript_picks, update_leaderboard
+from mla_game.apps.accounts.tasks import update_leaderboard
 from mla_game.apps.accounts.models import Profile, Score
-from mla_game.apps.api.serializers import TranscriptSerializer
-
-django_log = logging.getLogger('django')
-logger = logging.getLogger('pua_scraper')
-stats = logging.getLogger('pua_stats')
-error_log = logging.getLogger('pua_errors')
 
 
 class Command(BaseCommand):
@@ -44,7 +31,7 @@ class Command(BaseCommand):
     def _random_date(self):
         return random.choice(
             [datetime.date.today() - datetime.timedelta(days=x)
-             for x in range(0, 366)]
+             for x in range(0, 14)]
         )
 
     def handle(self, *args, **options):
@@ -52,7 +39,7 @@ class Command(BaseCommand):
             print(username)
             user, _ = User.objects.get_or_create(username=username)
             profile, _ = Profile.objects.get_or_create(user=user, username=user.username)
-            for i in range(0, 3000):
+            for i in range(0, 10):
                 s = Score(
                     user=user,
                     score=random.choice([1, 10, 100]),
