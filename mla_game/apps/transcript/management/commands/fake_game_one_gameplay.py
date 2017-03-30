@@ -16,10 +16,13 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         users = User.objects.all()
         transcript = Transcript.objects.random_transcript().first()
+        for user in users:
+            profile = Profile.objects.get(user=user)
+            profile.considered_phrases.add(
+                *[phrase.pk for phrase in transcript.phrases.all()]
+            )
         for phrase in transcript.phrases.all():
             for user in users:
-                profile = Profile.objects.get(user=user)
-                profile.considered_phrases.add(phrase)
                 if random.choice([True, False]):
                     TranscriptPhraseDownvote.objects.create(
                         transcript_phrase=phrase,
