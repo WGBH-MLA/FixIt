@@ -122,7 +122,7 @@ export function fetchData(){
   return (dispatch, getState) => {
     dispatch(requestInitialData(true))
     return axios.all([
-        axios.get('/api/profile'),
+        axios.get('/api/profile/'),
         axios.get('/api/score/'),
         axios.get('/api/leaderboard/'),
         axios.get('/api/source/'),

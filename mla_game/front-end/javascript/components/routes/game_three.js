@@ -13,11 +13,11 @@ import GameTip from '../partials/game_tip'
 class GameThree extends React.Component{
   constructor(){
     super()
-
     this.handleProgress = this.handleProgress.bind(this)
     this.activePhrase = this.activePhrase.bind(this)
     this.playPhrase = this.playPhrase.bind(this)
     this.selectPhrase = this.selectPhrase.bind(this)
+    this.selectDownVotes = this.selectDownVotes.bind(this)
     this.setActive = this.setActive.bind(this)
     this.removePhrase = this.removePhrase.bind(this)
     this.reload = this.reload.bind(this)
@@ -25,8 +25,13 @@ class GameThree extends React.Component{
     this.state = {
       phrase:null,
       active:null,
+      down_votes:[]
     }
 
+  }
+
+  selectDownVotes(array){
+    this.setState({down_votes:array})
   }
 
   selectPhrase(phrase) {
@@ -47,6 +52,11 @@ class GameThree extends React.Component{
     const { details, wait, advanceTranscript, advanceSegmentThree, gamethree, updateTotalScore, updateGameScore, updateGameProgressThree } = this.props
     let currentTranscriptLength = gamethree.transcripts[gamethree.currentTranscript].phrases_length - 1
     let noCorrectionExists = this.state.phrase == null
+    
+    // map and post down votes from state
+    this.state.down_votes.map((index, elem) => {
+      postData('/api/transcriptphrasecorrectionvote/', index)
+    })
 
     if(gamethree.segment <= currentTranscriptLength) {
       if(gamethree.skipPhrase) {
@@ -63,27 +73,27 @@ class GameThree extends React.Component{
       //phrase data from local state
       let phraseData = {
         upvote:true,
-        transcript_phrase_correction:this.state.phrase.pk
+        "transcript_phrase_correction":this.state.phrase.pk
       }
       // score data
       let phraseScore = {
         game:'3',
         score:11
       }
-      console.log(phraseData)
       // post score and phrase
-      postData('/api/transcriptphrasecorrection/', phraseData).then(function(response){
-        console.log(response)
+      postData('/api/transcriptphrasecorrectionvote/', phraseData).then(function(response){
+        console.log(response, 'hello')
       })
       postData('/api/score/', phraseScore)
       // update scores
       updateTotalScore(11)
       updateGameScore(11)
-      this.props.disableProgress(true)
       this.setActive(null)
     } 
     // scrub state for phrase correction
     this.removePhrase()
+    // disable progress until
+    this.props.disableProgress(true)
   }
 
   activePhrase(time, start, end){
@@ -160,7 +170,8 @@ class GameThree extends React.Component{
                 let transcript = Number(key)
                 if(transcript == gamethree.currentTranscript) {
                   return(
-                    <div key={key}>                   
+                    <div key={key}>              
+                      {/*<pre>{JSON.stringify(this.state, null, 2)}</pre>*/}     
                       <div className="game-meta">
                         <Audio 
                           isPlaying={gamethree.isPlaying}
@@ -186,6 +197,7 @@ class GameThree extends React.Component{
                               <Phrase
                                activeVote={this.state.active}
                                selectPhrase={this.selectPhrase}
+                               selectDownVotes={this.selectDownVotes}
                                setActive={this.setActive}
                                removePhrase={this.removePhrase}
                                playPhrase={this.playPhrase}

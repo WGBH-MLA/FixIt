@@ -19,7 +19,7 @@ class Phrase extends React.Component{
     this.state = {
       editing:false,
       corrected:false,
-      no_correction:null
+      no_correction:null,
     }
   }
 
@@ -32,8 +32,8 @@ class Phrase extends React.Component{
   }
 
   noneVote(pk){
-    this.props.selectPhrase('none')
-    this.props.setActive('none')
+    this.props.selectPhrase(null)
+    this.props.setActive(null)
     this.setState({
       no_correction:true
     })
@@ -52,6 +52,21 @@ class Phrase extends React.Component{
       corrected:true,
     })
     disableProgress(false)
+
+    // setup downvotes on save
+    let downVotes = []
+    let self = this    
+    this.props.details.corrections.map(function(index, elem) {
+      let activeVote = Number(self.props.activeVote)
+      let voted = activeVote === index.pk
+      let vote = {
+        "transcript_phrase_correction":index.pk
+      }
+      if(!voted) {
+        downVotes.push(vote)
+      }
+    })
+    this.props.selectDownVotes(downVotes)
   }
 
   cancel(){
@@ -149,7 +164,7 @@ class Phrase extends React.Component{
     let phrase
     if(currentSegment) {
       phrase = <span className={phraseState} id={details.pk}>
-                <span ref={(span) => {this.span = span}} className='context'>{details.text} {details.corrections ? '||| this phrase has corrections' : '||| this phrase is correct' }</span>
+                <span ref={(span) => {this.span = span}} className='context'>{details.text}</span>
                 {this.state.editing ?(
                   <div className="corrections">
                     {details.corrections ? (
@@ -194,7 +209,7 @@ class Phrase extends React.Component{
               </span>
     } else {
       phrase = <span className='text'id={details.pk}>
-                <span>{details.text} {details.corrections ? '||| this phrase has corrections' : '||| this phrase is correct' }</span> 
+                <span>{details.text}</span> 
               </span>
     }
 

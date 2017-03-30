@@ -68,7 +68,11 @@ class GameOne extends React.Component{
     let considered_phrases = {
       "considered_phrases":consideredPhrases
     }
-    patchData(`/api/profile/${userPk}/`, consideredPhrases)
+
+    console.log(consideredPhrases)
+    patchData(`/api/profile/${userPk}/`, considered_phrases).then(function(response){
+      console.log(response)
+    })
     
     // disable advance round for three seconds when round updates
     wait(3000)
