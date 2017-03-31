@@ -58,14 +58,23 @@ class TranscriptManager(models.Manager):
         Returns a tuple containing a queryset of Transcript objects and a list
         of phrase PKs to annotate.
         '''
+        phrase_qs = TranscriptPhrase.objects.only('pk')
         user_corrected = [
             correction.transcript_phrase.pk for correction in
-            TranscriptPhraseCorrection.objects.filter(user=user)
+            TranscriptPhraseCorrection.objects.filter(
+                user=user).prefetch_related(models.Prefetch(
+                    'transcript_phrase', queryset=phrase_qs)
+                )
         ]
         eligible_phrases = TranscriptPhrase.objects.filter(
                 confidence__lte=phrase_negative_limit,
                 num_corrections__lt=3
-            ).exclude(pk__in=user_corrected)
+            ).exclude(pk__in=user_corrected).prefetch_related(
+                models.Prefetch(
+                    'transcript', queryset=self.defer('transcript_data_blob')
+                )
+            )
+
         counter = Counter(phrase.transcript for phrase in eligible_phrases).most_common()
         total = 0
         transcripts = []
@@ -80,7 +89,7 @@ class TranscriptManager(models.Manager):
             phrase.pk for phrase in eligible_phrases.filter(transcript__in=transcripts)
         ][:20]
 
-        transcripts_to_return = self.filter(
+        transcripts_to_return = self.defer('transcript_data_blob').filter(
             phrases__in=game_two_ready_phrases).distinct()
 
         return (transcripts_to_return, game_two_ready_phrases)
