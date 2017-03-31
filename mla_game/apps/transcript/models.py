@@ -36,17 +36,18 @@ class TranscriptManager(models.Manager):
             try:
                 transcript = self.filter(pk=picks['partially_completed_transcripts'][0])
                 phrases = transcript.first().phrases.unseen(user)
-                django_log.info('using partial')
                 return (transcript, phrases)
             except:
                 pass
             try:
-                transcript = self.filter(pk=random.choice(picks['ideal_transcripts']))
+                transcript = self.defer('transcript_data_blob').filter(
+                    pk=random.choice(picks['ideal_transcripts']))
                 return (transcript, False)
             except:
                 pass
             try:
-                transcript = self.filter(pk=random.choice(picks['acceptable_transcripts']))
+                transcript = self.defer('transcript_data_blob').filter(
+                    pk=random.choice(picks['acceptable_transcripts']))
                 return (transcript, False)
             except:
                 pass
