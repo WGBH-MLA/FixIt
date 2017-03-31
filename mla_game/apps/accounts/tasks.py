@@ -4,8 +4,6 @@ import itertools
 
 from django.contrib.auth.models import User
 from django.db.models import Prefetch
-from django.db import connection
-from pprint import pformat
 
 from huey.contrib.djhuey import crontab, db_periodic_task, db_task
 
@@ -126,7 +124,7 @@ def update_transcript_picks(user, **kwargs):
 
     transcript_qs = Transcript.objects.only('pk')
 
-    if profile.preferred_stations:
+    if profile.preferred_stations.all():
         stations = profile.preferred_stations.all().prefetch_related(
             Prefetch(
                 'transcripts', queryset=transcript_qs,
@@ -143,11 +141,9 @@ def update_transcript_picks(user, **kwargs):
             pk__in=transcript_pk_list
         ).only('pk')
     else:
-        django_log.info('no stations')
         station_transcripts = Transcript.objects.none()
 
-    if profile.preferred_topics:
-        django_log.info('we have topics')
+    if profile.preferred_topics.all():
         topics = profile.preferred_topics.all().prefetch_related(
             Prefetch(
                 'transcripts', queryset=transcript_qs,
@@ -164,7 +160,6 @@ def update_transcript_picks(user, **kwargs):
             pk__in=transcript_pk_list
         ).only('pk')
     else:
-        django_log.info('no topics')
         topic_transcripts = Transcript.objects.none()
 
     if 'completed_transcripts' in picks:
@@ -190,10 +185,6 @@ def update_transcript_picks(user, **kwargs):
     ]
 
     transcript_picks.save()
-    django_log.info('{} connections'.format(len(connection.queries)))
-    django_log.info(
-        sum(float(c['time']) for c in connection.queries)
-    )
 
 
 @db_periodic_task(crontab(hour='*/2'))
