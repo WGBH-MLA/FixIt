@@ -41,7 +41,12 @@
     font-size:1.25em;
     text-align:center;
     button {
-      @include light-button;
+      @include transition(all, .5s, ease-in-out);
+      @include border-button(white, $icon-dark);
+      &:hover {
+        background:$icon-dark;
+        color:white;
+      }
       margin-left:0;
       @include susy-breakpoint($screen-sm-min, $map-sm) {
         float:left;
@@ -167,7 +172,12 @@
     }
   }
   button {
+    @include transition(all, .25s, ease-in-out);
     @include border-button(white, $icon-dark);
     font-size:1.25em;
+    &:hover {
+      background:$icon-dark;
+      color:white;
+    }
   }
 }

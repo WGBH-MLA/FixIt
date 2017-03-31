@@ -10,23 +10,26 @@ class UserForm extends React.Component {
   changeName(event){
     event.preventDefault();
     // create object and url for changeing username
-    let userPk = this.props.data.user[0].pk
+    let userPk = this.props.data.user[0].pk,
+        emptyForm = this.userform[0].value.length == 0
     
     let username = {
       "username":this.userform[0].value
     }
     
-    // patch username and update in state
-    this.props.setUsername(this.userform[0].value)
-    patchData(`/api/profile/${userPk}/`, username)
+    if(!emptyForm) {
+      // patch username and update in state
+      this.props.setUsername(this.userform[0].value)
+      patchData(`/api/profile/${userPk}/`, username)
+    }
   }
 
 
   render(){
     return (
-      <form ref={(input) => this.userform = input } onSubmit={(event) => this.changeName(event)}>
+      <form ref={(form) => this.userform = form } onSubmit={(event) => this.changeName(event)}>
         <div className="input-container">
-          <input required type="text" placeholder='Username' />
+          <input type="text" placeholder='Username' />
         </div>
         <button type='submit'>Save</button>
       </form>
