@@ -1,8 +1,11 @@
 import logging
 import datetime
+import itertools
 
 from django.contrib.auth.models import User
 from django.db.models import Prefetch
+from django.db import connection
+from pprint import pformat
 
 from huey.contrib.djhuey import crontab, db_periodic_task, db_task
 
@@ -116,36 +119,81 @@ def update_transcript_picks(user, **kwargs):
     profile = Profile.objects.get(user=user)
 
     transcript_picks, created = TranscriptPicks.objects.get_or_create(user=user)
+    if created:
+        return
+
     picks = transcript_picks.picks
 
-    station_transcripts = Transcript.objects.none()
-    topic_transcripts = Transcript.objects.none()
+    transcript_qs = Transcript.objects.only('pk')
 
-    if profile.preferred_stations is not None:
-        for station in profile.preferred_stations.all():
-            station_transcripts = station_transcripts | station.transcripts.all()
+    if profile.preferred_stations:
+        stations = profile.preferred_stations.all().prefetch_related(
+            Prefetch(
+                'transcripts', queryset=transcript_qs,
+                to_attr='station_transcript_list'
+            )
+        )
+        transcript_pk_list = [
+            transcript.pk for transcript in
+            list(itertools.chain.from_iterable(
+                station.station_transcript_list for station in stations
+            ))
+        ]
+        station_transcripts = Transcript.objects.filter(
+            pk__in=transcript_pk_list
+        ).only('pk')
+    else:
+        django_log.info('no stations')
+        station_transcripts = Transcript.objects.none()
 
     if profile.preferred_topics:
-        for topic in profile.preferred_topics.all():
-            django_log.info('considering topic {} for {}'.format(topic, user.username))
-            topic_transcripts = topic_transcripts | topic.transcripts.all()
-            django_log.info(topic_transcripts)
+        django_log.info('we have topics')
+        topics = profile.preferred_topics.all().prefetch_related(
+            Prefetch(
+                'transcripts', queryset=transcript_qs,
+                to_attr='topic_transcript_list'
+            )
+        )
+        transcript_pk_list = [
+            transcript.pk for transcript in
+            list(itertools.chain.from_iterable(
+                topic.topic_transcript_list for topic in topics
+            ))
+        ]
+        topic_transcripts = Transcript.objects.filter(
+            pk__in=transcript_pk_list
+        ).only('pk')
+    else:
+        django_log.info('no topics')
+        topic_transcripts = Transcript.objects.none()
 
     if 'completed_transcripts' in picks:
         completed_transcripts = picks['completed_transcripts']
     else:
         completed_transcripts = []
 
-    picks['station_transcripts'] = [transcript.pk for transcript in station_transcripts
-                                    if transcript.pk not in completed_transcripts]
-    picks['topic_transcripts'] = [transcript.pk for transcript in topic_transcripts
-                                  if transcript.pk not in completed_transcripts]
-    picks['ideal_transcripts'] = list(set(picks['station_transcripts']).intersection(
-        set(picks['topic_transcripts'])))
-    picks['acceptable_transcripts'] = [t for t in picks['station_transcripts'] + picks['topic_transcripts']
-                                       if t not in picks['ideal_transcripts']]
+    picks['station_transcripts'] = [
+        transcript.pk for transcript in station_transcripts
+        if transcript.pk not in completed_transcripts
+    ]
+    picks['topic_transcripts'] = [
+        transcript.pk for transcript in topic_transcripts
+        if transcript.pk not in completed_transcripts
+    ]
+    picks['ideal_transcripts'] = list(
+        set(picks['station_transcripts']).intersection(
+            set(picks['topic_transcripts'])
+        ))
+    picks['acceptable_transcripts'] = [
+        t for t in picks['station_transcripts'] + picks['topic_transcripts']
+        if t not in picks['ideal_transcripts']
+    ]
 
     transcript_picks.save()
+    django_log.info('{} connections'.format(len(connection.queries)))
+    django_log.info(
+        sum(float(c['time']) for c in connection.queries)
+    )
 
 
 @db_periodic_task(crontab(hour='*/2'))
