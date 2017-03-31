@@ -2,6 +2,7 @@ import logging
 import datetime
 
 from django.contrib.auth.models import User
+from django.db.models import Prefetch
 
 from huey.contrib.djhuey import crontab, db_periodic_task, db_task
 
@@ -32,8 +33,14 @@ def update_partial_or_complete_transcripts(user, pk_set, **kwargs):
     transcript_picks, created = TranscriptPicks.objects.get_or_create(user=user)
     picks = transcript_picks.picks
 
-    partial_transcripts = set([phrase.transcript.pk for phrase in
-                               profile.considered_phrases.all()])
+    transcript_qs = Transcript.objects.only('pk').distinct()
+
+    partial_transcripts = set(
+        [phrase.transcript.pk for phrase in
+         profile.considered_phrases.all().prefetch_related(
+             Prefetch('transcript', queryset=transcript_qs)
+         )]
+    )
     considered_phrases = [phrase.pk for phrase in
                           profile.considered_phrases.all()]
 
@@ -45,8 +52,10 @@ def update_partial_or_complete_transcripts(user, pk_set, **kwargs):
     completed_transcripts_original = completed_transcripts[:]
 
     for transcript in partial_transcripts:
-        all_phrases = [phrase.pk for phrase in
-                       TranscriptPhrase.objects.filter(transcript=transcript)]
+        all_phrases = [
+            phrase.pk for phrase in
+            TranscriptPhrase.objects.filter(transcript=transcript).only('pk')
+        ]
         seen = []
         unseen = []
         for phrase in all_phrases:
@@ -60,8 +69,10 @@ def update_partial_or_complete_transcripts(user, pk_set, **kwargs):
         else:
             pass
 
-    picks['partially_completed_transcripts'] = [transcript for transcript in partial_transcripts
-                                                if transcript not in completed_transcripts]
+    picks['partially_completed_transcripts'] = [
+        transcript for transcript in partial_transcripts
+        if transcript not in completed_transcripts
+    ]
     picks['completed_transcripts'] = completed_transcripts
 
     transcript_picks.save()
@@ -113,7 +124,9 @@ def update_transcript_picks(user, **kwargs):
 
     if profile.preferred_topics:
         for topic in profile.preferred_topics.all():
+            django_log.info('considering topic {} for {}'.format(topic, user.username))
             topic_transcripts = topic_transcripts | topic.transcripts.all()
+            django_log.info(topic_transcripts)
 
     if 'completed_transcripts' in picks:
         completed_transcripts = picks['completed_transcripts']
