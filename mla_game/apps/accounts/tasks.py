@@ -89,7 +89,11 @@ def create_explicit_upvotes_from_implied_upvotes(user, pk_set, **kwargs):
     Therefore, a 'not an error' correction is equivalent to an upvote for the
     phrase.
     '''
-    user_downvotes = TranscriptPhraseDownvote.objects.filter(user=user)
+    phrase_qs = TranscriptPhrase.objects.only('pk')
+    user_downvotes = TranscriptPhraseDownvote.objects.filter(
+        user=user).prefetch_related(
+            Prefetch('transcript_phrase', queryset=phrase_qs)
+        )
     downvoted_phrases = [
         downvote.transcript_phrase.pk for downvote in user_downvotes
     ]
@@ -100,7 +104,6 @@ def create_explicit_upvotes_from_implied_upvotes(user, pk_set, **kwargs):
             not_an_error=True,
             transcript_phrase=phrase
         )
-        django_log.info('created correction upvote for {}'.format(phrase))
 
 
 @db_task()
