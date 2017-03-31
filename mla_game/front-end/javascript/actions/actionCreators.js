@@ -171,7 +171,7 @@ export function fetchGameOne(){
         // set start time for for audio based on start time of first phrase
         dispatch(setStartTime(Number(gameOneInfo.data[0].phrases[0].start_time)))
         // set end time based on forst phrase start time
-        let transcriptEndTime = Number(gameOneInfo.data[0].phrases[0].start_time) + 1200
+        let transcriptEndTime = Number(gameOneInfo.data[0].phrases[0].start_time) + 300
         // grab first twenty minutes of segments and push 
         // to new array and then state
         const phrases = [];
