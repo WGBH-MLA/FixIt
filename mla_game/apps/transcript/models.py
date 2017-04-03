@@ -101,21 +101,29 @@ class TranscriptManager(models.Manager):
         Returns a tuple containing a queryset of Transcript objects and a list
         of dicts containing corrections for phrases in the Transcripts
         '''
-        corrected_phrases = set([phrase.transcript_phrase for phrase in
-                                TranscriptPhraseCorrection.objects.all()])
-        already_voted_phrases = set([
-            vote.original_phrase for vote in
-            TranscriptPhraseCorrectionVote.objects.filter(
-                user=user
-            )
-        ])
+        transcript_qs = self.only('pk')
+        phrase_qs = TranscriptPhrase.objects.prefetch_related(
+            models.Prefetch('transcript', queryset=transcript_qs))
+        correction_qs = TranscriptPhraseCorrection.objects.prefetch_related(
+            models.Prefetch('transcript_phrase', queryset=phrase_qs))
+        corrected_phrases = set(
+            [phrase.transcript_phrase for phrase in
+             correction_qs.all()]
+        )
+        already_voted_phrases = set(
+            [vote.original_phrase for vote in
+             TranscriptPhraseCorrectionVote.objects.prefetch_related(
+                 'transcript_phrase_correction'
+             ).filter(user=user)]
+        )
+
         corrections = []
         associated_transcripts = []
 
         for phrase in corrected_phrases:
             if phrase in already_voted_phrases:
                 pass
-            if phrase.corrections >= 2:
+            if phrase.num_corrections >= 2:
                 phrase_corrections = TranscriptPhraseCorrection.objects.filter(
                     transcript_phrase=phrase
                 )
@@ -129,7 +137,7 @@ class TranscriptManager(models.Manager):
             key=Counter(associated_transcripts).get, reverse=True
         )
 
-        transcripts = self.filter(
+        transcripts = self.defer('transcript_data_blob').filter(
             pk__in=associated_transcripts[:20]).distinct()
 
         corrections = [correction for correction in corrections
