@@ -337,7 +337,7 @@ def phrase_confidence_exceeds_positive_threshold(phrase):
     upvoters = [correction.user for correction in
                 TranscriptPhraseCorrection.objects.filter(
                     transcript_phrase=phrase,
-                    not_an_error=True)
+                    not_an_error=True).defer('correction')
                 ]
     downvoters = [downvote.user for downvote in
                   TranscriptPhraseDownvote.objects.filter(phrase=phrase)
