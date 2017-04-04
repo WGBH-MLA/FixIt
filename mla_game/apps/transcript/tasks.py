@@ -154,4 +154,5 @@ def create_process_blob_tasks():
 
 @db_periodic_task(crontab(minute='*/1'))
 def scrape_aapb():
-    call_command('get_aapb_metadata')
+    if Transcript.objects.filter('metadata_processed').count() > 0:
+        call_command('get_aapb_metadata')
