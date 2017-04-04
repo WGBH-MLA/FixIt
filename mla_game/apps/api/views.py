@@ -169,3 +169,8 @@ class LeaderboardView(generics.RetrieveAPIView):
     permission_classes = (AllowAny,)
     queryset = Leaderboard.objects.all()
     serializer_class = LeaderboardSerializer
+
+    def get_object(self):
+        obj = Leaderboard.objects.latest('date')
+        self.check_object_permissions(self.request, obj)
+        return obj
