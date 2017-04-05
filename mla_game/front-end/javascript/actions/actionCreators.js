@@ -1,5 +1,6 @@
 require('es6-promise').polyfill();
 import axios from 'axios'
+import { partition } from '../helpers'
 
 // score actions
 export function updateTotalScore(amount){
@@ -166,22 +167,16 @@ export function fetchGameOne(){
     dispatch(requestGameOne(true))
     return axios.get('/api/transcript/game_one/')
       .then(function(gameOneInfo){
+        let phraseData = gameOneInfo.data[0].phrases,
+            phrases = phraseData.filter(phrase => (phrase.end_time <= 300))
+        
         // store data for gameone
         dispatch(storeGameOne(gameOneInfo.data[0]))
         // set start time for for audio based on start time of first phrase
         dispatch(setStartTime(Number(gameOneInfo.data[0].phrases[0].start_time)))
         // set end time based on forst phrase start time
-        let transcriptEndTime = Number(gameOneInfo.data[0].phrases[0].start_time) + 300
-        // grab first twenty minutes of segments and push 
-        // to new array and then state
-        const phrases = [];
-        for (var i = 0; i < gameOneInfo.data[0].phrases.length; i++) {
-          if(gameOneInfo.data[0].phrases[i].start_time <= transcriptEndTime) {
-            phrases.push(gameOneInfo.data[0].phrases[i]);
-          }
-        }
-        // update state with new phrase array with twenty minutes of audio
         dispatch(setPhraseList(phrases))
+
       })
   }
 } 
@@ -497,6 +492,11 @@ export function fetchGameTwo(){
         // store data for gametwo
         dispatch(storeGameTwo(data))
         // set start time for for audio based on start time of first phrase
+
+        // testing
+        // var split = partition(phrases, 3)        
+        // console.table(split)
+
       })
   }
 }// <-- end  gametwo actions
