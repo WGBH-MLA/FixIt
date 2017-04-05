@@ -51,7 +51,7 @@ class GameOne extends React.Component{
   }
 
   handleProgress() {
-    const { gameone, setIsPlaying, setCurrentTime, playPhrase, wait, advanceSegment, updateTotalScore, updateGameScore, endOfRoundOne } = this.props
+    const { gameone, setIsPlaying, setCurrentTime, playPhrase, wait, advanceSegment, updateTotalScore, updateGameScore } = this.props
     // copy state
     const wrongPhrases = {...this.state.wrongPhrases}
     let userPk = this.props.initialData.user[0].pk
@@ -67,8 +67,7 @@ class GameOne extends React.Component{
     let considered_phrases = {
       "considered_phrases":consideredPhrases
     }
-
-    console.log(consideredPhrases)
+    
     patchData(`/api/profile/${userPk}/`, considered_phrases).then(function(response){
       console.log(response)
     })
@@ -78,7 +77,7 @@ class GameOne extends React.Component{
     
     // check if the round has ended. if so change state. 
     // if not push other things to state like the score and play the media    
-    if(gameone.segment <= gameone.phrases.length -2) {
+    if(gameone.segment <= gameone.phrases.length) {
       // update round
       var media = document.querySelector('.audio-player');
       media.currentTime = gameone.startSegment;
@@ -94,8 +93,6 @@ class GameOne extends React.Component{
       }
       postData('/api/score/', segmentScore)
 
-    } else {
-      endOfRoundOne(true)
     }
 
     // data push for phrases if they exist
@@ -166,8 +163,8 @@ class GameOne extends React.Component{
     this.props.updateGameOneScore(this.props.gameone.gameScore)
     this.reload()
   }
-
   
+
   render(){
     const { gameone, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegment } = this.props
 
@@ -225,8 +222,10 @@ class GameOne extends React.Component{
                         <Phrase
                            selectPhrase={this.selectPhrase}
                            playPhrase={this.playPhrase}
+                           endOfRoundOne={this.props.endOfRoundOne}
                            time={gameone.currentTime} 
                            active={gameone.segment}
+                           length={gameone.phrases.length}
                            keys={key}
                            details={index}
                            wrongPhrases={gameone.wrongPhrases}

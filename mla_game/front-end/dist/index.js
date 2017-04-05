@@ -148,6 +148,8 @@ var _axios = require('axios');
 
 var _axios2 = _interopRequireDefault(_axios);
 
+var _helpers = require('../helpers');
+
 // score actions
 require('es6-promise').polyfill();
 
@@ -310,21 +312,16 @@ function fetchGameOne() {
   return function (dispatch, getState) {
     dispatch(requestGameOne(true));
     return _axios2['default'].get('/api/transcript/game_one/').then(function (gameOneInfo) {
+      var phraseData = gameOneInfo.data[0].phrases,
+          phrases = phraseData.filter(function (phrase) {
+        return phrase.end_time <= 300;
+      });
+
       // store data for gameone
       dispatch(storeGameOne(gameOneInfo.data[0]));
       // set start time for for audio based on start time of first phrase
       dispatch(setStartTime(Number(gameOneInfo.data[0].phrases[0].start_time)));
       // set end time based on forst phrase start time
-      var transcriptEndTime = Number(gameOneInfo.data[0].phrases[0].start_time) + 300;
-      // grab first twenty minutes of segments and push
-      // to new array and then state
-      var phrases = [];
-      for (var i = 0; i < gameOneInfo.data[0].phrases.length; i++) {
-        if (gameOneInfo.data[0].phrases[i].start_time <= transcriptEndTime) {
-          phrases.push(gameOneInfo.data[0].phrases[i]);
-        }
-      }
-      // update state with new phrase array with twenty minutes of audio
       dispatch(setPhraseList(phrases));
     });
   };
@@ -647,6 +644,10 @@ function fetchGameTwo() {
       // store data for gametwo
       dispatch(storeGameTwo(data));
       // set start time for for audio based on start time of first phrase
+
+      // testing
+      // var split = partition(phrases, 3)       
+      // console.table(split)
     });
   };
 }
@@ -745,7 +746,7 @@ function fetchGameThree() {
 
 // <-- end gamethree actions
 
-},{"axios":38,"es6-promise":69}],3:[function(require,module,exports){
+},{"../helpers":28,"axios":38,"es6-promise":69}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1938,6 +1939,20 @@ var Phrase = (function (_React$Component) {
       this.getStartofContext();
     }
   }, {
+    key: 'shouldComponentUpdate',
+    value: function shouldComponentUpdate(nextProps) {
+      var active = nextProps.active;
+      var length = nextProps.length;
+
+      if (length < active) {
+        this.props.endOfRoundOne(true);
+        return false;
+      } else {
+        console.log(active, length);
+        return true;
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this = this;
@@ -1971,9 +1986,7 @@ var Phrase = (function (_React$Component) {
         ),
         _react2['default'].createElement(
           'button',
-          { disabled: currentSegment ? false : true, ref: function (button) {
-              _this.button = button;
-            }, className: 'text', onClick: function () {
+          { disabled: currentSegment ? false : true, className: 'text', onClick: function () {
               return _this.markPhrases();
             }, id: details.pk },
           _react2['default'].createElement(
@@ -3779,7 +3792,6 @@ var GameOne = (function (_React$Component) {
       var advanceSegment = _props.advanceSegment;
       var updateTotalScore = _props.updateTotalScore;
       var updateGameScore = _props.updateGameScore;
-      var endOfRoundOne = _props.endOfRoundOne;
 
       // copy state
       var wrongPhrases = _extends({}, this.state.wrongPhrases);
@@ -3797,9 +3809,8 @@ var GameOne = (function (_React$Component) {
         "considered_phrases": consideredPhrases
       };
 
-      console.log(consideredPhrases);
       (0, _helpers.patchData)('/api/profile/' + userPk + '/', considered_phrases).then(function (response) {
-        console.log(response);
+        console.log(response, 'heellp');
       });
 
       // disable advance round for three seconds when round updates
@@ -3807,7 +3818,7 @@ var GameOne = (function (_React$Component) {
 
       // check if the round has ended. if so change state.
       // if not push other things to state like the score and play the media   
-      if (gameone.segment <= gameone.phrases.length - 2) {
+      if (gameone.segment <= gameone.phrases.length) {
         // update round
         var media = document.querySelector('.audio-player');
         media.currentTime = gameone.startSegment;
@@ -3822,8 +3833,6 @@ var GameOne = (function (_React$Component) {
           score: 10
         };
         (0, _helpers.postData)('/api/score/', segmentScore);
-      } else {
-        endOfRoundOne(true);
       }
 
       // data push for phrases if they exist
@@ -4012,8 +4021,10 @@ var GameOne = (function (_React$Component) {
                       _react2['default'].createElement(_partialsGame_one_phrase2['default'], {
                         selectPhrase: _this.selectPhrase,
                         playPhrase: _this.playPhrase,
+                        endOfRoundOne: _this.props.endOfRoundOne,
                         time: gameone.currentTime,
                         active: gameone.segment,
+                        length: gameone.phrases.length,
                         keys: key,
                         details: index,
                         wrongPhrases: gameone.wrongPhrases,
@@ -5050,6 +5061,7 @@ Object.defineProperty(exports, '__esModule', {
 exports.getCookie = getCookie;
 exports.postData = postData;
 exports.patchData = patchData;
+exports.partition = partition;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -5099,6 +5111,16 @@ function patchData(endpoint, data) {
       "X-CSRFToken": getCookie('csrftoken')
     }
   });
+}
+
+// create multidimensional array based on number
+
+function partition(items, size) {
+  var p = [];
+  for (var i = Math.floor(items.length / size); i-- > 0;) {
+    p[i] = items.slice(i * size, (i + 1) * size);
+  }
+  return p;
 }
 
 },{"axios":38}],29:[function(require,module,exports){
