@@ -313,9 +313,11 @@ function fetchGameOne() {
     dispatch(requestGameOne(true));
     return _axios2['default'].get('/api/transcript/game_one/').then(function (gameOneInfo) {
       var phraseData = gameOneInfo.data[0].phrases,
+          transcriptEndTime = Number(gameOneInfo.data[0].phrases[0].start_time) + 300,
           phrases = phraseData.filter(function (phrase) {
-        return phrase.end_time <= 300;
+        return phrase.end_time <= transcriptEndTime;
       });
+
       console.log(phraseData, 'unfiltered phrases');
       console.log(phrases, 'filtered phrases');
       // store data for gameone
@@ -1986,7 +1988,9 @@ var Phrase = (function (_React$Component) {
         ),
         _react2['default'].createElement(
           'button',
-          { disabled: currentSegment ? false : true, className: 'text', onClick: function () {
+          { disabled: currentSegment ? false : true, ref: function (button) {
+              _this.button = button;
+            }, className: 'text', onClick: function () {
               return _this.markPhrases();
             }, id: details.pk },
           _react2['default'].createElement(
