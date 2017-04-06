@@ -56,7 +56,6 @@ class GameOne extends React.Component{
     const wrongPhrases = {...this.state.wrongPhrases}
     let userPk = this.props.initialData.user[0].pk
     let consideredPhrases = []
-    
     gameone.phrases.map(function(index, keys) {
       let active = gameone.segment,
           currentSegment = active === keys || active === keys + 1 || active === keys -1
@@ -67,10 +66,8 @@ class GameOne extends React.Component{
     let considered_phrases = {
       "considered_phrases":consideredPhrases
     }
-    
-    patchData(`/api/profile/${userPk}/`, considered_phrases).then(function(response){
-      console.log(response)
-    })
+    // patch considered phrases for game one    
+    patchData(`/api/profile/${userPk}/`, considered_phrases)
     
     // disable advance round for three seconds when round updates
     wait(3000)

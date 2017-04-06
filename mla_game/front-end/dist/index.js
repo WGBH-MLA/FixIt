@@ -313,13 +313,15 @@ function fetchGameOne() {
     dispatch(requestGameOne(true));
     return _axios2['default'].get('/api/transcript/game_one/').then(function (gameOneInfo) {
       var phraseData = gameOneInfo.data[0].phrases,
-          transcriptEndTime = Number(gameOneInfo.data[0].phrases[0].start_time) + 300,
-          phrases = phraseData.filter(function (phrase) {
+
+      // get end time
+      transcriptEndTime = Number(gameOneInfo.data[0].phrases[0].start_time) + 300,
+
+      // filter based on 5 minutes from start time
+      phrases = phraseData.filter(function (phrase) {
         return phrase.end_time <= transcriptEndTime;
       });
 
-      console.log(phraseData, 'unfiltered phrases');
-      console.log(phrases, 'filtered phrases');
       // store data for gameone
       dispatch(storeGameOne(gameOneInfo.data[0]));
       // set start time for for audio based on start time of first phrase
@@ -3801,7 +3803,6 @@ var GameOne = (function (_React$Component) {
       var wrongPhrases = _extends({}, this.state.wrongPhrases);
       var userPk = this.props.initialData.user[0].pk;
       var consideredPhrases = [];
-
       gameone.phrases.map(function (index, keys) {
         var active = gameone.segment,
             currentSegment = active === keys || active === keys + 1 || active === keys - 1;
@@ -3812,10 +3813,8 @@ var GameOne = (function (_React$Component) {
       var considered_phrases = {
         "considered_phrases": consideredPhrases
       };
-
-      (0, _helpers.patchData)('/api/profile/' + userPk + '/', considered_phrases).then(function (response) {
-        console.log(response);
-      });
+      // patch considered phrases for game one   
+      (0, _helpers.patchData)('/api/profile/' + userPk + '/', considered_phrases);
 
       // disable advance round for three seconds when round updates
       wait(3000);

@@ -168,11 +168,11 @@ export function fetchGameOne(){
     return axios.get('/api/transcript/game_one/')
       .then(function(gameOneInfo){
         let phraseData = gameOneInfo.data[0].phrases,
+            // get end time
             transcriptEndTime = Number(gameOneInfo.data[0].phrases[0].start_time) + 300,
+            // filter based on 5 minutes from start time
             phrases = phraseData.filter(phrase => (phrase.end_time <= transcriptEndTime))
-            
-            console.log(phraseData, 'unfiltered phrases')
-            console.log(phrases, 'filtered phrases')
+
         // store data for gameone
         dispatch(storeGameOne(gameOneInfo.data[0]))
         // set start time for for audio based on start time of first phrase
