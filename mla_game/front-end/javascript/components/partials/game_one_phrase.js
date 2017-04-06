@@ -49,7 +49,6 @@ class Phrase extends React.Component{
       return false
     }
      else {
-      console.log(active, length)
       return true
      }
   }

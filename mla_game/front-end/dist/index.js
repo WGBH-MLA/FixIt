@@ -316,7 +316,8 @@ function fetchGameOne() {
           phrases = phraseData.filter(function (phrase) {
         return phrase.end_time <= 300;
       });
-
+      console.log(phraseData, 'unfiltered phrases');
+      console.log(phrases, 'filtered phrases');
       // store data for gameone
       dispatch(storeGameOne(gameOneInfo.data[0]));
       // set start time for for audio based on start time of first phrase
@@ -1948,7 +1949,6 @@ var Phrase = (function (_React$Component) {
         this.props.endOfRoundOne(true);
         return false;
       } else {
-        console.log(active, length);
         return true;
       }
     }
@@ -3810,7 +3810,7 @@ var GameOne = (function (_React$Component) {
       };
 
       (0, _helpers.patchData)('/api/profile/' + userPk + '/', considered_phrases).then(function (response) {
-        console.log(response, 'heellp');
+        console.log(response);
       });
 
       // disable advance round for three seconds when round updates
