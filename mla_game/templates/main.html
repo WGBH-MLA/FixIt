@@ -6,7 +6,7 @@
   <header class="splash-header">
     <a class="aapb-link" href="http://americanarchive.org." target="_blank"></a>
     <h1>Fix It</h1>
-    <button class="info">
+    <button class="info js-info">
       <svg className='nav-icon' xmlns="http://www.w3.org/2000/svg" viewBox="10.6 100.6 590.8 590.8">
         <path d="M306 691.4c-78.904 0-153.085-30.727-208.88-86.52C41.328 549.085 10.6 474.903 10.6 396s30.727-153.085 86.52-208.88C152.916 131.328 227.097 100.6 306 100.6s153.086 30.727 208.88 86.52C570.674 242.916 601.4 317.097 601.4 396s-30.727 153.086-86.52 208.88S384.903 691.4 306 691.4zm0-550.8c-68.22 0-132.356 26.566-180.595 74.805C77.167 263.645 50.6 327.78 50.6 396s26.566 132.356 74.805 180.596C173.645 624.834 237.78 651.4 306 651.4s132.356-26.566 180.596-74.805C534.834 528.355 561.4 464.22 561.4 396s-26.566-132.356-74.805-180.595C438.355 167.167 374.22 140.6 306 140.6z"/>
         <path d="M277.848 374.58h67.32v185.13h-67.32z"/>
@@ -20,14 +20,14 @@
       You can make historic public radio and television programs from across America easier to search and access. Help professional archivists and history lovers identify and correct errors in machine-generated transcripts. Your corrections will made available in public media’s largest digital archive at <a href="http://americanarchive.org." target="_blank">americanarchive.org.</a>
     </p>
     <div class="social-login">
-      <a class="delta" href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">
+      <a class="delta js-login" href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 70">
           <title>Login in with Facebook</title>
           <path fill="#4562A6" d="M8.7.12S0 .12 0 8.82v52.2s0 8.7 8.7 8.7h182.6s8.7 0 8.7-8.7V8.82s0-8.7-8.7-8.7H8.7z"/>
           <path fill="#FFF" d="M23.7 30.32v-12.9h2.4v10.8h3.3v2.1h-5.7zm14.3-5c0 1.6-.3 2.9-1 3.8-.7.9-1.6 1.3-2.8 1.3-.8 0-1.4-.2-2-.6-.6-.4-1-1-1.3-1.8-.3-.8-.5-1.7-.5-2.7 0-1.6.3-2.8 1-3.7.7-.9 1.6-1.3 2.8-1.3 1.2 0 2.1.5 2.8 1.4.7.9 1 2.1 1 3.6zm-5.2 0c0 1 .1 1.8.3 2.3.2.5.6.8 1.1.8.9 0 1.4-1 1.4-3.1 0-1-.1-1.8-.3-2.3-.2-.5-.6-.8-1.1-.8-.5 0-.9.3-1.1.8-.2.5-.3 1.3-.3 2.3zm13.9-4.8v1.4l-1.1.2c.2.4.3.9.3 1.5 0 1-.3 1.9-.8 2.4s-1.3.9-2.4.9c-.3 0-.5 0-.7-.1l-.3.3c-.1.1-.1.3-.1.5 0 .4.4.6 1.1.6h1.4c.8 0 1.5.2 1.9.7.4.4.7 1.1.7 2 0 1.1-.4 2-1.1 2.6-.8.6-1.9.9-3.3.9-1.1 0-1.9-.2-2.5-.7-.6-.5-.9-1.1-.9-2 0-.5.2-1 .5-1.4.3-.4.8-.7 1.4-.9-.3-.1-.5-.3-.7-.5-.2-.2-.3-.5-.3-.9 0-.2 0-.4.1-.5.1-.1.1-.3.3-.5.1-.1.3-.4.7-.6-.4-.2-.7-.6-1-1.1-.2-.5-.4-1.1-.4-1.7 0-1.1.3-1.9.8-2.5.5-.6 1.4-.9 2.4-.9.2 0 .4 0 .7.1.3 0 .5.1.6.1h2.7v.1zM41 31.72c0 .4.1.7.4.9.2.2.6.3 1 .3.7 0 1.2-.1 1.6-.4.4-.3.5-.6.5-1.1 0-.4-.1-.6-.3-.8-.2-.2-.5-.2-1.1-.2H42c-.3 0-.6.1-.8.4-.1.2-.2.5-.2.9zm.7-8c0 1.2.3 1.7 1 1.7.6 0 1-.6 1-1.8 0-1.2-.3-1.8-1-1.8s-1 .6-1 1.9zm10.6-5.8c0-.4.1-.7.3-.9.2-.2.5-.3.9-.3s.7.1.9.3c.2.2.3.5.3.9s-.1.7-.4.9c-.2.2-.5.3-.9.3s-.7-.1-.9-.3c-.1-.2-.2-.5-.2-.9zm2.4 12.4h-2.3v-9.8h2.3v9.8zm6.9 0v-5.8c0-.7-.1-1.2-.3-1.6-.2-.4-.4-.5-.8-.5-.5 0-.9.3-1.1.8-.2.5-.4 1.3-.4 2.5v4.7h-2.3v-9.8h1.9l.3 1.3h.1c.2-.5.5-.8.9-1.1.4-.3.9-.4 1.4-.4.9 0 1.6.3 2 .9.4.6.7 1.5.7 2.7v6.4h-2.4v-.1zm15.6 0l-1-5.7-.3-2.4c-.1.8-.2 1.3-.2 1.7-.1.3-.4 2.5-1.1 6.4h-3l-2-9.8H72l.9 5.4c.1.6.2 1.5.3 2.6h.1c0-.3.1-.8.1-1.4.1-.6.1-1 .1-1.2l1-5.4h3l1 5.4c.1.6.2 1.5.3 2.6.1-1.1.2-1.9.3-2.6l.9-5.4h2.3l-2 9.8h-3.1zm6.1-12.4c0-.4.1-.7.3-.9.2-.2.5-.3.9-.3s.7.1.9.3c.2.2.3.5.3.9s-.1.7-.4.9c-.2.2-.5.3-.9.3s-.7-.1-.9-.3c-.1-.2-.2-.5-.2-.9zm2.4 12.4h-2.3v-9.8h2.3v9.8zm5.4-1.8c.3 0 .7-.1 1.1-.2v1.8c-.4.3-1 .4-1.7.4-.9 0-1.5-.3-1.9-.8-.4-.5-.6-1.3-.6-2.3v-5.1h-1v-1l1.2-.8.6-2.1h1.5v2.1h1.8v1.9h-1.8v5.2c0 .5.3.9.8.9zm7.4 1.8v-5.8c0-1.4-.4-2.2-1.1-2.2-.5 0-.9.3-1.1.8-.2.6-.3 1.4-.3 2.4v4.7h-2.3v-13.6H96v3c0 .4 0 1.1-.1 2.1h.1c.5-1 1.2-1.4 2.2-1.4.9 0 1.6.3 2 .9.4.6.7 1.5.7 2.7v6.4h-2.4zm-72.5 24h-2.4v-12.9h5.8v2.1H26v3.6h3.2v2H26v5.2zm9.7 0l-.5-1.3h-.1c-.3.6-.7 1-1.1 1.2-.4.2-.8.3-1.4.3-.7 0-1.3-.3-1.7-.8-.4-.5-.6-1.3-.6-2.3 0-1 .3-1.8.9-2.3.6-.5 1.4-.8 2.5-.8l1.3-.1v-.7c0-.9-.4-1.4-1.2-1.4-.6 0-1.3.2-2 .7l-.8-1.6c1-.6 2-.9 3.2-.9 1 0 1.8.3 2.4.9.5.6.8 1.4.8 2.5v6.6h-1.7zm-2-1.7c.4 0 .8-.2 1-.6.3-.4.4-.9.4-1.5v-.8h-.7c-.5 0-.9.2-1.2.5-.2.3-.4.7-.4 1.2 0 .8.3 1.2.9 1.2zm8.9 1.9c-1.2 0-2.1-.4-2.7-1.3-.6-.9-.9-2.1-.9-3.7 0-1.7.3-3 .9-3.9.6-.9 1.5-1.3 2.7-1.3.4 0 .7.1 1.1.2.4.1.8.3 1.1.5l-.7 1.8c-.5-.3-.9-.4-1.3-.4-.5 0-.9.3-1.1.8-.2.5-.3 1.3-.3 2.3 0 1 .1 1.8.3 2.3.2.5.6.8 1.1.8.6 0 1.2-.2 1.8-.6v2.1c-.6.2-1.3.4-2 .4zm7 0c-1.2 0-2.2-.4-2.9-1.3-.7-.9-1.1-2.1-1.1-3.7s.3-2.9 1-3.8c.6-.9 1.5-1.4 2.7-1.4 1.1 0 1.9.4 2.5 1.2.6.8.9 1.9.9 3.3v1.3H48c0 .9.2 1.5.5 2s.8.6 1.4.6c.8 0 1.5-.2 2.3-.7v1.9c-.6.4-1.5.6-2.6.6zm-.3-8.4c-.3 0-.6.2-.8.5-.2.3-.3.9-.4 1.7h2.4c0-.7-.1-1.3-.3-1.6-.3-.4-.6-.6-.9-.6zm9.4-1.8c.9 0 1.6.4 2.1 1.3s.8 2.1.8 3.7-.3 2.9-.8 3.8c-.5.9-1.2 1.3-2.1 1.3-.4 0-.8-.1-1.2-.3-.3-.2-.7-.5-1-1h-.1l-.4 1.2h-1.7v-13.7h2.3v3.6c0 .1 0 .7-.1 1.5h.1c.3-.5.6-.9.9-1.1.3-.2.8-.3 1.2-.3zm-.8 2c-.4 0-.8.2-1 .6-.2.4-.3 1.2-.3 2.2v.2c0 1.1.1 1.9.3 2.4.2.5.5.7 1 .7.8 0 1.3-1 1.3-3.1 0-2-.4-3-1.3-3zm12.6 3.1c0 1.6-.3 2.9-1 3.8-.7.9-1.6 1.3-2.8 1.3-.8 0-1.4-.2-2-.6-.6-.4-1-1-1.3-1.8-.3-.8-.5-1.7-.5-2.7 0-1.6.3-2.8 1-3.7.7-.9 1.6-1.3 2.8-1.3 1.2 0 2.1.5 2.8 1.4.7.8 1 2 1 3.6zm-5.2 0c0 1 .1 1.8.3 2.3.2.5.6.8 1.1.8.9 0 1.4-1 1.4-3.1 0-1-.1-1.8-.3-2.3-.2-.5-.6-.8-1.1-.8-.5 0-.9.3-1.1.8-.2.5-.3 1.3-.3 2.3zm14.1 0c0 1.6-.3 2.9-1 3.8-.7.9-1.6 1.3-2.8 1.3-.8 0-1.4-.2-2-.6-.6-.4-1-1-1.3-1.8-.3-.8-.5-1.7-.5-2.7 0-1.6.3-2.8 1-3.7.7-.9 1.6-1.3 2.8-1.3 1.2 0 2.1.5 2.8 1.4.7.8 1 2 1 3.6zm-5.2 0c0 1 .1 1.8.3 2.3.2.5.6.8 1.1.8.9 0 1.4-1 1.4-3.1 0-1-.1-1.8-.3-2.3-.2-.5-.6-.8-1.1-.8-.5 0-.9.3-1.1.8-.2.5-.3 1.3-.3 2.3zm9.2-.4l.6-1.2 1.9-3.4h2.5l-2.5 4 2.6 5.8H86l-1.8-4.1-.9.8v3.3H81v-13.6h2.3v6.5l.1 1.9zm89.6 20.8v-26.7h9l1.3-10.4H173v-6.6c0-3 .8-5.1 5.2-5.1h5.5v-9.3c-1-.1-4.2-.4-8-.4-7.9 0-13.4 4.8-13.4 13.8v7.7h-9v10.3h9v26.7H173z"/>
         </svg>
       </a>
-      <a class="delta" href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">
+      <a class="delta js-login" href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 70">
           <title>Login in with Google</title>
             <path fill="#F33" d="M8.7.17S0 .17 0 8.87v52.2s0 8.7 8.7 8.7h182.6s8.7 0 8.7-8.7V8.87s0-8.7-8.7-8.7H8.7z"/>
@@ -38,7 +38,7 @@
     </div>
   </div>
   <footer class="splash-footer">
-    <span class="label">Share:</span>
+    <span class="social-label">Share:</span>
     <ul>
       <li>
       <a id="Facebook_Share" class="js-popup-link" href="https://www.facebook.com/sharer/sharer.php?u=http%3A//fixit.wgbh-mla.org/">
@@ -65,8 +65,76 @@
         </a>
       </li>
     </ul>
-    <a class="terms" href="#terms">Terms of Use</a>
+    <a class="terms-link js-terms-link" href="#js-terms-dialog">Terms of Use</a>
   </footer>
+
+  <div id="js-terms-dialog" class="dialog" aria-hidden="true">
+    <div class="dialog-overlay" tabindex="-1" data-a11y-dialog-hide></div>
+    <div role="dialog" aria-labelledby="dialog-title" class="dialog-content">
+      <div role="document">
+        <h1 id="dialog-title">Terms and Conditions</h1>
+        <p>THE FOLLOWING TERMS AND CONDITIONS GOVERN YOUR USE OF THE SITE. PLEASE READ THESE TERMS OF USE CAREFULLY BEFORE USING THIS SITE.</p>
+        <p>WGBH Educational Foundation (“WGBH”), on behalf of the American Archive of Public Broadcasting, which is a collaboration between WGBH and the Library of Congress, has created and maintains this FixIt website (the “Site”). This Site is governed by the <a href="http://americanarchive.org/legal/tou" target="_blank">Terms of Use</a> (the “Terms”) and <a href="http://americanarchive.org/legal/privacy" targe="_blank">Privacy Policy</a> (the “Policy”) of the American Archive for Public Broadcasting located at <a href="http://americanarchive.org/" target="_blank">americanarchive.org</a>. By using the Site you agree to be bound by the Terms and Policy. If you do not agree to the Term and Policy you must exit the Site and you may not use the Site or any of its features. Your acceptance of the Terms upon your first visit to the Site constitutes acceptance to the Terms on all of your subsequent visits to the Site.</p>
+        <p>In addition to the Terms and the Policy, the following additional terms shall apply to the Site (the “Supplemental Terms”). In the event of any conflict between the Supplemental Terms and the Terms or the Policy, then the Supplemental Terms shall take priority, with all other provisions of the Terms and the Policy remaining in full effect.</p>
+        <h2>A. Registration</h2>
+        <p>You accept all responsibility for the use of any third party login function or API that you use to register for the Site and consent to information sharing by and between the providers of such services and WGBH which may include your name and contact information. You are solely responsible for all activities that occur through your account. You further acknowledge that you may receive emails pertaining to promotional suggested topics for FixIt games.</p>
+        <h2>B. Restrictions on Use of Site and Content</h2>
+        <ol>
+          <li>You must be at least thirteen (13) years of age to register for the Site and to submit any User Generated Content (defined by the Terms and below).</li>
+          <li>You agree that use of the Site’s features and transcription games results in the creation of derivative works and that all rights associated with such transcription and results of said games remains the sole property of WGBH, the contributing station, or other rights holder for the material being transcribed.</li>
+        </ol>
+        <h2>C. User Generated Content (UGC):</h2>
+        <ol>
+          <li>You acknowledge that WGBH, the contributing station, or other rights holder for the material being transcribed as determined by WGBH, is the owner of all content generated through your use of the transcription games located on the site (“User Generated Content” or “UGC”) and that you may not control WGBH’s use of the content. WGBH is not obligated to use your UGC.</li>
+          <li>You acknowledge that WGBH assumes no responsibility or liability arising from UGC that unreasonably differs from the source material, or for any error, defamation, libel, omission, obscenity, danger or inaccuracy contained in the same.</li>
+          <li>You agree to use reasonable effort to ensure accuracy in your use of the transcription games which shall include utilizing the provided instructions for the same, and shall not use the games and UGC as an avenue to engage in any behavior which may be off-topic, contains personal attacks or expletives or is otherwise abusive, threatening, unlawful, harassing, discriminatory, libelous, obscene, false, pornographic, that infringes on the rights of a third party, or as a means of advertising or promoting any off topic matter.</li>
+        </ol>
+        <h2>D. Links to Third Party Sites </h2>
+        <p>This site contains links to affiliated and unaffiliated websites. Such sites are subject to their own terms and conditions. Please review the terms and conditions specific to each website that you intend to make use of and make sure you comply with the applicable rules. You agree that WGBH shall have no liability for damaged, broken, or misleading links. Links are provided for convenience only and WGBH makes no representation or warranty and bears no responsibility for accuracy or content of any externally linked site. Your use of such sites is at your sole risk.</p>
+        <form class="js-terms-form terms-form">
+          <span class="alert js-alert">
+            You Must Agree to the Terms to Continue
+          </span>
+          <label class="terms-agree">
+            <input class="js-terms-agree" type="checkbox" name='terms-agreement'>
+              Agree to Terms
+            </label>
+          <button class="terms-agree-button js-terms-agree-button">Submit</button>
+        </form>
+        <button type="button" data-a11y-dialog-hide aria-label="Close this dialog window" class='modal-close'>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+            <title>Close Modal</title>
+            <path d="M403.1 108.9c-81.2-81.2-212.9-81.2-294.2 0s-81.2 212.9 0 294.2c81.2 81.2 212.9 81.2 294.2 0s81.2-213 0-294.2zm-12.3 281.9c-74.3 74.3-195.3 74.3-269.6 0-74.3-74.3-74.3-195.3 0-269.6s195.3-74.3 269.6 0c74.4 74.3 74.4 195.3 0 269.6z"/>
+            <path d="M340.2 160l-84.4 84.2-84-83.8-11.8 11.8 84 83.8-84 83.8 11.8 11.8 84-83.8 84.4 84.2 11.8-11.8-84.4-84.2 84.4-84.2"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  
+
+  <div id="js-about-dialog" class="dialog" aria-hidden="true">
+    <div class="dialog-overlay" tabindex="-1" data-a11y-dialog-hide></div>
+    <div role="dialog" aria-labelledby="dialog-title" class="dialog-content">
+      <div role="document">
+        <h1 id="dialog-title" tabindex="0">About Fixit</h1>
+        <p>We need you to help ensure that public media always remains public—not just today’s broadcasts, but the archive all the way back to the beginning.</p>
+        <p>After a brief moment on the air, most public broadcasting programs are filed away andlanguish on shelves, sometimes for decades. The American Archive of Public Broadcasting (AAPB), a collaboration between public media powerhouse WGBH and the Library of Congress, believes this treasure trove of public television and radio programs should be preserved and made available to the American people. For the past 4 years, we’ve been hard at work, digitizing thousands of broadcast hours from public media’s 60+ year legacy, to provide public access to this rich and colorful history, and preserve it for future generations at the Library of Congress. And now, we need your help to make the content in this deep archive easier to search and find.</p>
+        <p>With funding from the Institute of Museum and Library Services, the AAPB has launched FixIt, an online game that allows people like you to assist professional archivists in identifying and correcting errors in our machine-generated transcripts. FixIt players will have exclusive access to historic content and long-lost interviews. You could be the one to make sure that political leaders like John F. Kennedy and Ronald Reagan, civil rights heroes such as Martin Luther King, Jr. and Nelson Mandela, or iconic writers such as Eudora Welty and Simone de Beauvoir are accurately identified for posterity. You can rack up points in any of three challenge areas:  error identification, error correction, or validation of other players’ corrections. The more you play, the more points you accumulate. You can choose areas of particular interest to you, or you can direct your efforts toward preserving the unique broadcasting history of your station or state. You even can track your progress against other players.</p>
+        <p>Visit <a target="_blank" href="fixit.wgbh-mla.org">fixit.wgbh-mla.org</a>, and help us preserve history for future generations. Your corrections will be made available in public media’s largest digital archive at americanarchive.org.</p>
+        <h2>About the AAPB</h2>
+        <p>The American Archive of Public Broadcasting (AAPB) is a collaboration between the Library of Congress and the WGBH Educational Foundation to coordinate a national effort to preserve at-risk public media before its content is lost to posterity and provide a central web portal for access to the unique programming that public stations have aired over the past 60 years. To date, over 40,000 hours of television and radio programming contributed by more than 100 public media organizations and archives across the United States have been digitized for long-term preservation and access. The entire collection is available on location at WGBH and the Library of Congress, and more than 18,000 programs are available online at <a href="americanarchive.org" target="_blank" >americanarchive.org</a>.</p>
+        <button type="button" data-a11y-dialog-hide aria-label="Close this dialog window" class='modal-close'>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+            <title>Close Modal</title>
+            <path d="M403.1 108.9c-81.2-81.2-212.9-81.2-294.2 0s-81.2 212.9 0 294.2c81.2 81.2 212.9 81.2 294.2 0s81.2-213 0-294.2zm-12.3 281.9c-74.3 74.3-195.3 74.3-269.6 0-74.3-74.3-74.3-195.3 0-269.6s195.3-74.3 269.6 0c74.4 74.3 74.4 195.3 0 269.6z"/>
+            <path d="M340.2 160l-84.4 84.2-84-83.8-11.8 11.8 84 83.8-84 83.8 11.8 11.8 84-83.8 84.4 84.2 11.8-11.8-84.4-84.2 84.4-84.2"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
   {% else %}
     <div id="app"></div>
   {% endif %}

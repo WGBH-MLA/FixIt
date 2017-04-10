@@ -1,0 +1,249 @@
+// splash page
+[class^='splash-'] {
+  text-align:center;
+  * {
+    display:inline-block;
+  }
+}
+
+.splash-header {
+  background:$theme-primary;
+  padding:1em 0;
+  @include susy-breakpoint($screen-sm-min, $map-sm) {
+    padding:5vh 0;
+  }
+  @include susy-breakpoint($screen-md-min, $map-md) {
+    padding:10vh 0;
+  }
+  .aapb-link {
+    display:inline-block;
+    background:url(../javascript/images/logo_aapb.png), no-repeat;
+    background-size:cover;
+    height:2em;
+    width:2em;
+    margin-right:1em;
+    @include susy-breakpoint($screen-sm-min, $map-sm) {
+      height:3.45em;
+      width:3.45em;
+      margin-right:2.25em;
+    }
+  }
+  h1 {
+    margin:0;
+    color:$progress;
+    font-size:2.25em;
+    @include susy-breakpoint($screen-sm-min, $map-sm) {
+      font-size:4.75em;
+    }
+  }
+  .info {
+    @include plain-button;
+    display:inline-block;
+    margin-left:.5em;
+    svg {
+      @include transition(fill, .35s, ease-in-out);
+      height:1.5em;
+      width:1.5em;
+      fill:$icon-dark;
+    }
+    &:hover {
+      svg {
+        fill:$progress;
+      }
+    }
+    @include susy-breakpoint($screen-sm-min, $map-sm) {
+      margin-left:.5em;
+      svg {
+        height:3em;
+        width:3em;
+      }
+    }
+  }
+}
+
+.splash-content {
+  padding:1.5em 5%;
+  @include susy-breakpoint($screen-sm-min, $map-sm) {
+    padding:7vh 5%;
+  }
+  p {
+    max-width:55em;
+    display:block;
+    margin:0 auto 1.5em auto;
+    @include susy-breakpoint($screen-sm-min, $map-sm) {
+      font-size:1.25em;
+      margin:0 auto 7vh auto;
+    }
+  }
+  .social-login {
+    a {
+      display:block;
+      margin:1em;
+      svg {
+        display:block;
+        height:2.1875em;
+        width:6.25em;
+      }
+      @include susy-breakpoint($screen-sm-min, $map-sm) {
+        display:inline-block;
+        margin:0;
+        &:last-child {
+          margin-left:2em;
+        }
+        svg {
+          height:4.375em;
+          width:12.5em;
+        }
+      }
+      @include susy-breakpoint($screen-md-min, $map-md) {
+        &:last-child {
+          margin-left:5em;
+        }
+      }
+    }
+  }
+}
+
+.splash-footer {
+  background:$theme-primary;
+  padding:1em 5%;
+  @include susy-breakpoint($screen-sm-min, $map-sm) {
+    padding:7vh 5%;
+    font-size:1.25em;
+  }
+  * {
+    vertical-align:middle;
+   }
+  ul {
+    @include plain-list;
+    margin:.5em 0;
+    li {
+      &:not(:last-of-type){
+        margin-right:.5em;
+      }
+      a {
+        svg {
+          width:3em;
+          height:3em;
+          .background {
+            @include transition(fill, .35s, ease-in-out);
+          }
+        }
+        &:hover {
+          svg {
+            .background {
+              fill:$default;
+            }
+          }
+        }
+      }
+    }
+  }
+  .terms-link, .social-label {
+    display:block;
+    @include susy-breakpoint($screen-sm-min, $map-sm) {
+      display:inline-block;
+    }
+  }
+  .social-label {
+    @include susy-breakpoint($screen-sm-min, $map-sm) {
+      margin-right:2em;
+    }
+  }
+  .terms-link {
+    text-decoration:underline;
+    &:hover {
+      text-decoration:none;
+    }
+    @include susy-breakpoint($screen-sm-min, $map-sm) {
+      margin-left:5em;
+    }
+  }
+}
+
+// modal windows
+.dialog {
+  @include animated(200ms);
+  @include fadeIn;
+  h1 {
+    display:inline-block;
+    max-width:calc(100% - 5.625em)
+  }
+}
+
+.dialog[aria-hidden="true"] {
+  display: none;
+}
+
+.dialog-overlay {
+  z-index: 2;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.dialog-content {
+  @include center;
+  overflow: scroll;
+  z-index: 3;
+  position: fixed;
+  background:$theme-secondary;
+  width:100%;
+  max-width:55em;
+  overflow: scroll;
+  border:1px solid white;
+  border-radius:4px;
+  padding:1em 1.5em;
+  height:100vh;
+}
+
+// terms form
+.terms-form {
+  @include clearfix;
+  position: relative;
+  &.dontShow {
+    display:none;
+  }
+  .alert {
+    display:none;
+    @include animated(200ms);
+    @include fadeIn;
+    &.show {
+      display:inline-block;
+      position:absolute;
+      top:-3em;
+      padding:.25em .75em;
+      background:white;
+      color:red;
+      border-radius:.125em;
+      &:after {
+        content:'';
+        display:inline-block;
+        position:absolute;
+        top:100%;
+        left:1em;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 15px 12.5px 0 12.5px;
+        border-color: #fff transparent transparent transparent;
+      }
+    }
+  }
+  .terms-agree {
+    float:left;
+    margin-top:.25em;
+  }
+  .terms-agree-button {
+    @include transition(all, .25s, ease-in-out);
+    @include border-button($theme-secondary, white);
+    float:right;
+    margin-bottom:0;
+    &:hover {
+      background:white;
+      color:$theme-secondary;
+    }
+  }
+}

@@ -20,31 +20,132 @@
   {% if user.is_authenticated %}
     <script src="{% static 'dist/index.js' %}" type="text/javascript" charset="utf-8"></script>
   {% else %}
+    <script src="{% static 'dist/a11y-dialog.min.js' %}" type="text/javascript" charset="utf-8"></script>
     <script>
-      // social sharing
-      function PopupCenter(url, title, w, h) {
-        var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left,
-            dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top, 
-            width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width,
-            height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height,
-            left = ((width / 2) - (w / 2)) + dualScreenLeft,
-            top = ((height / 2) - (h / 2)) + dualScreenTop,
-            newWindow = window.open(url, title, 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
-        // Puts focus on the newWindow
-        if (window.focus) {
-            newWindow.focus();
+    (function () {
+      document.addEventListener('DOMContentLoaded', function () {
+        'use strict'
+
+        // base vars
+        var userAgreedTerms = document.cookie.indexOf("agreedTerms=") >= 0, 
+            socialLink
+
+        // helper functions
+        // has class
+        function hasClass(el, className) {
+          if (el.classList)
+            return el.classList.contains(className)
+          else
+            return !!el.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'))
         }
-      }
-      var popUp = document.querySelectorAll('.js-popup-link')
-      for (var i = 0; i < popUp.length; i++) {
-        popUp[i].addEventListener('click', function(e){
-          e.preventDefault();
-          PopupCenter(this.href, this.id, '600', '500')
-          console.log(this.href)
+        // add class
+        function addClass(el, className) {
+          if (el.classList)
+            el.classList.add(className)
+          else if (!hasClass(el, className)) el.className += " " + className
+        }
+        // remove class
+        function removeClass(el, className) {
+          if (el.classList)
+            el.classList.remove(className)
+          else if (hasClass(el, className)) {
+            var reg = new RegExp('(\\s|^)' + className + '(\\s|$)')
+            el.className=el.className.replace(reg, ' ')
+          }
+        }
+        // end helper functions
+
+        // social sharing
+        function PopupCenter(url, title, w, h) {
+          var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left,
+              dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top, 
+              width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width,
+              height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height,
+              left = ((width / 2) - (w / 2)) + dualScreenLeft,
+              top = ((height / 2) - (h / 2)) + dualScreenTop,
+              newWindow = window.open(url, title, 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left)
+          // Puts focus on the newWindow
+          if (window.focus) {
+            newWindow.focus()
+          }
+        }
+        var popUp = document.querySelectorAll('.js-popup-link')
+        for (var i = 0; i < popUp.length; i++) {
+          popUp[i].addEventListener('click', function(e){
+            e.preventDefault()
+            PopupCenter(this.href, this.id, '600', '500')
+          })
+        }
+        // end social sharing
+        
+        // terms modal
+        var loginLinks = document.querySelectorAll('.js-login'),
+            termsModalContent = document.querySelector('#js-terms-dialog'),
+            termsLink = document.querySelector('.js-terms-link'),
+            termsDialog = new A11yDialog(termsModalContent)
+        for (var i = 0; i < loginLinks.length; i++) {
+          loginLinks[i].addEventListener('click', function(e){
+            socialLink = this.href
+
+            if(userAgreedTerms){
+              window.location.href = socialLink
+            }
+            else {
+              e.preventDefault()
+              termsDialog.show()
+            }
+            
+          })
+        }
+        termsLink.addEventListener('click', function(e){
+          e.preventDefault
+          termsDialog.show()
+        })  
+        // end terms modal
+
+        // about modal
+        var aboutButton = document.querySelector('.js-info'),
+            aboutModalContent = document.querySelector('#js-about-dialog'),
+            aboutDialog = new A11yDialog(aboutModalContent)
+
+        aboutButton.addEventListener('click', function(){
+          aboutDialog.show()
         })
-      }
-      // end social sharing
-      
+        //end about modal
+        
+        // terms agreement logic
+        var termsForm = document.querySelector('.js-terms-form'),
+            termsAgree = document.querySelector('.js-terms-agree'),
+            alertMessage = document.querySelector('.js-alert')
+        
+
+        termsForm.addEventListener('submit', function(e){
+          e.preventDefault()
+          if(termsAgree.checked) {
+            // create new cookie that last for 60 days
+            var today = new Date(),
+                expiry = new Date(today.getTime() + 60 * 24 * 3600 * 1000)
+            document.cookie="agreedTerms=true;expires=" + expiry.toGMTString()
+            // proceed with auth
+            window.location.href = socialLink
+          }
+          else {
+            // show alert message to agree with terms
+            addClass(alertMessage, 'show')
+          }
+        })
+        
+        // hide agreement form if already agreed
+        if(userAgreedTerms){
+          addClass(termsForm, 'dontShow')
+        }
+        
+        termsAgree.addEventListener('click', function(){
+          removeClass(alertMessage, 'show')
+        })
+
+      })
+    }())
     </script>
   {% endif %}
   <script>

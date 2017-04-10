@@ -11,6 +11,7 @@
 @import 'gamemenu';
 @import 'leaderboard';
 @import 'preferences';
+@import 'splashPage';
 
 :root{
   background:$theme-secondary;
@@ -64,169 +65,6 @@ a {
 button {
   &:hover {
     cursor: pointer;
-  }
-}
-
-[class^='splash-'] {
-  text-align:center;
-  * {
-    display:inline-block;
-  }
-}
-
-// splash page
-.splash-header {
-  background:$theme-primary;
-  padding:1em 0;
-  @include susy-breakpoint($screen-sm-min, $map-sm) {
-    padding:5vh 0;
-  }
-  @include susy-breakpoint($screen-md-min, $map-md) {
-    padding:10vh 0;
-  }
-  .aapb-link {
-    display:inline-block;
-    background:url(../javascript/images/logo_aapb.png), no-repeat;
-    background-size:cover;
-    height:2em;
-    width:2em;
-    margin-right:1em;
-    @include susy-breakpoint($screen-sm-min, $map-sm) {
-      height:3.45em;
-      width:3.45em;
-      margin-right:2.25em;
-    }
-  }
-  h1 {
-    margin:0;
-    color:$progress;
-    font-size:2.25em;
-    @include susy-breakpoint($screen-sm-min, $map-sm) {
-      font-size:4.75em;
-    }
-  }
-  .info {
-    @include plain-button;
-    display:inline-block;
-    margin-left:.5em;
-    svg {
-      @include transition(fill, .35s, ease-in-out);
-      height:1.5em;
-      width:1.5em;
-      fill:$icon-dark;
-    }
-    &:hover {
-      svg {
-        fill:$progress;
-      }
-    }
-    @include susy-breakpoint($screen-sm-min, $map-sm) {
-      margin-left:.5em;
-      svg {
-        height:3em;
-        width:3em;
-      }
-    }
-  }
-}
-
-.splash-content {
-  padding:1.5em 5%;
-  @include susy-breakpoint($screen-sm-min, $map-sm) {
-    padding:7vh 5%;
-  }
-  p {
-    max-width:55em;
-    display:block;
-    margin:0 auto 1.5em auto;
-    @include susy-breakpoint($screen-sm-min, $map-sm) {
-      font-size:1.25em;
-      margin:0 auto 7vh auto;
-    }
-  }
-  .social-login {
-    a {
-      display:block;
-      margin:1em;
-      svg {
-        display:block;
-        height:2.1875em;
-        width:6.25em;
-      }
-      @include susy-breakpoint($screen-sm-min, $map-sm) {
-        display:inline-block;
-        margin:0;
-        &:last-child {
-          margin-left:2em;
-        }
-        svg {
-          height:4.375em;
-          width:12.5em;
-        }
-      }
-      @include susy-breakpoint($screen-md-min, $map-md) {
-        &:last-child {
-          margin-left:5em;
-        }
-      }
-    }
-  }
-}
-
-.splash-footer {
-  background:$theme-primary;
-  padding:1em 5%;
-  @include susy-breakpoint($screen-sm-min, $map-sm) {
-    padding:7vh 5%;
-    font-size:1.25em;
-  }
-  * {
-    vertical-align:middle;
-   }
-  ul {
-    @include plain-list;
-    margin:.5em 0;
-    li {
-      &:not(:last-of-type){
-        margin-right:.5em;
-      }
-      a {
-        svg {
-          width:3em;
-          height:3em;
-          .background {
-            @include transition(fill, .35s, ease-in-out);
-          }
-        }
-        &:hover {
-          svg {
-            .background {
-              fill:$default;
-            }
-          }
-        }
-      }
-    }
-  }
-  .terms, .label {
-    display:block;
-    @include susy-breakpoint($screen-sm-min, $map-sm) {
-      display:inline-block;
-    }
-  }
-  .label {
-    @include susy-breakpoint($screen-sm-min, $map-sm) {
-      margin-right:2em;
-    }
-  }
-  .terms {
-    text-decoration:underline;
-    &:hover {
-      text-decoration:none;
-    }
-    @include susy-breakpoint($screen-sm-min, $map-sm) {
-      margin-left:5em;
-    }
   }
 }
 
@@ -576,7 +414,7 @@ button {
   height:10em;
 }
 
-
+// react modal windows
 .ReactModalPortal {
   .modal-content {
     @include animated(200ms);
