@@ -31,13 +31,6 @@
             socialLink
 
         // helper functions
-        // has class
-        function hasClass(el, className) {
-          if (el.classList)
-            return el.classList.contains(className)
-          else
-            return !!el.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'))
-        }
         // add class
         function addClass(el, className) {
           if (el.classList)
@@ -56,6 +49,7 @@
         // end helper functions
 
         // social sharing
+        // creates a popup window with presets
         function PopupCenter(url, title, w, h) {
           var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left,
               dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top, 
@@ -69,6 +63,7 @@
             newWindow.focus()
           }
         }
+        // selectors and listeners for popup windows
         var popUp = document.querySelectorAll('.js-popup-link')
         for (var i = 0; i < popUp.length; i++) {
           popUp[i].addEventListener('click', function(e){
@@ -83,10 +78,12 @@
             termsModalContent = document.querySelector('#js-terms-dialog'),
             termsLink = document.querySelector('.js-terms-link'),
             termsDialog = new A11yDialog(termsModalContent)
+        // listeners for social logins    
         for (var i = 0; i < loginLinks.length; i++) {
           loginLinks[i].addEventListener('click', function(e){
             socialLink = this.href
-
+            // check if user has already agreed.
+            // if so load link, if not show dialog and form
             if(userAgreedTerms){
               window.location.href = socialLink
             }
@@ -94,12 +91,16 @@
               e.preventDefault()
               termsDialog.show()
             }
-            
           })
         }
+        // show modal when terms link is clicked
+        // if terms have not been agreed to hide the terms form
         termsLink.addEventListener('click', function(e){
           e.preventDefault
           termsDialog.show()
+          if(!userAgreedTerms){
+            addClass(termsForm, 'dontShow')
+          }
         })  
         // end terms modal
 
@@ -140,8 +141,19 @@
           addClass(termsForm, 'dontShow')
         }
         
+        // remove alert from checkbox when agreeing to terms
         termsAgree.addEventListener('click', function(){
           removeClass(alertMessage, 'show')
+        })
+
+        // on hide of terms modal remove the hidden class
+        // if it is present, i.e. the terms button was clicked without agreeing to terms
+        // also hide alert if visible
+        termsDialog.on('hide', function () {
+          removeClass(alertMessage, 'show')
+          if(!userAgreedTerms){
+            removeClass(termsForm, 'dontShow')
+          }
         })
 
       })

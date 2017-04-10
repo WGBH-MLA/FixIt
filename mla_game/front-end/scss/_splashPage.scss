@@ -213,7 +213,7 @@
     &.show {
       display:inline-block;
       position:absolute;
-      top:-3em;
+      bottom:150%;
       padding:.25em .75em;
       background:white;
       color:red;
@@ -222,7 +222,7 @@
         content:'';
         display:inline-block;
         position:absolute;
-        top:100%;
+        top:99%;
         left:1em;
         width: 0;
         height: 0;
