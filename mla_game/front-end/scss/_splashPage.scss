@@ -195,7 +195,7 @@
   overflow: scroll;
   border:1px solid white;
   border-radius:4px;
-  padding:1em 1.5em;
+  padding:3em;
   height:100vh;
 }
 
@@ -214,6 +214,7 @@
       display:inline-block;
       position:absolute;
       bottom:150%;
+      left:0;
       padding:.25em .75em;
       background:white;
       color:red;
@@ -233,14 +234,21 @@
     }
   }
   .terms-agree {
-    float:left;
     margin-top:.25em;
+    margin-bottom:1em;
+    display:inline-block;
+    @include susy-breakpoint($screen-sm-min, $map-sm) {
+      float:left;
+      margin-bottom:0;
+    }
   }
   .terms-agree-button {
     @include transition(all, .25s, ease-in-out);
     @include border-button($theme-secondary, white);
-    float:right;
     margin-bottom:0;
+    @include susy-breakpoint($screen-sm-min, $map-sm) {
+      float:right;
+    }
     &:hover {
       background:white;
       color:$theme-secondary;

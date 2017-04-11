@@ -449,8 +449,8 @@ button {
   max-width:55em;
   overflow: scroll;
   border:1px solid white;
-  border-radius:4px;
-  padding:1em 1.5em;
+  border-radius:.25em;
+  padding:3em;
   &:focus {
     outline:0;
   }
@@ -465,9 +465,11 @@ button {
 .modal-close {
   @include plain-button;
   position:absolute;
-  top:1em;
-  right:1em;
+  top:3.5em;
+  right:3em;
+  padding:0;
   svg {
+    display:block;
     width:2.5em;
     height:2.5em;
     @include transition(fill, 300ms, ease-in);
