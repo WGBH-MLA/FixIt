@@ -11,17 +11,18 @@ from ...models import (
 
 
 class Command(BaseCommand):
-    help = 'Creates random votes for all phrases in a random transcript'
+    help = 'Creates random votes for 5 phrases in a random transcript'
 
     def handle(self, *args, **options):
         users = User.objects.all()
         transcript = Transcript.objects.random_transcript().first()
+        phrases = transcript.phrases.all()[:5]
         for user in users:
             profile = Profile.objects.get(user=user)
             profile.considered_phrases.add(
-                *[phrase.pk for phrase in transcript.phrases.all()]
+                *[phrase.pk for phrase in phrases]
             )
-        for phrase in transcript.phrases.all():
+        for phrase in phrases:
             for user in users:
                 if random.choice([True, False]):
                     TranscriptPhraseDownvote.objects.create(
