@@ -848,7 +848,7 @@ var Base = (function (_React$Component) {
                 { className: 'game-title' },
                 _react2['default'].createElement(
                   'a',
-                  { className: 'aapb-link', target: '_blank', href: 'https://ndsr.americanarchive.org/' },
+                  { className: 'aapb-link', target: '_blank', href: 'http://americanarchive.org/' },
                   _react2['default'].createElement(
                     'span',
                     { className: 'aapb-logo' },

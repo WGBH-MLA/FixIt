@@ -47,7 +47,7 @@ class Base extends React.Component {
           <header className='app-header'>
             <div className="grid">
               <h1 className='game-title'>
-                <a className='aapb-link' target="_blank" href="https://ndsr.americanarchive.org/"><span className='aapb-logo'><span className="assistive-text"><abbr title="American Archive of Public Broadcasting">AAPB Logo</abbr></span></span></a>
+                <a className='aapb-link' target="_blank" href="http://americanarchive.org/"><span className='aapb-logo'><span className="assistive-text"><abbr title="American Archive of Public Broadcasting">AAPB Logo</abbr></span></span></a>
                 <Link to='/' onlyActiveOnIndex>Fix It</Link>
                 <button className="info-button" onClick={() => this.setModal()}>
                   <svg className='nav-icon' xmlns="http://www.w3.org/2000/svg" viewBox="10.6 100.6 590.8 590.8">
