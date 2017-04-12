@@ -23,6 +23,7 @@
   background-color:$preferences-background;
   border-bottom:1px solid black;
   padding:$v-rhythm*2 0;
+  @include clearfix;
   .user {
     margin-bottom:$v-rhythm;
     font-weight:700;
@@ -89,11 +90,15 @@
 
 .preferences-form {
   padding:$v-rhythm*2 0;
+  background:white;
+  text-align:right;
   input[type='checkbox'] {
     margin-right:.25em;
   }
-  background:white;
-  text-align:right;
+  .save-message {
+    margin-bottom:1.5em;
+  }
+
   fieldset {
     margin:0;
     padding:0;
@@ -104,7 +109,7 @@
     margin-bottom:$v-rhythm*2;
     legend {
       font-weight:700;
-      font-size:1.25em;
+      font-size:1.45em;
       margin-bottom:$v-rhythm/2;
     }
     .topic {
@@ -180,4 +185,26 @@
       color:white;
     }
   }
+}
+
+
+.user-form-message {
+  margin-bottom:1em;
+}
+
+.instructions {
+  text-align:left;
+  max-width:50em;
+}
+
+.save-message {
+  @include animated(.5s);
+  @include fadeIn;
+  color:green;
+  font-size:1em;
+  display:block;
+  padding:.5em;
+  border:.125em solid green;
+  clear:both;
+  text-align:center;
 }

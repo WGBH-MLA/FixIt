@@ -12,6 +12,9 @@ class Preferences extends React.Component{
     return (
       <div className="preferences">
         <div className="user-form">
+        <div className="grid user-form-message">
+        <p>Update your username others see it in FIX IT below.</p>
+        </div>
           <div className="grid">
             <span className="user">{this.props.initialData.username}</span>
             <UserForm 

@@ -11,7 +11,8 @@ class PreferencesForm extends React.Component {
     this.selectSource = this.selectSource.bind(this)
     this.state = {
       sources:[],
-      topics:[]
+      topics:[],
+      saved:false
     }
   }
 
@@ -77,6 +78,21 @@ class PreferencesForm extends React.Component {
       //do something to preferred_stations to make sure we can patch an empty array
     }
     patchData(`/api/profile/${userPk}/`, preferred_stations)
+
+
+    if(!sourcesEmpty || !topicsEmpty) {
+      // ui updates
+      let self = this
+      this.setState({saved:true})
+      new Promise(function(resolve) {
+        setTimeout(function() { 
+          resolve(); 
+        }, 1500)
+      })
+      .then(function() {
+        self.setState({saved:false})
+      })
+    }
   }
 
 
@@ -113,6 +129,9 @@ class PreferencesForm extends React.Component {
 
     return (
       <div className="preferences-form">
+        <div className="grid">
+          <p className='instructions'>You can customize the types of programs you interact with in FIX IT by selecting preferences. Choose Topics and/or Organizations you are interested in and click Save. Fix it will show preference to programs that match your selections.</p>
+        </div>
         <form className='grid' ref={(input) => this.preferencesForm = input } onSubmit={(event) => this.changePreferences(event)}>
           <fieldset className='topics-set'>
             <legend>Topic</legend>
@@ -120,6 +139,12 @@ class PreferencesForm extends React.Component {
               {topicOptions}
             </div>
           </fieldset>
+          <button type='submit'>Save</button>
+          {this.state.saved ? (
+            <span className="save-message">Preferences Saved</span>
+          ) : (
+            ''
+          )}
           <fieldset className='sources-set'>
             <legend>Organization</legend>
             <div>
@@ -127,6 +152,11 @@ class PreferencesForm extends React.Component {
             </div>
           </fieldset>
           <button type='submit'>Save</button>
+          {this.state.saved ? (
+            <span className="save-message">Preferences Saved</span>
+          ) : (
+            ''
+          )}          
         </form>
       </div>
     )
