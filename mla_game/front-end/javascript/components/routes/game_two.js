@@ -60,14 +60,14 @@ class GameTwo extends React.Component{
       // score data
       let phraseScore = {
         game:'2',
-        score:11
+        score:2
       }
       // post score and phrase
       postData('/api/transcriptphrasecorrection/', phraseData)
       postData('/api/score/', phraseScore)
       // update scores
-      updateTotalScore(11)
-      updateGameScore(11)
+      updateTotalScore(2)
+      updateGameScore(2)
       this.props.disableProgress(true)
     } 
 

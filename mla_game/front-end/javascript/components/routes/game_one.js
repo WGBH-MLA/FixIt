@@ -81,12 +81,12 @@ class GameOne extends React.Component{
       media.play();
       
       advanceSegment(3)
-      updateTotalScore(10)
-      updateGameScore(10)
+      updateTotalScore(1)
+      updateGameScore(1)
 
       let segmentScore = {
         game:'1',
-        score:10
+        score:1
       }
       postData('/api/score/', segmentScore)
 

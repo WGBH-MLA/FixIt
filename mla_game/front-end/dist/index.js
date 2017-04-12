@@ -3828,12 +3828,12 @@ var GameOne = (function (_React$Component) {
         media.play();
 
         advanceSegment(3);
-        updateTotalScore(10);
-        updateGameScore(10);
+        updateTotalScore(1);
+        updateGameScore(1);
 
         var segmentScore = {
           game: '1',
-          score: 10
+          score: 1
         };
         (0, _helpers.postData)('/api/score/', segmentScore);
       }
@@ -4208,16 +4208,14 @@ var GameThree = (function (_React$Component) {
         // score data
         var phraseScore = {
           game: '3',
-          score: 11
+          score: 2
         };
         // post score and phrase
-        (0, _helpers.postData)('/api/transcriptphrasecorrectionvote/', phraseData).then(function (response) {
-          console.log(response);
-        });
+        (0, _helpers.postData)('/api/transcriptphrasecorrectionvote/', phraseData);
         (0, _helpers.postData)('/api/score/', phraseScore);
         // update scores
-        updateTotalScore(11);
-        updateGameScore(11);
+        updateTotalScore(2);
+        updateGameScore(2);
         this.setActive(null);
       }
       // scrub state for phrase correction
@@ -4575,14 +4573,14 @@ var GameTwo = (function (_React$Component) {
         // score data
         var phraseScore = {
           game: '2',
-          score: 11
+          score: 2
         };
         // post score and phrase
         (0, _helpers.postData)('/api/transcriptphrasecorrection/', phraseData);
         (0, _helpers.postData)('/api/score/', phraseScore);
         // update scores
-        updateTotalScore(11);
-        updateGameScore(11);
+        updateTotalScore(2);
+        updateGameScore(2);
         this.props.disableProgress(true);
       }
 
