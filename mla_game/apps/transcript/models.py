@@ -273,7 +273,7 @@ class TranscriptPhraseManager(models.Manager):
     'partition',
     type='range',
     subtype='integer',
-    constraint='500',
+    constraint='1000',
     column='transcript_id'
 )
 class TranscriptPhrase(models.Model):
