@@ -150,7 +150,7 @@ class GameOne extends React.Component{
       this.props.showTipTwo(false)
     }
   }
-
+  
   componentWillMount(){
     this.props.fetchGameOne()
   }
@@ -163,7 +163,7 @@ class GameOne extends React.Component{
   
 
   render(){
-    const { gameone, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegment } = this.props
+    const { gameScores, gameone, gametwo, gamethree, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegment } = this.props
 
     if(this.props.gameone.loading) {
       return(
@@ -196,13 +196,26 @@ class GameOne extends React.Component{
             </div>
             {gameone.endOfRound ? (
               <div className='roundup'>
-                <h1>End Of Round</h1>
-                <h2><span className='username'>{this.props.initialData.user[0].username}</span> Just Scored: {gameone.gameScore} Points</h2>
-                
+                <h2 className="user-message">{this.props.initialData.user[0].username} Just Scored: {gameone.gameScore} Points</h2>
                 <ul className='game-navigation'>
-                  <li><Link onClick={() => this.reload()} to="gameone">Game One</Link></li>
-                  <li><Link to="gametwo">Game Two</Link></li>
-                  <li><Link to="gamethree">Game Three</Link></li>
+                  <li>
+                    <h2><span className='game-number'>{gameone.gameNumber}</span> <span className='game-name'>{gameone.gameName}</span></h2>
+                    <span className='game-score'>{gameScores.game_one_score}</span>
+                    <span className='points'>Points</span>
+                    <Link className='play-link' onClick={() => this.reload()}>Play</Link>
+                  </li>
+                  <li>
+                    <h2><span className='game-number'>{gametwo.gameNumber}</span> <span className='game-name'>{gametwo.gameName}</span></h2>
+                    <span className='game-score'>{gameScores.game_two_score}</span>
+                    <span className='points'>Points</span>
+                    <Link className='play-link' to="gametwo">Play</Link>
+                  </li>
+                  <li>
+                    <h2><span className='game-number'>{gamethree.gameNumber}</span> <span className='game-name'>{gamethree.gameName}</span></h2>
+                    <span className='game-score'>{gameScores.game_three_score}</span>
+                    <span className='points'>Points</span>
+                    <Link className='play-link' to="gamethree">Play</Link>
+                  </li>
                 </ul>
               </div>
             ) : (
@@ -235,30 +248,26 @@ class GameOne extends React.Component{
                     }
                  })}
                 </ul>
-                {gameone.inGameTip ? (
-                  <GameTip 
-                    dismissTip={this.props.showTipOne}
-                    text={'Click a highlighted transcript line(s) to indicate it contains errors. Click the speaker icon to listen to a specific line again. Click the Next button to continue to the next set of transcript phrases.'}
-                  />
-                  ) : (
-                    ''
-                )}
               </div>    
             )}
           </div>
-          <GameFooter
-            gameNumber={gameone.gameNumber}
-            gameName={gameone.gameName}
-            goBack={this.goBack}
-            canGoBack={gameone.canGoBack}
-            handleProgress={this.handleProgress}
-            max={gameone.phrases.length}
-            value={gameone.segment + 3}
-            waitingUpdate={this.props.waitingUpdate}
-            waiting={this.props.gameone.waiting}
-            modalIsOpen={this.props.initialData.modalIsOpen}
-            setModal={this.props.setModal}
-          />
+          {gameone.endOfRound ? (
+            ''
+          ) : (
+            <GameFooter
+              gameNumber={gameone.gameNumber}
+              gameName={gameone.gameName}
+              goBack={this.goBack}
+              canGoBack={gameone.canGoBack}
+              handleProgress={this.handleProgress}
+              max={gameone.phrases.length}
+              value={gameone.segment + 3}
+              waitingUpdate={this.props.waitingUpdate}
+              waiting={this.props.gameone.waiting}
+              modalIsOpen={this.props.initialData.modalIsOpen}
+              setModal={this.props.setModal}
+            />
+          )}
         </div>
       )
     }

@@ -161,10 +161,15 @@ button {
   }
 }
 
-
-.roundup{
-  @include susy-breakpoint($screen-md-min, $map-md) {
-    @include span(first 8 of 12);
+.roundup {
+  .user-message {
+    text-align: center;
+    background:$user;
+    padding: 1.25em .75em;
+    margin-bottom: 1.5em;
+    font-family: 'Open Sans Condensed', sans-serif;
+    border-radius: .45em;
+    font-size:2em;
   }
 }
 

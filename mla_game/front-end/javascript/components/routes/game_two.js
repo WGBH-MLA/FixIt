@@ -121,7 +121,7 @@ class GameTwo extends React.Component{
   
 
   render(){
-    const { gametwo, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegmentTwo, advanceTranscriptTwo, skipPhrase, setStartTime, disableProgress, resetSegmentsTwo, endOfRoundTwo, updateGameProgress } = this.props
+    const { gameScores, gameone, gametwo, gamethree, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegmentTwo, advanceTranscriptTwo, skipPhrase, setStartTime, disableProgress, resetSegmentsTwo, endOfRoundTwo, updateGameProgress } = this.props
     if(this.props.gametwo.loading) {
       return(
         <LoadingScreen />
@@ -132,12 +132,26 @@ class GameTwo extends React.Component{
           <div className='grid'>
             {gametwo.endOfRound ? (
               <div className='roundup'>
-                <h1>End Of Round</h1>
-                <h2><span className='username'>{this.props.initialData.user[0].username}</span> Just Scored: {gametwo.gameScore} Points</h2>
+                <h2 className="user-message">{this.props.initialData.user[0].username} Just Scored: {gameone.gameScore} Points</h2>
                 <ul className='game-navigation'>
-                  <li><Link to="gameone">Game One</Link></li>
-                  <li><Link onClick={() => this.reload()} to="gametwo">Game Two</Link></li>
-                  <li><Link to="gamethree">Game Three</Link></li>
+                  <li>
+                    <h2><span className='game-number'>{gameone.gameNumber}</span> <span className='game-name'>{gameone.gameName}</span></h2>
+                    <span className='game-score'>{gameScores.game_one_score}</span>
+                    <span className='points'>Points</span>
+                    <Link className='play-link' to="gameone">Play</Link>
+                  </li>
+                  <li>
+                    <h2><span className='game-number'>{gametwo.gameNumber}</span> <span className='game-name'>{gametwo.gameName}</span></h2>
+                    <span className='game-score'>{gameScores.game_two_score}</span>
+                    <span className='points'>Points</span>
+                    <Link className='play-link' onClick={() => this.reload()}>Play</Link>
+                  </li>
+                  <li>
+                    <h2><span className='game-number'>{gamethree.gameNumber}</span> <span className='game-name'>{gamethree.gameName}</span></h2>
+                    <span className='game-score'>{gameScores.game_three_score}</span>
+                    <span className='points'>Points</span>
+                    <Link className='play-link' to="gamethree">Play</Link>
+                  </li>
                 </ul>
               </div>
             ) : (
@@ -205,28 +219,23 @@ class GameTwo extends React.Component{
               })}
               </div>
             )}
-            
-            {gametwo.inGameTip ? (
-              <GameTip 
-                dismissTip={this.props.showTipTwo}
-                text={'Click the Fix button to suggest a fix for a transcript phrase. After entering a fix, click Save or Cancel. If the phrase does not contain an error, click Not an Error. Click the speaker icon to listen to a specific line again. Click the Next button to continue to the next set of transcript phrases.'} 
-              />
-            ) : (
-              ''
-            )}
           </div>
-           <GameFooter
-            gameNumber={gametwo.gameNumber}
-            gameName={gametwo.gameName}
-            canGoBack={gametwo.canGoBack}
-            handleProgress={this.handleProgress}
-            max={gametwo.gameLength}
-            value={gametwo.gameProgress}
-            waitingUpdate={this.props.waitingUpdate}
-            waiting={gametwo.disableProgress}
-            modalIsOpen={this.props.initialData.modalIsOpen}
-            setModal={this.props.setModal}
-          />
+            {gametwo.endOfRound ? (
+              ''
+            ) : (
+             <GameFooter
+              gameNumber={gametwo.gameNumber}
+              gameName={gametwo.gameName}
+              canGoBack={gametwo.canGoBack}
+              handleProgress={this.handleProgress}
+              max={gametwo.gameLength}
+              value={gametwo.gameProgress}
+              waitingUpdate={this.props.waitingUpdate}
+              waiting={gametwo.disableProgress}
+              modalIsOpen={this.props.initialData.modalIsOpen}
+              setModal={this.props.setModal}
+             />              
+            )}
         </div>
       )
     }
