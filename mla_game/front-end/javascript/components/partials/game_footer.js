@@ -62,7 +62,7 @@ class GameFooter extends React.Component{
               <path d="M340.2 160l-84.4 84.2-84-83.8-11.8 11.8 84 83.8-84 83.8 11.8 11.8 84-83.8 84.4 84.2 11.8-11.8-84.4-84.2 84.4-84.2"/>
             </svg>
           </button>
-          <p>When playing FixIt, use these guidelines as you listen and make judgment calls about errors and corrections: When playing FixIt, use these guidelines as you listen and make judgment calls about errors and corrections:</p>
+          <p>When playing FIX IT, use these guidelines as you listen and make judgment calls about errors and corrections: When playing FIX IT, use these guidelines as you listen and make judgment calls about errors and corrections:</p>
           <ul className="list-tips">
             <li>Transcripts should have correct punctuation throughout the transcripts.</li>
             <li>Transcripts should contain no misspellings.</li>
