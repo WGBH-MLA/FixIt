@@ -4,6 +4,8 @@ import random
 from random import randint
 from collections import Counter
 
+import architect
+
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import JSONField
@@ -267,6 +269,13 @@ class TranscriptPhraseManager(models.Manager):
         return self.exclude(pk__in=considered_phrases)
 
 
+@architect.install(
+    'partition',
+    type='range',
+    subtype='integer',
+    constraint='500',
+    column='transcript_id'
+)
 class TranscriptPhrase(models.Model):
     id_number = models.IntegerField()
     text = models.TextField()
