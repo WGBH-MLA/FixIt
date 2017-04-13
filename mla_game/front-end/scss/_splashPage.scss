@@ -105,58 +105,9 @@
 }
 
 .splash-footer {
-  background:$theme-primary;
-  padding:1em 5%;
-  @include susy-breakpoint($screen-sm-min, $map-sm) {
-    padding:7vh 5%;
-    font-size:1.25em;
-  }
-  * {
-    vertical-align:middle;
-   }
-  ul {
-    @include plain-list;
-    margin:.5em 0;
-    li {
-      &:not(:last-of-type){
-        margin-right:.5em;
-      }
-      a {
-        svg {
-          width:3em;
-          height:3em;
-          .background {
-            @include transition(fill, .35s, ease-in-out);
-          }
-        }
-        &:hover {
-          svg {
-            .background {
-              fill:$default;
-            }
-          }
-        }
-      }
-    }
-  }
-  .terms-link, .social-label {
-    display:block;
+  &.share-block {
     @include susy-breakpoint($screen-sm-min, $map-sm) {
-      display:inline-block;
-    }
-  }
-  .social-label {
-    @include susy-breakpoint($screen-sm-min, $map-sm) {
-      margin-right:2em;
-    }
-  }
-  .terms-link {
-    text-decoration:underline;
-    &:hover {
-      text-decoration:none;
-    }
-    @include susy-breakpoint($screen-sm-min, $map-sm) {
-      margin-left:5em;
+      padding:7vh 5%;
     }
   }
 }
@@ -195,7 +146,9 @@
   border:1px solid white;
   border-radius:4px;
   padding:3em;
-  height:100vh;
+  height:90vh;
+  margin-top:0;
+  margin-bottom:5vh;
 }
 
 // terms form

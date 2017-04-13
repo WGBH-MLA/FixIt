@@ -1,3 +1,13 @@
+.menu-heading {
+  display:inline-block;
+  text-align:center;
+  @include susy-breakpoint($screen-md-min, $map-md) {
+    width:calc(100% - 7em);
+    margin:.5em 0 .25em 0;
+    float:right;
+  }
+}
+
 .preferences-link {
   @include transition(color, 300ms, ease-in);
   background:$theme-primary;
@@ -32,7 +42,7 @@
   border-radius:.45em;
   color:$icon-light;
   fill:$icon-light;
-  padding:1.25em .75em;
+  padding:.75em;
   margin-bottom:1.5em;
   font-family:'Open Sans Condensed', sans-serif;
   h2 {
@@ -42,11 +52,11 @@
     font-size: 1.5em;
     margin:0; 
     svg {
-      width:2em;
-      height:2em;
+      width:1.5em;
+      height:1.5em;
     }
     span {
-      margin-top:.5em;
+      margin-top:.15em;
       display:block;
     }
   }
@@ -54,7 +64,7 @@
     @include clearfix;
     font-size:1.25em;
     text-align: center;
-    margin:.25em 0 0 0;
+    margin:0;
     dt, dd {
       display:inline-block;
     }
@@ -71,6 +81,7 @@
       @include span(5.3333);
       @include last;      
       font-size:1.5em;
+      line-height: 1.25;
       dt, dd {
         vertical-align:middle;
       }
@@ -98,10 +109,11 @@
       font-size:1.5em;
       .game-number {
         @include clearfix;
-        @include game-number($icon-light, $theme-primary, "'Open Sans', sans-serif"); 
+        @include game-number($icon-light, $theme-primary, "'Open Sans', sans-serif");
+        font-size:.85em; 
       }
       .game-name {
-        margin:.5em 0 1.5em 0;
+        margin:.5em 0 1em 0;
         display:block;
         text-transform: uppercase;
       }
@@ -121,6 +133,7 @@
     }
     .play-link {
       @include call-button;
+      margin-bottom:1.5em;
     }
     @include susy-breakpoint($screen-md-min, $map-md) {
       @include span(2.66667);
@@ -132,9 +145,11 @@
       }
       h2 {
         font-size:2em;
+        margin-top:.25em;
       }
       .game-score {
         font-size:3em;
+        margin-top:.25em;
       }
     }
     @include susy-breakpoint($screen-lg-min, $map-lg) {
