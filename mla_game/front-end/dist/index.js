@@ -4437,10 +4437,10 @@ var GameThree = (function (_React$Component) {
           null,
           isNoGameData ? _react2['default'].createElement(
             'div',
-            { className: 'grid' },
+            { className: 'grid no-data-message-container' },
             _react2['default'].createElement(
               'div',
-              { className: 'no-data-message no-data-message-container' },
+              { className: 'no-data-message' },
               _react2['default'].createElement(
                 'h2',
                 null,

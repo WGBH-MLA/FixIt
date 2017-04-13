@@ -152,8 +152,8 @@ class GameThree extends React.Component{
       return (
         <div>
           {isNoGameData ? (
-          <div className="grid">
-            <div className="no-data-message no-data-message-container">
+          <div className="grid no-data-message-container">
+            <div className="no-data-message">
               <h2>Currently there is not enough content to play Game 3. Please play Game 1 to identify transcript errors or Game 2 to provide transcript fixes.</h2>
               <div className="game-links">
                 <Link to="gameone">Play Game 3</Link>
