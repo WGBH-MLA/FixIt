@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import JSONField
 
+import logging
+django_log = logging.getLogger('django')
+
 
 class Profile(models.Model):
     '''
@@ -14,6 +17,13 @@ class Profile(models.Model):
     preferred_stations = models.ManyToManyField('transcript.Source')
     preferred_topics = models.ManyToManyField('transcript.Topic')
     considered_phrases = models.ManyToManyField('transcript.TranscriptPhrase')
+    completed_challenges = JSONField(
+        default={
+            'game_one': 0,
+            'game_two': 0,
+            'game_three': 0,
+        }
+    )
 
     @property
     def game_scores(self):
@@ -42,6 +52,10 @@ class Profile(models.Model):
             'game_two_score': game_two_total,
             'game_three_score': game_three_total,
         }
+
+    def update_completed(self, game):
+        self.completed_challenges[game] += 1
+        self.save()
 
     def __str__(self):
         return self.user.username

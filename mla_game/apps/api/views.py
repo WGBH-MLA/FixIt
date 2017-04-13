@@ -156,6 +156,8 @@ class ProfileViewSet(viewsets.ModelViewSet):
                 phrase.pk for phrase in
                 self.get_object().considered_phrases.all()
             ]
+        if 'completed' in request.data:
+            self.get_object().update_completed(request.data['completed'])
         return self.update(request, *args, **kwargs)
 
 
