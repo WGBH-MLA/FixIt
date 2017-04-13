@@ -1026,7 +1026,7 @@ var Base = (function (_React$Component) {
                 'Help us preserve history for future generations. Your corrections will be made available in public media’s largest digital archive at ',
                 _react2['default'].createElement(
                   'a',
-                  { href: 'americanarchive.org', target: '_blank' },
+                  { href: 'http://americanarchive.org', target: '_blank' },
                   'americanarchive.org'
                 )
               ),
@@ -5288,7 +5288,7 @@ var Preferences = (function (_React$Component) {
             _react2['default'].createElement(
               'p',
               null,
-              'Update your username as others see it in FIX IT'
+              'Your username appears on the FIX IT Leaderboard. Below, you can customize the username that others see in FIX IT.'
             )
           ),
           _react2['default'].createElement(
