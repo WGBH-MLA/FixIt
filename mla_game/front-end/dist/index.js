@@ -4452,7 +4452,7 @@ var GameThree = (function (_React$Component) {
                 _react2['default'].createElement(
                   _reactRouter.Link,
                   { to: 'gameone' },
-                  'Play Game 3'
+                  'Play Game 1'
                 ),
                 _react2['default'].createElement(
                   _reactRouter.Link,
