@@ -62,14 +62,15 @@ class GameFooter extends React.Component{
               <path d="M340.2 160l-84.4 84.2-84-83.8-11.8 11.8 84 83.8-84 83.8 11.8 11.8 84-83.8 84.4 84.2 11.8-11.8-84.4-84.2 84.4-84.2"/>
             </svg>
           </button>
-          <p>When playing FIX IT, use these guidelines as you listen and make judgment calls about errors and corrections: When playing FIX IT, use these guidelines as you listen and make judgment calls about errors and corrections:</p>
+          <p>The recordings that you interact with in FIX IT are historic and sometimes unedited. More than 70,000 transcripts are loaded in to the game, and they include transcripts for produced programs but also recordings of raw interviews, field tapes, and even music performances. If you are presented with a transcript segment for the beginning of a recording, you may hear bars and tone before you hear any speech.</p>
+          <p>When playing FIX IT, use the guidelines below as you listen and make judgment calls about errors and corrections.</p>
           <ul className="list-tips">
             <li>Transcripts should have correct punctuation throughout the transcripts.</li>
             <li>Transcripts should contain no misspellings.</li>
             <li>Contractions should be transcribed as the listener hears them, "didn't" or "shoulda." </li>
             <li>Numbers should be transcribed in numerals, "40 years old or 40th Street." </li>
             <li>Pauses and hesitations should be transcribed as the user hears them, "ah" or "um."</li>
-            <li>Noise should be transcribed in brackets using descriptive language, "[dog barks]" or "[gunshots]."</li>
+            <li>Noise should be transcribed in brackets using descriptive language, "[tone]" or "[dog barks]."</li>
             <li>Partial words should be transcribed with as much as the speaker says followed with a dash, "Tes- testing" or "Absolu- Absolutely."</li>
             <li>
               If multiple speakers are speaking, indicate with brackets, e.g., <br/>
@@ -79,8 +80,8 @@ class GameFooter extends React.Component{
               <strong>Nancy:</strong> You're both being stupid! <br/>
             </li>
             <li>If a speaker is speaking in a language other than English, it should be transcribed as best as possible in the appropriate language. If you are presented with audio in a language that you do not understand or do not feel comfortable working on, skip the challenge and start the game over.</li>
-            <li>For songs, the title of the song should be written in brackets followed by the lyrics verbatim. If you're dealing with an instrumental piece, just the title should be written in brackets.  If it's important to convey other information, such as if the piece is being played by a specific orchestra, the correct transcript should provide that info as well e.g., [Schumann’s Symphony #3, Leonard Bernstein conducting the New York Philharmonic, 1968]</li>
-            <li>If you do not know how to spell a word or name and you are playing the Identify Errors game, note that line as having an error. If you are playing the Correct Errors game and do not know how to spell the word or name, it should be transcribed as best as possible. Feel free to pause the audio and try to figure out how to spell the word. If you still cannot spell the word, spell it as best as you can.</li>
+            <li>For songs, the title of the song should be written in brackets followed by the lyrics verbatim. If you're dealing with an instrumental piece, just the title should be written in brackets. If it's important to convey other information, such as if the piece is being played by a specific orchestra, the correct transcript should provide that info as well e.g., [Schumann's Symphony #3, Leonard Bernstein conducting the New York Philharmonic, 1968]. If you don't know the title of the music, just indicate that music is playing by typing [music] in brackets.</li>
+            <li>If you do not know how to spell a word or name and you are playing the Identify Errors game, note that line as having an error. If you are playing the Suggest Fixes game and do not know how to spell the word or name, it should be transcribed as best as possible. Feel free to pause the audio and try to figure out how to spell the word. If you still cannot spell the word, spell it as best as you can.</li>
           </ul>
         </Modal>
       </div>
