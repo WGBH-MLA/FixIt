@@ -4431,216 +4431,247 @@ var GameThree = (function (_React$Component) {
       if (this.props.gamethree.loading) {
         return _react2['default'].createElement(_partialsLoading_screen2['default'], null);
       } else {
+        var isNoGameData = gamethree.transcripts.length === 0;
         return _react2['default'].createElement(
           'div',
           null,
-          _react2['default'].createElement(
+          isNoGameData ? _react2['default'].createElement(
             'div',
             { className: 'grid' },
-            gamethree.endOfRound ? _react2['default'].createElement(
+            _react2['default'].createElement(
               'div',
-              { className: 'roundup' },
+              { className: 'no-data-message no-data-message-container' },
               _react2['default'].createElement(
                 'h2',
-                { className: 'user-message' },
-                this.props.initialData.user[0].username,
-                ' Just Scored: ',
-                gameone.gameScore,
-                ' Points'
+                null,
+                'Currently there is not enough content to play Game 3. Please play Game 1 to identify transcript errors or Game 2 to provide transcript fixes.'
               ),
               _react2['default'].createElement(
-                'ul',
-                { className: 'game-navigation' },
+                'div',
+                { className: 'game-links' },
                 _react2['default'].createElement(
-                  'li',
-                  null,
-                  _react2['default'].createElement(
-                    'h2',
-                    null,
-                    _react2['default'].createElement(
-                      'span',
-                      { className: 'game-number' },
-                      gameone.gameNumber
-                    ),
-                    ' ',
-                    _react2['default'].createElement(
-                      'span',
-                      { className: 'game-name' },
-                      gameone.gameName
-                    )
-                  ),
-                  _react2['default'].createElement(
-                    'span',
-                    { className: 'game-score' },
-                    gameScores.game_one_score
-                  ),
-                  _react2['default'].createElement(
-                    'span',
-                    { className: 'points' },
-                    'Points'
-                  ),
-                  _react2['default'].createElement(
-                    _reactRouter.Link,
-                    { className: 'play-link', to: 'gameone' },
-                    'Play'
-                  )
+                  _reactRouter.Link,
+                  { to: 'gameone' },
+                  'Play Game 3'
                 ),
                 _react2['default'].createElement(
-                  'li',
-                  null,
-                  _react2['default'].createElement(
-                    'h2',
-                    null,
-                    _react2['default'].createElement(
-                      'span',
-                      { className: 'game-number' },
-                      gametwo.gameNumber
-                    ),
-                    ' ',
-                    _react2['default'].createElement(
-                      'span',
-                      { className: 'game-name' },
-                      gametwo.gameName
-                    )
-                  ),
-                  _react2['default'].createElement(
-                    'span',
-                    { className: 'game-score' },
-                    gameScores.game_two_score
-                  ),
-                  _react2['default'].createElement(
-                    'span',
-                    { className: 'points' },
-                    'Points'
-                  ),
-                  _react2['default'].createElement(
-                    _reactRouter.Link,
-                    { className: 'play-link', to: 'gametwo' },
-                    'Play'
-                  )
-                ),
-                _react2['default'].createElement(
-                  'li',
-                  null,
-                  _react2['default'].createElement(
-                    'h2',
-                    null,
-                    _react2['default'].createElement(
-                      'span',
-                      { className: 'game-number' },
-                      gamethree.gameNumber
-                    ),
-                    ' ',
-                    _react2['default'].createElement(
-                      'span',
-                      { className: 'game-name' },
-                      gamethree.gameName
-                    )
-                  ),
-                  _react2['default'].createElement(
-                    'span',
-                    { className: 'game-score' },
-                    gameScores.game_three_score
-                  ),
-                  _react2['default'].createElement(
-                    'span',
-                    { className: 'points' },
-                    'Points'
-                  ),
-                  _react2['default'].createElement(
-                    _reactRouter.Link,
-                    { className: 'play-link', onClick: function () {
-                        return _this.reload();
-                      } },
-                    'Play'
-                  )
+                  _reactRouter.Link,
+                  { to: 'gametwo' },
+                  'Play Game 2'
                 )
               )
-            ) : _react2['default'].createElement(
+            )
+          ) : _react2['default'].createElement(
+            'div',
+            null,
+            _react2['default'].createElement(
               'div',
-              null,
-              gamethree.transcripts.map(function (index, key) {
-                // get current trancript
-                var transcript = Number(key);
-                if (transcript == gamethree.currentTranscript) {
-                  return _react2['default'].createElement(
-                    'div',
-                    { key: key },
+              { className: 'grid' },
+              gamethree.endOfRound ? _react2['default'].createElement(
+                'div',
+                { className: 'roundup' },
+                _react2['default'].createElement(
+                  'h2',
+                  { className: 'user-message' },
+                  this.props.initialData.user[0].username,
+                  ' Just Scored: ',
+                  gameone.gameScore,
+                  ' Points'
+                ),
+                _react2['default'].createElement(
+                  'ul',
+                  { className: 'game-navigation' },
+                  _react2['default'].createElement(
+                    'li',
+                    null,
                     _react2['default'].createElement(
-                      'div',
-                      { className: 'game-meta' },
-                      _react2['default'].createElement(_partialsAudio2['default'], {
-                        isPlaying: gamethree.isPlaying,
-                        src: index.media_url,
-                        setCurrentTime: setCurrentTime,
-                        setIsPlaying: setIsPlaying,
-                        startTime: gamethree.startTime,
-                        endSegment: gamethree.endSegment,
-                        startSegment: gamethree.startSegment
-                      }),
-                      _react2['default'].createElement(_partialsGame_meta2['default'], {
-                        meta: index.metadata,
-                        aapb_link: index.aapb_link
-                      })
+                      'h2',
+                      null,
+                      _react2['default'].createElement(
+                        'span',
+                        { className: 'game-number' },
+                        gameone.gameNumber
+                      ),
+                      ' ',
+                      _react2['default'].createElement(
+                        'span',
+                        { className: 'game-name' },
+                        gameone.gameName
+                      )
                     ),
                     _react2['default'].createElement(
-                      'ul',
-                      { className: 'game-phrase-list' },
-                      index.phrases.map(function (phrase, key) {
-                        var phrases = Number(key);
-                        var currentPhrase = gamethree.segment <= phrases + 1 && gamethree.segment >= phrases - 1;
-                        if (currentPhrase) {
-                          return _react2['default'].createElement(
-                            'li',
-                            { key: key, className: _this.activePhrase(gamethree.currentTime, phrase.start_time, phrase.end_time) },
-                            _react2['default'].createElement(_partialsGame_three_phrase2['default'], {
-                              activeVote: _this.state.active,
-                              selectPhrase: _this.selectPhrase,
-                              selectDownVotes: _this.selectDownVotes,
-                              setActive: _this.setActive,
-                              removePhrase: _this.removePhrase,
-                              playPhrase: _this.playPhrase,
-                              disableProgress: disableProgress,
-                              time: gamethree.currentTime,
-                              active: gamethree.segment,
-                              keys: key,
-                              details: phrase,
-                              setSegmentStart: setSegmentStart,
-                              startSegment: gamethree.startSegment,
-                              setSegmentEnd: setSegmentEnd,
-                              advanceSegment: advanceSegmentThree,
-                              endOfRoundThree: endOfRoundThree,
-                              currentTranscript: gamethree.currentTranscript,
-                              gameLength: gamethree.transcripts.length - 1,
-                              phrasesLength: gamethree.transcripts[gamethree.currentTranscript].phrases_length - 1,
-                              updateGameProgress: updateGameProgressThree,
-                              advanceTranscript: advanceTranscriptThree,
-                              resetSegments: resetSegmentsThree,
-                              setSkipPhrase: skipPhrase,
-                              skipPhrase: gamethree.skipPhrase,
-                              setStartTime: setStartTime
-                            })
-                          );
-                        }
-                      })
+                      'span',
+                      { className: 'game-score' },
+                      gameScores.game_one_score
+                    ),
+                    _react2['default'].createElement(
+                      'span',
+                      { className: 'points' },
+                      'Points'
+                    ),
+                    _react2['default'].createElement(
+                      _reactRouter.Link,
+                      { className: 'play-link', to: 'gameone' },
+                      'Play'
                     )
-                  );
-                }
-              })
-            )
-          ),
-          gamethree.endOfRound ? '' : _react2['default'].createElement(_partialsGame_footer2['default'], {
-            gameNumber: gamethree.gameNumber,
-            gameName: gamethree.gameName,
-            canGoBack: gamethree.canGoBack,
-            handleProgress: this.handleProgress,
-            max: gamethree.gameLength - 1,
-            value: gamethree.gameProgress,
-            waitingUpdate: this.props.waitingUpdate,
-            waiting: gamethree.disableProgress,
-            modalIsOpen: this.props.initialData.modalIsOpen,
-            setModal: this.props.setModal
-          })
+                  ),
+                  _react2['default'].createElement(
+                    'li',
+                    null,
+                    _react2['default'].createElement(
+                      'h2',
+                      null,
+                      _react2['default'].createElement(
+                        'span',
+                        { className: 'game-number' },
+                        gametwo.gameNumber
+                      ),
+                      ' ',
+                      _react2['default'].createElement(
+                        'span',
+                        { className: 'game-name' },
+                        gametwo.gameName
+                      )
+                    ),
+                    _react2['default'].createElement(
+                      'span',
+                      { className: 'game-score' },
+                      gameScores.game_two_score
+                    ),
+                    _react2['default'].createElement(
+                      'span',
+                      { className: 'points' },
+                      'Points'
+                    ),
+                    _react2['default'].createElement(
+                      _reactRouter.Link,
+                      { className: 'play-link', to: 'gametwo' },
+                      'Play'
+                    )
+                  ),
+                  _react2['default'].createElement(
+                    'li',
+                    null,
+                    _react2['default'].createElement(
+                      'h2',
+                      null,
+                      _react2['default'].createElement(
+                        'span',
+                        { className: 'game-number' },
+                        gamethree.gameNumber
+                      ),
+                      ' ',
+                      _react2['default'].createElement(
+                        'span',
+                        { className: 'game-name' },
+                        gamethree.gameName
+                      )
+                    ),
+                    _react2['default'].createElement(
+                      'span',
+                      { className: 'game-score' },
+                      gameScores.game_three_score
+                    ),
+                    _react2['default'].createElement(
+                      'span',
+                      { className: 'points' },
+                      'Points'
+                    ),
+                    _react2['default'].createElement(
+                      _reactRouter.Link,
+                      { className: 'play-link', onClick: function () {
+                          return _this.reload();
+                        } },
+                      'Play'
+                    )
+                  )
+                )
+              ) : _react2['default'].createElement(
+                'div',
+                null,
+                gamethree.transcripts.map(function (index, key) {
+                  // get current trancript
+                  var transcript = Number(key);
+                  if (transcript == gamethree.currentTranscript) {
+                    return _react2['default'].createElement(
+                      'div',
+                      { key: key },
+                      _react2['default'].createElement(
+                        'div',
+                        { className: 'game-meta' },
+                        _react2['default'].createElement(_partialsAudio2['default'], {
+                          isPlaying: gamethree.isPlaying,
+                          src: index.media_url,
+                          setCurrentTime: setCurrentTime,
+                          setIsPlaying: setIsPlaying,
+                          startTime: gamethree.startTime,
+                          endSegment: gamethree.endSegment,
+                          startSegment: gamethree.startSegment
+                        }),
+                        _react2['default'].createElement(_partialsGame_meta2['default'], {
+                          meta: index.metadata,
+                          aapb_link: index.aapb_link
+                        })
+                      ),
+                      _react2['default'].createElement(
+                        'ul',
+                        { className: 'game-phrase-list' },
+                        index.phrases.map(function (phrase, key) {
+                          var phrases = Number(key);
+                          var currentPhrase = gamethree.segment <= phrases + 1 && gamethree.segment >= phrases - 1;
+                          if (currentPhrase) {
+                            return _react2['default'].createElement(
+                              'li',
+                              { key: key, className: _this.activePhrase(gamethree.currentTime, phrase.start_time, phrase.end_time) },
+                              _react2['default'].createElement(_partialsGame_three_phrase2['default'], {
+                                activeVote: _this.state.active,
+                                selectPhrase: _this.selectPhrase,
+                                selectDownVotes: _this.selectDownVotes,
+                                setActive: _this.setActive,
+                                removePhrase: _this.removePhrase,
+                                playPhrase: _this.playPhrase,
+                                disableProgress: disableProgress,
+                                time: gamethree.currentTime,
+                                active: gamethree.segment,
+                                keys: key,
+                                details: phrase,
+                                setSegmentStart: setSegmentStart,
+                                startSegment: gamethree.startSegment,
+                                setSegmentEnd: setSegmentEnd,
+                                advanceSegment: advanceSegmentThree,
+                                endOfRoundThree: endOfRoundThree,
+                                currentTranscript: gamethree.currentTranscript,
+                                gameLength: gamethree.transcripts.length - 1,
+                                phrasesLength: gamethree.transcripts[gamethree.currentTranscript].phrases_length - 1,
+                                updateGameProgress: updateGameProgressThree,
+                                advanceTranscript: advanceTranscriptThree,
+                                resetSegments: resetSegmentsThree,
+                                setSkipPhrase: skipPhrase,
+                                skipPhrase: gamethree.skipPhrase,
+                                setStartTime: setStartTime
+                              })
+                            );
+                          }
+                        })
+                      )
+                    );
+                  }
+                })
+              )
+            ),
+            gamethree.endOfRound ? '' : _react2['default'].createElement(_partialsGame_footer2['default'], {
+              gameNumber: gamethree.gameNumber,
+              gameName: gamethree.gameName,
+              canGoBack: gamethree.canGoBack,
+              handleProgress: this.handleProgress,
+              max: gamethree.gameLength - 1,
+              value: gamethree.gameProgress,
+              waitingUpdate: this.props.waitingUpdate,
+              waiting: gamethree.disableProgress,
+              modalIsOpen: this.props.initialData.modalIsOpen,
+              setModal: this.props.setModal
+            })
+          )
         );
       }
     }
@@ -4860,213 +4891,244 @@ var GameTwo = (function (_React$Component) {
       if (this.props.gametwo.loading) {
         return _react2['default'].createElement(_partialsLoading_screen2['default'], null);
       } else {
+        var isNoGameData = gametwo.transcripts.length === 0;
         return _react2['default'].createElement(
           'div',
           null,
-          _react2['default'].createElement(
+          isNoGameData ? _react2['default'].createElement(
             'div',
-            { className: 'grid' },
-            gametwo.endOfRound ? _react2['default'].createElement(
+            { className: 'grid no-data-message-container' },
+            _react2['default'].createElement(
               'div',
-              { className: 'roundup' },
+              { className: 'no-data-message' },
               _react2['default'].createElement(
                 'h2',
-                { className: 'user-message' },
-                this.props.initialData.user[0].username,
-                ' Just Scored: ',
-                gameone.gameScore,
-                ' Points'
+                null,
+                'Currently there is not enough content to play Game 2. Please play Game 1 to identify transcript errors or Game 3 to validate transcript fixes.'
               ),
               _react2['default'].createElement(
-                'ul',
-                { className: 'game-navigation' },
+                'div',
+                { className: 'game-links' },
                 _react2['default'].createElement(
-                  'li',
-                  null,
-                  _react2['default'].createElement(
-                    'h2',
-                    null,
-                    _react2['default'].createElement(
-                      'span',
-                      { className: 'game-number' },
-                      gameone.gameNumber
-                    ),
-                    ' ',
-                    _react2['default'].createElement(
-                      'span',
-                      { className: 'game-name' },
-                      gameone.gameName
-                    )
-                  ),
-                  _react2['default'].createElement(
-                    'span',
-                    { className: 'game-score' },
-                    gameScores.game_one_score
-                  ),
-                  _react2['default'].createElement(
-                    'span',
-                    { className: 'points' },
-                    'Points'
-                  ),
-                  _react2['default'].createElement(
-                    _reactRouter.Link,
-                    { className: 'play-link', to: 'gameone' },
-                    'Play'
-                  )
+                  _reactRouter.Link,
+                  { to: 'gameone' },
+                  'Play Game 1'
                 ),
                 _react2['default'].createElement(
-                  'li',
-                  null,
-                  _react2['default'].createElement(
-                    'h2',
-                    null,
-                    _react2['default'].createElement(
-                      'span',
-                      { className: 'game-number' },
-                      gametwo.gameNumber
-                    ),
-                    ' ',
-                    _react2['default'].createElement(
-                      'span',
-                      { className: 'game-name' },
-                      gametwo.gameName
-                    )
-                  ),
-                  _react2['default'].createElement(
-                    'span',
-                    { className: 'game-score' },
-                    gameScores.game_two_score
-                  ),
-                  _react2['default'].createElement(
-                    'span',
-                    { className: 'points' },
-                    'Points'
-                  ),
-                  _react2['default'].createElement(
-                    _reactRouter.Link,
-                    { className: 'play-link', onClick: function () {
-                        return _this.reload();
-                      } },
-                    'Play'
-                  )
-                ),
-                _react2['default'].createElement(
-                  'li',
-                  null,
-                  _react2['default'].createElement(
-                    'h2',
-                    null,
-                    _react2['default'].createElement(
-                      'span',
-                      { className: 'game-number' },
-                      gamethree.gameNumber
-                    ),
-                    ' ',
-                    _react2['default'].createElement(
-                      'span',
-                      { className: 'game-name' },
-                      gamethree.gameName
-                    )
-                  ),
-                  _react2['default'].createElement(
-                    'span',
-                    { className: 'game-score' },
-                    gameScores.game_three_score
-                  ),
-                  _react2['default'].createElement(
-                    'span',
-                    { className: 'points' },
-                    'Points'
-                  ),
-                  _react2['default'].createElement(
-                    _reactRouter.Link,
-                    { className: 'play-link', to: 'gamethree' },
-                    'Play'
-                  )
+                  _reactRouter.Link,
+                  { to: 'gamethree' },
+                  'Play Game 3'
                 )
               )
-            ) : _react2['default'].createElement(
+            )
+          ) : _react2['default'].createElement(
+            'div',
+            null,
+            _react2['default'].createElement(
               'div',
-              null,
-              gametwo.transcripts.map(function (index, key) {
-                // get current trancript
-                var transcript = Number(key);
-                if (transcript == gametwo.currentTranscript) {
-                  return _react2['default'].createElement(
-                    'div',
-                    { key: key },
+              { className: 'grid' },
+              gametwo.endOfRound ? _react2['default'].createElement(
+                'div',
+                { className: 'roundup' },
+                _react2['default'].createElement(
+                  'h2',
+                  { className: 'user-message' },
+                  this.props.initialData.user[0].username,
+                  ' Just Scored: ',
+                  gameone.gameScore,
+                  ' Points'
+                ),
+                _react2['default'].createElement(
+                  'ul',
+                  { className: 'game-navigation' },
+                  _react2['default'].createElement(
+                    'li',
+                    null,
                     _react2['default'].createElement(
-                      'div',
-                      { className: 'game-meta' },
-                      _react2['default'].createElement(_partialsAudio2['default'], {
-                        isPlaying: gametwo.isPlaying,
-                        src: index.media_url,
-                        setCurrentTime: setCurrentTime,
-                        setIsPlaying: setIsPlaying,
-                        startTime: gametwo.startTime,
-                        endSegment: gametwo.endSegment,
-                        startSegment: gametwo.startSegment
-                      }),
-                      _react2['default'].createElement(_partialsGame_meta2['default'], {
-                        meta: index.metadata,
-                        aapb_link: index.aapb_link
-                      })
+                      'h2',
+                      null,
+                      _react2['default'].createElement(
+                        'span',
+                        { className: 'game-number' },
+                        gameone.gameNumber
+                      ),
+                      ' ',
+                      _react2['default'].createElement(
+                        'span',
+                        { className: 'game-name' },
+                        gameone.gameName
+                      )
                     ),
                     _react2['default'].createElement(
-                      'ul',
-                      { className: 'game-phrase-list' },
-                      index.phrases.map(function (phrase, key) {
-                        var phrases = Number(key);
-                        var currentPhrase = gametwo.segment <= phrases + 1 && gametwo.segment >= phrases - 1;
-                        if (currentPhrase) {
-                          return _react2['default'].createElement(
-                            'li',
-                            { key: key, className: _this.activePhrase(gametwo.currentTime, phrase.start_time, phrase.end_time) },
-                            _react2['default'].createElement(_partialsGame_two_phrase2['default'], {
-                              selectPhrase: _this.selectPhrase,
-                              removePhrase: _this.removePhrase,
-                              playPhrase: _this.playPhrase,
-                              disableProgress: disableProgress,
-                              time: gametwo.currentTime,
-                              active: gametwo.segment,
-                              keys: key,
-                              details: phrase,
-                              setSegmentStart: setSegmentStart,
-                              startSegment: gametwo.startSegment,
-                              setSegmentEnd: setSegmentEnd,
-                              advanceSegment: advanceSegmentTwo,
-                              endOfRoundTwo: endOfRoundTwo,
-                              currentTranscript: gametwo.currentTranscript,
-                              gameLength: gametwo.transcripts.length - 1,
-                              phrasesLength: gametwo.transcripts[gametwo.currentTranscript].phrases_length - 1,
-                              updateGameProgress: updateGameProgress,
-                              advanceTranscript: advanceTranscriptTwo,
-                              resetSegments: resetSegmentsTwo,
-                              setSkipPhrase: skipPhrase,
-                              skipPhrase: gametwo.skipPhrase,
-                              setStartTime: setStartTime
-                            })
-                          );
-                        }
-                      })
+                      'span',
+                      { className: 'game-score' },
+                      gameScores.game_one_score
+                    ),
+                    _react2['default'].createElement(
+                      'span',
+                      { className: 'points' },
+                      'Points'
+                    ),
+                    _react2['default'].createElement(
+                      _reactRouter.Link,
+                      { className: 'play-link', to: 'gameone' },
+                      'Play'
                     )
-                  );
-                }
-              })
-            )
-          ),
-          gametwo.endOfRound ? '' : _react2['default'].createElement(_partialsGame_footer2['default'], {
-            gameNumber: gametwo.gameNumber,
-            gameName: gametwo.gameName,
-            canGoBack: gametwo.canGoBack,
-            handleProgress: this.handleProgress,
-            max: gametwo.gameLength,
-            value: gametwo.gameProgress,
-            waitingUpdate: this.props.waitingUpdate,
-            waiting: gametwo.disableProgress,
-            modalIsOpen: this.props.initialData.modalIsOpen,
-            setModal: this.props.setModal
-          })
+                  ),
+                  _react2['default'].createElement(
+                    'li',
+                    null,
+                    _react2['default'].createElement(
+                      'h2',
+                      null,
+                      _react2['default'].createElement(
+                        'span',
+                        { className: 'game-number' },
+                        gametwo.gameNumber
+                      ),
+                      ' ',
+                      _react2['default'].createElement(
+                        'span',
+                        { className: 'game-name' },
+                        gametwo.gameName
+                      )
+                    ),
+                    _react2['default'].createElement(
+                      'span',
+                      { className: 'game-score' },
+                      gameScores.game_two_score
+                    ),
+                    _react2['default'].createElement(
+                      'span',
+                      { className: 'points' },
+                      'Points'
+                    ),
+                    _react2['default'].createElement(
+                      _reactRouter.Link,
+                      { className: 'play-link', onClick: function () {
+                          return _this.reload();
+                        } },
+                      'Play'
+                    )
+                  ),
+                  _react2['default'].createElement(
+                    'li',
+                    null,
+                    _react2['default'].createElement(
+                      'h2',
+                      null,
+                      _react2['default'].createElement(
+                        'span',
+                        { className: 'game-number' },
+                        gamethree.gameNumber
+                      ),
+                      ' ',
+                      _react2['default'].createElement(
+                        'span',
+                        { className: 'game-name' },
+                        gamethree.gameName
+                      )
+                    ),
+                    _react2['default'].createElement(
+                      'span',
+                      { className: 'game-score' },
+                      gameScores.game_three_score
+                    ),
+                    _react2['default'].createElement(
+                      'span',
+                      { className: 'points' },
+                      'Points'
+                    ),
+                    _react2['default'].createElement(
+                      _reactRouter.Link,
+                      { className: 'play-link', to: 'gamethree' },
+                      'Play'
+                    )
+                  )
+                )
+              ) : _react2['default'].createElement(
+                'div',
+                null,
+                gametwo.transcripts.map(function (index, key) {
+                  // get current trancript
+                  var transcript = Number(key);
+                  if (transcript == gametwo.currentTranscript) {
+                    return _react2['default'].createElement(
+                      'div',
+                      { key: key },
+                      _react2['default'].createElement(
+                        'div',
+                        { className: 'game-meta' },
+                        _react2['default'].createElement(_partialsAudio2['default'], {
+                          isPlaying: gametwo.isPlaying,
+                          src: index.media_url,
+                          setCurrentTime: setCurrentTime,
+                          setIsPlaying: setIsPlaying,
+                          startTime: gametwo.startTime,
+                          endSegment: gametwo.endSegment,
+                          startSegment: gametwo.startSegment
+                        }),
+                        _react2['default'].createElement(_partialsGame_meta2['default'], {
+                          meta: index.metadata,
+                          aapb_link: index.aapb_link
+                        })
+                      ),
+                      _react2['default'].createElement(
+                        'ul',
+                        { className: 'game-phrase-list' },
+                        index.phrases.map(function (phrase, key) {
+                          var phrases = Number(key);
+                          var currentPhrase = gametwo.segment <= phrases + 1 && gametwo.segment >= phrases - 1;
+                          if (currentPhrase) {
+                            return _react2['default'].createElement(
+                              'li',
+                              { key: key, className: _this.activePhrase(gametwo.currentTime, phrase.start_time, phrase.end_time) },
+                              _react2['default'].createElement(_partialsGame_two_phrase2['default'], {
+                                selectPhrase: _this.selectPhrase,
+                                removePhrase: _this.removePhrase,
+                                playPhrase: _this.playPhrase,
+                                disableProgress: disableProgress,
+                                time: gametwo.currentTime,
+                                active: gametwo.segment,
+                                keys: key,
+                                details: phrase,
+                                setSegmentStart: setSegmentStart,
+                                startSegment: gametwo.startSegment,
+                                setSegmentEnd: setSegmentEnd,
+                                advanceSegment: advanceSegmentTwo,
+                                endOfRoundTwo: endOfRoundTwo,
+                                currentTranscript: gametwo.currentTranscript,
+                                gameLength: gametwo.transcripts.length - 1,
+                                phrasesLength: gametwo.transcripts[gametwo.currentTranscript].phrases_length - 1,
+                                updateGameProgress: updateGameProgress,
+                                advanceTranscript: advanceTranscriptTwo,
+                                resetSegments: resetSegmentsTwo,
+                                setSkipPhrase: skipPhrase,
+                                skipPhrase: gametwo.skipPhrase,
+                                setStartTime: setStartTime
+                              })
+                            );
+                          }
+                        })
+                      )
+                    );
+                  }
+                })
+              )
+            ),
+            gametwo.endOfRound ? '' : _react2['default'].createElement(_partialsGame_footer2['default'], {
+              gameNumber: gametwo.gameNumber,
+              gameName: gametwo.gameName,
+              canGoBack: gametwo.canGoBack,
+              handleProgress: this.handleProgress,
+              max: gametwo.gameLength,
+              value: gametwo.gameProgress,
+              waitingUpdate: this.props.waitingUpdate,
+              waiting: gametwo.disableProgress,
+              modalIsOpen: this.props.initialData.modalIsOpen,
+              setModal: this.props.setModal
+            })
+          )
         );
       }
     }
@@ -5662,7 +5724,7 @@ function gameTwo(state, action) {
     gameScore: 0,
     waiting: false,
     inGameTip: true,
-    transcripts: null
+    transcripts: 0
   };
 
   switch (action.type) {

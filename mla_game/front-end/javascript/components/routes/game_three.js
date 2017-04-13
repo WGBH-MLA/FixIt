@@ -148,120 +148,135 @@ class GameThree extends React.Component{
         <LoadingScreen />
       )
     } else {
+      let isNoGameData = gamethree.transcripts.length === 0
       return (
         <div>
-          <div className='grid'>
-            {gamethree.endOfRound ? (
-              <div className='roundup'>
-                <h2 className="user-message">{this.props.initialData.user[0].username} Just Scored: {gameone.gameScore} Points</h2>
-                <ul className='game-navigation'>
-                  <li>
-                    <h2><span className='game-number'>{gameone.gameNumber}</span> <span className='game-name'>{gameone.gameName}</span></h2>
-                    <span className='game-score'>{gameScores.game_one_score}</span>
-                    <span className='points'>Points</span>
-                    <Link className='play-link' to="gameone">Play</Link>
-                  </li>
-                  <li>
-                    <h2><span className='game-number'>{gametwo.gameNumber}</span> <span className='game-name'>{gametwo.gameName}</span></h2>
-                    <span className='game-score'>{gameScores.game_two_score}</span>
-                    <span className='points'>Points</span>
-                    <Link className='play-link' to="gametwo">Play</Link>
-                  </li>
-                  <li>
-                    <h2><span className='game-number'>{gamethree.gameNumber}</span> <span className='game-name'>{gamethree.gameName}</span></h2>
-                    <span className='game-score'>{gameScores.game_three_score}</span>
-                    <span className='points'>Points</span>
-                    <Link className='play-link' onClick={() => this.reload()}>Play</Link>
-                  </li>
-                </ul>
+          {isNoGameData ? (
+          <div className="grid">
+            <div className="no-data-message no-data-message-container">
+              <h2>Currently there is not enough content to play Game 3. Please play Game 1 to identify transcript errors or Game 2 to provide transcript fixes.</h2>
+              <div className="game-links">
+                <Link to="gameone">Play Game 3</Link>
+                <Link to="gametwo">Play Game 2</Link>
               </div>
-            ) : (
-              <div>
-                {gamethree.transcripts.map((index, key) => {
-                // get current trancript
-                let transcript = Number(key)
-                if(transcript == gamethree.currentTranscript) {
-                  return(
-                    <div key={key}>              
-                      {/*<pre>{JSON.stringify(this.state, null, 2)}</pre>*/}     
-                      <div className="game-meta">
-                        <Audio 
-                          isPlaying={gamethree.isPlaying}
-                          src={index.media_url} 
-                          setCurrentTime={setCurrentTime}
-                          setIsPlaying={setIsPlaying}
-                          startTime={gamethree.startTime} 
-                          endSegment={gamethree.endSegment}
-                          startSegment={gamethree.startSegment}
-                        />
-                        <GameMeta 
-                          meta={index.metadata} 
-                          aapb_link={index.aapb_link} 
-                        />
-                      </div>
-                      <ul className="game-phrase-list">
-                      {index.phrases.map((phrase, key) => {
-                        let phrases = Number(key)
-                        let currentPhrase = gamethree.segment <= phrases + 1 && gamethree.segment >= phrases -1
-                        if(currentPhrase){
-                          return(
-                            <li key={key} className={this.activePhrase(gamethree.currentTime, phrase.start_time, phrase.end_time)}>
-                              <Phrase
-                               activeVote={this.state.active}
-                               selectPhrase={this.selectPhrase}
-                               selectDownVotes={this.selectDownVotes}
-                               setActive={this.setActive}
-                               removePhrase={this.removePhrase}
-                               playPhrase={this.playPhrase}
-                               disableProgress={disableProgress}
-                               time={gamethree.currentTime} 
-                               active={gamethree.segment}
-                               keys={key}
-                               details={phrase}
-                               setSegmentStart={setSegmentStart}
-                               startSegment={gamethree.startSegment}
-                               setSegmentEnd={setSegmentEnd}
-                               advanceSegment={advanceSegmentThree}
-                               endOfRoundThree={endOfRoundThree}
-                               currentTranscript={gamethree.currentTranscript}
-                               gameLength={gamethree.transcripts.length - 1}
-                               phrasesLength={gamethree.transcripts[gamethree.currentTranscript].phrases_length - 1}
-                               updateGameProgress={updateGameProgressThree}
-                               advanceTranscript={advanceTranscriptThree}
-                               resetSegments={resetSegmentsThree}
-                               setSkipPhrase={skipPhrase}
-                               skipPhrase={gamethree.skipPhrase}
-                               setStartTime={setStartTime}
-                              />
-                            </li>
-                          )
-                        }
-                      })}
-                      </ul>
-                    </div>
-                  )
-                }
-              })}
-              </div>
-            )}
+            </div>
           </div>
-          {gamethree.endOfRound ? (
-            ''
           ) : (
-           <GameFooter
-            gameNumber={gamethree.gameNumber}
-            gameName={gamethree.gameName}
-            canGoBack={gamethree.canGoBack}
-            handleProgress={this.handleProgress}
-            max={gamethree.gameLength - 1}
-            value={gamethree.gameProgress}
-            waitingUpdate={this.props.waitingUpdate}
-            waiting={gamethree.disableProgress}
-            modalIsOpen={this.props.initialData.modalIsOpen}
-            setModal={this.props.setModal}
-           />            
+            <div>
+              <div className='grid'>
+              {gamethree.endOfRound ? (
+                <div className='roundup'>
+                  <h2 className="user-message">{this.props.initialData.user[0].username} Just Scored: {gameone.gameScore} Points</h2>
+                  <ul className='game-navigation'>
+                    <li>
+                      <h2><span className='game-number'>{gameone.gameNumber}</span> <span className='game-name'>{gameone.gameName}</span></h2>
+                      <span className='game-score'>{gameScores.game_one_score}</span>
+                      <span className='points'>Points</span>
+                      <Link className='play-link' to="gameone">Play</Link>
+                    </li>
+                    <li>
+                      <h2><span className='game-number'>{gametwo.gameNumber}</span> <span className='game-name'>{gametwo.gameName}</span></h2>
+                      <span className='game-score'>{gameScores.game_two_score}</span>
+                      <span className='points'>Points</span>
+                      <Link className='play-link' to="gametwo">Play</Link>
+                    </li>
+                    <li>
+                      <h2><span className='game-number'>{gamethree.gameNumber}</span> <span className='game-name'>{gamethree.gameName}</span></h2>
+                      <span className='game-score'>{gameScores.game_three_score}</span>
+                      <span className='points'>Points</span>
+                      <Link className='play-link' onClick={() => this.reload()}>Play</Link>
+                    </li>
+                  </ul>
+                </div>
+              ) : (
+                <div>
+                  {gamethree.transcripts.map((index, key) => {
+                  // get current trancript
+                  let transcript = Number(key)
+                  if(transcript == gamethree.currentTranscript) {
+                    return(
+                      <div key={key}>              
+                        {/*<pre>{JSON.stringify(this.state, null, 2)}</pre>*/}     
+                        <div className="game-meta">
+                          <Audio 
+                            isPlaying={gamethree.isPlaying}
+                            src={index.media_url} 
+                            setCurrentTime={setCurrentTime}
+                            setIsPlaying={setIsPlaying}
+                            startTime={gamethree.startTime} 
+                            endSegment={gamethree.endSegment}
+                            startSegment={gamethree.startSegment}
+                          />
+                          <GameMeta 
+                            meta={index.metadata} 
+                            aapb_link={index.aapb_link} 
+                          />
+                        </div>
+                        <ul className="game-phrase-list">
+                        {index.phrases.map((phrase, key) => {
+                          let phrases = Number(key)
+                          let currentPhrase = gamethree.segment <= phrases + 1 && gamethree.segment >= phrases -1
+                          if(currentPhrase){
+                            return(
+                              <li key={key} className={this.activePhrase(gamethree.currentTime, phrase.start_time, phrase.end_time)}>
+                                <Phrase
+                                 activeVote={this.state.active}
+                                 selectPhrase={this.selectPhrase}
+                                 selectDownVotes={this.selectDownVotes}
+                                 setActive={this.setActive}
+                                 removePhrase={this.removePhrase}
+                                 playPhrase={this.playPhrase}
+                                 disableProgress={disableProgress}
+                                 time={gamethree.currentTime} 
+                                 active={gamethree.segment}
+                                 keys={key}
+                                 details={phrase}
+                                 setSegmentStart={setSegmentStart}
+                                 startSegment={gamethree.startSegment}
+                                 setSegmentEnd={setSegmentEnd}
+                                 advanceSegment={advanceSegmentThree}
+                                 endOfRoundThree={endOfRoundThree}
+                                 currentTranscript={gamethree.currentTranscript}
+                                 gameLength={gamethree.transcripts.length - 1}
+                                 phrasesLength={gamethree.transcripts[gamethree.currentTranscript].phrases_length - 1}
+                                 updateGameProgress={updateGameProgressThree}
+                                 advanceTranscript={advanceTranscriptThree}
+                                 resetSegments={resetSegmentsThree}
+                                 setSkipPhrase={skipPhrase}
+                                 skipPhrase={gamethree.skipPhrase}
+                                 setStartTime={setStartTime}
+                                />
+                              </li>
+                            )
+                          }
+                        })}
+                        </ul>
+                      </div>
+                    )
+                  }
+                })}
+                </div>
+              )}
+            </div>
+            {gamethree.endOfRound ? (
+              ''
+            ) : (
+             <GameFooter
+              gameNumber={gamethree.gameNumber}
+              gameName={gamethree.gameName}
+              canGoBack={gamethree.canGoBack}
+              handleProgress={this.handleProgress}
+              max={gamethree.gameLength - 1}
+              value={gamethree.gameProgress}
+              waitingUpdate={this.props.waitingUpdate}
+              waiting={gamethree.disableProgress}
+              modalIsOpen={this.props.initialData.modalIsOpen}
+              setModal={this.props.setModal}
+             />            
+            )}              
+            </div>
           )}
-        </div>        
+       </div>        
       )
     }
   }

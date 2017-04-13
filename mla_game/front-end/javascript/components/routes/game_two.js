@@ -127,9 +127,22 @@ class GameTwo extends React.Component{
         <LoadingScreen />
       )
     } else {
+      let isNoGameData = gametwo.transcripts.length === 0
       return(
         <div>
-          <div className='grid'>
+         {isNoGameData ? (
+          <div className="grid no-data-message-container">
+              <div className="no-data-message">
+                <h2>Currently there is not enough content to play Game 2. Please play Game 1 to identify transcript errors or Game 3 to validate transcript fixes.</h2>
+                <div className="game-links">
+                  <Link to="gameone">Play Game 1</Link>
+                  <Link to="gamethree">Play Game 3</Link>
+                </div>
+            </div>
+          </div>
+          ) : (
+          <div>
+            <div className='grid'>
             {gametwo.endOfRound ? (
               <div className='roundup'>
                 <h2 className="user-message">{this.props.initialData.user[0].username} Just Scored: {gameone.gameScore} Points</h2>
@@ -219,7 +232,7 @@ class GameTwo extends React.Component{
               })}
               </div>
             )}
-          </div>
+            </div>
             {gametwo.endOfRound ? (
               ''
             ) : (
@@ -236,6 +249,8 @@ class GameTwo extends React.Component{
               setModal={this.props.setModal}
              />              
             )}
+          </div>
+          )}
         </div>
       )
     }

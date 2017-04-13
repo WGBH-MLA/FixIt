@@ -489,3 +489,41 @@ button {
     }
   }
 }
+
+.no-data-message-container {
+  height:calc(100vh - 10em);
+  position:relative;
+}
+
+.no-data-message {
+  @include center;
+  width:90%;
+  @include susy-breakpoint($screen-md-min, $map-md) {
+    width:auto;
+  }
+  h2 {
+    font-family:'Open Sans Condensed', sans-serif;   
+    font-size:1.5em;
+    @include susy-breakpoint($screen-sm-min, $map-sm) {
+      font-size:3em;
+    }
+  }
+  .game-links {
+    text-align:center;
+  }
+  a {
+    @include border-button($theme-secondary, $progress);
+    @include transition(all, .5s, ease-in-out);
+    padding:1.25em .75em;
+    display:inline-block;
+    text-align:center;
+    width:45%;
+    &:hover {
+      color:$theme-secondary;
+      background:$progress;
+    }
+    &:first-of-type {
+      margin-right:1.5em;
+    }
+  }
+}
