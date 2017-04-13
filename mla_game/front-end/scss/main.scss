@@ -213,7 +213,7 @@ button {
       }
       &:hover {
         .speaker-icon {
-          fill:$icon-hover;
+          fill:white;
         }
       }
       @include susy-breakpoint($screen-lg-min, $map-lg) {
@@ -293,7 +293,7 @@ button {
     &.active-phrase {
       .play-phrase {
         .speaker-icon {
-          fill:$icon-hover;
+          fill:white;
         }
       }
     }
