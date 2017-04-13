@@ -156,3 +156,47 @@ def create_process_blob_tasks():
 def scrape_aapb():
     if Transcript.objects.filter('metadata_processed').count() > 0:
         call_command('get_aapb_metadata')
+
+
+@db_task()
+def create_blank_phrases(transcript, phrase_pairs):
+    'Creates new empty TranscriptPhrase objects for gaps in timecode'
+    new_phrases = []
+    for pair in phrase_pairs:
+        delta = pair[1].start_time - pair[0].end_time
+        if delta > 3 and delta < 30:
+            new_phrases.append(
+                TranscriptPhrase(
+                    id_number=0,
+                    text='',
+                    start_time=pair[0].end_time,
+                    end_time=pair[1].start_time,
+                    speaker_id=0,
+                    transcript=transcript
+                )
+            )
+        elif delta >= 30:
+            split = round(delta/15)
+            length = round(delta/split, 2)
+            next_phrase_start_time = pair[0].end_time
+            for i in range(split):
+                end_time = next_phrase_start_time + length
+                if end_time > pair[1].start_time:
+                    end_time = pair[1].start_time
+                new_phrases.append(
+                    TranscriptPhrase(
+                        id_number=0,
+                        text='',
+                        start_time=next_phrase_start_time,
+                        end_time=end_time,
+                        speaker_id=0,
+                        transcript=transcript
+                    )
+                )
+                next_phrase_start_time += length
+
+    if len(new_phrases) > 0:
+        django_log.info('Creating {} phrases for transcript {}'.format(
+            len(new_phrases), transcript
+        ))
+        TranscriptPhrase.objects.bulk_create(new_phrases)
