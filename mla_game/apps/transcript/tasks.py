@@ -1,5 +1,4 @@
 import requests
-import time
 import logging
 
 from django.conf import settings
