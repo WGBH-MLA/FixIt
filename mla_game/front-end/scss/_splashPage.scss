@@ -186,7 +186,7 @@
 
 .dialog-content {
   @include center;
-  overflow: scroll;
+  overflow-y: auto;
   z-index: 3;
   position: fixed;
   background:$theme-secondary;

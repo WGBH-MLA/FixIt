@@ -452,7 +452,7 @@ button {
   height:100vh;
   width:100%;
   max-width:55em;
-  overflow: scroll;
+  overflow-y: auto;
   border:1px solid white;
   border-radius:.25em;
   padding:3em;
