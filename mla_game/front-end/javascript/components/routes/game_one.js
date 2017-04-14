@@ -266,6 +266,7 @@ class GameOne extends React.Component{
               waiting={this.props.gameone.waiting}
               modalIsOpen={this.props.initialData.modalIsOpen}
               setModal={this.props.setModal}
+              gameTipsClass={'tip-gameone'}
             />
           )}
         </div>

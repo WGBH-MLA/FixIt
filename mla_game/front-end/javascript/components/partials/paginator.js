@@ -8,7 +8,6 @@ class Paging extends React.Component{
           <span>Next</span>
           <svg viewBox="0 0 200 200">
             <title>Next</title>
-            <path d="M100 200C44.9 200 0 155.1 0 100S44.9 0 100 0s100 44.9 100 100-44.9 100-100 100zm0-180.4c-44.3 0-80.4 36.1-80.4 80.4 0 44.3 36.1 80.4 80.4 80.4s80.4-36.1 80.4-80.4c0-44.3-36.1-80.4-80.4-80.4z"/>
             <polygon points="70, 55 70, 145 145, 100"/>
           </svg>
         </button>

@@ -458,6 +458,16 @@ button {
   border:1px solid white;
   border-radius:.25em;
   padding:3em;
+  &.tip-modal {
+    max-width:82.875em;
+    padding:0;
+    height:inherit;
+    max-height:100%;
+    .modal-close {
+      top:1em;
+      right:1em;
+    }
+  }
   &:focus {
     outline:0;
   }
@@ -467,13 +477,32 @@ button {
   .list-tips {
     list-style:lower-alpha;
   }
+  [class^='tip-'] {
+    margin-top:4em;
+    padding-bottom:64.47%;
+    @include susy-breakpoint($screen-sm-min, $map-sm) {
+      margin-top:0;
+    }
+  }
+  .tip-gameone {
+    background:url('../javascript/images/tips_game1.png'), no-repeat;
+    background-size:cover;
+  }
+  .tip-gametwo {
+    background:url('../javascript/images/tips_game2.png'), no-repeat;
+    background-size:cover;
+  }  
+  .tip-gamethree {
+    background:url('../javascript/images/tips_game3.png'), no-repeat;
+    background-size:cover;
+  }
 }
 
 .modal-close {
   @include plain-button;
   position:absolute;
-  top:3.5em;
-  right:3em;
+  top:2em;
+  right:2em;
   padding:0;
   svg {
     display:block;
