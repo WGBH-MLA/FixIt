@@ -1,10 +1,7 @@
 import logging
 import requests
 import random
-from random import randint
 from collections import Counter
-
-import architect
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -266,16 +263,11 @@ class TranscriptPhraseManager(models.Manager):
         profile = Profile.objects.get(user=user)
         considered_phrases = [phrase.pk for phrase in
                               profile.considered_phrases.all()]
+        tt = 'non'
+        self.create_transcript_phrase
         return self.exclude(pk__in=considered_phrases)
 
 
-@architect.install(
-    'partition',
-    type='range',
-    subtype='integer',
-    constraint='1000',
-    column='transcript_id'
-)
 class TranscriptPhrase(models.Model):
     id_number = models.IntegerField()
     text = models.TextField()
