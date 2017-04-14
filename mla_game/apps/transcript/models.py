@@ -1,10 +1,7 @@
 import logging
 import requests
 import random
-from random import randint
 from collections import Counter
-
-import architect
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -149,9 +146,13 @@ class TranscriptManager(models.Manager):
         return (transcripts, corrections)
 
     def random_transcript(self):
-        all_transcripts = self.all().defer('transcript_data_blob')
-        number_of_transcripts = all_transcripts.count()
-        return self.filter(pk__in=[randint(0, number_of_transcripts - 1)])
+        return self.filter(
+            pk__in=[
+                random.choice(
+                    [transcript.pk for transcript in self.all().only('pk')]
+                )
+            ]
+        )
 
 
 class Transcript(models.Model):
@@ -269,13 +270,6 @@ class TranscriptPhraseManager(models.Manager):
         return self.exclude(pk__in=considered_phrases)
 
 
-@architect.install(
-    'partition',
-    type='range',
-    subtype='integer',
-    constraint='1000',
-    column='transcript_id'
-)
 class TranscriptPhrase(models.Model):
     id_number = models.IntegerField()
     text = models.TextField()
