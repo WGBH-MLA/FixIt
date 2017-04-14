@@ -39,13 +39,13 @@ gulp.task('compass', function(){
 });
 
 gulp.task('compress', function (cb) {
-  // process.stdout.write("Setting NODE_ENV to 'production'" + "\n");
-  // process.env.NODE_ENV = 'production';
-  // if (process.env.NODE_ENV != 'production') {
-  //   throw new Error("Failed to set NODE_ENV to production!!!!");
-  // } else {
-  //   process.stdout.write("Successfully set NODE_ENV to production" + "\n");
-  // }
+  process.stdout.write("Setting NODE_ENV to 'production'" + "\n");
+  process.env.NODE_ENV = 'production';
+  if (process.env.NODE_ENV != 'production') {
+    throw new Error("Failed to set NODE_ENV to production!!!!");
+  } else {
+    process.stdout.write("Successfully set NODE_ENV to production" + "\n");
+  }
   pump([
     gulp.src(paths.buildindexJS),
     uglify(),
@@ -64,7 +64,7 @@ gulp.task('watch', [], function(){
     gulp.watch(paths.sass + '*', ['compass']);
 });
 
-gulp.task('production_build', ['compress']);
+gulp.task('production_build', ['build', 'compress']);
 
 gulp.task('default', ['build', 'watch'], function () {
 
