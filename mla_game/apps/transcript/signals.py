@@ -42,9 +42,6 @@ def update_num_corrections(sender, instance, **kwargs):
             transcript_phrase=instance.transcript_phrase,
             not_an_error=False
         ).count()
-        django_log.info('updating phrase {} with {} corrections'.format(
-            instance.transcript_phrase, corrections
-        ))
         TranscriptPhrase.objects.filter(
             pk=instance.transcript_phrase.pk).update(num_corrections=corrections)
 
