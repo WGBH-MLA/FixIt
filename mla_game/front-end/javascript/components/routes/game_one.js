@@ -187,7 +187,7 @@ class GameOne extends React.Component{
                     endSegment={gameone.endSegment}
                     startSegment={gameone.startSegment}
                   />
-                  <GameMeta 
+                  <GameMeta
                     meta={gameone.metadata} 
                     aapb_link={gameone.aapb_link} 
                   />
@@ -257,8 +257,6 @@ class GameOne extends React.Component{
             <GameFooter
               gameNumber={gameone.gameNumber}
               gameName={gameone.gameName}
-              goBack={this.goBack}
-              canGoBack={gameone.canGoBack}
               handleProgress={this.handleProgress}
               max={gameone.phrases.length}
               value={gameone.segment + 3}
@@ -267,6 +265,7 @@ class GameOne extends React.Component{
               modalIsOpen={this.props.initialData.modalIsOpen}
               setModal={this.props.setModal}
               gameTipsClass={'tip-gameone'}
+              gameCookie={'gameoneCookie'}
             />
           )}
         </div>

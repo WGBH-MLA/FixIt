@@ -29,7 +29,6 @@ class MenuFooter extends React.Component {
   }
 
   sharePopUp(url, id, ){
-    console.log(url, id)
     PopupCenter(url, id, '600', '500')
   }
   

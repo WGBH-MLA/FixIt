@@ -10,10 +10,11 @@ class GameFooter extends React.Component{
     this.closeModal = this.closeModal.bind(this)
     this.setTipsModal = this.setTipsModal.bind(this)
     this.closeTipsModal = this.closeTipsModal.bind(this)
+    this.checkCookie = this.checkCookie.bind(this)
     
     this.state = {
       modalOpen:false,
-      tipsModal:false
+      tipsModal:true
     }
   }
 
@@ -39,8 +40,28 @@ class GameFooter extends React.Component{
     }
   }
 
+  checkCookie(){
+    let gameCookieSet = document.cookie.indexOf(this.props.gameCookie) >= 0
+    if(gameCookieSet) {
+      this.setState({tipsModal:false})
+    }
+  }
+
   closeTipsModal(){
+    let gameCookieSet = document.cookie.indexOf(this.props.gameCookie) >= 0
+    // set cookie if not done alreay on close
+    if(!gameCookieSet) {
+      let today = new Date(),
+          expiry = new Date(today.getTime() + 60 * 24 * 3600 * 1000)
+        
+        document.cookie=`${this.props.gameCookie}=true;expires=` + expiry.toGMTString()
+    }
+    
     this.setState({tipsModal:false})
+  }
+
+  componentDidMount(){
+    this.checkCookie()
   }
 
   render(){

@@ -239,7 +239,6 @@ class GameTwo extends React.Component{
              <GameFooter
               gameNumber={gametwo.gameNumber}
               gameName={gametwo.gameName}
-              canGoBack={gametwo.canGoBack}
               handleProgress={this.handleProgress}
               max={gametwo.gameLength}
               value={gametwo.gameProgress}
@@ -248,6 +247,7 @@ class GameTwo extends React.Component{
               modalIsOpen={this.props.initialData.modalIsOpen}
               setModal={this.props.setModal}
               gameTipsClass={'tip-gametwo'}
+              gameCookie={'gameTwoCookie'}
              />              
             )}
           </div>
