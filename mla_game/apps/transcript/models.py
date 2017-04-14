@@ -146,9 +146,13 @@ class TranscriptManager(models.Manager):
         return (transcripts, corrections)
 
     def random_transcript(self):
-        all_transcripts = self.all().defer('transcript_data_blob')
-        number_of_transcripts = all_transcripts.count()
-        return self.filter(pk__in=[randint(0, number_of_transcripts - 1)])
+        return self.filter(
+            pk__in=[
+                random.choice(
+                    [transcript.pk for transcript in self.all().only('pk')]
+                )
+            ]
+        )
 
 
 class Transcript(models.Model):
