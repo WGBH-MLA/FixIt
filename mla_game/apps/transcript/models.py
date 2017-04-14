@@ -267,8 +267,6 @@ class TranscriptPhraseManager(models.Manager):
         profile = Profile.objects.get(user=user)
         considered_phrases = [phrase.pk for phrase in
                               profile.considered_phrases.all()]
-        tt = 'non'
-        self.create_transcript_phrase
         return self.exclude(pk__in=considered_phrases)
 
 
