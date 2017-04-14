@@ -467,6 +467,12 @@ button {
       top:1em;
       right:1em;
     }
+    @include susy-breakpoint($screen-md-min, $map-md) {
+      max-width:75vw;
+    }
+    @include susy-breakpoint($screen-jb-min, $map-lg) {
+      max-width:82.875em;
+    }
   }
   &:focus {
     outline:0;

@@ -52,10 +52,8 @@ class Phrase extends React.Component{
       return true
      }
   }
-
-
+  
   render(){
-    
     const {details, time, active, keys} = this.props;
     let currentSegment = active === keys || active === keys + 1 || active === keys -1
     

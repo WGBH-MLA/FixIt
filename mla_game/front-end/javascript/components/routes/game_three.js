@@ -8,6 +8,7 @@ import Paging from '../partials/paginator'
 import { postData } from '../../helpers'
 import GameFooter from '../partials/game_footer'
 import GameTip from '../partials/game_tip'
+import MenuFooter from '../partials/menu_footer'
 
 
 class GameThree extends React.Component{
@@ -187,6 +188,10 @@ class GameThree extends React.Component{
                       <Link className='play-link' onClick={() => this.reload()}>Play</Link>
                     </li>
                   </ul>
+                  <MenuFooter
+                    endOfRound={'game_three'}
+                    user={this.props.initialData.user[0].pk}
+                   />
                 </div>
               ) : (
                 <div>

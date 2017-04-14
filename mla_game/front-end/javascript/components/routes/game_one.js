@@ -9,6 +9,7 @@ import { postData } from '../../helpers'
 import GameFooter from '../partials/game_footer'
 import GameTip from '../partials/game_tip'
 import { patchData } from '../../helpers'
+import MenuFooter from '../partials/menu_footer'
 
 class GameOne extends React.Component{
 
@@ -22,7 +23,8 @@ class GameOne extends React.Component{
 
     this.state = {
       wrongPhrases:{},
-      consideredPhrases:[]
+      consideredPhrases:[],
+      pushComplete:false
     }  
 
   }
@@ -160,7 +162,6 @@ class GameOne extends React.Component{
     this.props.updateGameOneScore(this.props.gameone.gameScore)
     this.reload()
   }
-  
 
   render(){
     const { gameScores, gameone, gametwo, gamethree, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegment } = this.props
@@ -217,6 +218,10 @@ class GameOne extends React.Component{
                     <Link className='play-link' to="gamethree">Play</Link>
                   </li>
                 </ul>
+                <MenuFooter
+                  endOfRound={'game_one'}
+                  user={this.props.initialData.user[0].pk}
+                />
               </div>
             ) : (
               <div>

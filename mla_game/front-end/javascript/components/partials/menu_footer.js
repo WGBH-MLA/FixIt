@@ -1,6 +1,7 @@
 import React from 'react'
 import Modal from 'react-modal'
 import { PopupCenter } from '../../helpers'
+import { patchData } from '../../helpers'
 
 class MenuFooter extends React.Component {
   constructor(){
@@ -8,13 +9,13 @@ class MenuFooter extends React.Component {
     this.setModal = this.setModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
     this.sharePopUp = this.sharePopUp.bind(this)
+    this.pushComplete = this.pushComplete.bind(this)
 
     this.state = {
       modalOpen:false
     }
   }
-
-
+  
   setModal(){
     let open = this.state.modalOpen
     if(open) {
@@ -30,6 +31,24 @@ class MenuFooter extends React.Component {
 
   sharePopUp(url, id, ){
     PopupCenter(url, id, '600', '500')
+  }
+
+  pushComplete(){
+    if(this.props.endOfRound) {
+      let user = this.props.user,
+      data ={
+        "completed":this.props.endOfRound      
+      }
+      patchData(`/api/profile/${user}/completed/`, data).then(function(response){
+        console.log(response)
+      })
+    } else {
+      return false
+    }
+  }
+
+  componentDidMount(){
+    this.pushComplete()
   }
   
   render(){

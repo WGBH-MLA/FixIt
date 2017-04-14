@@ -38,7 +38,9 @@ class GameMenu extends React.Component {
             gamethree={gamethree}
           />
         </div>
-        <MenuFooter />
+        <MenuFooter
+          
+        />
       </div>
     )
   }
