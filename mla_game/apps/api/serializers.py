@@ -97,17 +97,28 @@ class ProfileSerializer(serializers.ModelSerializer):
             UniqueValidator(queryset=Profile.objects.all())
         ]
     )
+
+    class Meta:
+        model = Profile
+        fields = ('preferred_stations', 'preferred_topics', 'considered_phrases',
+                  'username', 'game_scores', 'pk', 'completed_challenges')
+        extra_kwargs = {
+            'considered_phrases': {'write_only': True},
+            'completed_challenges': {'read_only': True}
+        }
+
+
+class ProfilePatchSerializer(serializers.ModelSerializer):
     completed = serializers.ChoiceField(
         choices=['game_one', 'game_two', 'game_three'],
     )
 
     class Meta:
         model = Profile
-        fields = ('preferred_stations', 'preferred_topics', 'considered_phrases',
-                  'username', 'game_scores', 'pk', 'completed',)
+        fields = ('completed_challenges', 'completed',)
         extra_kwargs = {
-            'considered_phrases': {'write_only': True},
-            'completed': {'write_only': True}
+            'completed': {'write_only': True},
+            'completed_challenges': {'read_only': True}
         }
 
 

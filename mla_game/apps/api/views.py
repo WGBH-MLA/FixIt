@@ -1,7 +1,7 @@
 import logging
 
 from rest_framework import viewsets, generics
-from rest_framework.decorators import list_route
+from rest_framework.decorators import list_route, detail_route
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
@@ -19,7 +19,8 @@ from .serializers import (
     TranscriptPhraseCorrectionSerializer,
     TranscriptPhraseCorrectionVoteSerializer,
     SourceSerializer, ProfileSerializer,
-    TopicSerializer, ScoreSerializer,
+    ProfilePatchSerializer, TopicSerializer,
+    ScoreSerializer,
     LeaderboardSerializer
 )
 from .permissions import IsOwner, IsOwnerOrReadOnly
@@ -149,6 +150,11 @@ class ProfileViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Profile.objects.filter(user=self.request.user)
 
+    @detail_route(methods=['patch'], serializer_class=ProfilePatchSerializer)
+    def completed(self, request, *args, **kwargs):
+        self.get_object().update_completed(request.data['completed'])
+        return self.update(request, *args, **kwargs)
+
     def partial_update(self, request, *args, **kwargs):
         kwargs['partial'] = True
         if 'considered_phrases' in request.data:
@@ -156,8 +162,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
                 phrase.pk for phrase in
                 self.get_object().considered_phrases.all()
             ]
-        if 'completed' in request.data:
-            self.get_object().update_completed(request.data['completed'])
         return self.update(request, *args, **kwargs)
 
 
