@@ -272,6 +272,7 @@ class GameThree extends React.Component{
               waiting={gamethree.disableProgress}
               modalIsOpen={this.props.initialData.modalIsOpen}
               setModal={this.props.setModal}
+              gameTipsClass={'tip-gamethree'}
              />            
             )}              
             </div>
