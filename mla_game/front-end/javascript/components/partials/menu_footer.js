@@ -39,9 +39,7 @@ class MenuFooter extends React.Component {
       data ={
         "completed":this.props.endOfRound      
       }
-      patchData(`/api/profile/${user}/completed/`, data).then(function(response){
-        console.log(response)
-      })
+      patchData(`/api/profile/${user}/completed/`, data)
     } else {
       return false
     }

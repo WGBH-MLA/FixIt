@@ -130,7 +130,7 @@ class PreferencesForm extends React.Component {
     return (
       <div className="preferences-form">
         <div className="grid">
-          <p className='instructions'>You can customize the types of programs you interact with in FIX IT by selecting preferences. Choose Topics and/or Organizations you are interested in and click Save. Fix it will show preference to programs that match your selections.</p>
+          <p className='instructions'>You can customize the types of programs you interact with in FIX IT by selecting preferences. Choose Topics and/or Organizations and States you are interested in and click Save. FIX IT will show preference to programs that match your selections.</p>
         </div>
         <form className='grid' ref={(input) => this.preferencesForm = input } onSubmit={(event) => this.changePreferences(event)}>
           <fieldset className='topics-set'>

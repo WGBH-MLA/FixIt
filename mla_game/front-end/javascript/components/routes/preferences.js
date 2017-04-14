@@ -13,12 +13,12 @@ class Preferences extends React.Component{
       <div className="preferences">
         <div className="user-form">
         <div className="grid user-form-message">
-        <p>Your username appears on the FIX IT Leaderboard. Below, you can customize the username that others see in FIX IT.</p>
+        <p>Below, you can customize the username that other players see in FIX IT.</p>
         </div>
           <div className="grid">
             <span className="user">{this.props.initialData.username}</span>
             <UserForm 
-              data={this.props.initialData}
+              data={this.props.initialData} 
               setUsername={this.props.setUsername}
             />
           </div>

@@ -69,6 +69,33 @@
     }
     .input-container {
       margin-bottom:$v-rhythm/2;
+      position: relative;
+      .error-message {
+        text-align:left;
+        line-height:1.35;
+        display:inline-block;
+        position:absolute;
+        bottom:150%;
+        left:0;
+        padding:.5em .75em;
+        background:white;
+        color:red;
+        border-radius:.125em;
+        font-size:.8em;
+        &:after {
+          content:'';
+          display:inline-block;
+          position:absolute;
+          top:99%;
+          left:1em;
+          width: 0;
+          height: 0;
+          border-style: solid;
+          border-width: 15px 12.5px 0 12.5px;
+          border-color: #fff transparent transparent transparent;
+        }
+      }
+
       @include susy-breakpoint($screen-sm-min, $map-sm) {
         @include span(2 first)
       }

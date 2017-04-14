@@ -6,7 +6,8 @@ class UserForm extends React.Component {
     super()
     this.changeName = this.changeName.bind(this)
     this.state = {
-      saved:false
+      saved:false,
+      usernameError:false
     }
   }
 
@@ -21,21 +22,42 @@ class UserForm extends React.Component {
     }
     
     if(!emptyForm) {
-      // patch username and update in state
-      this.props.setUsername(this.userform[0].value)
-      patchData(`/api/profile/${userPk}/`, username)
-
-       // ui updates
       let self = this
-      this.setState({saved:true})
-      new Promise(function(resolve) {
-        setTimeout(function() { 
-          resolve(); 
-        }, 1500)
-      })
-      .then(function() {
-        self.setState({saved:false})
-      })
+      patchData(`/api/profile/${userPk}/`, username)
+        .then(() => {
+          // patch username and update in state
+          self.props.setUsername(self.userform[0].value)
+          
+          // ui updates
+          self.setState({saved:true})
+          new Promise(function(resolve) {
+            setTimeout(function() { 
+              resolve(); 
+            }, 1500)
+          })
+          .then(function() {
+            self.setState({saved:false})
+          })
+
+        })
+        .catch((error) => {
+          if (error.response) {
+            let userNameError = 'This field must be unique.' == error.response.data.username[0]
+            if(userNameError) {
+              // ui updates
+              self.setState({usernameError:true})
+              new Promise(function(resolve) {
+                setTimeout(function() { 
+                  resolve(); 
+                }, 3000)
+              })
+              .then(function() {
+                self.setState({usernameError:false})
+              })
+            }
+          }
+        })
+
     }
 
   }
@@ -45,6 +67,11 @@ class UserForm extends React.Component {
     return (
       <form ref={(form) => this.userform = form } onSubmit={(event) => this.changeName(event)}>
         <div className="input-container">
+          {this.state.usernameError ? (
+            <span className="error-message">This username is already taken. Please choose another.</span>
+          ) : (
+            ''
+          )}
           <input type="text" placeholder='Change Username' />
         </div>
         <button type='submit'>Save</button>
