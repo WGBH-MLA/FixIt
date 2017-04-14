@@ -72,7 +72,7 @@ class GameOne extends React.Component{
     patchData(`/api/profile/${userPk}/`, considered_phrases)
     
     // disable advance round for three seconds when round updates
-    // wait(3000)
+    wait(3000)
     
     // check if the round has ended. if so change state. 
     // if not push other things to state like the score and play the media    
