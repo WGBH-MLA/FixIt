@@ -459,17 +459,13 @@ button {
   border-radius:.25em;
   padding:3em;
   &.tip-modal {
-    max-width:100%;
+    max-width:82.875em;
     padding:0;
     height:inherit;
-    padding-bottom:3em;
+    max-height:100%;
     .modal-close {
       top:1em;
       right:1em;
-    }
-    @include susy-breakpoint($screen-md-min, $map-md) {
-      height:100vh;
-      padding-bottom:0;
     }
   }
   &:focus {
@@ -484,7 +480,7 @@ button {
   [class^='tip-'] {
     margin-top:4em;
     padding-bottom:64.47%;
-    @include susy-breakpoint($screen-md-min, $map-md) {
+    @include susy-breakpoint($screen-sm-min, $map-sm) {
       margin-top:0;
     }
   }

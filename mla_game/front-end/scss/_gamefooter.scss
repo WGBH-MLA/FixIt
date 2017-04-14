@@ -47,6 +47,7 @@
       @include clearfix;
       button {
         float:left;
+        min-height:1.8375em;
         @include plain-button;
         svg {
           width:2em;
