@@ -40,6 +40,8 @@ class MenuFooter extends React.Component {
         "completed":this.props.endOfRound      
       }
       patchData(`/api/profile/${user}/completed/`, data)
+      this.props.updateScore(this.props.gameScore)
+
     } else {
       return false
     }

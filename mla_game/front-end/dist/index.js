@@ -3159,6 +3159,7 @@ var MenuFooter = (function (_React$Component) {
           "completed": this.props.endOfRound
         };
         (0, _helpers.patchData)('/api/profile/' + user + '/completed/', data);
+        this.props.updateScore(this.props.gameScore);
       } else {
         return false;
       }
@@ -4318,7 +4319,7 @@ var GameOne = (function (_React$Component) {
       (0, _helpers.patchData)('/api/profile/' + userPk + '/', considered_phrases);
 
       // disable advance round for three seconds when round updates
-      wait(3000);
+      // wait(3000)
 
       // check if the round has ended. if so change state.
       // if not push other things to state like the score and play the media   
@@ -4405,7 +4406,9 @@ var GameOne = (function (_React$Component) {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
       // update gameone score in state
-      this.props.updateGameOneScore(this.props.gameone.gameScore);
+      if (!this.props.gameone.endOfRound) {
+        this.props.updateGameOneScore(this.props.gameone.gameScore);
+      }
       this.reload();
     }
   }, {
@@ -4578,7 +4581,9 @@ var GameOne = (function (_React$Component) {
               ),
               _react2['default'].createElement(_partialsMenu_footer2['default'], {
                 endOfRound: 'game_one',
-                user: this.props.initialData.user[0].pk
+                user: this.props.initialData.user[0].pk,
+                gameScore: this.props.gameone.gameScore,
+                updateScore: this.props.updateGameOneScore
               })
             ) : _react2['default'].createElement(
               'div',
@@ -4838,7 +4843,9 @@ var GameThree = (function (_React$Component) {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
       // update gameone score in state
-      this.props.updateGameThreeScore(this.props.gamethree.gameScore);
+      if (!this.props.gamethree.endOfRound) {
+        this.props.updateGameThreeScore(this.props.gamethree.gameScore);
+      }
       // reset gamestate
       this.reload();
     }
@@ -5028,7 +5035,9 @@ var GameThree = (function (_React$Component) {
                 ),
                 _react2['default'].createElement(_partialsMenu_footer2['default'], {
                   endOfRound: 'game_three',
-                  user: this.props.initialData.user[0].pk
+                  user: this.props.initialData.user[0].pk,
+                  gameScore: this.props.gamethree.gameScore,
+                  updateScore: this.props.updateGameThreeScore
                 })
               ) : _react2['default'].createElement(
                 'div',
@@ -5307,7 +5316,9 @@ var GameTwo = (function (_React$Component) {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
       // update gameone score in state
-      this.props.updateGameTwoScore(this.props.gametwo.gameScore);
+      if (!this.props.gametwo.endOfRound) {
+        this.props.updateGameTwoScore(this.props.gametwo.gameScore);
+      }
       // reset gamestate
       this.reload();
     }
@@ -5497,7 +5508,9 @@ var GameTwo = (function (_React$Component) {
                 ),
                 _react2['default'].createElement(_partialsMenu_footer2['default'], {
                   endOfRound: 'game_two',
-                  user: this.props.initialData.user[0].pk
+                  user: this.props.initialData.user[0].pk,
+                  gameScore: this.props.gametwo.gameScore,
+                  updateScore: this.props.updateGameTwoScore
                 })
               ) : _react2['default'].createElement(
                 'div',

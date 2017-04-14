@@ -72,7 +72,7 @@ class GameOne extends React.Component{
     patchData(`/api/profile/${userPk}/`, considered_phrases)
     
     // disable advance round for three seconds when round updates
-    wait(3000)
+    // wait(3000)
     
     // check if the round has ended. if so change state. 
     // if not push other things to state like the score and play the media    
@@ -159,7 +159,9 @@ class GameOne extends React.Component{
 
   componentWillUnmount(){
     // update gameone score in state
-    this.props.updateGameOneScore(this.props.gameone.gameScore)
+    if(!this.props.gameone.endOfRound) {
+      this.props.updateGameOneScore(this.props.gameone.gameScore)
+    }
     this.reload()
   }
 
@@ -190,7 +192,7 @@ class GameOne extends React.Component{
                   />
                   <GameMeta
                     meta={gameone.metadata} 
-                    aapb_link={gameone.aapb_link} 
+                    aapb_link={gameone.aapb_link}
                   />
                 </div>
               )}
@@ -221,6 +223,8 @@ class GameOne extends React.Component{
                 <MenuFooter
                   endOfRound={'game_one'}
                   user={this.props.initialData.user[0].pk}
+                  gameScore={this.props.gameone.gameScore}
+                  updateScore={this.props.updateGameOneScore} 
                 />
               </div>
             ) : (

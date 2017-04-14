@@ -115,7 +115,9 @@ class GameTwo extends React.Component{
 
   componentWillUnmount(){
     // update gameone score in state
-    this.props.updateGameTwoScore(this.props.gametwo.gameScore)
+    if(!this.props.gametwo.endOfRound) {
+      this.props.updateGameTwoScore(this.props.gametwo.gameScore)
+    }
     // reset gamestate
     this.reload()
   }
@@ -170,6 +172,8 @@ class GameTwo extends React.Component{
                 <MenuFooter
                   endOfRound={'game_two'}
                   user={this.props.initialData.user[0].pk}
+                  gameScore={this.props.gametwo.gameScore}
+                  updateScore={this.props.updateGameTwoScore} 
                 />
               </div>
             ) : (
