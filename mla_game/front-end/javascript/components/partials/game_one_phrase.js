@@ -30,9 +30,13 @@ class Phrase extends React.Component{
   }
 
   getEndOfContext(){
-    const { active, details, keys } = this.props
+    const { active, details, keys, length } = this.props
     // set end time for segment
     if(keys == active + 4) {
+      this.props.setSegmentEnd(Number(details.end_time))
+    }
+    // set end time for last segment in transcript
+    if(keys == length - 1) {
       this.props.setSegmentEnd(Number(details.end_time))
     }
   }
@@ -43,7 +47,7 @@ class Phrase extends React.Component{
   }
 
   shouldComponentUpdate(nextProps){
-    const { active, length } = nextProps
+    const { active, length, keys } = nextProps
     if(length < active) {
       this.props.endOfRoundOne(true)
       return false
