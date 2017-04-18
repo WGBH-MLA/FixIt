@@ -74,7 +74,7 @@ def update_partial_or_complete_transcripts(user, pk_set, **kwargs):
         transcript for transcript in partial_transcripts
         if transcript not in completed_transcripts
     ]
-    picks['completed_transcripts'] = completed_transcripts
+    picks['completed_transcripts'] = list(set(completed_transcripts))
 
     transcript_picks.save()
 
