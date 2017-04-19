@@ -75,14 +75,19 @@ class Phrase extends React.Component{
   
   getStartofContext(){
     const { active, details, keys, setStartTime, setSegmentStart, startSegment, skipPhrase } = this.props
-    let media = document.querySelector('.audio-player')
-
     if(active - 1) {
+      let media = document.querySelector('.audio-player')
       setStartTime(Number(details.start_time))
       setSegmentStart(Number(details.start_time))
       media.currentTime = startSegment
     }
 
+    if(keys === active){
+      let media = document.querySelector('.audio-player')
+      setStartTime(Number(details.start_time))
+      setSegmentStart(Number(details.start_time))
+      media.currentTime = startSegment
+    }
   }
 
   getEndOfContext(){
@@ -106,7 +111,7 @@ class Phrase extends React.Component{
 
   skipCurrentPhrase(){
     const {details, keys, active, advanceSegment, advanceTranscript, updateGameProgress } = this.props
-    if(keys == active) {
+    if(keys === active) {
       if(!details.needs_correction) {
         advanceSegment(1)
         updateGameProgress(1)
@@ -128,12 +133,18 @@ class Phrase extends React.Component{
   }
   
   componentDidMount(){
-    this.getEndOfContext()
-    this.getStartofContext()
     this.setSkipPhrase()
     this.skipCurrentPhrase()
+    this.getEndOfContext()
+    this.getStartofContext()
   }
 
+  componentDidUpdate(prevProps){
+    if(prevProps.active < this.props.active) {
+      this.getStartofContext()
+    }
+  }
+  
   componentWillReceiveProps(nextProps){
    this.skipLastPhrase(nextProps)
   }
@@ -151,11 +162,11 @@ class Phrase extends React.Component{
     let phrase
     if(currentSegment) {
       phrase = <span className={phraseState} id={details.pk}>
-                <span ref={(span) => {this.span = span}} className='context' id={ details.needs_correction ? 'not_correct' : 'correct'}>{details.text}</span> 
+                <span ref={(span) => {this.span = span}} className='context' id={ details.needs_correction ? 'not_correct' : 'correct'}>{details.text} || {details.start_time}---{details.end_time}</span> 
               </span>
     } else {
       phrase = <span className='text'id={details.pk}>
-                <span id={ details.needs_correction ? 'not_correct' : 'correct'}>{details.text}</span> 
+                <span id={ details.needs_correction ? 'not_correct' : 'correct'}>{details.text} || {details.start_time}---{details.end_time}</span> 
               </span>
     }
 

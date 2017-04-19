@@ -82,9 +82,16 @@ class Phrase extends React.Component{
   
   getStartofContext(){
     const { active, details, keys, setStartTime, setSegmentStart, startSegment, skipPhrase } = this.props
-    let media = document.querySelector('.audio-player')
-
+    
     if(active - 1) {
+      let media = document.querySelector('.audio-player')
+      setStartTime(Number(details.start_time))
+      setSegmentStart(Number(details.start_time))
+      media.currentTime = startSegment
+    }
+
+    if(keys === active){
+      let media = document.querySelector('.audio-player')
       setStartTime(Number(details.start_time))
       setSegmentStart(Number(details.start_time))
       media.currentTime = startSegment
@@ -140,6 +147,12 @@ class Phrase extends React.Component{
     this.getStartofContext()
     this.setSkipPhrase()
     this.skipCurrentPhrase()
+  }
+
+  componentDidUpdate(prevProps){
+    if(prevProps.active < this.props.active) {
+      this.getStartofContext()
+    }
   }
 
   componentWillReceiveProps(nextProps){
