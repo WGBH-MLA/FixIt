@@ -68,16 +68,44 @@ class PreferencesForm extends React.Component {
     let preferred_stations = {
       "preferred_stations":this.state.sources
     }
-
-    if(topicsEmpty) {
-      //do something to object preferred_topics make sure we can patch an empty array
-    }
-    patchData(`/api/profile/${userPk}/`, preferred_topics)
     
-    if(sourcesEmpty) {
-      //do something to preferred_stations to make sure we can patch an empty array
+    if(topicsEmpty && !sourcesEmpty) {
+      let data = {
+        clear_topics:true,
+        clear_stations:false
+      }
+      // clear topics if thery are empty
+      patchData(`/api/profile/clear_preferences/${userPk}/`, data)
     }
-    patchData(`/api/profile/${userPk}/`, preferred_stations)
+
+    if(!topicsEmpty) {
+      patchData(`/api/profile/${userPk}/`, preferred_topics)
+    }
+    
+    if(sourcesEmpty && !topicsEmpty) {
+      let data = {
+        clear_topics:true,
+        clear_stations:false
+      }
+      // clear stations if they are empty
+      patchData(`/api/profile/clear_preferences/${userPk}/`, data)
+    }
+    
+    if(!sourcesEmpty) {
+      patchData(`/api/profile/${userPk}/`, preferred_stations).then(function(res){
+        console.log(res)
+      })
+    }
+
+
+    if(topicsEmpty && sourcesEmpty) {
+      let data = {
+        clear_topics:true,
+        clear_stations:true
+      }
+      // clear stations if they are empty
+      patchData(`/api/profile/clear_preferences/${userPk}/`, data)
+    }
 
 
     if(!sourcesEmpty || !topicsEmpty) {
