@@ -92,9 +92,7 @@ class PreferencesForm extends React.Component {
     }
     
     if(!sourcesEmpty) {
-      patchData(`/api/profile/${userPk}/`, preferred_stations).then(function(res){
-        console.log(res)
-      })
+      patchData(`/api/profile/${userPk}/`, preferred_stations)
     }
 
 
