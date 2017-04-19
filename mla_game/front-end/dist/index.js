@@ -2886,11 +2886,7 @@ var Phrase = (function (_React$Component) {
             { ref: function (span) {
                 _this.span = span;
               }, className: 'context', id: details.needs_correction ? 'not_correct' : 'correct' },
-            details.text,
-            ' || ',
-            details.start_time,
-            '---',
-            details.end_time
+            details.text
           )
         );
       } else {
@@ -2900,11 +2896,7 @@ var Phrase = (function (_React$Component) {
           _react2['default'].createElement(
             'span',
             { id: details.needs_correction ? 'not_correct' : 'correct' },
-            details.text,
-            ' || ',
-            details.start_time,
-            '---',
-            details.end_time
+            details.text
           )
         );
       }
