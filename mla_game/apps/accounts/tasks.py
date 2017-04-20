@@ -284,7 +284,7 @@ def update_leaderboard():
         {
             'rank': rank,
             'username': top_score['username'],
-            'points': top_score['total_score']
+            'points': top_score['monthly_total']
         } for rank, top_score in enumerate(past_month_top_scores, start=1)
     ]
 
@@ -292,7 +292,7 @@ def update_leaderboard():
         {
             'rank': rank,
             'username': top_score['username'],
-            'points': top_score['total_score']
+            'points': top_score['weekly_total']
         } for rank, top_score in enumerate(past_week_top_scores, start=1)
     ]
 
@@ -300,7 +300,7 @@ def update_leaderboard():
         {
             'rank': rank,
             'username': top_score['username'],
-            'points': top_score['total_score']
+            'points': top_score['game_one_total']
         } for rank, top_score in enumerate(game_one_all_time_top_scores, start=1)
     ]
 
@@ -308,7 +308,7 @@ def update_leaderboard():
         {
             'rank': rank,
             'username': top_score['username'],
-            'points': top_score['total_score']
+            'points': top_score['game_two_all_time_top_scores']
         } for rank, top_score in enumerate(game_two_all_time_top_scores, start=1)
     ]
 
@@ -316,7 +316,7 @@ def update_leaderboard():
         {
             'rank': rank,
             'username': top_score['username'],
-            'points': top_score['total_score']
+            'points': top_score['game_three_total']
         } for rank, top_score in enumerate(game_three_all_time_top_scores, start=1)
     ]
 
