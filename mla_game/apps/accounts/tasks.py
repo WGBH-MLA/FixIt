@@ -308,7 +308,7 @@ def update_leaderboard():
         {
             'rank': rank,
             'username': top_score['username'],
-            'points': top_score['game_two_all_time_top_scores']
+            'points': top_score['game_two_total']
         } for rank, top_score in enumerate(game_two_all_time_top_scores, start=1)
     ]
 
