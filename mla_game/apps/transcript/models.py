@@ -145,7 +145,31 @@ class TranscriptManager(models.Manager):
 
         return (transcripts, corrections)
 
+    def in_progress(self):
+        phrases_with_votes = TranscriptPhraseDownvote.objects.all(
+        ).prefetch_related('transcript_phrase')
+        phrases_with_upvotes = TranscriptPhraseCorrection.objects.filter(
+            not_an_error=True
+        ).prefetch_related('transcript_phrase')
+        related_transcripts = set(
+            [
+                vote.transcript_phrase.transcript.pk for vote in
+                phrases_with_votes
+            ] + [
+                vote.transcript_phrase.transcript.pk for vote in
+                phrases_with_upvotes
+            ]
+        )
+        return related_transcripts
+
     def random_transcript(self):
+        transcripts_in_progress = self.in_progress()
+        if transcripts_in_progress:
+            return self.filter(
+                pk__in=[
+                    random.choice(list(transcripts_in_progress))
+                ]
+            )
         return self.filter(
             pk__in=[
                 random.choice(
