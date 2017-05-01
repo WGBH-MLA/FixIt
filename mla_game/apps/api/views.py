@@ -18,10 +18,9 @@ from .serializers import (
     TranscriptPhraseDownvoteSerializer,
     TranscriptPhraseCorrectionSerializer,
     TranscriptPhraseCorrectionVoteSerializer,
-    SourceSerializer, ProfileSerializer,
-    ProfilePatchSerializer, TopicSerializer,
-    ScoreSerializer,
-    LeaderboardSerializer
+    ProfileSerializer, ProfilePatchSerializer, ProfilePreferenceClearSerializer,
+    SourceSerializer, TopicSerializer,
+    ScoreSerializer, LeaderboardSerializer
 )
 from .permissions import IsOwner, IsOwnerOrReadOnly
 
@@ -153,6 +152,11 @@ class ProfileViewSet(viewsets.ModelViewSet):
     @detail_route(methods=['patch'], serializer_class=ProfilePatchSerializer)
     def completed(self, request, *args, **kwargs):
         self.get_object().update_completed(request.data['completed'])
+        return self.update(request, *args, **kwargs)
+
+    @detail_route(methods=['patch'], serializer_class=ProfilePreferenceClearSerializer)
+    def clear_preferences(self, request, *args, **kwargs):
+        self.get_object().clear_preferences(request.data)
         return self.update(request, *args, **kwargs)
 
     def partial_update(self, request, *args, **kwargs):

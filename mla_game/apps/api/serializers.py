@@ -122,6 +122,22 @@ class ProfilePatchSerializer(serializers.ModelSerializer):
         }
 
 
+class ProfilePreferenceClearSerializer(serializers.ModelSerializer):
+    clear_topics = serializers.BooleanField()
+    clear_stations = serializers.BooleanField()
+
+    class Meta:
+        model = Profile
+        fields = ('clear_topics', 'clear_stations',
+                  'preferred_topics', 'preferred_stations')
+        extra_kwargs = {
+            'clear_topics': {'write_only': True},
+            'clear_stations': {'write_only': True},
+            'preferred_topics': {'read_only': True},
+            'preferred_stations': {'read_only': True},
+        }
+
+
 class ScoreSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(
         default=serializers.CurrentUserDefault()

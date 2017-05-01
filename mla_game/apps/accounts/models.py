@@ -57,6 +57,15 @@ class Profile(models.Model):
         self.completed_challenges[game] += 1
         self.save()
 
+    def clear_preferences(self, data):
+        django_log.info(data)
+        if 'clear_topics' in data:
+            if data['clear_topics']:
+                self.preferred_topics.clear()
+        if 'clear_stations' in data:
+            if data['clear_stations']:
+                self.preferred_stations.clear()
+
     def __str__(self):
         return self.user.username
 
