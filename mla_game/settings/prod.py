@@ -1,6 +1,8 @@
 from .base import *
 import os
 
+MINIMUM_SAMPLE_SIZE = 3
+
 INSTALLED_APPS += ('storages',)
 
 SECRET_KEY = os.environ['SECRET_KEY']
@@ -45,6 +47,13 @@ DATABASES = {
         'USER': 'mla',
         'PASSWORD': os.environ['PG_PASS'],
     },
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
+        'LOCATION': '127.0.0.1:11211',
+    }
 }
 
 LOGGING = {
