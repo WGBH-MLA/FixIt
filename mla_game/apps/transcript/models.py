@@ -326,6 +326,15 @@ class TranscriptPhrase(models.Model):
     def total_length(self):
         return self.end_time - self.start_time
 
+    @property
+    def best_correction(self):
+        corrections = TranscriptPhraseCorrection.objects.filter(
+            transcript_phrase=self, not_an_error=False
+        ).order_by('-confidence')
+        if corrections.count() > 0:
+            return corrections.first()
+        return None
+
     def __str__(self):
         return str(self.transcript) + '_phrase_' + str(self.id)
 
