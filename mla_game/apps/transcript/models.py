@@ -192,6 +192,16 @@ class Transcript(models.Model):
     metadata_processed = models.BooleanField(
         default=False
     )
+    statistics = JSONField(default={
+        'total_number_of_phrases': 0,
+        'phrases_with_votes_percent': 0,
+        'phrases_close_to_minimum_sample_size_percent': 0,
+        'phrases_not_needing_correction_percent': 0,
+        'phrases_needing_correction_percent': 0,
+        'phrases_with_corrections_percent': 0,
+        'corrections_submitted': 0,
+        'phrases_ready_for_export': 0,
+    })
 
     objects = TranscriptManager()
 
