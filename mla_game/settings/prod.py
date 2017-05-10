@@ -9,6 +9,8 @@ SECRET_KEY = os.environ['SECRET_KEY']
 
 DEBUG = False
 
+ADMINS = [(os.environ['ADMIN_NAME'], os.environ['ADMIN_EMAIL'])]
+
 ALLOWED_HOSTS = ['fixit.americanarchive.org', 'fixit.wgbh-mla.org']
 
 LOG_DIRECTORY = '/home/wgbh/logs'
