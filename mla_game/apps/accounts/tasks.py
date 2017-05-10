@@ -4,6 +4,7 @@ import itertools
 
 from django.contrib.auth.models import User
 from django.db.models import Prefetch
+from django.core.mail import mail_admins
 
 from huey.contrib.djhuey import crontab, db_periodic_task, db_task
 
@@ -187,7 +188,7 @@ def update_transcript_picks(user, **kwargs):
     transcript_picks.save()
 
 
-@db_periodic_task(crontab(hour='*/2'))
+@db_periodic_task(crontab(minute='0', hour='*/2'))
 def update_leaderboard():
     leaderboard = {}
     all_score_objects = []
@@ -321,6 +322,10 @@ def update_leaderboard():
     ]
 
     Leaderboard.objects.create(leaderboard=leaderboard)
+    mail_admins(
+        'FixIt Leaderboard Updated',
+        leaderboard,
+    )
 
 
 @db_task()
