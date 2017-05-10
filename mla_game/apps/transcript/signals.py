@@ -8,7 +8,10 @@ from .models import (
     TranscriptPhraseCorrection, TranscriptPhraseCorrectionVote,
     TranscriptPhraseDownvote, TranscriptPhrase
 )
-from .tasks import calculate_phrase_confidence, calculate_correction_confidence
+from .tasks import (
+    calculate_phrase_confidence, calculate_correction_confidence,
+    update_transcripts_awaiting_stats,
+)
 
 django_log = logging.getLogger('django')
 
@@ -17,10 +20,17 @@ min_samples = settings.MINIMUM_SAMPLE_SIZE
 
 @receiver(post_save, sender=TranscriptPhraseCorrection)
 def self_vote_for_correction(sender, instance, **kwargs):
+    '''
+    When a user submits a correction, we assume they'd vote for their own
+    correction. So, we create a correction vote for the user.
+    Also, add the corresponding transcript to the pool of transcripts that need
+    their stats updated.
+    '''
     TranscriptPhraseCorrectionVote.objects.get_or_create(
         transcript_phrase_correction=instance,
         user=instance.user
     )
+    update_transcripts_awaiting_stats(instance)
 
 
 @receiver(post_save)
@@ -53,3 +63,4 @@ def update_correction_confidence(sender, instance, **kwargs):
     ).count()
     if sample_size > min_samples:
         calculate_correction_confidence(instance.transcript_phrase_correction)
+    update_transcripts_awaiting_stats(instance.transcript_phrase_correction)

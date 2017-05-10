@@ -3,11 +3,12 @@ import logging
 
 from django.conf import settings
 from django.core.management import call_command
+from django.core.cache import cache
 from huey.contrib.djhuey import db_task, db_periodic_task, crontab
 from popuparchive.client import Client
 
 from .models import (
-    Transcript, TranscriptPhrase,
+    Transcript, TranscriptPhrase, TranscriptPhraseDownvote,
     TranscriptPhraseCorrection, TranscriptPhraseCorrectionVote
 )
 
@@ -199,3 +200,97 @@ def create_blank_phrases(transcript, phrase_pairs):
             len(new_phrases), transcript
         ))
         TranscriptPhrase.objects.bulk_create(new_phrases)
+
+
+@db_periodic_task(crontab(minute='*/1'))
+def update_random_transcript_pool():
+    pass
+
+
+def percent(numerator, denominator):
+    return round((numerator / denominator) * 100, 2)
+
+
+@db_task()
+def update_transcript_stats(transcript):
+    '''
+    This should be triggered for any transcript when the following happens:
+        - A phrase gets a vote
+        - A phrase gets a correction
+        - A correction gets a vote
+    '''
+    stats = transcript.statistics
+    if stats['total_number_of_phrases'] == 0:
+        stats['total_number_of_phrases'] = TranscriptPhrase.objects.filter(
+            transcript=transcript
+        ).count()
+        transcript.save()
+        return
+
+    transcript_phrases = TranscriptPhrase.objects.filter(
+        transcript=transcript).only('pk', 'confidence')
+    min_sample_size = settings.MINIMUM_SAMPLE_SIZE
+    total_phrases_with_votes = 0
+    phrases_approaching_min_sample_size = 0
+    positive_scored_phrases = transcript_phrases.filter(confidence__gte=phrase_positive_limit).count()
+    negative_scored_phrases = transcript_phrases.filter(confidence__lte=phrase_negative_limit).count()
+    phrases_with_corrections = 0
+    total_corrections = 0
+    usable_corrections = 0
+
+    for phrase in transcript_phrases:
+        phrase_corrections = TranscriptPhraseCorrection.objects.filter(
+            transcript_phrase=phrase,
+            not_an_error=False
+        )
+        phrase_vote_count = 0
+        phrase_vote_count += TranscriptPhraseDownvote.objects.filter(
+            transcript_phrase=phrase
+        ).count()
+        phrase_vote_count += TranscriptPhraseCorrection.objects.filter(
+            transcript_phrase=phrase,
+            not_an_error=True
+        ).count()
+        phrase_correction_count = phrase_corrections.count()
+        if phrase_vote_count > 0:
+            total_phrases_with_votes += 1
+        if phrase_vote_count == min_sample_size - 1:
+            phrases_approaching_min_sample_size += 1
+        if phrase_correction_count > 0:
+            phrases_with_corrections += 1
+        if phrase.best_correction is not None:
+            if phrase.best_correction.confidence > correction_lower_limit:
+                usable_corrections += 1
+        total_corrections += phrase_correction_count
+
+    stats['phrases_with_votes_percent'] = percent(total_phrases_with_votes, stats['total_number_of_phrases'])
+    stats['phrases_close_to_minimum_sample_size_percent'] = percent(phrases_approaching_min_sample_size, stats['total_number_of_phrases'])
+    stats['phrases_not_needing_correction_percent'] = percent(positive_scored_phrases, stats['total_number_of_phrases'])
+    stats['phrases_needing_correction_percent'] = percent(negative_scored_phrases, stats['total_number_of_phrases'])
+    stats['phrases_with_corrections_percent'] = percent(phrases_with_corrections, stats['total_number_of_phrases'])
+    stats['corrections_submitted'] = total_corrections
+    stats['phrases_ready_for_export'] = positive_scored_phrases + usable_corrections
+    stats['percent_complete'] = percent(stats['phrases_ready_for_export'], stats['total_number_of_phrases'])
+
+    transcript.save()
+
+
+def update_transcripts_awaiting_stats(phrase_or_correction):
+    batch = cache.get('transcripts_awaiting_stats_update', set())
+    if type(phrase_or_correction) is TranscriptPhrase:
+        django_log.info('Updating using a Phrase: {}'.format(phrase_or_correction))
+        transcript = phrase_or_correction.transcript
+    elif type(phrase_or_correction) is TranscriptPhraseCorrection:
+        django_log.info('Updating using a Correction: {}'.format(phrase_or_correction))
+        transcript = phrase_or_correction.transcript_phrase.transcript
+    else:
+        return
+    batch.add(transcript)
+
+
+@db_periodic_task(crontab(minute='0', hour='*'))
+def process_transcripts_awaiting_stats_update():
+    batch = cache.get('transcripts_awaiting_stats_update', set())
+    for transcript in batch:
+        update_transcript_stats(transcript)
+    cache.set('transcripts_awaiting_stats_update', set(), 60 * 120)
