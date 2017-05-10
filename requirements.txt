@@ -27,6 +27,7 @@ pickleshare==0.7.4
 prompt-toolkit==1.0.7
 psycopg2==2.6.2
 ptyprocess==0.5.1
+pylibmc==1.5.2
 python-dotenv==0.5.1
 python3-openid==3.0.10
 redis==2.10.5
