@@ -162,8 +162,11 @@ class TranscriptManager(models.Manager):
         )
         return related_transcripts
 
-    def random_transcript(self):
-        transcripts_in_progress = self.in_progress()
+    def random_transcript(self, in_progress=True):
+        if in_progress is False:
+            transcripts_in_progress = set()
+        else:
+            transcripts_in_progress = self.in_progress()
         if transcripts_in_progress:
             return self.filter(
                 pk__in=[
