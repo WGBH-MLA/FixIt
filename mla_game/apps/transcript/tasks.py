@@ -3,6 +3,7 @@ import logging
 
 from django.conf import settings
 from django.core.management import call_command
+from django.core.mail import mail_admins
 from django.core.cache import cache
 from huey.contrib.djhuey import db_task, db_periodic_task, crontab
 from popuparchive.client import Client
@@ -274,14 +275,14 @@ def update_transcript_stats(transcript):
 
     transcript.save()
 
+    mail_admins('updated transcripts', stats)
+
 
 def update_transcripts_awaiting_stats(phrase_or_correction):
     batch = cache.get('transcripts_awaiting_stats_update', set())
     if type(phrase_or_correction) is TranscriptPhrase:
-        django_log.info('Updating using a Phrase: {}'.format(phrase_or_correction))
         transcript = phrase_or_correction.transcript
     elif type(phrase_or_correction) is TranscriptPhraseCorrection:
-        django_log.info('Updating using a Correction: {}'.format(phrase_or_correction))
         transcript = phrase_or_correction.transcript_phrase.transcript
     else:
         return
