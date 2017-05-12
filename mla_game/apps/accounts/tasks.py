@@ -6,7 +6,8 @@ from django.contrib.auth.models import User
 from django.db.models import Prefetch
 from django.core.mail import mail_admins
 
-from huey.contrib.djhuey import crontab, db_periodic_task, db_task
+from huey.contrib.djhuey import db_periodic_task, db_task
+from huey import crontab
 
 from .models import Profile, TranscriptPicks, Score, Leaderboard
 from mla_game.apps.transcript.models import (

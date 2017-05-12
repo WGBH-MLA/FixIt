@@ -313,7 +313,12 @@ class TranscriptPhrase(models.Model):
     start_time = models.DecimalField(max_digits=12, decimal_places=2)
     end_time = models.DecimalField(max_digits=12, decimal_places=2)
     speaker_id = models.IntegerField()
-    transcript = models.ForeignKey(Transcript, related_name='phrases')
+    transcript = models.ForeignKey(
+        Transcript,
+        related_name='phrases',
+        on_delete=models.CASCADE,
+    )
+
     confidence = models.FloatField(default=0)
     num_corrections = models.SmallIntegerField(default=0)
 
@@ -353,8 +358,11 @@ class TranscriptPhrase(models.Model):
 
 
 class TranscriptPhraseDownvote(models.Model):
-    transcript_phrase = models.ForeignKey(TranscriptPhrase)
-    user = models.ForeignKey(User)
+    transcript_phrase = models.ForeignKey(
+        TranscriptPhrase,
+        on_delete=models.CASCADE,
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class TranscriptPhraseCorrection(models.Model):
@@ -363,8 +371,16 @@ class TranscriptPhraseCorrection(models.Model):
     no_words = models.BooleanField(default=False)
     confidence = models.FloatField(default=0)
     appearances = models.IntegerField(default=0)
-    transcript_phrase = models.ForeignKey(TranscriptPhrase, related_name='transcript_phrase_correction')
-    user = models.ForeignKey(User, default=None)
+    transcript_phrase = models.ForeignKey(
+        TranscriptPhrase,
+        related_name='transcript_phrase_correction',
+        on_delete=models.CASCADE,
+    )
+    user = models.ForeignKey(
+        User,
+        default=None,
+        on_delete=models.CASCADE,
+    )
 
     @property
     def votes_count(self):
@@ -377,9 +393,12 @@ class TranscriptPhraseCorrection(models.Model):
 
 
 class TranscriptPhraseCorrectionVote(models.Model):
-    transcript_phrase_correction = models.ForeignKey(TranscriptPhraseCorrection)
+    transcript_phrase_correction = models.ForeignKey(
+        TranscriptPhraseCorrection,
+        on_delete=models.CASCADE,
+    )
     upvote = models.BooleanField(default=False)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = ('user', 'transcript_phrase_correction')
@@ -395,7 +414,11 @@ class TranscriptMetadata(models.Model):
         ('a', 'Audio'),
         ('u', 'Unknown')
     )
-    transcript = models.OneToOneField(Transcript, related_name='metadata')
+    transcript = models.OneToOneField(
+        Transcript,
+        related_name='metadata',
+        on_delete=models.CASCADE,
+    )
     description = models.TextField(blank=True, null=True)
     series = models.CharField(max_length=255, blank=True, null=True)
     broadcast_date = models.CharField(max_length=255, blank=True, null=True)

@@ -12,7 +12,7 @@ class Profile(models.Model):
     Stores the users preferred topics and stations, and which phrases they've
     seen in game one.
     '''
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     username = models.CharField(max_length=50, default='')
     preferred_stations = models.ManyToManyField('transcript.Source')
     preferred_topics = models.ManyToManyField('transcript.Topic')
@@ -82,7 +82,7 @@ class TranscriptPicks(models.Model):
     'partially_completed_transcripts': list of partially complete transcripts
     'completed_transcripts': list of complete transcripts
     '''
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     picks = JSONField(default={})
 
 
@@ -124,7 +124,7 @@ class Score(models.Model):
         (2, 'phrase confidence exceeds negative threshold'),
         (3, 'phrase confidence exceeds positive threshold'),
     )
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     score = models.SmallIntegerField()
     game = models.CharField(max_length=1, choices=game_choices)
     justification = models.CharField(
@@ -135,11 +135,13 @@ class Score(models.Model):
     date = models.DateField(auto_now_add=True)
     correction = models.ForeignKey(
         'transcript.TranscriptPhraseCorrection',
-        null=True
+        null=True,
+        on_delete=models.CASCADE,
     )
     phrase = models.ForeignKey(
         'transcript.TranscriptPhrase',
-        null=True
+        null=True,
+        on_delete=models.CASCADE,
     )
 
 

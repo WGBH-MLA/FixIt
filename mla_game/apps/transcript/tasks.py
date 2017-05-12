@@ -5,7 +5,8 @@ from django.conf import settings
 from django.core.management import call_command
 from django.core.mail import mail_admins
 from django.core.cache import cache
-from huey.contrib.djhuey import db_task, db_periodic_task, crontab
+from huey.contrib.djhuey import db_task, db_periodic_task
+from huey import crontab
 from popuparchive.client import Client
 
 from .models import (
