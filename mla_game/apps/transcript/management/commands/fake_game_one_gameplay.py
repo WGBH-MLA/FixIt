@@ -8,6 +8,7 @@ from mla_game.apps.accounts.models import Profile
 from ...models import (
     Transcript, TranscriptPhraseDownvote
 )
+from ...tasks import update_transcript_stats
 
 
 class Command(BaseCommand):
@@ -15,7 +16,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         users = User.objects.all()
-        transcript = Transcript.objects.random_transcript().first()
+        transcript = Transcript.objects.random_transcript(in_progress=False).first()
         phrases = transcript.phrases.all()[:5]
         for user in users:
             profile = Profile.objects.get(user=user)
@@ -29,3 +30,4 @@ class Command(BaseCommand):
                         transcript_phrase=phrase,
                         user=user
                     )
+        update_transcript_stats(transcript)
