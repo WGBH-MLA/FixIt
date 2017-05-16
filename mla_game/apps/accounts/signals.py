@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from django.db.models.signals import m2m_changed
 
 from mla_game.apps.transcript.tasks import update_transcripts_awaiting_stats
+from mla_game.apps.transcript.models import TranscriptPhrase
 from .models import Profile
 from .tasks import (
     update_transcript_picks, update_partial_or_complete_transcripts,
@@ -33,8 +34,7 @@ def create_update_transcript_picks_task(sender, instance, action, reverse, model
 def considered_phrases_changed(sender, instance, action, reverse, model, pk_set, using, **kwargs):
     if action == 'post_add':
         phrases = [
-            phrase.transcriptphrase for phrase in
-            Profile.considered_phrases.through.objects.filter(pk__in=pk_set)
+            phrase for phrase in TranscriptPhrase.objects.filter(pk__in=pk_set)
         ]
         if phrases:
             update_partial_or_complete_transcripts(instance.user, phrases)
