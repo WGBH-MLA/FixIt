@@ -276,7 +276,7 @@ def update_transcript_stats(transcript):
 
     transcript.save()
 
-    mail_admins('updated transcripts', stats)
+    mail_admins('updated transcripts', str(stats))
 
 
 def update_transcripts_awaiting_stats(phrase_or_correction):

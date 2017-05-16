@@ -325,7 +325,7 @@ def update_leaderboard():
     Leaderboard.objects.create(leaderboard=leaderboard)
     mail_admins(
         'FixIt Leaderboard Updated',
-        leaderboard,
+        str(leaderboard),
     )
 
 
