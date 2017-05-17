@@ -288,6 +288,8 @@ def update_transcripts_awaiting_stats(phrase_or_correction):
     else:
         return
     batch.add(transcript)
+    cache.set('transcripts_awaiting_stats_update', batch, 60*120)
+    mail_admins('updated transcripts_awaiting_stats_update', str(batch))
 
 
 @db_periodic_task(crontab(minute='0', hour='*'))
