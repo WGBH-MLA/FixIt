@@ -277,6 +277,7 @@ def update_transcript_stats(transcript):
     transcript.save()
 
     mail_admins('updated transcripts', str(stats))
+    django_log.info(stats)
 
 
 def update_transcripts_awaiting_stats(phrase_or_correction):
@@ -289,7 +290,6 @@ def update_transcripts_awaiting_stats(phrase_or_correction):
         return
     batch.add(transcript.pk)
     cache.set('transcripts_awaiting_stats_update', batch, 60*120)
-    mail_admins('updated transcripts_awaiting_stats_update', str(batch))
 
 
 @db_periodic_task(crontab(minute='0', hour='*'))
