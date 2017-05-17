@@ -37,7 +37,7 @@ class Command(BaseCommand):
                 for phrase in missing:
                     TranscriptPhraseCorrection.objects.create(
                         transcript_phrase=phrase,
-                        user=user,
+                        user=user.user,
                         not_an_error=True
                     )
                     transcripts_to_update.add(phrase.transcript)
