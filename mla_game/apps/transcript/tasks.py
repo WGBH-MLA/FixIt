@@ -287,7 +287,7 @@ def update_transcripts_awaiting_stats(phrase_or_correction):
         transcript = phrase_or_correction.transcript_phrase.transcript
     else:
         return
-    batch.add(transcript)
+    batch.add(transcript.pk)
     cache.set('transcripts_awaiting_stats_update', batch, 60*120)
     mail_admins('updated transcripts_awaiting_stats_update', str(batch))
 
@@ -295,6 +295,7 @@ def update_transcripts_awaiting_stats(phrase_or_correction):
 @db_periodic_task(crontab(minute='0', hour='*'))
 def process_transcripts_awaiting_stats_update():
     batch = cache.get('transcripts_awaiting_stats_update', set())
-    for transcript in batch:
+    transcripts_to_process = Transcript.objects.filter(pk__in=batch)
+    for transcript in transcripts_to_process:
         update_transcript_stats(transcript)
     cache.set('transcripts_awaiting_stats_update', set(), 60 * 120)
