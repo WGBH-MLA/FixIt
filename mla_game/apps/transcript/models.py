@@ -6,6 +6,7 @@ from collections import Counter
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import JSONField
+from django.db.models.expressions import RawSQL
 from django.db import models
 from localflavor.us.models import USStateField
 
@@ -145,33 +146,24 @@ class TranscriptManager(models.Manager):
 
         return (transcripts, corrections)
 
-    def in_progress(self):
-        phrases_with_votes = TranscriptPhraseDownvote.objects.all(
-        ).prefetch_related('transcript_phrase')
-        phrases_with_upvotes = TranscriptPhraseCorrection.objects.filter(
-            not_an_error=True
-        ).prefetch_related('transcript_phrase')
-        related_transcripts = set(
-            [
-                vote.transcript_phrase.transcript.pk for vote in
-                phrases_with_votes
-            ] + [
-                vote.transcript_phrase.transcript.pk for vote in
-                phrases_with_upvotes
-            ]
-        )
-        return related_transcripts
-
     def random_transcript(self, in_progress=True):
         if in_progress is False:
-            transcripts_in_progress = set()
+            transcripts_in_progress = False
         else:
-            transcripts_in_progress = self.in_progress()
+            transcripts_in_progress = [
+                transcript.pk for transcript in self.filter(
+                    statistics__phrases_close_to_minimum_sample_size_percent__gt=0
+                ).only('pk', 'statistics').order_by(
+                    RawSQL(
+                        'statistics->>%s',
+                        ('phrases_close_to_minimum_sample_size_percent',)
+                    )
+                )
+            ]
+
         if transcripts_in_progress:
             return self.filter(
-                pk__in=[
-                    random.choice(list(transcripts_in_progress))
-                ]
+                pk=transcripts_in_progress[-1]
             )
         return self.filter(
             pk__in=[
