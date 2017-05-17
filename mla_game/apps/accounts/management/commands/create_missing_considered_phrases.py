@@ -1,16 +1,9 @@
-import logging
-
 from django.core.management.base import BaseCommand
 from django.core.cache import cache
 
-from mla_game.apps.accounts.models import Profile
+from ...models import Profile
 
-from ...models import TranscriptPhraseDownvote
-
-django_log = logging.getLogger('django')
-logger = logging.getLogger('pua_scraper')
-stats = logging.getLogger('pua_stats')
-error_log = logging.getLogger('pua_errors')
+from mla_game.apps.transcript.models import TranscriptPhraseDownvote
 
 
 class Command(BaseCommand):
