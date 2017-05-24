@@ -125,13 +125,15 @@ class TranscriptManager(models.Manager):
                 pass
             if phrase.num_corrections >= 2:
                 phrase_corrections = TranscriptPhraseCorrection.objects.filter(
-                    transcript_phrase=phrase
+                    transcript_phrase=phrase,
+                    not_an_error=False
                 )
-                corrections.append(
-                    {phrase.pk: phrase_corrections,
-                     'transcript': phrase.transcript.pk}
-                )
-                associated_transcripts.append(phrase.transcript.pk)
+                if phrase_corrections.count() >= 2:
+                    corrections.append(
+                        {phrase.pk: phrase_corrections,
+                         'transcript': phrase.transcript.pk}
+                    )
+                    associated_transcripts.append(phrase.transcript.pk)
 
         associated_transcripts.sort(
             key=Counter(associated_transcripts).get, reverse=True
