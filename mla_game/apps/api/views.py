@@ -1,5 +1,7 @@
 import logging
 
+from django.conf import settings
+
 from rest_framework import viewsets, generics
 from rest_framework.decorators import list_route, detail_route
 from rest_framework.response import Response
@@ -26,6 +28,11 @@ from .permissions import IsOwner, IsOwnerOrReadOnly
 
 django_log = logging.getLogger('django')
 
+phrase_positive_limit = settings.TRANSCRIPT_PHRASE_POSITIVE_CONFIDENCE_LIMIT
+phrase_negative_limit = settings.TRANSCRIPT_PHRASE_NEGATIVE_CONFIDENCE_LIMIT
+correction_lower_limit = settings.TRANSCRIPT_PHRASE_CORRECTION_LOWER_LIMIT
+correction_upper_limit = settings.TRANSCRIPT_PHRASE_CORRECTION_UPPER_LIMIT
+
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 100
@@ -36,6 +43,7 @@ class StandardResultsSetPagination(PageNumberPagination):
 class TranscriptViewSet(viewsets.ModelViewSet):
     permission_classes = (AllowAny,)
     queryset = Transcript.objects.all()
+    lookup_field = 'asset_name'
     serializer_class = TranscriptSerializer
 
     @list_route()
@@ -99,6 +107,27 @@ class TranscriptViewSet(viewsets.ModelViewSet):
                         ]
                         correction[phrase['pk']]
 
+        return Response(serializer.data)
+
+    @detail_route(methods=['get'])
+    def corrected(self, request, pk=None, asset_name=None):
+        '''Returns a corrected transcript'''
+        transcript = self.get_object()
+        highest_rated_corrections = []
+        for phrase in transcript.phrases.all():
+            if phrase.confidence >= phrase_positive_limit:
+                pass
+            else:
+                corrections = TranscriptPhraseCorrection.objects.filter(
+                    transcript_phrase=phrase
+                ).order_by('confidence')
+                if corrections.count() > 0:
+                    highest_rated_corrections.append(corrections.first())
+        serializer = self.get_serializer(transcript)
+        for correction in highest_rated_corrections:
+            for phrase in serializer.data['phrases']:
+                if phrase['pk'] == correction.transcript_phrase.pk:
+                    phrase['text'] = correction.correction
         return Response(serializer.data)
 
 
