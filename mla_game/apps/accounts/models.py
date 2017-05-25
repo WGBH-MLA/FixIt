@@ -12,7 +12,7 @@ class Profile(models.Model):
     Stores the users preferred topics and stations, and which phrases they've
     seen in game one.
     '''
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     username = models.CharField(max_length=50, default='')
     preferred_stations = models.ManyToManyField('transcript.Source')
     preferred_topics = models.ManyToManyField('transcript.Topic')
@@ -57,6 +57,14 @@ class Profile(models.Model):
         self.completed_challenges[game] += 1
         self.save()
 
+    def clear_preferences(self, data):
+        if 'clear_topics' in data:
+            if data['clear_topics']:
+                self.preferred_topics.clear()
+        if 'clear_stations' in data:
+            if data['clear_stations']:
+                self.preferred_stations.clear()
+
     def __str__(self):
         return self.user.username
 
@@ -74,7 +82,7 @@ class TranscriptPicks(models.Model):
     'partially_completed_transcripts': list of partially complete transcripts
     'completed_transcripts': list of complete transcripts
     '''
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     picks = JSONField(default={})
 
 
@@ -116,7 +124,7 @@ class Score(models.Model):
         (2, 'phrase confidence exceeds negative threshold'),
         (3, 'phrase confidence exceeds positive threshold'),
     )
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     score = models.SmallIntegerField()
     game = models.CharField(max_length=1, choices=game_choices)
     justification = models.CharField(
@@ -127,11 +135,13 @@ class Score(models.Model):
     date = models.DateField(auto_now_add=True)
     correction = models.ForeignKey(
         'transcript.TranscriptPhraseCorrection',
-        null=True
+        null=True,
+        on_delete=models.CASCADE,
     )
     phrase = models.ForeignKey(
         'transcript.TranscriptPhrase',
-        null=True
+        null=True,
+        on_delete=models.CASCADE,
     )
 
 

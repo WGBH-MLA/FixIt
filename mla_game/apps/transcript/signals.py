@@ -8,7 +8,10 @@ from .models import (
     TranscriptPhraseCorrection, TranscriptPhraseCorrectionVote,
     TranscriptPhraseDownvote, TranscriptPhrase
 )
-from .tasks import calculate_phrase_confidence, calculate_correction_confidence
+from .tasks import (
+    calculate_phrase_confidence, calculate_correction_confidence,
+    update_transcripts_awaiting_stats,
+)
 
 django_log = logging.getLogger('django')
 
@@ -17,10 +20,18 @@ min_samples = settings.MINIMUM_SAMPLE_SIZE
 
 @receiver(post_save, sender=TranscriptPhraseCorrection)
 def self_vote_for_correction(sender, instance, **kwargs):
-    TranscriptPhraseCorrectionVote.objects.get_or_create(
-        transcript_phrase_correction=instance,
-        user=instance.user
-    )
+    '''
+    When a user submits a correction, we assume they'd vote for their own
+    correction. So, we create a correction vote for the user.
+    Also, add the corresponding transcript to the pool of transcripts that need
+    their stats updated.
+    '''
+    if instance.not_an_error is False:
+        TranscriptPhraseCorrectionVote.objects.get_or_create(
+            transcript_phrase_correction=instance,
+            user=instance.user
+        )
+    update_transcripts_awaiting_stats(instance)
 
 
 @receiver(post_save)
@@ -38,6 +49,25 @@ def update_phrase_confidence(sender, instance, **kwargs):
 @receiver(post_save, sender=TranscriptPhraseCorrection)
 def update_num_corrections(sender, instance, **kwargs):
     if instance.not_an_error is False:
+        if TranscriptPhraseCorrection.objects.filter(
+            correction=instance.correction
+        ).count() >= 2:
+            identical_corrections = TranscriptPhraseCorrection.objects.filter(
+                correction=instance.correction
+            ).only('pk')
+            first_instance = min(
+                [correction.pk for correction in identical_corrections]
+            )
+            TranscriptPhraseCorrectionVote.objects.create(
+                transcript_phrase_correction=TranscriptPhraseCorrection.objects.get(
+                    pk=first_instance
+                ),
+                upvote=True,
+                user=instance.user
+            )
+            instance.delete()
+            return
+
         corrections = TranscriptPhraseCorrection.objects.filter(
             transcript_phrase=instance.transcript_phrase,
             not_an_error=False
@@ -53,3 +83,4 @@ def update_correction_confidence(sender, instance, **kwargs):
     ).count()
     if sample_size > min_samples:
         calculate_correction_confidence(instance.transcript_phrase_correction)
+    update_transcripts_awaiting_stats(instance.transcript_phrase_correction)

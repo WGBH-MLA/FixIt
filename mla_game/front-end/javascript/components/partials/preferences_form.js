@@ -21,7 +21,7 @@ class PreferencesForm extends React.Component {
     // reference state
     const topics = [...this.state.topics];
     let topicIsSet = topics.includes(pk)
-    
+
     if(topicIsSet){
       let index = topics.indexOf(pk);
       topics.splice(index, 1);
@@ -36,7 +36,7 @@ class PreferencesForm extends React.Component {
     // reference state
     const sources = [...this.state.sources];
     let sourceIsSet = sources.includes(pk)
-    
+
     if(sourceIsSet){
       let index = sources.indexOf(pk);
       sources.splice(index, 1);
@@ -53,14 +53,14 @@ class PreferencesForm extends React.Component {
       sources:this.props.preferred_stations
     })
   }
-  
+
   changePreferences(event){
     event.preventDefault();
     // profile to patch to
     let userPk = this.props.user
     let sourcesEmpty = this.state.sources.length === 0
     let topicsEmpty = this.state.topics.length === 0
-    
+
     // objects preferences to patch
     let preferred_topics = {
       "preferred_topics":this.state.topics
@@ -68,29 +68,29 @@ class PreferencesForm extends React.Component {
     let preferred_stations = {
       "preferred_stations":this.state.sources
     }
-    
+
     if(topicsEmpty && !sourcesEmpty) {
       let data = {
-        clear_topics:true,
-        clear_stations:false
+        clear_topics:false,
+        clear_stations:true
       }
       // clear topics if thery are empty
-      patchData(`/api/profile/clear_preferences/${userPk}/`, data)
+      patchData(`/api/profile/${userPk}/clear_preferences/`, data)
     }
 
     if(!topicsEmpty) {
       patchData(`/api/profile/${userPk}/`, preferred_topics)
     }
-    
+
     if(sourcesEmpty && !topicsEmpty) {
       let data = {
-        clear_topics:true,
-        clear_stations:false
+        clear_topics:false,
+        clear_stations:true
       }
       // clear stations if they are empty
-      patchData(`/api/profile/clear_preferences/${userPk}/`, data)
+      patchData(`/api/profile/${userPk}/clear_preferences/`, data)
     }
-    
+
     if(!sourcesEmpty) {
       patchData(`/api/profile/${userPk}/`, preferred_stations)
     }
@@ -102,7 +102,7 @@ class PreferencesForm extends React.Component {
         clear_stations:true
       }
       // clear stations if they are empty
-      patchData(`/api/profile/clear_preferences/${userPk}/`, data)
+      patchData(`/api/profile/${userPk}/clear_preferences/`, data)
     }
 
 
@@ -111,8 +111,8 @@ class PreferencesForm extends React.Component {
       let self = this
       this.setState({saved:true})
       new Promise(function(resolve) {
-        setTimeout(function() { 
-          resolve(); 
+        setTimeout(function() {
+          resolve();
         }, 1500)
       })
       .then(function() {
@@ -127,9 +127,9 @@ class PreferencesForm extends React.Component {
 
     let topicOptions = topics.map((index, key) => {
       return(
-        <TopicsInput 
+        <TopicsInput
           selectTopic={this.selectTopic}
-          key={key} 
+          key={key}
           pk={index.pk}
           topic={index.topic}
           topics={this.props.preferred_topics}
@@ -140,9 +140,9 @@ class PreferencesForm extends React.Component {
 
     let sources = source.map((index, key) => {
       return(
-        <SourcesInput 
+        <SourcesInput
           selectSource={this.selectSource}
-          key={key} 
+          key={key}
           pk={index.pk}
           state={index.state}
           source={index.source}
@@ -182,7 +182,7 @@ class PreferencesForm extends React.Component {
             <span className="save-message">Preferences Saved</span>
           ) : (
             ''
-          )}          
+          )}
         </form>
       </div>
     )

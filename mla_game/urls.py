@@ -18,7 +18,7 @@ urlpatterns = [
     url(r'^gametwo', GameView.as_view()),
     url(r'^gamethree', GameView.as_view()),
     url(r'^api/', include('mla_game.apps.api.urls')),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
     url(r'^logout/$', logout, name='logout', kwargs={'next_page': '/'}),
     url('', include('social_django.urls', namespace='social'))
 ]

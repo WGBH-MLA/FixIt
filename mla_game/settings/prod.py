@@ -1,11 +1,15 @@
 from .base import *
 import os
 
+MINIMUM_SAMPLE_SIZE = 3
+
 INSTALLED_APPS += ('storages',)
 
 SECRET_KEY = os.environ['SECRET_KEY']
 
 DEBUG = False
+
+ADMINS = [(os.environ['ADMIN_NAME'], os.environ['ADMIN_EMAIL'])]
 
 ALLOWED_HOSTS = ['fixit.americanarchive.org', 'fixit.wgbh-mla.org']
 
@@ -45,6 +49,13 @@ DATABASES = {
         'USER': 'mla',
         'PASSWORD': os.environ['PG_PASS'],
     },
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
+        'LOCATION': '127.0.0.1:11211',
+    }
 }
 
 LOGGING = {

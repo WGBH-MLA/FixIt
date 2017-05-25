@@ -5,7 +5,8 @@ import itertools
 from django.contrib.auth.models import User
 from django.db.models import Prefetch
 
-from huey.contrib.djhuey import crontab, db_periodic_task, db_task
+from huey.contrib.djhuey import db_periodic_task, db_task
+from huey import crontab
 
 from .models import Profile, TranscriptPicks, Score, Leaderboard
 from mla_game.apps.transcript.models import (
@@ -187,7 +188,7 @@ def update_transcript_picks(user, **kwargs):
     transcript_picks.save()
 
 
-@db_periodic_task(crontab(hour='*/2'))
+@db_periodic_task(crontab(minute='0', hour='*/2'))
 def update_leaderboard():
     leaderboard = {}
     all_score_objects = []
@@ -284,7 +285,7 @@ def update_leaderboard():
         {
             'rank': rank,
             'username': top_score['username'],
-            'points': top_score['total_score']
+            'points': top_score['monthly_total']
         } for rank, top_score in enumerate(past_month_top_scores, start=1)
     ]
 
@@ -292,7 +293,7 @@ def update_leaderboard():
         {
             'rank': rank,
             'username': top_score['username'],
-            'points': top_score['total_score']
+            'points': top_score['weekly_total']
         } for rank, top_score in enumerate(past_week_top_scores, start=1)
     ]
 
@@ -300,7 +301,7 @@ def update_leaderboard():
         {
             'rank': rank,
             'username': top_score['username'],
-            'points': top_score['total_score']
+            'points': top_score['game_one_total']
         } for rank, top_score in enumerate(game_one_all_time_top_scores, start=1)
     ]
 
@@ -308,7 +309,7 @@ def update_leaderboard():
         {
             'rank': rank,
             'username': top_score['username'],
-            'points': top_score['total_score']
+            'points': top_score['game_two_total']
         } for rank, top_score in enumerate(game_two_all_time_top_scores, start=1)
     ]
 
@@ -316,7 +317,7 @@ def update_leaderboard():
         {
             'rank': rank,
             'username': top_score['username'],
-            'points': top_score['total_score']
+            'points': top_score['game_three_total']
         } for rank, top_score in enumerate(game_three_all_time_top_scores, start=1)
     ]
 

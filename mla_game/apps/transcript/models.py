@@ -6,6 +6,7 @@ from collections import Counter
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import JSONField
+from django.db.models.expressions import RawSQL
 from django.db import models
 from localflavor.us.models import USStateField
 
@@ -124,13 +125,15 @@ class TranscriptManager(models.Manager):
                 pass
             if phrase.num_corrections >= 2:
                 phrase_corrections = TranscriptPhraseCorrection.objects.filter(
-                    transcript_phrase=phrase
+                    transcript_phrase=phrase,
+                    not_an_error=False
                 )
-                corrections.append(
-                    {phrase.pk: phrase_corrections,
-                     'transcript': phrase.transcript.pk}
-                )
-                associated_transcripts.append(phrase.transcript.pk)
+                if phrase_corrections.count() >= 2:
+                    corrections.append(
+                        {phrase.pk: phrase_corrections,
+                         'transcript': phrase.transcript.pk}
+                    )
+                    associated_transcripts.append(phrase.transcript.pk)
 
         associated_transcripts.sort(
             key=Counter(associated_transcripts).get, reverse=True
@@ -145,7 +148,25 @@ class TranscriptManager(models.Manager):
 
         return (transcripts, corrections)
 
-    def random_transcript(self):
+    def random_transcript(self, in_progress=True):
+        if in_progress is False:
+            transcripts_in_progress = False
+        else:
+            transcripts_in_progress = [
+                transcript.pk for transcript in self.filter(
+                    statistics__phrases_close_to_minimum_sample_size_percent__gt=0
+                ).only('pk', 'statistics').order_by(
+                    RawSQL(
+                        'statistics->>%s',
+                        ('phrases_close_to_minimum_sample_size_percent',)
+                    )
+                )
+            ]
+
+        if transcripts_in_progress:
+            return self.filter(
+                pk=transcripts_in_progress[-1]
+            )
         return self.filter(
             pk__in=[
                 random.choice(
@@ -168,6 +189,16 @@ class Transcript(models.Model):
     metadata_processed = models.BooleanField(
         default=False
     )
+    statistics = JSONField(default={
+        'total_number_of_phrases': 0,
+        'phrases_with_votes_percent': 0,
+        'phrases_close_to_minimum_sample_size_percent': 0,
+        'phrases_not_needing_correction_percent': 0,
+        'phrases_needing_correction_percent': 0,
+        'phrases_with_corrections_percent': 0,
+        'corrections_submitted': 0,
+        'phrases_ready_for_export': 0,
+    })
 
     objects = TranscriptManager()
 
@@ -276,7 +307,12 @@ class TranscriptPhrase(models.Model):
     start_time = models.DecimalField(max_digits=12, decimal_places=2)
     end_time = models.DecimalField(max_digits=12, decimal_places=2)
     speaker_id = models.IntegerField()
-    transcript = models.ForeignKey(Transcript, related_name='phrases')
+    transcript = models.ForeignKey(
+        Transcript,
+        related_name='phrases',
+        on_delete=models.CASCADE,
+    )
+
     confidence = models.FloatField(default=0)
     num_corrections = models.SmallIntegerField(default=0)
 
@@ -302,13 +338,25 @@ class TranscriptPhrase(models.Model):
     def total_length(self):
         return self.end_time - self.start_time
 
+    @property
+    def best_correction(self):
+        corrections = TranscriptPhraseCorrection.objects.filter(
+            transcript_phrase=self, not_an_error=False
+        ).order_by('-confidence')
+        if corrections.count() > 0:
+            return corrections.first()
+        return None
+
     def __str__(self):
         return str(self.transcript) + '_phrase_' + str(self.id)
 
 
 class TranscriptPhraseDownvote(models.Model):
-    transcript_phrase = models.ForeignKey(TranscriptPhrase)
-    user = models.ForeignKey(User)
+    transcript_phrase = models.ForeignKey(
+        TranscriptPhrase,
+        on_delete=models.CASCADE,
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class TranscriptPhraseCorrection(models.Model):
@@ -317,8 +365,16 @@ class TranscriptPhraseCorrection(models.Model):
     no_words = models.BooleanField(default=False)
     confidence = models.FloatField(default=0)
     appearances = models.IntegerField(default=0)
-    transcript_phrase = models.ForeignKey(TranscriptPhrase, related_name='transcript_phrase_correction')
-    user = models.ForeignKey(User, default=None)
+    transcript_phrase = models.ForeignKey(
+        TranscriptPhrase,
+        related_name='transcript_phrase_correction',
+        on_delete=models.CASCADE,
+    )
+    user = models.ForeignKey(
+        User,
+        default=None,
+        on_delete=models.CASCADE,
+    )
 
     @property
     def votes_count(self):
@@ -331,9 +387,12 @@ class TranscriptPhraseCorrection(models.Model):
 
 
 class TranscriptPhraseCorrectionVote(models.Model):
-    transcript_phrase_correction = models.ForeignKey(TranscriptPhraseCorrection)
+    transcript_phrase_correction = models.ForeignKey(
+        TranscriptPhraseCorrection,
+        on_delete=models.CASCADE,
+    )
     upvote = models.BooleanField(default=False)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = ('user', 'transcript_phrase_correction')
@@ -349,7 +408,11 @@ class TranscriptMetadata(models.Model):
         ('a', 'Audio'),
         ('u', 'Unknown')
     )
-    transcript = models.OneToOneField(Transcript, related_name='metadata')
+    transcript = models.OneToOneField(
+        Transcript,
+        related_name='metadata',
+        on_delete=models.CASCADE,
+    )
     description = models.TextField(blank=True, null=True)
     series = models.CharField(max_length=255, blank=True, null=True)
     broadcast_date = models.CharField(max_length=255, blank=True, null=True)
