@@ -48,6 +48,25 @@ def update_phrase_confidence(sender, instance, **kwargs):
 @receiver(post_save, sender=TranscriptPhraseCorrection)
 def update_num_corrections(sender, instance, **kwargs):
     if instance.not_an_error is False:
+        if TranscriptPhraseCorrection.objects.filter(
+            correction=instance.correction
+        ).count() >= 2:
+            identical_corrections = TranscriptPhraseCorrection.objects.filter(
+                correction=instance.correction
+            ).only('pk')
+            first_instance = min(
+                [correction.pk for correction in identical_corrections]
+            )
+            TranscriptPhraseCorrectionVote.objects.create(
+                transcript_phrase_correction=TranscriptPhraseCorrection.objects.get(
+                    pk=first_instance
+                ),
+                upvote=True,
+                user=instance.user
+            )
+            instance.delete()
+            return
+
         corrections = TranscriptPhraseCorrection.objects.filter(
             transcript_phrase=instance.transcript_phrase,
             not_an_error=False
