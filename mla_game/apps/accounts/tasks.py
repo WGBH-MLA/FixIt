@@ -4,7 +4,6 @@ import itertools
 
 from django.contrib.auth.models import User
 from django.db.models import Prefetch
-from django.core.mail import mail_admins
 
 from huey.contrib.djhuey import db_periodic_task, db_task
 from huey import crontab
