@@ -1,6 +1,7 @@
 .menu-heading {
   display:inline-block;
   text-align:center;
+  margin: .3em 1.5em .5em 0;
   @include susy-breakpoint($screen-md-min, $map-md) {
     width:calc(100% - 7em);
     margin:.5em 0 .25em 0;
@@ -17,6 +18,9 @@
   margin-bottom:1.5em;
   color:$icon-light;
   display:inline-block;
+  @include susy-breakpoint($screen-md-min, $map-md) {
+    float:none;
+  }
   svg {
     @include transition(fill, 300ms, ease-in);
     display:inline-block;

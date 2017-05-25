@@ -5,13 +5,17 @@
   top:0;
   z-index:1;
   & + div {
-    margin-top:5.5em;
+    margin-top:8em;
+  }
+  @include susy-breakpoint($screen-sm-min, $map-sm) {
+    & + div {
+      margin-top:5.5em;
+    }
   }
 }
 
 .game-title {
   float:left;
-  width:30%;
   position: relative;
   padding-left: 1.5em;
   a {
@@ -57,66 +61,83 @@
     background-size:1.25em;
   }
   @include susy-breakpoint($screen-sm-min, $map-sm) {
-    @include span(1 of 4 first);
+    @include span(2 first);
     padding-left: 2em;
   }
   @include susy-breakpoint($screen-md-min, $map-md) {
-    @include span(3 of 8 first);
+    @include span(4 first);
     padding-left:0;
     .aapb-link {
       left:-2.15em;
     }
   }
   @include susy-breakpoint($screen-lg-min, $map-lg) {
-    @include span(8 of 12 first);
+    @include span(8 first);
+  }
+}
+.score-container {
+  clear:both;
+  .score {
+    @include score-box; 
+    display: inline-block;
+    text-align:right;
+    color:$progress;
+    padding:.1em .25em .1em .5em;
+    overflow:hidden;
+    position: relative;
+    span {
+      display:inline-block;
+    }
+    .score-enter {
+      -webkit-transition: all 0.25s;
+      transition: all 0.25s;
+      -webkit-transform: translateY(-100%);
+              transform: translateY(-100%);
+    }
+    .score-enter.score-enter-active {
+      -webkit-transform: translateY(0);
+              transform: translateY(0);
+    }
+    .score-leave {
+      -webkit-transition: all 0.15s;
+      transition: all 0.15s;
+      position: absolute;
+      right: .25em;
+      bottom: 0;
+      -webkit-transform: translateY(0);
+              transform: translateY(0);
+    }
+    .score-leave.score-leave-active {
+      -webkit-transform: translateY(100%);
+              transform: translateY(100%);
+    }
+  }
+  @include susy-breakpoint($screen-sm-min, $map-sm) {
+    @include span(1);
+    margin-top:.9em;
+    clear:none;
+  }
+  @include susy-breakpoint($screen-md-min, $map-md) {
+    @include span(1.5);
+  }
+  @include susy-breakpoint($screen-lg-min, $map-lg) {
+    @include span(1.5);
   }
 }
 
-.score {
-  @include score-box; 
-  display: inline-block;
-  float:left;
-  width:15%;
-  margin-top:.7em;
-  text-align:right;
-  color:$progress;
-  padding:.1em .25em;
-  overflow:hidden;
-  position: relative;
-  span {
-    display:inline-block;
-  }
-  .score-enter {
-    -webkit-transition: all 0.25s;
-    transition: all 0.25s;
-    -webkit-transform: translateY(-100%);
-            transform: translateY(-100%);
-  }
-  .score-enter.score-enter-active {
-    -webkit-transform: translateY(0);
-            transform: translateY(0);
-  }
-  .score-leave {
-    -webkit-transition: all 0.15s;
-    transition: all 0.15s;
-    position: absolute;
-    right: .25em;
-    bottom: 0;
-    -webkit-transform: translateY(0);
-            transform: translateY(0);
-  }
-  .score-leave.score-leave-active {
-    -webkit-transform: translateY(100%);
-            transform: translateY(100%);
-  }
-  @include susy-breakpoint($screen-sm-min, $map-sm) {
-    @include span(1 of 4);
-  }
-  @include susy-breakpoint($screen-md-min, $map-md) {
-    @include span(1 of 8);
-  }
-  @include susy-breakpoint($screen-lg-min, $map-lg) {
-    @include span(1 of 12);
+.dropDown {
+  @include plain-button;
+  float:right;
+  margin-top:.65em;
+  color:white;
+  background:$default;
+  border-radius:.325em;
+  padding:.5em .75em;
+  font-family:'Open Sans Condensed', sans-serif;
+  @include transition(all, 300ms, ease-in);
+  &:hover {
+    background:$progress;
+    color:$theme-secondary;
   }
 }
 
@@ -125,16 +146,25 @@
 .app-navigation {
   @include plain-list;
   @include clearfix;
-  padding:.5em 0;
-  float:left;
-  width:50%;
-  margin-top:.5em;
-  margin-left:5%;
+  @include transition(all, 300ms, ease-in);
+  position:absolute;
+  top:7em;
+  width:90%;
+  background:$theme-primary;
+  max-height:0;
+  visibility:hidden;
+  overflow:hidden; 
+  &.open {
+    max-height:12em;
+    visibility:visible;
+  }
   li {
-    float:left;
-    text-align:center;
-    width:25%;
-    line-height:1; 
+    height:3em;
+    line-height:3em;
+    padding-left:1em;
+    &:not(:last-child){
+      border-bottom:.0625em solid $icon-hover;
+    }
     a {
       @include transition(color, 300ms, ease-in);
       color:white;
@@ -144,7 +174,7 @@
       font-family:'Open Sans Condensed', sans-serif;
       .nav-icon {
         @include transition(fill, 300ms, ease-in);
-        height:1.85em;
+        height:3em;
         width:1.85em;
         display:inline-block;
         fill:$icon-dark;
@@ -167,31 +197,46 @@
     }
   }
   @include susy-breakpoint($screen-sm-min, $map-sm) {
-    @include span(2 of 4);
-    margin-top:0;
-    li {
-      padding-top:.5em;
-      &:last-of-type {
-        display:inline-block;
-        padding-top:1em;
-      }
-    }
+    top:4em 
   }
   @include susy-breakpoint($screen-md-min, $map-md) {
-    @include span(4 of 8);
-  }
-  @include susy-breakpoint($screen-lg-min, $map-lg) {
-    @include span(3 of 12);
-
+    @include span(2.5 last);
+    height:inherit;
+    padding-left:1em;
+    position:relative;
+    clear:none;
+    top:inherit;
+    max-height:inherit;
+    visibility:visible;
+    overflow:visible; 
+    &.open {
+      overflow:visible;
+    }
     li {
-      width:20%;
-      &:first-of-type{
-        margin-left:40%;
+      line-height:1;
+      padding:.5em 0;
+      margin-top:.5em;
+      margin-left:5%;
+      text-align:center;
+      display:inline-block;
+      width:25%;
+      padding-left:0;
+      &:not(:last-child){
+        border-bottom:none;
+      }
+      a {
+        .nav-icon {
+          height:1.85em;
+        }
       }
       &:last-of-type {
-        margin-right:-25%;
-        margin-left:3%;
+        position:absolute;
+        right:-3.5em;
+        top:.5em;
       }
     }
+  }
+  @include susy-breakpoint($screen-lg-min, $map-lg) {
+    @include span(2.5 last);
   }
 }
