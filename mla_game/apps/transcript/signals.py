@@ -26,10 +26,11 @@ def self_vote_for_correction(sender, instance, **kwargs):
     Also, add the corresponding transcript to the pool of transcripts that need
     their stats updated.
     '''
-    TranscriptPhraseCorrectionVote.objects.get_or_create(
-        transcript_phrase_correction=instance,
-        user=instance.user
-    )
+    if instance.not_an_error is False:
+        TranscriptPhraseCorrectionVote.objects.get_or_create(
+            transcript_phrase_correction=instance,
+            user=instance.user
+        )
     update_transcripts_awaiting_stats(instance)
 
 
