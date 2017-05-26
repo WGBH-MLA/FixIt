@@ -119,7 +119,8 @@ class TranscriptViewSet(viewsets.ModelViewSet):
                 pass
             else:
                 corrections = TranscriptPhraseCorrection.objects.filter(
-                    transcript_phrase=phrase
+                    transcript_phrase=phrase,
+                    confidence__gte=correction_lower_limit
                 ).order_by('-confidence')
                 if corrections.count() > 0:
                     highest_rated_corrections.append(corrections.first())
