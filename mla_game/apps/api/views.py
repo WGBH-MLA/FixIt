@@ -120,7 +120,7 @@ class TranscriptViewSet(viewsets.ModelViewSet):
             else:
                 corrections = TranscriptPhraseCorrection.objects.filter(
                     transcript_phrase=phrase
-                ).order_by('confidence')
+                ).order_by('-confidence')
                 if corrections.count() > 0:
                     highest_rated_corrections.append(corrections.first())
         serializer = self.get_serializer(transcript)
