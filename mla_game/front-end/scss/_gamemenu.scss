@@ -136,8 +136,13 @@
       margin-bottom:2em; 
     }
     .play-link {
+      @include transition(all, .3s, ease-in-out);
       @include call-button;
       margin-bottom:1.5em;
+      &:hover {
+        color:$theme-secondary;
+        background:$progress
+      }
     }
     @include susy-breakpoint($screen-md-min, $map-md) {
       @include span(2.66667);

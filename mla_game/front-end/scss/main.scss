@@ -445,9 +445,14 @@ button {
 }
 
 .loading-game-ready-button {
+  @include transition(all, .3s, ease-in-out);
   @include center();
   @include call-button;
   background:$theme-secondary;
+  &:hover {
+    color:$theme-secondary;
+    background:$progress
+  }
 }
 
 .loading-animation {
