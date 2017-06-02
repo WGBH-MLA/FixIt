@@ -2,6 +2,7 @@ function gameThree(state = {
   gameNumber:3,
   gameName:'Validate Fixes',
   loading:true,
+  gameReady:false,
   currentTime:0,
   startTime:0,
   isPlaying:false,
@@ -24,6 +25,10 @@ function gameThree(state = {
       return {...state, 
         loading:true
       }
+    case 'GAME_READY':
+      return {...state, 
+        gameReady:action.gameReady
+      }      
     case 'GET_GAMETHREE_SUCCESS':
       return {...state, 
         loading: false,

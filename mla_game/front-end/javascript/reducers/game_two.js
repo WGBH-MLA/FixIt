@@ -2,6 +2,7 @@ function gameTwo(state = {
   gameNumber:2,
   gameName:'Suggest Fixes',
   loading:true,
+  gameReady:false,
   currentTime:0,
   startTime:0,
   isPlaying:false,
@@ -23,6 +24,10 @@ function gameTwo(state = {
     case 'GET_GAMETWO':
       return {...state, 
         loading:true
+      }
+    case 'GAME_READY':
+      return {...state, 
+        gameReady:action.gameReady
       }
     case 'GET_GAMETWO_SUCCESS':
       return {...state, 

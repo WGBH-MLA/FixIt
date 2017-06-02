@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
-import LoadingScreen from '../partials/loading_screen'
+import GameLoader from '../partials/game_loader'
 import GameMeta from '../partials/game_meta'
 import Audio from '../partials/audio'
 import Phrase from '../partials/game_two_phrase'
@@ -102,6 +102,7 @@ class GameTwo extends React.Component{
     this.props.resetTranscriptTwo(0)
     this.props.resetGameProgressTwo(0)
     this.props.endOfRoundTwo(false)
+    this.props.gameReady(false)
     this.props.fetchGameTwo()
     
     if(tipDismissed) {
@@ -125,9 +126,12 @@ class GameTwo extends React.Component{
 
   render(){
     const { gameScores, gameone, gametwo, gamethree, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegmentTwo, advanceTranscriptTwo, skipPhrase, setStartTime, disableProgress, resetSegmentsTwo, endOfRoundTwo, updateGameProgress } = this.props
-    if(this.props.gametwo.loading) {
+    if(!this.props.gametwo.gameReady) {
       return(
-        <LoadingScreen />
+        <GameLoader
+          loading={this.props.gametwo.loading} 
+          gameReady={this.props.gameReady}
+        />
       )
     } else {
       let isNoGameData = gametwo.transcripts.length === 0
