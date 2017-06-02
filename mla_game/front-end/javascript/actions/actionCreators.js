@@ -162,6 +162,13 @@ function storeGameOne(data) {
   }
 }
 
+export function gameReady(bool){
+  return {
+    type:'GAME_READY',
+    gameReady:bool
+  }
+}
+
 export function fetchGameOne(){
   return (dispatch, getState) => {
     dispatch(requestGameOne(true))

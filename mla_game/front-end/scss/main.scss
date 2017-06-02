@@ -433,14 +433,33 @@ button {
 }
 
 .loading-screen {
-  position:relative;
   height:90vh;
+}
+
+
+.loading-area {
+  position:relative;
+  padding:1em;
+  width:100%;
+  height:25em;
+}
+
+.loading-game-ready-button {
+  @include center();
+  @include call-button;
+  background:$theme-secondary;
 }
 
 .loading-animation {
   @include center();
   width:10em;
   height:10em;
+}
+
+.loading-game-animation {
+  @include center();
+  width:5em;
+  height:5em;
 }
 
 // react modal windows

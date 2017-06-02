@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
-import LoadingScreen from '../partials/loading_screen'
+import GameLoader from '../partials/game_loader'
 import GameMeta from '../partials/game_meta'
 import Audio from '../partials/audio'
 import Phrase from '../partials/game_one_phrase'
@@ -147,6 +147,7 @@ class GameOne extends React.Component{
     this.props.resetSegments(0)
     this.props.resetGameScore(0)
     this.props.endOfRoundOne(false)
+    this.props.gameReady(false)
     this.props.fetchGameOne()
     if(tipDismissed) {
       this.props.showTipTwo(false)
@@ -168,9 +169,12 @@ class GameOne extends React.Component{
   render(){
     const { gameScores, gameone, gametwo, gamethree, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegment } = this.props
 
-    if(this.props.gameone.loading) {
+    if(!this.props.gameone.gameReady) {
       return(
-        <LoadingScreen />
+        <GameLoader
+          loading={this.props.gameone.loading} 
+          gameReady={this.props.gameReady}
+        />
       )
     } else {
       return(

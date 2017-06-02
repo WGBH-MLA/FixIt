@@ -2,6 +2,7 @@ function gameOne(state = {
   gameNumber:1,
   gameName:'Identify Errors',
   loading:true,
+  gameReady:false,
   aapb_link:null,
   media_url: null,
   phrases: [],
@@ -21,6 +22,10 @@ function gameOne(state = {
     case 'GET_GAMEONE':
       return {...state, 
         loading:true
+      }
+    case 'GAME_READY':
+      return {...state, 
+        gameReady:action.gameReady
       }
     case 'GET_GAMEONE_SUCCESS':
       return {...state, 

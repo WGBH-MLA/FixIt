@@ -70,7 +70,6 @@
 
 @mixin plain-button {
   border:none;
-  outline:none;
   background:none;
   box-shadow:none;
   &:hover, &:focus, &:active {
