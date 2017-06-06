@@ -9,6 +9,8 @@ from ..transcript.models import (
 
 from ..accounts.models import Profile, Score, Leaderboard
 
+from ..game.models import LoadingScreenData
+
 
 class TranscriptMetadataSerializer(serializers.ModelSerializer):
     class Meta:
@@ -34,6 +36,14 @@ class TranscriptSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transcript
         fields = ('name', 'aapb_link', 'phrases', 'metadata', 'media_url')
+
+
+class TranscriptStatsSerializer(serializers.ModelSerializer):
+    metadata = TranscriptMetadataSerializer()
+
+    class Meta:
+        model = Transcript
+        fields = ('name', 'aapb_link', 'metadata', 'media_url', 'statistics')
 
 
 class TranscriptPhraseCorrectionSerializer(serializers.ModelSerializer):
@@ -152,3 +162,9 @@ class LeaderboardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Leaderboard
         fields = ('leaderboard',)
+
+
+class LoadingScreenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LoadingScreenData
+        fields = ('data',)

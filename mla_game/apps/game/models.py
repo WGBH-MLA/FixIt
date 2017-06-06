@@ -1,3 +1,8 @@
 from django.db import models
+from django.contrib.postgres.fields import JSONField
 
-# Create your models here.
+
+class LoadingScreenData(models.Model):
+    '''Holds the data shown at the loading screens'''
+    date = models.DateTimeField(auto_now_add=True)
+    data = JSONField()

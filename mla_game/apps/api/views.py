@@ -14,15 +14,18 @@ from ..transcript.models import (
     TranscriptPhraseCorrectionVote
 )
 from ..accounts.models import Profile, Score, Leaderboard
+from ..game.models import LoadingScreenData
 from .serializers import (
     TranscriptSerializer,
+    TranscriptStatsSerializer,
     TranscriptPhraseSerializer,
     TranscriptPhraseDownvoteSerializer,
     TranscriptPhraseCorrectionSerializer,
     TranscriptPhraseCorrectionVoteSerializer,
     ProfileSerializer, ProfilePatchSerializer, ProfilePreferenceClearSerializer,
     SourceSerializer, TopicSerializer,
-    ScoreSerializer, LeaderboardSerializer
+    ScoreSerializer, LeaderboardSerializer,
+    LoadingScreenSerializer
 )
 from .permissions import IsOwner, IsOwnerOrReadOnly
 
@@ -132,6 +135,13 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
+class TranscriptStatsViewSet(viewsets.ModelViewSet):
+    permission_classes = (AllowAny,)
+    queryset = Transcript.objects.all()
+    lookup_field = 'asset_name'
+    serializer_class = TranscriptStatsSerializer
+
+
 class TranscriptPhraseDownvoteViewSet(viewsets.ModelViewSet):
     permission_classes = (IsOwnerOrReadOnly,)
     queryset = TranscriptPhraseDownvote.objects.all()
@@ -212,5 +222,16 @@ class LeaderboardView(generics.RetrieveAPIView):
 
     def get_object(self):
         obj = Leaderboard.objects.latest('date')
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+
+class LoadingScreenView(generics.RetrieveAPIView):
+    permission_classes = (AllowAny,)
+    queryset = LoadingScreenData.objects.all()
+    serializer_class = LoadingScreenSerializer
+
+    def get_object(self):
+        obj = LoadingScreenData.objects.latest('date')
         self.check_object_permissions(self.request, obj)
         return obj
