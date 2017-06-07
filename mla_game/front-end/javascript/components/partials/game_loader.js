@@ -9,8 +9,8 @@ constructor(){
 
 playGame(){
   this.props.gameReady(true)
-} 
- 
+}
+
 render(){
     return(
       <div className="grid loading-screen">

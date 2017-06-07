@@ -172,7 +172,8 @@ class GameOne extends React.Component{
     if(!this.props.gameone.gameReady) {
       return(
         <GameLoader
-          loading={this.props.gameone.loading} 
+          loading={this.props.gameone.loading}
+          loadingData={this.props.initialData.loading_data} 
           gameReady={this.props.gameReady}
         />
       )

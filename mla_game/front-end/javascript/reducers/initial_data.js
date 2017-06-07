@@ -1,6 +1,7 @@
 function initialData(state = {
   loading:true,
   username:null,
+  loading_data:null,
   modalIsOpen:false,
   modalIsOpenAbout:false
 }, action) {
@@ -18,6 +19,10 @@ function initialData(state = {
     case 'SET_USERNAME':
       return {...state, 
         username:action.user,
+      }
+    case 'SET_LOADING_DATA':
+      return {...state, 
+        loading_data:action.loaderData,
       }
     default:
       return state;

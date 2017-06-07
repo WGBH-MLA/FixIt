@@ -81,6 +81,13 @@ function setLeaderboard(past_month, past_week, all_time, game_one_all_time, game
   }
 }
 
+function setloaderData(loaderData) {
+  return {
+    type:'SET_LOADING_DATA',
+    loaderData
+  }
+}
+
 function setTotalScore(score){
   return {
     type:'SET_TOTAL_SCORE',
@@ -127,12 +134,14 @@ export function fetchData(){
         axios.get('/api/score/'),
         axios.get('/api/leaderboard/'),
         axios.get('/api/source/'),
-        axios.get('/api/topic/')
+        axios.get('/api/topic/'),
+        axios.get('/api/loading/')
       ])
-      .then(axios.spread(function (profile, score, leaders, source, topic) {
+      .then(axios.spread(function (profile, score, leaders, source, topic, loading) {
         const { game_scores, username } = profile.data.results[0]
         const leaderData =  leaders.data.leaderboard
-        
+
+        dispatch(setloaderData(loading.data.data))
         dispatch(storePreferenceOptions(source.data.results, topic.data.results))
 
         dispatch(setLeaderboard(leaderData.past_month, leaderData.past_week, leaderData.all_time, leaderData.game_one_all_time, leaderData.game_two_all_time, leaderData.game_three_all_time))
@@ -142,6 +151,9 @@ export function fetchData(){
         // set total score
         dispatch(setTotalScore(game_scores.total_score))
         dispatch(setGameScores(game_scores.game_one_score, game_scores.game_two_score, game_scores.game_three_score))
+        
+
+
       }))
   }
 } // <-- end initial data actions

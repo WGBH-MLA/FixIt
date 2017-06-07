@@ -150,7 +150,8 @@ class GameThree extends React.Component{
     if(!this.props.gamethree.gameReady) {
       return(
         <GameLoader
-          loading={this.props.gamethree.loading} 
+          loading={this.props.gamethree.loading}
+          loadingData={this.props.initialData.loading_data} 
           gameReady={this.props.gameReady}
         />        
       )
