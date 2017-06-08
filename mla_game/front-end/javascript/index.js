@@ -26,7 +26,7 @@ const store = configureStore()
 
 const App = (
   <Provider store={store}>
-    <Router history={browserHistory}>
+    <Router onUpdate={() => window.scrollTo(0, 0)} history={browserHistory}>
       <Route path="/" component={Base}>
         <IndexRoute component={GameMenu} />      
         <Route path="leaderboard" component={LeaderBoard} />

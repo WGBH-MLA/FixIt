@@ -18,7 +18,7 @@ function gameThree(state = {
   gameScore:0,
   waiting:false,
   inGameTip:true,
-  transcripts:null
+  transcripts:0
 }, action) {
   switch(action.type){
     case 'GET_GAMETHREE':

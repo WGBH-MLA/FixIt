@@ -125,146 +125,137 @@ class GameTwo extends React.Component{
   
 
   render(){
-    const { gameScores, gameone, gametwo, gamethree, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegmentTwo, advanceTranscriptTwo, skipPhrase, setStartTime, disableProgress, resetSegmentsTwo, endOfRoundTwo, updateGameProgress } = this.props
-    if(!this.props.gametwo.gameReady) {
+    const { gameReady, initialData, gameScores, gameone, gametwo, gamethree, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegmentTwo, advanceTranscriptTwo, skipPhrase, setStartTime, disableProgress, resetSegmentsTwo, endOfRoundTwo, updateGameProgress } = this.props
+    if(!gametwo.gameReady) {
       return(
         <GameLoader
-          loading={this.props.gametwo.loading}
-          loadingData={this.props.initialData.loading_data} 
-          gameReady={this.props.gameReady}
+          loading={gametwo.loading}
+          loadingData={initialData.loading_data} 
+          gameReady={gameReady}
+          gameNumber={gametwo.gameNumber}
+          transcriptsData={gametwo.transcripts.length}
+          firstGameLink={'gameone'}
+          secondGameLink={'gamethree'}
+          noDataMessage={'Please play Game 1 to identify transcript errors or Game 3 to validate transcript fixes.'}
         />
       )
     } else {
       let isNoGameData = gametwo.transcripts.length === 0
       return(
         <div>
-         {isNoGameData ? (
-          <div className="grid no-data-message-container">
-              <div className="no-data-message">
-                <h2>Currently there is not enough content to play Game 2. Please play Game 1 to identify transcript errors or Game 3 to validate transcript fixes.</h2>
-                <div className="game-links">
-                  <Link to="gameone">Play Game 1</Link>
-                  <Link to="gamethree">Play Game 3</Link>
-                </div>
+          <div className='grid'>
+          {gametwo.endOfRound ? (
+            <div className='roundup'>
+              <h2 className="user-message">{this.props.initialData.user[0].username} Just Scored: {gameone.gameScore} Points</h2>
+              <ul className='game-navigation'>
+                <li>
+                  <h2><span className='game-number'>{gameone.gameNumber}</span> <span className='game-name'>{gameone.gameName}</span></h2>
+                  <span className='game-score'>{gameScores.game_one_score}</span>
+                  <span className='points'>Points</span>
+                  <Link className='play-link' to="gameone">Play</Link>
+                </li>
+                <li>
+                  <h2><span className='game-number'>{gametwo.gameNumber}</span> <span className='game-name'>{gametwo.gameName}</span></h2>
+                  <span className='game-score'>{gameScores.game_two_score}</span>
+                  <span className='points'>Points</span>
+                  <Link className='play-link' onClick={() => this.reload()}>Play</Link>
+                </li>
+                <li>
+                  <h2><span className='game-number'>{gamethree.gameNumber}</span> <span className='game-name'>{gamethree.gameName}</span></h2>
+                  <span className='game-score'>{gameScores.game_three_score}</span>
+                  <span className='points'>Points</span>
+                  <Link className='play-link' to="gamethree">Play</Link>
+                </li>
+              </ul>
+              <MenuFooter
+                endOfRound={'game_two'}
+                user={this.props.initialData.user[0].pk}
+                gameScore={this.props.gametwo.gameScore}
+                updateScore={this.props.updateGameTwoScore} 
+              />
             </div>
-          </div>
           ) : (
-          <div>
-            <div className='grid'>
-            {gametwo.endOfRound ? (
-              <div className='roundup'>
-                <h2 className="user-message">{this.props.initialData.user[0].username} Just Scored: {gameone.gameScore} Points</h2>
-                <ul className='game-navigation'>
-                  <li>
-                    <h2><span className='game-number'>{gameone.gameNumber}</span> <span className='game-name'>{gameone.gameName}</span></h2>
-                    <span className='game-score'>{gameScores.game_one_score}</span>
-                    <span className='points'>Points</span>
-                    <Link className='play-link' to="gameone">Play</Link>
-                  </li>
-                  <li>
-                    <h2><span className='game-number'>{gametwo.gameNumber}</span> <span className='game-name'>{gametwo.gameName}</span></h2>
-                    <span className='game-score'>{gameScores.game_two_score}</span>
-                    <span className='points'>Points</span>
-                    <Link className='play-link' onClick={() => this.reload()}>Play</Link>
-                  </li>
-                  <li>
-                    <h2><span className='game-number'>{gamethree.gameNumber}</span> <span className='game-name'>{gamethree.gameName}</span></h2>
-                    <span className='game-score'>{gameScores.game_three_score}</span>
-                    <span className='points'>Points</span>
-                    <Link className='play-link' to="gamethree">Play</Link>
-                  </li>
-                </ul>
-                <MenuFooter
-                  endOfRound={'game_two'}
-                  user={this.props.initialData.user[0].pk}
-                  gameScore={this.props.gametwo.gameScore}
-                  updateScore={this.props.updateGameTwoScore} 
-                />
-              </div>
-            ) : (
-              <div>
-                {gametwo.transcripts.map((index, key) => {
-                // get current trancript
-                let transcript = Number(key)
-                if(transcript == gametwo.currentTranscript) {
-                  return(
-                    <div key={key}>
-                      <div className="game-meta">
-                        <Audio 
-                          isPlaying={gametwo.isPlaying}
-                          src={index.media_url} 
-                          setCurrentTime={setCurrentTime}
-                          setIsPlaying={setIsPlaying}
-                          startTime={gametwo.startTime} 
-                          endSegment={gametwo.endSegment}
-                          startSegment={gametwo.startSegment}
-                        />
-                        <GameMeta 
-                          meta={index.metadata} 
-                          aapb_link={index.aapb_link} 
-                        />
-                      </div>
-                      <ul className="game-phrase-list">
-                      {index.phrases.map((phrase, key) => {
-                        let phrases = Number(key)
-                        let currentPhrase = gametwo.segment <= phrases + 1 && gametwo.segment >= phrases -1
-                        if(currentPhrase){
-                          return(
-                            <li key={key} className={this.activePhrase(gametwo.currentTime, phrase.start_time, phrase.end_time)}>
-                              <Phrase
-                               selectPhrase={this.selectPhrase}
-                               removePhrase={this.removePhrase}
-                               playPhrase={this.playPhrase}
-                               disableProgress={disableProgress}
-                               time={gametwo.currentTime} 
-                               active={gametwo.segment}
-                               keys={key}
-                               details={phrase}
-                               setSegmentStart={setSegmentStart}
-                               startSegment={gametwo.startSegment}
-                               setSegmentEnd={setSegmentEnd}
-                               advanceSegment={advanceSegmentTwo}
-                               endOfRoundTwo={endOfRoundTwo}
-                               currentTranscript={gametwo.currentTranscript}
-                               gameLength={gametwo.transcripts.length - 1}
-                               phrasesLength={gametwo.transcripts[gametwo.currentTranscript].phrases_length - 1}
-                               updateGameProgress={updateGameProgress}
-                               advanceTranscript={advanceTranscriptTwo}
-                               resetSegments={resetSegmentsTwo}
-                               setSkipPhrase={skipPhrase}
-                               skipPhrase={gametwo.skipPhrase}
-                               setStartTime={setStartTime}
-                              />
-                            </li>
-                          )
-                        }
-                      })}
-                      </ul>
+            <div>
+              {gametwo.transcripts.map((index, key) => {
+              // get current trancript
+              let transcript = Number(key)
+              if(transcript == gametwo.currentTranscript) {
+                return(
+                  <div key={key}>
+                    <div className="game-meta">
+                      <Audio 
+                        isPlaying={gametwo.isPlaying}
+                        src={index.media_url} 
+                        setCurrentTime={setCurrentTime}
+                        setIsPlaying={setIsPlaying}
+                        startTime={gametwo.startTime} 
+                        endSegment={gametwo.endSegment}
+                        startSegment={gametwo.startSegment}
+                      />
+                      <GameMeta 
+                        meta={index.metadata} 
+                        aapb_link={index.aapb_link} 
+                      />
                     </div>
-                  )
-                }
-              })}
-              </div>
-            )}
+                    <ul className="game-phrase-list">
+                    {index.phrases.map((phrase, key) => {
+                      let phrases = Number(key)
+                      let currentPhrase = gametwo.segment <= phrases + 1 && gametwo.segment >= phrases -1
+                      if(currentPhrase){
+                        return(
+                          <li key={key} className={this.activePhrase(gametwo.currentTime, phrase.start_time, phrase.end_time)}>
+                            <Phrase
+                             selectPhrase={this.selectPhrase}
+                             removePhrase={this.removePhrase}
+                             playPhrase={this.playPhrase}
+                             disableProgress={disableProgress}
+                             time={gametwo.currentTime} 
+                             active={gametwo.segment}
+                             keys={key}
+                             details={phrase}
+                             setSegmentStart={setSegmentStart}
+                             startSegment={gametwo.startSegment}
+                             setSegmentEnd={setSegmentEnd}
+                             advanceSegment={advanceSegmentTwo}
+                             endOfRoundTwo={endOfRoundTwo}
+                             currentTranscript={gametwo.currentTranscript}
+                             gameLength={gametwo.transcripts.length - 1}
+                             phrasesLength={gametwo.transcripts[gametwo.currentTranscript].phrases_length - 1}
+                             updateGameProgress={updateGameProgress}
+                             advanceTranscript={advanceTranscriptTwo}
+                             resetSegments={resetSegmentsTwo}
+                             setSkipPhrase={skipPhrase}
+                             skipPhrase={gametwo.skipPhrase}
+                             setStartTime={setStartTime}
+                            />
+                          </li>
+                        )
+                      }
+                    })}
+                    </ul>
+                  </div>
+                )
+              }
+            })}
             </div>
-            {gametwo.endOfRound ? (
-              ''
-            ) : (
-             <GameFooter
-              gameNumber={gametwo.gameNumber}
-              gameName={gametwo.gameName}
-              handleProgress={this.handleProgress}
-              max={gametwo.gameLength}
-              value={gametwo.gameProgress}
-              waitingUpdate={this.props.waitingUpdate}
-              waiting={gametwo.disableProgress}
-              modalIsOpen={this.props.initialData.modalIsOpen}
-              setModal={this.props.setModal}
-              gameTipsClass={'tip-gametwo'}
-              gameCookie={'gameTwoCookie'}
-             />              
-            )}
+          )}
           </div>
+          {gametwo.endOfRound ? (
+            ''
+          ) : (
+           <GameFooter
+            gameNumber={gametwo.gameNumber}
+            gameName={gametwo.gameName}
+            handleProgress={this.handleProgress}
+            max={gametwo.gameLength}
+            value={gametwo.gameProgress}
+            waitingUpdate={this.props.waitingUpdate}
+            waiting={gametwo.disableProgress}
+            modalIsOpen={this.props.initialData.modalIsOpen}
+            setModal={this.props.setModal}
+            gameTipsClass={'tip-gametwo'}
+            gameCookie={'gameTwoCookie'}
+           />              
           )}
         </div>
       )

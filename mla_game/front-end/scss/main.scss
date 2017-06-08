@@ -436,22 +436,117 @@ button {
   height:90vh;
 }
 
-
 .loading-area {
   position:relative;
-  padding:1em;
   width:100%;
-  height:25em;
+  min-height:6em;
+  @include susy-breakpoint($screen-md-min, $map-md) {
+    @include span(3.5 first);
+    height:32em;
+  }
+  @include susy-breakpoint($screen-lg-min, $map-lg) {
+    @include span(5 first);
+  }
+}
+
+.no-data-message {
+  margin-bottom:1.5em;
+  p {
+    margin-bottom:1em;
+  }
+  .game-links {
+    text-align:center;
+  }
+  a {
+    @include border-button($theme-secondary, $progress);
+    @include transition(all, .5s, ease-in-out);
+    padding:.5em .75em;
+    display:inline-block;
+    text-align:center;
+    width:10em;
+    &:hover {
+      color:$theme-secondary;
+      background:$progress;
+    }
+    &:first-of-type {
+      margin-right:1.5em;
+    }
+  }
+  @include susy-breakpoint($screen-md-min, $map-md) {
+    @include center;
+    width:100%;
+  }
+  @include susy-breakpoint($screen-md-min, $map-md) {
+    width:90%;
+  }
 }
 
 .loading-game-ready-button {
   @include transition(all, .3s, ease-in-out);
-  @include center();
+  @include center;
   @include call-button;
   background:$theme-secondary;
+  font-size:.8em;
+  @include susy-breakpoint($screen-sm-min, $map-sm) {
+    font-size:1em;
+    min-width:13.5em;
+  }
   &:hover {
     color:$theme-secondary;
     background:$progress
+  }
+}
+
+.loading-game-animation {
+  @include center();
+  width:5em;
+  height:5em;
+}
+
+.loading-stats {
+  line-height:1.25;
+  @include plain-list;
+  @include susy-breakpoint($screen-md-min, $map-md) {
+    @include span(4.5 last);
+    border-left:1px solid $help;
+  }
+  @include susy-breakpoint($screen-lg-min, $map-lg) {
+    @include span(7 last);
+  }
+  div {
+    display:-webkit-box;
+    display:-ms-flexbox;
+    display:flex;
+    -webkit-box-align:center;
+       -ms-flex-align:center;
+          align-items:center;
+    &:not(:last-child){
+      border-bottom:1px solid $help;
+    }
+    dd {
+      -webkit-box-ordinal-group:2;
+                 -ms-flex-order:1;
+                          order:1;
+      font-family:'Open Sans Condensed', sans-serif;
+      font-size:2.5em;
+      margin-right:.25em;
+      text-align:right;
+      width:50%;
+      @include susy-breakpoint($screen-sm-min, $map-sm) {
+        font-size:5em;
+      }
+    }
+    dt {
+      -webkit-box-ordinal-group:3;
+                 -ms-flex-order:2;
+                          order:2;
+      width:50%;
+      font-size: .85em;
+      font-weight:700;
+      @include susy-breakpoint($screen-sm-min, $map-sm) {
+        font-size:1.15em;
+      }
+    }
   }
 }
 
@@ -459,12 +554,6 @@ button {
   @include center();
   width:10em;
   height:10em;
-}
-
-.loading-game-animation {
-  @include center();
-  width:5em;
-  height:5em;
 }
 
 // react modal windows
@@ -579,40 +668,6 @@ button {
   height:calc(100vh - 10em);
   position:relative;
 }
-
-.no-data-message {
-  @include center;
-  width:90%;
-  @include susy-breakpoint($screen-md-min, $map-md) {
-    width:auto;
-  }
-  h2 {
-    font-family:'Open Sans Condensed', sans-serif;   
-    font-size:1.5em;
-    @include susy-breakpoint($screen-sm-min, $map-sm) {
-      font-size:3em;
-    }
-  }
-  .game-links {
-    text-align:center;
-  }
-  a {
-    @include border-button($theme-secondary, $progress);
-    @include transition(all, .5s, ease-in-out);
-    padding:1.25em .75em;
-    display:inline-block;
-    text-align:center;
-    width:45%;
-    &:hover {
-      color:$theme-secondary;
-      background:$progress;
-    }
-    &:first-of-type {
-      margin-right:1.5em;
-    }
-  }
-}
-
 
 .share-block {
   background:$theme-primary;

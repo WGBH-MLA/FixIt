@@ -167,14 +167,16 @@ class GameOne extends React.Component{
   }
 
   render(){
-    const { gameScores, gameone, gametwo, gamethree, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegment } = this.props
+    const { gameReady, initialData, gameScores, gameone, gametwo, gamethree, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegment } = this.props
 
-    if(!this.props.gameone.gameReady) {
+    if(!gameone.gameReady) {
       return(
         <GameLoader
-          loading={this.props.gameone.loading}
-          loadingData={this.props.initialData.loading_data} 
-          gameReady={this.props.gameReady}
+          loading={gameone.loading}
+          loadingData={initialData.loading_data} 
+          gameReady={gameReady}
+          gameNumber={gameone.gameNumber}
+          transcriptsData={gameone.phrases.length}
         />
       )
     } else {
