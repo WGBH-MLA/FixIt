@@ -146,7 +146,14 @@ class GameThree extends React.Component{
   
   render(){
     const { gameReady, initialData, gameScores, gameone, gametwo, gamethree, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegmentThree, advanceTranscriptThree, skipPhrase, setStartTime, disableProgress, resetSegmentsThree, endOfRoundThree, updateGameProgressThree} = this.props
-    
+    let linkOne = {
+      link:'gameone',
+      number:1
+    },
+      linkTwo = {
+      link:'gametwo',
+      number:2
+    }
     if(!this.props.gamethree.gameReady) {
       return(
         <GameLoader
@@ -155,8 +162,8 @@ class GameThree extends React.Component{
           gameReady={gameReady}
           gameNumber={gamethree.gameNumber}
           transcriptsData={gamethree.transcripts.length}
-          firstGameLink={'gameone'}
-          secondGameLink={'gametwo'}
+          firstGameLink={linkOne}
+          secondGameLink={linkTwo}
           noDataMessage={'Please play Game 1 to identify transcript errors or Game 2 to provide transcript fixes.'}
         />        
       )

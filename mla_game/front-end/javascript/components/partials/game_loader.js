@@ -32,7 +32,7 @@ render(){
     }
 
     if(noData) {
-      startUI = <div className="no-data-message"><p>Currently there is not enough content to play Game {gameNumber}. {noDataMessage}</p><div className="game-links"><Link to={firstGameLink}>Play Game 1</Link><Link to={secondGameLink}>Play Game 3</Link></div></div>
+      startUI = <div className="no-data-message"><p>Currently there is not enough content to play Game {gameNumber}. {noDataMessage}</p><div className="game-links"><Link to={firstGameLink.link}>Play Game {firstGameLink.number}</Link><Link to={secondGameLink.link}>Play Game {secondGameLink.number}</Link></div></div>
     } else {
       startUI = <button onClick={()=> this.playGame()} className='loading-game-ready-button'>Play Game Now</button>
     }
