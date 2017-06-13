@@ -168,13 +168,20 @@ def update_transcript_picks(user, **kwargs):
     else:
         completed_transcripts = []
 
+    if 'skipped_transcripts' in picks:
+        skipped_transcripts = picks['skipped_transcripts']
+    else:
+        skipped_transcripts = []
+
+    ineligible_transcripts = completed_transcripts + skipped_transcripts
+
     picks['station_transcripts'] = [
         transcript.pk for transcript in station_transcripts
-        if transcript.pk not in completed_transcripts
+        if transcript.pk not in ineligible_transcripts
     ]
     picks['topic_transcripts'] = [
         transcript.pk for transcript in topic_transcripts
-        if transcript.pk not in completed_transcripts
+        if transcript.pk not in ineligible_transcripts
     ]
     picks['ideal_transcripts'] = list(
         set(picks['station_transcripts']).intersection(
@@ -184,6 +191,24 @@ def update_transcript_picks(user, **kwargs):
         t for t in picks['station_transcripts'] + picks['topic_transcripts']
         if t not in picks['ideal_transcripts']
     ]
+
+    eligible_transcripts = picks['ideal_transcripts'] + picks['acceptable_transcripts']
+
+    if 'partially_completed_transcripts' in picks:
+        for transcript in picks['partially_completed_transcripts']:
+            if transcript not in eligible_transcripts:
+                picks['partially_completed_transcripts'].remove(transcript)
+                if 'auto_skipped_transcripts' not in picks:
+                    picks['auto_skipped_transcripts'] = []
+                picks['auto_skipped_transcripts'].append(transcript)
+
+    if 'auto_skipped_transcripts' in picks:
+        for transcript in picks['auto_skipped_transcripts']:
+            if transcript in eligible_transcripts:
+                picks['auto_skipped_transcripts'].remove(transcript)
+                picks['partially_completed_transcripts'].append(transcript)
+
+    django_log.info(picks)
 
     transcript_picks.save()
 
