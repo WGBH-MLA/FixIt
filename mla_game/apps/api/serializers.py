@@ -148,6 +148,17 @@ class ProfilePreferenceClearSerializer(serializers.ModelSerializer):
         }
 
 
+class ProfileTranscriptSkipSerializer(serializers.ModelSerializer):
+    transcript = serializers.IntegerField()
+
+    class Meta:
+        model = Profile
+        fields = ('transcript',)
+        extra_kwargs = {
+            'transcript': {'write_only': True}
+        }
+
+
 class ScoreSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(
         default=serializers.CurrentUserDefault()

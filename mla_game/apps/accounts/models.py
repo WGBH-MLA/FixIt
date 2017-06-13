@@ -65,6 +65,17 @@ class Profile(models.Model):
             if data['clear_stations']:
                 self.preferred_stations.clear()
 
+    def skip_transcript(self, data):
+        if 'transcript' in data:
+            transcript_picks = TranscriptPicks.objects.get(user=self.user)
+            picks = transcript_picks.picks
+            if 'skipped_transcripts' not in picks:
+                picks['skipped_transcripts'] = []
+            if data['transcript'] in picks['partially_completed_transcripts']:
+                picks['partially_completed_transcripts'].remove(data['transcript'])
+                picks['skipped_transcripts'].append(data['transcript'])
+            transcript_picks.save()
+
     def __str__(self):
         return self.user.username
 
@@ -81,6 +92,8 @@ class TranscriptPicks(models.Model):
     'acceptable_transcripts': symmetric difference of station/topic transcripts
     'partially_completed_transcripts': list of partially complete transcripts
     'completed_transcripts': list of complete transcripts
+    'skipped_transcripts': list of transcripts user has chosen to skip
+    'auto_skipped_transcripts': list of transcripts skipped when prefs change
     '''
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     picks = JSONField(default={})
