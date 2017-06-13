@@ -208,8 +208,6 @@ def update_transcript_picks(user, **kwargs):
                 picks['auto_skipped_transcripts'].remove(transcript)
                 picks['partially_completed_transcripts'].append(transcript)
 
-    django_log.info(picks)
-
     transcript_picks.save()
 
 
