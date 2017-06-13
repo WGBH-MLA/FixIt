@@ -73,7 +73,7 @@ class Profile(models.Model):
                 picks['skipped_transcripts'] = []
             if data['transcript'] in picks['partially_completed_transcripts']:
                 picks['partially_completed_transcripts'].remove(data['transcript'])
-                picks['skipped_transcripts'].append(data['transcript'])
+            picks['skipped_transcripts'].append(data['transcript'])
             transcript_picks.save()
 
     def __str__(self):
