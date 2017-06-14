@@ -8,6 +8,7 @@ import Paging from '../partials/paginator'
 import { postData } from '../../helpers'
 import GameFooter from '../partials/game_footer'
 import GameTip from '../partials/game_tip'
+import ChangeTranscript from '../partials/change_transcript'
 import { patchData } from '../../helpers'
 import MenuFooter from '../partials/menu_footer'
 
@@ -23,8 +24,7 @@ class GameOne extends React.Component{
 
     this.state = {
       wrongPhrases:{},
-      consideredPhrases:[],
-      pushComplete:false
+      consideredPhrases:[]
     }  
 
   }
@@ -166,10 +166,11 @@ class GameOne extends React.Component{
     this.reload()
   }
 
+  // !gameone.gameReady
   render(){
     const { gameReady, initialData, gameScores, gameone, gametwo, gamethree, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegment } = this.props
 
-    if(!gameone.gameReady) {
+    if(gameone.loading) {
     let linkOne = {
       link:'gametwo',
       number:2
@@ -188,7 +189,6 @@ class GameOne extends React.Component{
           firstGameLink={linkOne}
           secondGameLink={linkTwo}
           noDataMessage={'Please play Game 2 to provide transcript fixes or Game 3 to validate transcript fixes.'}
-
         />
       )
     } else {
@@ -212,6 +212,11 @@ class GameOne extends React.Component{
                   <GameMeta
                     meta={gameone.metadata} 
                     aapb_link={gameone.aapb_link}
+                  />
+                  <ChangeTranscript
+                    reload={this.reload}
+                    pk={gameone.pk}
+                    user={this.props.initialData.user[0].pk}
                   />
                 </div>
               )}

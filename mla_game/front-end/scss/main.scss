@@ -432,6 +432,68 @@ button {
   }
 }
 
+//change transcript
+.change-transcript {
+  @include border-button($theme-secondary, $help);
+  font-family: 'Open Sans Condensed', sans-serif;
+  text-transform:uppercase;
+  @include transition(all, 300ms, ease-in);
+  &:hover {
+    background:$help;
+    color:$theme-secondary;
+  }
+}
+
+.confirm {
+  background:$help;
+  position:relative;
+  color:white;
+  text-align:center;
+  font-family: 'Open Sans Condensed', sans-serif;
+  padding:1em;
+  padding-top:3em;
+  p {
+    text-align:left;
+  }
+  .dismiss {
+    @include plain-button;
+    position: absolute;
+    top:0;
+    right:0;
+    padding:0;
+    svg {
+      stroke-width:50;
+      fill:white;
+      height:2.5em;
+      width:2.5em;
+      display:block;
+    }
+  }
+  button:not(.dismiss) {
+    @include plain-button;
+    @include transition(all, 300ms, ease-in);
+    display:inline-block;
+    text-transform:uppercase;
+    background:white;
+    color:$help;
+    border:.125em solid white;
+    border-radius:.5em;
+    padding: 0 0.75em;
+    &:focus {
+      border:.125em solid white;
+    }
+    &:hover {
+      border:.125em solid white;
+      background:$help;
+      color:white;
+    }
+    &:last-of-type {
+      margin-left:1em;
+    }
+  }
+}
+
+
 .loading-screen {
   height:90vh;
 }
