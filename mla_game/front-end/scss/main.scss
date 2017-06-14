@@ -434,10 +434,16 @@ button {
 
 //change transcript
 .change-transcript {
+  @include susy-breakpoint($screen-md-min, $map-md) {
+    padding-bottom:10em;
+  }
+}
+.change-transcript-button {
+  @include transition(all, 300ms, ease-in);
   @include border-button($theme-secondary, $help);
   font-family: 'Open Sans Condensed', sans-serif;
+  font-size:.85em;
   text-transform:uppercase;
-  @include transition(all, 300ms, ease-in);
   &:hover {
     background:$help;
     color:$theme-secondary;

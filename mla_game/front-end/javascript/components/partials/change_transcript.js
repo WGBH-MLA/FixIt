@@ -27,7 +27,6 @@ class ChangeTranscript extends React.Component {
         url = `/api/profile/${user}/skip_transcript/`,
         data = {'transcript':pk}
     patchData(url, data).then((resp)=>{
-      console.log(resp)
       this.props.reload()
     })
   }
@@ -48,11 +47,11 @@ class ChangeTranscript extends React.Component {
            </div>
     }
     else {
-      ui = <button className={'change-transcript'} onClick={() => this.confirm()}>Try another transcript</button>
+      ui = <button className='change-transcript-button' onClick={() => this.confirm()}>Try another transcript</button>
     }
 
     return(
-      <div>
+      <div className='change-transcript'>
         {ui}
       </div>
     )
