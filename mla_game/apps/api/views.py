@@ -22,7 +22,8 @@ from .serializers import (
     TranscriptPhraseDownvoteSerializer,
     TranscriptPhraseCorrectionSerializer,
     TranscriptPhraseCorrectionVoteSerializer,
-    ProfileSerializer, ProfilePatchSerializer, ProfilePreferenceClearSerializer,
+    ProfileSerializer, ProfilePatchSerializer,
+    ProfilePreferenceClearSerializer, ProfileTranscriptSkipSerializer,
     SourceSerializer, TopicSerializer,
     ScoreSerializer, LeaderboardSerializer,
     LoadingScreenSerializer
@@ -197,6 +198,11 @@ class ProfileViewSet(viewsets.ModelViewSet):
     @detail_route(methods=['patch'], serializer_class=ProfilePreferenceClearSerializer)
     def clear_preferences(self, request, *args, **kwargs):
         self.get_object().clear_preferences(request.data)
+        return self.update(request, *args, **kwargs)
+
+    @detail_route(methods=['patch'], serializer_class=ProfileTranscriptSkipSerializer)
+    def skip_transcript(self, request, *args, **kwargs):
+        self.get_object().skip_transcript(request.data)
         return self.update(request, *args, **kwargs)
 
     def partial_update(self, request, *args, **kwargs):

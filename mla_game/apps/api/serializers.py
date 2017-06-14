@@ -35,7 +35,7 @@ class TranscriptSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Transcript
-        fields = ('name', 'aapb_link', 'phrases', 'metadata', 'media_url')
+        fields = ('name', 'aapb_link', 'phrases', 'metadata', 'media_url', 'pk')
 
 
 class TranscriptStatsSerializer(serializers.ModelSerializer):
@@ -145,6 +145,17 @@ class ProfilePreferenceClearSerializer(serializers.ModelSerializer):
             'clear_stations': {'write_only': True},
             'preferred_topics': {'read_only': True},
             'preferred_stations': {'read_only': True},
+        }
+
+
+class ProfileTranscriptSkipSerializer(serializers.ModelSerializer):
+    transcript = serializers.IntegerField()
+
+    class Meta:
+        model = Profile
+        fields = ('transcript',)
+        extra_kwargs = {
+            'transcript': {'write_only': True}
         }
 
 

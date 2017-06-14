@@ -34,7 +34,8 @@ class TranscriptManager(models.Manager):
             return (self.random_transcript(), False)
         else:
             try:
-                transcript = self.filter(pk=picks['partially_completed_transcripts'][0])
+                transcript = self.defer('transcript_data_blob').filter(
+                    pk=picks['partially_completed_transcripts'][0])
                 phrases = transcript.first().phrases.unseen(user)
                 return (transcript, phrases)
             except:
