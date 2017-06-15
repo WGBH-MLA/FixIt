@@ -71,6 +71,8 @@ class Profile(models.Model):
             picks = transcript_picks.picks
             if 'skipped_transcripts' not in picks:
                 picks['skipped_transcripts'] = []
+            if 'partially_completed_transcripts' not in picks:
+                picks['partially_completed_transcripts'] = []
             if data['transcript'] in picks['partially_completed_transcripts']:
                 picks['partially_completed_transcripts'].remove(data['transcript'])
             picks['skipped_transcripts'].append(data['transcript'])
