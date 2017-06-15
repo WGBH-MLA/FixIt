@@ -74,6 +74,14 @@ class Profile(models.Model):
             if data['transcript'] in picks['partially_completed_transcripts']:
                 picks['partially_completed_transcripts'].remove(data['transcript'])
             picks['skipped_transcripts'].append(data['transcript'])
+            try:
+                picks['ideal_transcripts'].remove(data['transcript'])
+            except:
+                pass
+            try:
+                picks['acceptable_transcripts'].remove(data['transcript'])
+            except:
+                pass
             transcript_picks.save()
 
     def __str__(self):
