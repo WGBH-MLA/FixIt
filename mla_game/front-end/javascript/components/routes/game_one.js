@@ -166,19 +166,18 @@ class GameOne extends React.Component{
     this.reload()
   }
 
-  // !gameone.gameReady
   render(){
     const { gameReady, initialData, gameScores, gameone, gametwo, gamethree, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegment } = this.props
 
-    if(gameone.loading) {
-    let linkOne = {
-      link:'gametwo',
-      number:2
-    },
-      linkTwo = {
-      link:'gamethree',
-      number:3
-    }
+    if(!gameone.gameReady) {
+      let linkOne = {
+        link:'gametwo',
+        number:2
+      },
+        linkTwo = {
+        link:'gamethree',
+        number:3
+      }
       return(
         <GameLoader
           loading={gameone.loading}
