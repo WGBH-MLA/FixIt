@@ -152,8 +152,6 @@ export function fetchData(){
         dispatch(setTotalScore(game_scores.total_score))
         dispatch(setGameScores(game_scores.game_one_score, game_scores.game_two_score, game_scores.game_three_score))
         
-
-
       }))
   }
 } // <-- end initial data actions

@@ -165,12 +165,11 @@ class GameOne extends React.Component{
     }
     this.reload()
   }
-
-  // !gameone.gameReady
+  
   render(){
     const { gameReady, initialData, gameScores, gameone, gametwo, gamethree, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegment } = this.props
 
-    if(gameone.loading) {
+    if(!gameone.gameReady) {
     let linkOne = {
       link:'gametwo',
       number:2
@@ -212,6 +211,7 @@ class GameOne extends React.Component{
                   <GameMeta
                     meta={gameone.metadata} 
                     aapb_link={gameone.aapb_link}
+                    sources={gameone.source}
                   />
                   <ChangeTranscript
                     reload={this.reload}

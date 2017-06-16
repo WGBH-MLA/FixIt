@@ -6,7 +6,8 @@ function gameOne(state = {
   aapb_link:null,
   media_url: null,
   pk:null,
-  phrases: [],
+  source:[],
+  phrases:[],
   metadata:{},
   currentTime:0,
   startTime:0,
@@ -35,7 +36,8 @@ function gameOne(state = {
         media_url:action.data.media_url,
         phrases:action.data.phrases,
         metadata:action.data.metadata,
-        pk:action.data.pk
+        pk:action.data.pk,
+        source:action.data.source
       }
     case 'SET_PHRASE_LIST':
       return {...state, 
