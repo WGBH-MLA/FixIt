@@ -509,11 +509,11 @@ button {
   width:100%;
   min-height:6em;
   @include susy-breakpoint($screen-md-min, $map-md) {
-    @include span(3.5 first);
+    @include span(3.5 last);
     height:32em;
   }
   @include susy-breakpoint($screen-lg-min, $map-lg) {
-    @include span(5 first);
+    @include span(5 last);
   }
 }
 
@@ -575,11 +575,11 @@ button {
   line-height:1.25;
   @include plain-list;
   @include susy-breakpoint($screen-md-min, $map-md) {
-    @include span(4.5 last);
-    border-left:1px solid $help;
+    @include span(4.5 first);
+    border-right:1px solid $help;
   }
   @include susy-breakpoint($screen-lg-min, $map-lg) {
-    @include span(7 last);
+    @include span(7 first);
   }
   div {
     display:-webkit-box;
@@ -600,6 +600,7 @@ button {
       margin-right:.25em;
       text-align:right;
       width:50%;
+      // color:white;
       @include susy-breakpoint($screen-sm-min, $map-sm) {
         font-size:5em;
       }
@@ -611,6 +612,7 @@ button {
       width:50%;
       font-size: .85em;
       font-weight:700;
+      color:$help;
       @include susy-breakpoint($screen-sm-min, $map-sm) {
         font-size:1.15em;
       }
