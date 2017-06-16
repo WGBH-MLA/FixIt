@@ -7,24 +7,32 @@ class GameMeta extends React.Component {
   }
 
   render(){
-    const {meta, aapb_link} = this.props;
+    const {meta, aapb_link, sources } = this.props;
     let noData = meta === null,
         program,
         series,
         station,
-        broadcastDate
+        broadcastDate,
+        transcript_sources
+        
 
       if(!noData) {
         program = meta.program_title
         series = meta.series
         station = meta.station_name
         broadcastDate = meta.broadcast_date
+        transcript_sources = sources.map((index, key) => {
+          return(
+            <dd className="delta" key={key}>{index.source}</dd>
+          )
+        })
       }
 
-
+    
     return (
       <dl>
         <dt><em>Source Record:</em></dt>
+        {transcript_sources}
         <dd className="delta">{program}</dd>
         <dd className="delta">{series}</dd>
         <dd className="delta">{station}</dd>

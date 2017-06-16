@@ -223,7 +223,8 @@ class GameThree extends React.Component{
                       />
                       <GameMeta 
                         meta={index.metadata} 
-                        aapb_link={index.aapb_link} 
+                        aapb_link={index.aapb_link}
+                        sources={index.source}
                       />
                     </div>
                     <ul className="game-phrase-list">

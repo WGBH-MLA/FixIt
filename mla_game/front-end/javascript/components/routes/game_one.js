@@ -165,7 +165,6 @@ class GameOne extends React.Component{
     }
     this.reload()
   }
-
   render(){
     const { gameReady, initialData, gameScores, gameone, gametwo, gamethree, setIsPlaying, setCurrentTime, playPhrase, selectPhrase, waitingUpdate, setSegmentEnd, setSegmentStart, advanceSegment } = this.props
 
@@ -211,6 +210,7 @@ class GameOne extends React.Component{
                   <GameMeta
                     meta={gameone.metadata} 
                     aapb_link={gameone.aapb_link}
+                    sources={gameone.source}
                   />
                   <ChangeTranscript
                     reload={this.reload}

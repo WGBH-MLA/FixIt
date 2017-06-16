@@ -27,6 +27,7 @@ class ChangeTranscript extends React.Component {
         url = `/api/profile/${user}/skip_transcript/`,
         data = {'transcript':pk}
     patchData(url, data).then((resp)=>{
+      console.log(resp);
       this.props.reload()
     })
   }
