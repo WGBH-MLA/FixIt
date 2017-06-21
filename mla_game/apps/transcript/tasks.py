@@ -271,13 +271,19 @@ def update_transcript_stats(transcript):
     stats['phrases_needing_correction_percent'] = percent(negative_scored_phrases, stats['total_number_of_phrases'])
     stats['phrases_with_corrections_percent'] = percent(phrases_with_corrections, stats['total_number_of_phrases'])
     stats['corrections_submitted'] = total_corrections
+    stats['corrections_accepted'] = usable_corrections
     stats['phrases_ready_for_export'] = positive_scored_phrases + usable_corrections
     stats['percent_complete'] = percent(stats['phrases_ready_for_export'], stats['total_number_of_phrases'])
 
-    transcript.save()
+    if stats['phrases_ready_for_export'] == stats['total_number_of_phrases']:
+        transcript.complete = True
 
-    mail_admins('updated transcripts', str(stats))
-    django_log.info(stats)
+    if stats['percent_complete'] != 100:
+        transcript.in_progress = True
+    else:
+        transcript.in_progress = False
+
+    transcript.save()
 
 
 def update_transcripts_awaiting_stats(phrase_or_correction):

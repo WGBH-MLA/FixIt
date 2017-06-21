@@ -2,7 +2,9 @@ import logging
 
 from django.conf import settings
 
-from rest_framework import viewsets, generics
+import django_filters.rest_framework
+
+from rest_framework import viewsets, generics, filters
 from rest_framework.decorators import list_route, detail_route
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
@@ -136,11 +138,14 @@ class TranscriptViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class TranscriptStatsViewSet(viewsets.ModelViewSet):
-    permission_classes = (AllowAny,)
+class TranscriptStatsViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Transcript.objects.all()
     lookup_field = 'asset_name'
     serializer_class = TranscriptStatsSerializer
+    filter_backends = (filters.OrderingFilter,
+                       django_filters.rest_framework.DjangoFilterBackend)
+    ordering_fields = ('complete', 'in_progress')
+    filter_fields = ('complete', 'in_progress')
 
 
 class TranscriptPhraseDownvoteViewSet(viewsets.ModelViewSet):
