@@ -363,9 +363,10 @@ def phrase_confidence_exceeds_positive_threshold(phrase):
                     transcript_phrase=phrase,
                     not_an_error=True).defer('correction')
                 ]
-    downvoters = [downvote.user for downvote in
-                  TranscriptPhraseDownvote.objects.filter(phrase=phrase)
-                  ]
+    downvoters = [
+        downvote.user for downvote in
+        TranscriptPhraseDownvote.objects.filter(transcript_phrase=phrase)
+    ]
 
     for user in upvoters:
         score, created = Score.objects.get_or_create(
