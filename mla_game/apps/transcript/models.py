@@ -198,8 +198,11 @@ class Transcript(models.Model):
         'phrases_needing_correction_percent': 0,
         'phrases_with_corrections_percent': 0,
         'corrections_submitted': 0,
+        'corrections_accepted': 0,
         'phrases_ready_for_export': 0,
     })
+    complete = models.BooleanField(default=False)
+    in_progress = models.BooleanField(default=False)
 
     objects = TranscriptManager()
 
