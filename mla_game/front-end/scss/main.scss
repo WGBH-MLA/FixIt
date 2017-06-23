@@ -121,15 +121,36 @@ button {
 }
 .game-meta {
   @include plain-list;
+  div {
+    @include clearfix;
+  }
   @include susy-breakpoint($screen-md-min, $map-md) {
     @include span(2 of 12 first);
   }
   .audio {
+    @include span(1 of 3 first);
+    padding-left:0;
+    @include susy-breakpoint($screen-sm-min, $map-sm) {
+      @include span(1 of 4 first);
+      padding-left:0;
+    }
+    @include susy-breakpoint($screen-md-min, $map-md) {
+      float:none;
+      margin:0;
+      padding:0;
+    }
     .play-button {
       @include plain-button;
-
-      width:7em;
-      height:7em;
+      max-width:7em;
+      max-height:7em;
+      width:100%;
+      padding:0;
+      @include susy-breakpoint($screen-md-min, $map-md) {
+          width:8em;
+          height:8em;
+          max-height:inherit;
+          max-width:inherit;
+      }
       @include susy-breakpoint($screen-lg-min, $map-lg) {
           width:10em;
           height:10em;
@@ -158,6 +179,17 @@ button {
   }
   
   dl {
+    @include span(2 of 3 last);
+    margin-top:0;
+    @include susy-breakpoint($screen-sm-min, $map-sm) {
+      @include span(3 of 4 last);
+    }
+    @include susy-breakpoint($screen-md-min, $map-md) {
+      float:none;
+      margin:1em 0 0 0;
+      padding:0;
+      width:100%;
+    }
     dt {
       font-size: 1.15em;
     }
@@ -182,6 +214,32 @@ button {
         } 
       }
     }
+  }
+}
+
+//change transcript
+.change-transcript {
+  @include span(2 of 3 last);
+  @include susy-breakpoint($screen-sm-min, $map-sm) {
+    @include span(3 of 4 last);
+  }
+  @include susy-breakpoint($screen-md-min, $map-md) {
+    float:none;
+    padding:0;
+    margin:0;
+    padding-bottom:10em;
+    width:inherit;
+  }
+}
+.change-transcript-button {
+  @include transition(all, 300ms, ease-in);
+  @include border-button($theme-secondary, $help);
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size:.85em;
+  text-transform:uppercase;
+  &:hover {
+    background:$help;
+    color:$theme-secondary;
   }
 }
 
@@ -432,24 +490,6 @@ button {
   }
 }
 
-//change transcript
-.change-transcript {
-  @include susy-breakpoint($screen-md-min, $map-md) {
-    padding-bottom:10em;
-  }
-}
-.change-transcript-button {
-  @include transition(all, 300ms, ease-in);
-  @include border-button($theme-secondary, $help);
-  font-family: 'Open Sans Condensed', sans-serif;
-  font-size:.85em;
-  text-transform:uppercase;
-  &:hover {
-    background:$help;
-    color:$theme-secondary;
-  }
-}
-
 .confirm {
   background:$help;
   position:relative;
@@ -671,8 +711,22 @@ button {
     height:inherit;
     max-height:100%;
     .modal-close {
-      top:1em;
-      right:1em;
+      top:.5em;
+      right:.5em;
+      svg {
+        width:1.25em;
+        height:1.25em;
+      }
+    }
+    @include susy-breakpoint($screen-sm-min, $map-sm) {
+      .modal-close {
+        top:1em;
+        right:1em;
+        svg {
+          width:2.5em;
+          height:2.5em;
+        }
+      }
     }
     @include susy-breakpoint($screen-md-min, $map-md) {
       max-width:75vw;
@@ -691,11 +745,7 @@ button {
     list-style:lower-alpha;
   }
   [class^='tip-'] {
-    margin-top:4em;
     padding-bottom:64.47%;
-    @include susy-breakpoint($screen-sm-min, $map-sm) {
-      margin-top:0;
-    }
   }
   .tip-gameone {
     background:url('../javascript/images/tips_game1.png'), no-repeat;
