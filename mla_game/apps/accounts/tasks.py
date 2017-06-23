@@ -8,7 +8,9 @@ from django.db.models import Prefetch
 from huey.contrib.djhuey import db_periodic_task, db_task
 from huey import crontab
 
-from .models import Profile, TranscriptPicks, Score, Leaderboard
+from .models import (
+    Profile, TranscriptPicks, Score, Leaderboard, ContributionStatistics,
+)
 from mla_game.apps.transcript.models import (
     Transcript, TranscriptPhrase, TranscriptPhraseCorrection,
     TranscriptPhraseCorrectionVote, TranscriptPhraseDownvote,
@@ -345,6 +347,32 @@ def update_leaderboard():
     ]
 
     Leaderboard.objects.create(leaderboard=leaderboard)
+
+
+@db_periodic_task(crontab(minute='0', hour='*/2'))
+def update_contribution_stats():
+    stats = {}
+
+    players = Profile.objects.all().count()
+
+    phrase_downvotes_count = TranscriptPhraseDownvote.objects.all().count()
+    phrase_upvotes_count = TranscriptPhraseCorrection.objects.filter(
+        not_an_error=True).count()
+    phrase_votes_count = phrase_downvotes_count + phrase_upvotes_count
+
+    correction_votes_count = TranscriptPhraseCorrectionVote.objects.all().count()
+
+    corrections_count = TranscriptPhraseCorrection.objects.all().count()
+
+    stats['players'] = players
+    stats['phrase_votes'] = phrase_votes_count
+    stats['correction_votes'] = correction_votes_count
+    stats['corrections_submitted'] = corrections_count
+    stats['avg_phrase_votes_per_user'] = phrase_votes_count / players
+    stats['avg_corrections_per_user'] = corrections_count / players
+    stats['avg_correction_votes_per_user'] = correction_votes_count / players
+
+    ContributionStatistics.objects.create(statistics=stats)
 
 
 @db_task()

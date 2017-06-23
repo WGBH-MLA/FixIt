@@ -6,8 +6,9 @@ from .views import (
     TranscriptStatsViewSet, TranscriptPhraseDetailViewSet,
     TranscriptPhraseCorrectionViewSet, SourceViewSet,
     TranscriptPhraseCorrectionVoteViewSet,
-    TopicViewSet, ProfileViewSet, ScoreViewSet,
-    LeaderboardView, LoadingScreenView,
+    TopicViewSet, ProfileViewSet, ProfileStatsViewSet,
+    ScoreViewSet, LeaderboardView, LoadingScreenView,
+    ContributionStatisticsView
 )
 
 
@@ -21,6 +22,7 @@ router.register(r'transcriptphrasecorrectionvote', TranscriptPhraseCorrectionVot
 router.register(r'source', SourceViewSet)
 router.register(r'topic', TopicViewSet)
 router.register(r'profile', ProfileViewSet)
+router.register(r'profilestats', ProfileStatsViewSet)
 router.register(r'score', ScoreViewSet)
 
 
@@ -28,4 +30,5 @@ urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^leaderboard/$', LeaderboardView.as_view()),
     url(r'^loading/$', LoadingScreenView.as_view()),
+    url(r'^contributions/$', ContributionStatisticsView.as_view()),
 ]

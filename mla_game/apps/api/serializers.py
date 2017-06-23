@@ -7,7 +7,9 @@ from ..transcript.models import (
     TranscriptPhraseCorrectionVote, Source, Topic
 )
 
-from ..accounts.models import Profile, Score, Leaderboard
+from ..accounts.models import (
+    Profile, Score, Leaderboard, ContributionStatistics,
+)
 
 from ..game.models import LoadingScreenData
 
@@ -199,3 +201,9 @@ class LoadingScreenSerializer(serializers.ModelSerializer):
     class Meta:
         model = LoadingScreenData
         fields = ('data',)
+
+
+class ContributionStatisticsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContributionStatistics
+        fields = ('statistics',)

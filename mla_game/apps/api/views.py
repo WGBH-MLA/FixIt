@@ -16,7 +16,7 @@ from ..transcript.models import (
     TranscriptPhraseCorrectionVote,
     Source, Topic,
 )
-from ..accounts.models import Profile, Score, Leaderboard
+from ..accounts.models import Profile, Score, Leaderboard, ContributionStatistics
 from ..game.models import LoadingScreenData
 from .serializers import (
     TranscriptSerializer,
@@ -30,9 +30,9 @@ from .serializers import (
     ProfilePreferenceClearSerializer, ProfileTranscriptSkipSerializer,
     SourceSerializer, TopicSerializer,
     ScoreSerializer, LeaderboardSerializer,
-    LoadingScreenSerializer
+    LoadingScreenSerializer, ContributionStatisticsSerializer
 )
-from .permissions import IsOwner, IsOwnerOrReadOnly
+from .permissions import IsOwner, IsOwnerOrStaff, IsOwnerOrReadOnly
 
 django_log = logging.getLogger('django')
 
@@ -240,6 +240,13 @@ class ProfileViewSet(viewsets.ModelViewSet):
         return self.update(request, *args, **kwargs)
 
 
+class ProfileStatsViewSet(viewsets.ReadOnlyModelViewSet):
+    permission_classes = (IsOwnerOrStaff,)
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    lookup_field = 'username'
+
+
 class ScoreViewSet(viewsets.ModelViewSet):
     permission_classes = (IsOwner,)
     queryset = Score.objects.all()
@@ -264,5 +271,16 @@ class LoadingScreenView(generics.RetrieveAPIView):
 
     def get_object(self):
         obj = LoadingScreenData.objects.latest('date')
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+
+class ContributionStatisticsView(generics.RetrieveAPIView):
+    permission_classes = (AllowAny,)
+    queryset = ContributionStatistics.objects.all()
+    serializer_class = ContributionStatisticsSerializer
+
+    def get_object(self):
+        obj = ContributionStatistics.objects.latest('date')
         self.check_object_permissions(self.request, obj)
         return obj

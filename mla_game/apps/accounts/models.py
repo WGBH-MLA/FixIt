@@ -176,3 +176,8 @@ class Leaderboard(models.Model):
     """
     date = models.DateTimeField(auto_now_add=True)
     leaderboard = JSONField()
+
+
+class ContributionStatistics(models.Model):
+    date = models.DateTimeField(auto_now_add=True)
+    statistics = JSONField()
