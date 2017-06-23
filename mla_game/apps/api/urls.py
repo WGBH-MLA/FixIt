@@ -3,7 +3,7 @@ from rest_framework import routers
 
 from .views import (
     TranscriptViewSet, TranscriptPhraseDownvoteViewSet,
-    TranscriptStatsViewSet,
+    TranscriptStatsViewSet, TranscriptPhraseDetailViewSet,
     TranscriptPhraseCorrectionViewSet, SourceViewSet,
     TranscriptPhraseCorrectionVoteViewSet,
     TopicViewSet, ProfileViewSet, ScoreViewSet,
@@ -14,6 +14,7 @@ from .views import (
 router = routers.DefaultRouter()
 router.register(r'transcript', TranscriptViewSet)
 router.register(r'statistics', TranscriptStatsViewSet)
+router.register(r'phrase', TranscriptPhraseDetailViewSet)
 router.register(r'transcriptphrasedownvote', TranscriptPhraseDownvoteViewSet)
 router.register(r'transcriptphrasecorrection', TranscriptPhraseCorrectionViewSet)
 router.register(r'transcriptphrasecorrectionvote', TranscriptPhraseCorrectionVoteViewSet)

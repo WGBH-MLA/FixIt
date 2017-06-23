@@ -42,6 +42,9 @@ def update_phrase_confidence(sender, instance, **kwargs):
         upvotes = TranscriptPhraseCorrection.objects.filter(
             transcript_phrase=instance.transcript_phrase, not_an_error=True).count()
         sample_size = downvotes + upvotes
+        if sample_size != instance.transcript_phrase.num_votes:
+            this_pk = instance.transcript_phrase.pk
+            TranscriptPhrase.objects.filter(pk=this_pk).update(num_votes=sample_size)
         if sample_size > min_samples:
             calculate_phrase_confidence(instance.transcript_phrase)
 

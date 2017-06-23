@@ -319,6 +319,7 @@ class TranscriptPhrase(models.Model):
 
     confidence = models.FloatField(default=0)
     num_corrections = models.SmallIntegerField(default=0)
+    num_votes = models.SmallIntegerField(default=0)
 
     objects = TranscriptPhraseManager()
 

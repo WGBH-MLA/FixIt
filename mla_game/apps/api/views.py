@@ -2,7 +2,7 @@ import logging
 
 from django.conf import settings
 
-import django_filters.rest_framework
+from django_filters import rest_framework as djfilters
 
 from rest_framework import viewsets, generics, filters
 from rest_framework.decorators import list_route, detail_route
@@ -11,9 +11,10 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
 
 from ..transcript.models import (
-    Transcript, TranscriptPhraseDownvote, Source, Topic,
+    Transcript, TranscriptPhrase, TranscriptPhraseDownvote,
     TranscriptPhraseCorrection,
-    TranscriptPhraseCorrectionVote
+    TranscriptPhraseCorrectionVote,
+    Source, Topic,
 )
 from ..accounts.models import Profile, Score, Leaderboard
 from ..game.models import LoadingScreenData
@@ -21,6 +22,7 @@ from .serializers import (
     TranscriptSerializer,
     TranscriptStatsSerializer,
     TranscriptPhraseSerializer,
+    TranscriptPhraseDetailSerializer,
     TranscriptPhraseDownvoteSerializer,
     TranscriptPhraseCorrectionSerializer,
     TranscriptPhraseCorrectionVoteSerializer,
@@ -143,9 +145,27 @@ class TranscriptStatsViewSet(viewsets.ReadOnlyModelViewSet):
     lookup_field = 'asset_name'
     serializer_class = TranscriptStatsSerializer
     filter_backends = (filters.OrderingFilter,
-                       django_filters.rest_framework.DjangoFilterBackend)
+                       djfilters.DjangoFilterBackend)
     ordering_fields = ('complete', 'in_progress')
     filter_fields = ('complete', 'in_progress')
+
+
+class TranscriptPhraseFilter(djfilters.FilterSet):
+    min_confidence = djfilters.NumberFilter(name='confidence', lookup_expr='gte')
+    max_confidence = djfilters.NumberFilter(name='confidence', lookup_expr='lte')
+    min_votes = djfilters.NumberFilter(name='num_votes', lookup_expr='gte')
+    max_votes = djfilters.NumberFilter(name='num_votes', lookup_expr='lte')
+
+    class Meta:
+        model = TranscriptPhrase
+        fields = ('confidence', 'num_corrections', 'num_votes')
+
+
+class TranscriptPhraseDetailViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = TranscriptPhrase.objects.all()
+    serializer_class = TranscriptPhraseDetailSerializer
+    filter_backends = (djfilters.DjangoFilterBackend,)
+    filter_class = TranscriptPhraseFilter
 
 
 class TranscriptPhraseDownvoteViewSet(viewsets.ModelViewSet):

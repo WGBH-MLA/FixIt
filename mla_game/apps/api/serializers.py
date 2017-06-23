@@ -33,6 +33,12 @@ class TranscriptPhraseSerializer(serializers.ModelSerializer):
         fields = ('pk', 'start_time', 'end_time', 'text')
 
 
+class TranscriptPhraseDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TranscriptPhrase
+        fields = ('pk', 'text', 'confidence', 'num_corrections', 'num_votes')
+
+
 class TranscriptSerializer(serializers.ModelSerializer):
     phrases = TranscriptPhraseSerializer(
         many=True, read_only=True,
