@@ -4,7 +4,7 @@ from django.conf import settings
 
 from django_filters import rest_framework as djfilters
 
-from rest_framework import viewsets, generics, filters
+from rest_framework import viewsets, generics, filters, mixins
 from rest_framework.decorators import list_route, detail_route
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
@@ -247,7 +247,7 @@ class ProfileStatsViewSet(viewsets.ReadOnlyModelViewSet):
     lookup_field = 'username'
 
 
-class ScoreViewSet(viewsets.ModelViewSet):
+class ScoreViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     permission_classes = (IsOwner,)
     queryset = Score.objects.all()
     serializer_class = ScoreSerializer
