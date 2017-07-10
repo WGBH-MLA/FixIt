@@ -375,7 +375,7 @@ The value of `transcript` should be the ID (`pk`) of the transcript the user is 
 ```
 ----
 
-`/api/score` provides an interface for adding scores for actions completed in the browser. This endpoint only accepts  POST requests. The value should take the form of this example:
+`/api/score` provides an interface for adding scores for actions completed in the browser, and for accessing a list of score objects for the logged-in user. For POST requests, the value should take the form of this example:
 ```javascript
 {
   "game": "game_two",
@@ -600,23 +600,39 @@ There are endpoints associated with each of the three games: `/api/transcript/ga
 
 ----
 
-`/api/transcriptphrasecorrection/`
-*TODO: documentation*
+`/api/transcriptphrasecorrection/` provides an interface for adding corrections in game two. You can also list the logged-in user's correction. This endpoint only accepts GET and POST requests. When adding a correction, the data should take the form of this example:
+
 ```javascript
-TODO: example
+{
+    "correction": "The user's submission goes here",
+    "not_an_error": false,
+    "transcript_phrase": "666"
+}
 ```
+The `transcript_phrase` key's value should be the PK of the phrase being corrected.
 
 ----
 
-`/api/transcriptphrasecorrectionvote/`
-*TODO: documentation*
+`/api/transcriptphrasecorrectionvote/` is used for voting on user-submitted corrections in game three. You can also list the logged-in user's votes. This endpoint only accepts GET and POST requests. When voting, the data should take the form of this example:
+
 ```javascript
-TODO: example
+{
+    "transcript_phrase_correction": "324810",
+    "upvote": true
+}
 ```
+The value for `transcript_phrase_correction` should be equal to the PK of the correction being voted on.
+
 ----
 
-`/api/transcriptphrasedownvote/`
-*TODO: documentation*
+`/api/transcriptphrasedownvote/` is used for voting on phrases in game one. You can also list the logged-in user's downvotes. This endpoint only accepts GET and POST requests. When voting, the data should take the form of this example:
 ```javascript
-TODO: example
+{
+    "transcript_phrase": "119"
+}
 ```
+The value for `transcript_phrase` should be equal to the PK of the phrase being downvoted.
+
+
+
+## Front end documentation
