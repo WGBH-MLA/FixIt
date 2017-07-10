@@ -160,13 +160,17 @@ class TranscriptPhraseDetailViewSet(viewsets.ReadOnlyModelViewSet):
     filter_class = TranscriptPhraseFilter
 
 
-class TranscriptPhraseDownvoteViewSet(viewsets.ModelViewSet):
+class TranscriptPhraseDownvoteViewSet(mixins.ListModelMixin,
+                                      mixins.CreateModelMixin,
+                                      viewsets.GenericViewSet):
     permission_classes = (IsOwnerOrReadOnly,)
     queryset = TranscriptPhraseDownvote.objects.all()
     serializer_class = TranscriptPhraseDownvoteSerializer
 
 
-class TranscriptPhraseCorrectionViewSet(viewsets.ModelViewSet):
+class TranscriptPhraseCorrectionViewSet(mixins.ListModelMixin,
+                                        mixins.CreateModelMixin,
+                                        viewsets.GenericViewSet):
     def get_queryset(self):
         return TranscriptPhraseCorrection.objects.filter(
             user=self.request.user
@@ -176,7 +180,9 @@ class TranscriptPhraseCorrectionViewSet(viewsets.ModelViewSet):
     serializer_class = TranscriptPhraseCorrectionSerializer
 
 
-class TranscriptPhraseCorrectionVoteViewSet(viewsets.ModelViewSet):
+class TranscriptPhraseCorrectionVoteViewSet(mixins.ListModelMixin,
+                                            mixins.CreateModelMixin,
+                                            viewsets.GenericViewSet):
     def get_queryset(self):
         return TranscriptPhraseCorrectionVote.objects.filter(
             user=self.request.user
@@ -239,7 +245,9 @@ class ProfileStatsViewSet(viewsets.ReadOnlyModelViewSet):
     lookup_field = 'username'
 
 
-class ScoreViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+class ScoreViewSet(mixins.ListModelMixin,
+                   mixins.CreateModelMixin,
+                   viewsets.GenericViewSet):
     permission_classes = (IsOwner,)
     queryset = Score.objects.all()
     serializer_class = ScoreSerializer
