@@ -13,6 +13,9 @@ from ..accounts.models import (
 
 from ..game.models import LoadingScreenData
 
+import logging
+django_log = logging.getLogger('django')
+
 
 class TranscriptSourceSerializer(serializers.ModelSerializer):
     class Meta:
@@ -57,6 +60,38 @@ class TranscriptSerializer(serializers.ModelSerializer):
             'name', 'aapb_link', 'phrases', 'metadata', 'media_url', 'pk',
             'source',
         )
+
+
+class TranscriptCreateSerializer(serializers.ModelSerializer):
+    phrases = TranscriptPhraseSerializer(many=True)
+
+    class Meta:
+        model = Transcript
+        fields = (
+            'name', 'asset_name', 'phrases'
+        )
+
+    def create(self, validated_data):
+        phrases = validated_data.pop('phrases')
+        transcript = Transcript.objects.create(
+            id_number=-1,
+            collection_id=-1,
+            url='http://americanarchive.org',
+            transcript_data_blob={},
+            data_blob_processed=True,
+            **validated_data
+        )
+        for phrase in phrases:
+            transcript.phrases.add(
+                TranscriptPhrase(
+                    id_number=-1,
+                    speaker_id=-1,
+                    **phrase
+                ),
+                bulk=False
+            )
+
+        return transcript
 
 
 class TranscriptStatsSerializer(serializers.ModelSerializer):

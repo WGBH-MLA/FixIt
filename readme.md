@@ -353,7 +353,7 @@ Possible values for the `completed` key are: `game_one`, `game_two`, `game_three
 The value of `transcript` should be the ID (`pk`) of the transcript the user is viewing.
 
 ----
-`/api/profilestats/` and `/api/profilestats/{username}/` provide statistics about users. The former provides this data in a paginated list of all users, and the latter provides the same data for a single user by their username. This endpoint only accepts GET requests. Example data from the single-lookup endpoint:
+`/api/profilestats/` and `/api/profilestats/{username}/` provide statistics about users. The former provides this data in a paginated array of all users, and the latter provides the same data for a single user by their username. This endpoint only accepts GET requests. Example data from the single-lookup endpoint:
 ```javascript
 {
     "completed_challenges": {
@@ -375,7 +375,7 @@ The value of `transcript` should be the ID (`pk`) of the transcript the user is 
 ```
 ----
 
-`/api/score` provides an interface for adding scores for actions completed in the browser, and for accessing a list of score objects for the logged-in user. For POST requests, the value should take the form of this example:
+`/api/score` provides an interface for adding scores for actions completed in the browser, and for accessing an array of score objects for the logged-in user. For POST requests, the value should take the form of this example:
 ```javascript
 {
   "game": "game_two",
@@ -385,7 +385,7 @@ The value of `transcript` should be the ID (`pk`) of the transcript the user is 
 The `game` key accepts the values `game_one`, `game_two`, `game_three`. The value for the `score` key must be an integer. The score created will automatically be associated with the user making the request.
 
 ----
-`/api/source/` provides a paginated list of sources associated with the transcripts and only accepts GET requests. Example data:
+`/api/source/` provides a paginated array of sources associated with the transcripts and only accepts GET requests. Example data:
 ```javascript
 {
     "count": 98,
@@ -433,7 +433,7 @@ The `game` key accepts the values `game_one`, `game_two`, `game_three`. The valu
 ```
 ----
 
-`/api/topic/` provides a list of topics associated with the transcripts and only accepts GET requests. Example data:
+`/api/topic/` provides an array of topics associated with the transcripts and only accepts GET requests. Example data:
 
 ```javascript
 {
@@ -481,13 +481,13 @@ The `game` key accepts the values `game_one`, `game_two`, `game_three`. The valu
 ```
 ----
 
-`/api/transcript/` is the endpoint for all data dealing with transcripts. A GET request to this endpoint will provide a paginated list of all transcripts in the game in their original, uncorrected form. Additionally, a single transcript can be retrieved by appending the asset name, e.g. `/api/transcript/cpb-aacip_500-xp6v2q58/`
+`/api/transcript/` is the endpoint for all data dealing with transcripts. A GET request to this endpoint will provide a paginated array of all transcripts in the game in their original, uncorrected form. Additionally, a single transcript can be retrieved by appending the asset name, e.g. `/api/transcript/cpb-aacip_500-xp6v2q58/`
 
 `/api/transcript/random/` returns a single, random, uncorrected transcript. This endpoint only responds to GET requests.
 
 There are endpoints associated with each of the three games: `/api/transcript/game_one`, `/api/transcript/game_two`, and `/api/transcript/game_three`. Each of these special endpoints only accept GET requests.
 
-`/api/transcript/game_one` returns an uncorrected transcript. The transcript is chosen based on the user's preferred stations and topics. If the user has already progressed through some of the transcript, the list of phrases will pick up where the user left off. This endpoint only responds to GET requests. Example output:
+`/api/transcript/game_one` returns an uncorrected transcript. The transcript is chosen based on the user's preferred stations and topics. If the user has already progressed through some of the transcript, the array of phrases will pick up where the user left off. This endpoint only responds to GET requests. Example output:
 
 ```javascript
 [
@@ -531,7 +531,7 @@ There are endpoints associated with each of the three games: `/api/transcript/ga
     }
 ]
 ```
-`/api/transcript/game_two` provides a list of transcripts where each phrase has an extra key indicating whether the phrase needs the user to provide a correction. Otherwise, the data looks exactly as in the game one endpoint above. This endpoint only responds to GET requests. Example data from the list of phrases:
+`/api/transcript/game_two` provides an array of transcripts where each phrase has an extra key indicating whether the phrase needs the user to provide a correction. Otherwise, the data looks exactly as in the game one endpoint above. This endpoint only responds to GET requests. Example data from the array of phrases:
 
 ```javascript
             {
@@ -564,7 +564,7 @@ There are endpoints associated with each of the three games: `/api/transcript/ga
             },
 ```
 
-`/api/transcript/game_three/` provides a list of transcript where each phrase that has corrections for the user to vote on has an extra key for those corrections. This endpoint only responds to GET requests. Example data from the list of phrases:
+`/api/transcript/game_three/` provides an array of transcript where each phrase that has corrections for the user to vote on has an extra key for those corrections. This endpoint only responds to GET requests. Example data from the array of phrases:
 ```javascript
             {
                 "end_time": "14.96",
@@ -596,11 +596,51 @@ There are endpoints associated with each of the three games: `/api/transcript/ga
 
 `/api/transcript/{asset_name}/corrected/` returns the corrected version of a transcript. This endpoint only responds to GET requests.
 
-*TODO: how to add a transcript*
+----
+`/api/add-transcript` provides a POST-only endpoint for adding transcripts to Fix It. The logged-in user must be a staff member to use this endpoint. The data should conform to the following example:
+
+```javascript
+{
+    "name": "a_test_transcript.h264.mp4",
+    "asset_name": "cpb-aacip-315sks",
+    "phrases": [
+        {
+            "end_time": 9.28,
+            "start_time": 0.00,
+            "text": "A squid eating dough"
+        },
+        {
+            "end_time": 13.89,
+            "start_time": 9.28,
+            "text": "in a polyethylene bag"
+        },
+        {
+            "end_time": 17.72,
+            "start_time": 14.73,
+            "text": "is fast and bulbous,"
+        },
+        {
+            "end_time": 23.69,
+            "start_time": 18.96,
+            "text": "got me?"
+        }
+    ]
+}
+
+```
+
+Notes on the keys and data requirements:
+
+`name` is a string and the name of the audio file from which the transcript was created.
+
+`asset_name` is the AAPB asset name and will be used to collect metadata from AAPB after the transcript is saved.
+
+`phrases` is an array of objects. Each object must contain a `start_time`, `end_time`, and `text`. `start_time` and `end_time` are numbers representing the time in seconds, to the hundredth of a second. `text` is the corresponding transcript text.
+
 
 ----
 
-`/api/transcriptphrasecorrection/` provides an interface for adding corrections in game two. You can also list the logged-in user's correction. This endpoint only accepts GET and POST requests. When adding a correction, the data should take the form of this example:
+`/api/transcriptphrasecorrection/` provides an interface for adding corrections in game two. You can also retrieve an array of the logged-in user's correction. This endpoint only accepts GET and POST requests. When adding a correction, the data should take the form of this example:
 
 ```javascript
 {
@@ -613,7 +653,7 @@ The `transcript_phrase` key's value should be the PK of the phrase being correct
 
 ----
 
-`/api/transcriptphrasecorrectionvote/` is used for voting on user-submitted corrections in game three. You can also list the logged-in user's votes. This endpoint only accepts GET and POST requests. When voting, the data should take the form of this example:
+`/api/transcriptphrasecorrectionvote/` is used for voting on user-submitted corrections in game three. You can also retrieve an array of the logged-in user's votes. This endpoint only accepts GET and POST requests. When voting, the data should take the form of this example:
 
 ```javascript
 {
@@ -625,14 +665,13 @@ The value for `transcript_phrase_correction` should be equal to the PK of the co
 
 ----
 
-`/api/transcriptphrasedownvote/` is used for voting on phrases in game one. You can also list the logged-in user's downvotes. This endpoint only accepts GET and POST requests. When voting, the data should take the form of this example:
+`/api/transcriptphrasedownvote/` is used for voting on phrases in game one. You can also retrieve an array of the logged-in user's downvotes. This endpoint only accepts GET and POST requests. When voting, the data should take the form of this example:
 ```javascript
 {
     "transcript_phrase": "119"
 }
 ```
 The value for `transcript_phrase` should be equal to the PK of the phrase being downvoted.
-
 
 
 ## Front end documentation

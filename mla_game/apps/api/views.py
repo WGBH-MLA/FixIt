@@ -8,7 +8,7 @@ from rest_framework import viewsets, generics, filters, mixins
 from rest_framework.decorators import list_route, detail_route
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAdminUser
 
 from ..transcript.models import (
     Transcript, TranscriptPhrase, TranscriptPhraseDownvote,
@@ -20,6 +20,7 @@ from ..accounts.models import Profile, Score, Leaderboard, ContributionStatistic
 from ..game.models import LoadingScreenData
 from .serializers import (
     TranscriptSerializer,
+    TranscriptCreateSerializer,
     TranscriptStatsSerializer,
     TranscriptPhraseSerializer,
     TranscriptPhraseDetailSerializer,
@@ -48,7 +49,8 @@ class StandardResultsSetPagination(PageNumberPagination):
     max_page_size = 1000
 
 
-class TranscriptViewSet(viewsets.ModelViewSet):
+class TranscriptViewSet(mixins.ListModelMixin,
+                        viewsets.GenericViewSet):
     permission_classes = (AllowAny,)
     queryset = Transcript.objects.all()
     lookup_field = 'asset_name'
@@ -130,6 +132,13 @@ class TranscriptViewSet(viewsets.ModelViewSet):
                 if phrase['pk'] == correction.transcript_phrase.pk:
                     phrase['text'] = correction.correction
         return Response(serializer.data)
+
+
+class TranscriptCreateViewset(mixins.CreateModelMixin,
+                              viewsets.GenericViewSet):
+    permission_classes = (IsAdminUser,)
+    queryset = Transcript.objects.all()
+    serializer_class = TranscriptCreateSerializer
 
 
 class TranscriptStatsViewSet(viewsets.ReadOnlyModelViewSet):
