@@ -675,3 +675,43 @@ The value for `transcript_phrase` should be equal to the PK of the phrase being 
 
 
 ## Front end documentation
+The front end for Fix It is built primarily on [React](https://facebook.github.io/react/ "React JS") using [Redux](http://redux.js.org/ "Redux JS") for state management.
+
+### Dependencies and Build Tools
+Fix It uses [Gulp](http://gulpjs.com/ "Gulp JS") for asset management. To get started you will need to run `npm install` inside `/mla_game/`. This will install all the JavaScript dependencies with [NPM](https://www.npmjs.com/ Node Package Manager). There are two tasks available.
+
+1. The default task `gulp` will:
+  * Sets the `NODE_ENV` variable to `'development'` which will build a development version of React (very useful for debugging).
+  * Compiles SCSS to CSS (compressed)
+  * Bundles all the JavaScript using Browserify
+  * Transpiles all the JavaScript using Babel.
+2. The production build task `gulp production_build`
+  * Sets the `NODE_ENV` to `'production'` which will build a production version of React (necessary before pushing code to the repository).
+  * Compresses and bundles JavasSript with production build.
+
+New NPM packages should added with `npm install package-name --save-dev`.
+
+### JavaScript outside of React
+All JavaScript that is not part of the react application is handled inline in `mla_game/templates/base.html` with the exception
+of [A11y Dialog](https://github.com/edenspiekermann/a11y-dialog "A11y Dialog") which is loaded as an external script. All this JavScript
+handles the login screen for the application and any interactivity before the application is mounted.
+
+
+### Application Architecture
+
+```bash
+.
+├── front-end
+    ├── dist
+    ├── javascript
+        ├── actions     # Redux action creators
+            ├── actionCreators.js   # Contains all action creators that talk to redux
+        ├── components  # React Components
+        ├── images      # Background images used in the app
+        ├── reducers    
+        ├── helpers.js
+        ├── index.js
+        ├── store.js
+    ├── scss
+
+```
