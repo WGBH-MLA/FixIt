@@ -702,16 +702,34 @@ handles the login screen for the application and any interactivity before the ap
 ```bash
 .
 ├── front-end
-    ├── dist
+    ├── dist    # Output files that get loaded in the browser
     ├── javascript
         ├── actions     # Redux action creators
-            ├── actionCreators.js   # Contains all action creators that talk to redux
+            ├── actionCreators.js   # Contains all action creators (functions that trigger actions)
         ├── components  # React Components
+            ├── partials        # Small reusable components
+            ├── routes          # Route components
+            ├── base.js         # Base component (gets mounted to router)
+            ├── base_connect.js # Configures base with Redux and state mapping
         ├── images      # Background images used in the app
-        ├── reducers    
-        ├── helpers.js
-        ├── index.js
-        ├── store.js
+        ├── reducers    # Describes what happens with actions
+        ├── helpers.js  # A collection of helper functions that can be used throughout the application
+        ├── index.js    # Application gets mounted to the dom here. Contains router
+        ├── store.js    # holds the application state tree. Included as prop on provider on index.js
     ├── scss
+        ├──  _animations.scss   # Contains canned animation mixins
+        ├──  _config.scss       # Configuration for scss. contains colors and grid
+        ├──  _gamefooter.scss   # All css for in game footer
+        ├──  _gamemenu.scss     # All css for game menu
+        ├──  _header.scss       # All css for game header
+        ├──  _mixins.scss       # Scss Mixins used across the app
+        ├──  _preferences.scss  # All css for preferences page
+        ├──  _reset.scss        # Css Reset
+        ├──  _slashPage.scss    # All css for the splash page
+        ├──  _typography.scss   # All css typographic base styles
+        ├──  _main.scss         # Imports all other .scss files and contains styling for in game ui.
 
 ```
+### Action Creators
+The action creators are functions that trigger data changes in the application. Some global data is fetched when the app mounts. This is triggered by `fetchData()` and inserts some
+global data into state such as profile information, 
