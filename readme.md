@@ -730,6 +730,42 @@ handles the login screen for the application and any interactivity before the ap
         ├──  _main.scss         # Imports all other .scss files and contains styling for in game ui.
 
 ```
-### Action Creators
-The action creators are functions that trigger data changes in the application. Some global data is fetched when the app mounts. This is triggered by `fetchData()` and inserts some
-global data into state such as profile information, 
+### Data Fetching
+The action creators are functions that trigger data changes in the application. Some global data is fetched when the app mounts initially. This is triggered by `fetchData()` and inserts some
+global data into state such as profile information, games scores, leader board and preferences. This data gets re fetched when the preferences route component gets unmounted.
+This insures that game preferences get applied for any future games that get fetched during the current session.
+
+Data for each game gets fetched when the route component for each respective game gets mounted. See the following action creators:
+
+* `fetchGameOne()` uses the api endpoint `/api/transcript/game_one`  
+* `fetchGameTwo()` uses the api endpoint  `/api/transcript/game_two`
+* `fetchGameThree()` uses the api endpoint  `/api/transcript/game_three`
+
+when each route gets unmounted the local state data for each game is reset.
+
+Other action creators trigger state changes throughout the app and are all located in the `actionCreators.js`.
+
+### Reducers
+The Reducers handle telling the application what happened when actions get triggered and handle how global state gets structured.
+Each reducer creates an object at the top level of the global state of the app. To inspect global state on the client side you can use the
+[React dev tools](https://github.com/facebook/react-devtools "React dev tools")
+
+### Components
+Components fall into two main categories: **Routes** and **Partials**
+
+**Route** Components are high level components that for the most part have their state managed in Redux. Local state is
+added only if it does not need to be shared with other components that are not nested inside of them (lifting state).
+
+**Partial** Components are small reusable components that usually inherit state through props from parent components. Partials 
+are more likely to have local state than routes.
+
+### CSS
+All game UI related CSS is stored in the main.scss file. High level components get there own files such as `_preferences.scss` or `_gamefooter.scss`
+The dependencies are:
+
+* [Gulp Compass](https://www.npmjs.com/package/gulp-compass "Gulp Compass")
+* [Sass](http://sass-lang.com/ "Sass")
+* [Susy](http://oddbird.net/susy/ "Susy")
+
+`_config.scss` contains the base setup for grids and colors. `_mixins.scss` contains scss mixin helpers.
+
