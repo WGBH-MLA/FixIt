@@ -675,9 +675,11 @@ The value for `transcript_phrase` should be equal to the PK of the phrase being 
 
 
 ## Front end documentation
+
 The front end for Fix It is built primarily on [React](https://facebook.github.io/react/ "React JS") using [Redux](http://redux.js.org/ "Redux JS") for state management.
 
 ### Dependencies and Build Tools
+
 Fix It uses [Gulp](http://gulpjs.com/ "Gulp JS") for asset management. To get started you will need to run `npm install` inside `/mla_game/`. This will install all the JavaScript dependencies with [NPM](https://www.npmjs.com/ Node Package Manager). There are two tasks available.
 
 1. The default task `gulp` will:
@@ -692,6 +694,7 @@ Fix It uses [Gulp](http://gulpjs.com/ "Gulp JS") for asset management. To get st
 New NPM packages should added with `npm install package-name --save-dev`.
 
 ### JavaScript outside of React
+
 All JavaScript that is not part of the react application is handled inline in `mla_game/templates/base.html` with the exception
 of [A11y Dialog](https://github.com/edenspiekermann/a11y-dialog "A11y Dialog") which is loaded as an external script. All this JavScript
 handles the login screen for the application and any interactivity before the application is mounted.
@@ -731,6 +734,7 @@ handles the login screen for the application and any interactivity before the ap
 
 ```
 ### Data Fetching
+
 The action creators are functions that trigger data changes in the application. Some global data is fetched when the app mounts initially. This is triggered by `fetchData()` and inserts some
 global data into state such as profile information, games scores, leader board and preferences. This data gets re fetched when the preferences route component gets unmounted.
 This insures that game preferences get applied for any future games that get fetched during the current session.
@@ -746,11 +750,13 @@ when each route gets unmounted the local state data for each game is reset.
 Other action creators trigger state changes throughout the app and are all located in the `actionCreators.js`.
 
 ### Reducers
+
 The Reducers handle telling the application what happened when actions get triggered and handle how global state gets structured.
 Each reducer creates an object at the top level of the global state of the app. To inspect global state on the client side you can use the
 [React dev tools](https://github.com/facebook/react-devtools "React dev tools")
 
 ### Components
+
 Components fall into two main categories: **Routes** and **Partials**
 
 **Route** Components are high level components that for the most part have their state managed in Redux. Local state is
@@ -760,6 +766,7 @@ added only if it does not need to be shared with other components that are not n
 are more likely to have local state than routes.
 
 ### CSS
+
 All game UI related CSS is stored in the main.scss file. High level components get there own files such as `_preferences.scss` or `_gamefooter.scss`
 The dependencies are:
 
