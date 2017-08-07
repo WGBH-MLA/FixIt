@@ -124,7 +124,7 @@ class TranscriptManager(models.Manager):
         for phrase in corrected_phrases:
             if phrase in already_voted_phrases:
                 pass
-            if phrase.num_corrections >= 2:
+            elif phrase.num_corrections >= 2:
                 phrase_corrections = TranscriptPhraseCorrection.objects.filter(
                     transcript_phrase=phrase,
                     not_an_error=False
