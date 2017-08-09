@@ -12,7 +12,8 @@ class PreferencesForm extends React.Component {
     this.state = {
       sources:[],
       topics:[],
-      saved:false
+      saved:false,
+      preferences_message:'Preferences Saved'
     }
   }
 
@@ -75,11 +76,15 @@ class PreferencesForm extends React.Component {
         clear_stations:true
       }
       // clear topics if thery are empty
-      patchData(`/api/profile/${userPk}/clear_preferences/`, data)
+      patchData(`/api/profile/${userPk}/clear_preferences/`, data).then(function(e){
+        console.log(e)
+      })
     }
 
     if(!topicsEmpty) {
-      patchData(`/api/profile/${userPk}/`, preferred_topics)
+      patchData(`/api/profile/${userPk}/`, preferred_topics).then(function(e){
+        console.log(e)
+      })
     }
 
     if(sourcesEmpty && !topicsEmpty) {
@@ -88,11 +93,15 @@ class PreferencesForm extends React.Component {
         clear_stations:true
       }
       // clear stations if they are empty
-      patchData(`/api/profile/${userPk}/clear_preferences/`, data)
+      patchData(`/api/profile/${userPk}/clear_preferences/`, data).then(function(e){
+        console.log(e)
+      })
     }
 
     if(!sourcesEmpty) {
-      patchData(`/api/profile/${userPk}/`, preferred_stations)
+      patchData(`/api/profile/${userPk}/`, preferred_stations).then(function(e){
+        console.log(e)
+      })
     }
 
 
@@ -101,12 +110,15 @@ class PreferencesForm extends React.Component {
         clear_topics:true,
         clear_stations:true
       }
+      this.setState({preferences_message:'Preferences Cleared'})
       // clear stations if they are empty
-      patchData(`/api/profile/${userPk}/clear_preferences/`, data)
+      patchData(`/api/profile/${userPk}/clear_preferences/`, data).then(function(e){
+        console.log(e)
+      })
     }
 
 
-    if(!sourcesEmpty || !topicsEmpty) {
+    // if(!sourcesEmpty || !topicsEmpty) {
       // ui updates
       let self = this
       this.setState({saved:true})
@@ -118,7 +130,9 @@ class PreferencesForm extends React.Component {
       .then(function() {
         self.setState({saved:false})
       })
-    }
+    // }
+
+
   }
 
 
@@ -167,7 +181,7 @@ class PreferencesForm extends React.Component {
           </fieldset>
           <button type='submit'>Save</button>
           {this.state.saved ? (
-            <span className="save-message">Preferences Saved</span>
+            <span className="save-message">{this.state.preferences_message}</span>
           ) : (
             ''
           )}
@@ -179,7 +193,7 @@ class PreferencesForm extends React.Component {
           </fieldset>
           <button type='submit'>Save</button>
           {this.state.saved ? (
-            <span className="save-message">Preferences Saved</span>
+            <span className="save-message">{this.state.preferences_message}</span>
           ) : (
             ''
           )}
