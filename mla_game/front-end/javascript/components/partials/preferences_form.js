@@ -72,8 +72,8 @@ class PreferencesForm extends React.Component {
 
     if(topicsEmpty && !sourcesEmpty) {
       let data = {
-        clear_topics:false,
-        clear_stations:true
+        clear_topics:true,
+        clear_stations:false
       }
       // clear topics if thery are empty
       patchData(`/api/profile/${userPk}/clear_preferences/`, data).then(function(e){
