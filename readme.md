@@ -57,7 +57,7 @@ Fix It has a few custom commands. Here's an overview:
 
 ## API documentation
 
-If you have `DEBUG=False` in your settings file, a [Swagger](https://swagger.io "Swagger") interface will be available at `/swagger/`. Additionally, the [Django Rest Framework browsable API](http://www.django-rest-framework.org/topics/browsable-api/ "DRF Browsable API") interface will be available at any given endpoint. Using Swagger is probably the easiest way to explore the API, but here is an overview of the endpoints available:
+If you have `DEBUG=True` in your settings file, a [Swagger](https://swagger.io "Swagger") interface will be available at `/swagger/`. Additionally, the [Django Rest Framework browsable API](http://www.django-rest-framework.org/topics/browsable-api/ "DRF Browsable API") interface will be available at any given endpoint. Using Swagger is probably the easiest way to explore the API, but here is an overview of the endpoints available:
 
 `/api/contributions/`: provides statistic about contributions from users.
 
@@ -662,6 +662,7 @@ The `transcript_phrase` key's value should be the PK of the phrase being correct
 }
 ```
 The value for `transcript_phrase_correction` should be equal to the PK of the correction being voted on.
+The `upvote` key is optional. The default value is `false`. A `false` value indicates a downvote.
 
 ----
 
