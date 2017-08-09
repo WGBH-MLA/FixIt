@@ -118,20 +118,17 @@ class PreferencesForm extends React.Component {
     }
 
 
-    // if(!sourcesEmpty || !topicsEmpty) {
-      // ui updates
-      let self = this
-      this.setState({saved:true})
-      new Promise(function(resolve) {
-        setTimeout(function() {
-          resolve();
-        }, 1500)
-      })
-      .then(function() {
-        self.setState({saved:false})
-      })
-    // }
-
+    // ui updates
+    let self = this
+    this.setState({saved:true})
+    new Promise(function(resolve) {
+      setTimeout(function() {
+        resolve();
+      }, 1500)
+    })
+    .then(function() {
+      self.setState({saved:false})
+    })
 
   }
 
