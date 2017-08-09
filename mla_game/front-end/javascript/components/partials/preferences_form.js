@@ -76,15 +76,11 @@ class PreferencesForm extends React.Component {
         clear_stations:false
       }
       // clear topics if thery are empty
-      patchData(`/api/profile/${userPk}/clear_preferences/`, data).then(function(e){
-        console.log(e)
-      })
+      patchData(`/api/profile/${userPk}/clear_preferences/`, data)
     }
 
     if(!topicsEmpty) {
-      patchData(`/api/profile/${userPk}/`, preferred_topics).then(function(e){
-        console.log(e)
-      })
+      patchData(`/api/profile/${userPk}/`, preferred_topics)
     }
 
     if(sourcesEmpty && !topicsEmpty) {
@@ -93,15 +89,11 @@ class PreferencesForm extends React.Component {
         clear_stations:true
       }
       // clear stations if they are empty
-      patchData(`/api/profile/${userPk}/clear_preferences/`, data).then(function(e){
-        console.log(e)
-      })
+      patchData(`/api/profile/${userPk}/clear_preferences/`, data)
     }
 
     if(!sourcesEmpty) {
-      patchData(`/api/profile/${userPk}/`, preferred_stations).then(function(e){
-        console.log(e)
-      })
+      patchData(`/api/profile/${userPk}/`, preferred_stations)
     }
 
 
@@ -112,9 +104,7 @@ class PreferencesForm extends React.Component {
       }
       this.setState({preferences_message:'Preferences Cleared'})
       // clear stations if they are empty
-      patchData(`/api/profile/${userPk}/clear_preferences/`, data).then(function(e){
-        console.log(e)
-      })
+      patchData(`/api/profile/${userPk}/clear_preferences/`, data)
     }
 
 
