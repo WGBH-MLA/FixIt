@@ -27,7 +27,7 @@ def get_or_create_profile(sender, user, request, **kwargs):
 
 
 def create_update_transcript_picks_task(sender, instance, action, reverse, model, pk_set, using, **kwargs):
-    if action == 'post_add' or action == 'post_remove':
+    if action in ['post_add', 'post_remove', 'post_clear']:
         update_transcript_picks(instance.user)
 
 
@@ -42,6 +42,15 @@ def considered_phrases_changed(sender, instance, action, reverse, model, pk_set,
             update_transcripts_awaiting_stats(phrases[0])
 
 
-m2m_changed.connect(create_update_transcript_picks_task, sender=Profile.preferred_stations.through)
-m2m_changed.connect(create_update_transcript_picks_task, sender=Profile.preferred_topics.through)
-m2m_changed.connect(considered_phrases_changed, sender=Profile.considered_phrases.through)
+m2m_changed.connect(
+    create_update_transcript_picks_task,
+    sender=Profile.preferred_stations.through
+)
+m2m_changed.connect(
+    create_update_transcript_picks_task,
+    sender=Profile.preferred_topics.through
+)
+m2m_changed.connect(
+    considered_phrases_changed,
+    sender=Profile.considered_phrases.through
+)
