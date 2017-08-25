@@ -52,6 +52,8 @@ class TranscriptManager(models.Manager):
                 return (transcript, False)
             except:
                 pass
+            if 'skipped_transcripts' in picks:
+                return (self.random_transcript(in_progress=False), False)
         return (self.random_transcript(), False)
 
     def game_two(self, user):
@@ -76,7 +78,9 @@ class TranscriptManager(models.Manager):
                 )
             )
 
-        counter = Counter(phrase.transcript for phrase in eligible_phrases).most_common()
+        counter = Counter(
+            phrase.transcript for phrase in eligible_phrases
+        ).most_common()
         total = 0
         transcripts = []
 
@@ -87,7 +91,8 @@ class TranscriptManager(models.Manager):
                 break
 
         game_two_ready_phrases = [
-            phrase.pk for phrase in eligible_phrases.filter(transcript__in=transcripts)
+            phrase.pk for phrase in
+            eligible_phrases.filter(transcript__in=transcripts)
         ][:20]
 
         transcripts_to_return = self.defer('transcript_data_blob').filter(
