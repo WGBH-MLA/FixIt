@@ -12,7 +12,8 @@ class PreferencesForm extends React.Component {
     this.state = {
       sources:[],
       topics:[],
-      saved:false
+      saved:false,
+      preferences_message:'Preferences Saved'
     }
   }
 
@@ -71,8 +72,8 @@ class PreferencesForm extends React.Component {
 
     if(topicsEmpty && !sourcesEmpty) {
       let data = {
-        clear_topics:false,
-        clear_stations:true
+        clear_topics:true,
+        clear_stations:false
       }
       // clear topics if thery are empty
       patchData(`/api/profile/${userPk}/clear_preferences/`, data)
@@ -101,24 +102,24 @@ class PreferencesForm extends React.Component {
         clear_topics:true,
         clear_stations:true
       }
+      this.setState({preferences_message:'Preferences Cleared'})
       // clear stations if they are empty
       patchData(`/api/profile/${userPk}/clear_preferences/`, data)
     }
 
 
-    if(!sourcesEmpty || !topicsEmpty) {
-      // ui updates
-      let self = this
-      this.setState({saved:true})
-      new Promise(function(resolve) {
-        setTimeout(function() {
-          resolve();
-        }, 1500)
-      })
-      .then(function() {
-        self.setState({saved:false})
-      })
-    }
+    // ui updates
+    let self = this
+    this.setState({saved:true})
+    new Promise(function(resolve) {
+      setTimeout(function() {
+        resolve();
+      }, 1500)
+    })
+    .then(function() {
+      self.setState({saved:false})
+    })
+
   }
 
 
@@ -167,7 +168,7 @@ class PreferencesForm extends React.Component {
           </fieldset>
           <button type='submit'>Save</button>
           {this.state.saved ? (
-            <span className="save-message">Preferences Saved</span>
+            <span className="save-message">{this.state.preferences_message}</span>
           ) : (
             ''
           )}
@@ -179,7 +180,7 @@ class PreferencesForm extends React.Component {
           </fieldset>
           <button type='submit'>Save</button>
           {this.state.saved ? (
-            <span className="save-message">Preferences Saved</span>
+            <span className="save-message">{this.state.preferences_message}</span>
           ) : (
             ''
           )}
