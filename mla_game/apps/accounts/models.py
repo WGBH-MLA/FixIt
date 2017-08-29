@@ -100,7 +100,7 @@ class TranscriptPicks(models.Model):
     Roughly, 'picks' is a dict containing:
     'station_transcripts': list of suitable transcripts based on station prefs
     'topic_transcripts': list of suitable transcripts based on topic prefs
-    'ideal_transcripts' intersection of above two
+    'ideal_transcripts': intersection of above two
     'acceptable_transcripts': symmetric difference of station/topic transcripts
     'partially_completed_transcripts': list of partially complete transcripts
     'completed_transcripts': list of complete transcripts
