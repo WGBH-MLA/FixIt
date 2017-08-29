@@ -62,17 +62,38 @@ class TranscriptManager(models.Manager):
         of phrase PKs to annotate.
         '''
         phrase_qs = TranscriptPhrase.objects.only('pk')
+        correction_qs = TranscriptPhraseCorrection.objects.only(
+            'transcript_phrase'
+        ).prefetch_related(
+            models.Prefetch(
+                'transcript_phrase', queryset=phrase_qs
+            )
+        )
         user_corrected = [
             correction.transcript_phrase.pk for correction in
             TranscriptPhraseCorrection.objects.filter(
-                user=user).prefetch_related(models.Prefetch(
-                    'transcript_phrase', queryset=phrase_qs)
+                user=user
+            ).prefetch_related(
+                models.Prefetch(
+                    'transcript_phrase', queryset=phrase_qs
                 )
+            )
+        ] + [
+            vote.transcript_phrase_correction.transcript_phrase.pk for vote in
+            TranscriptPhraseCorrectionVote.objects.filter(
+                user=user
+            ).prefetch_related(
+                models.Prefetch(
+                    'transcript_phrase_correction', queryset=correction_qs
+                )
+            )
         ]
         eligible_phrases = TranscriptPhrase.objects.filter(
                 confidence__lte=phrase_negative_limit,
                 num_corrections__lt=3
-            ).exclude(pk__in=user_corrected).prefetch_related(
+            ).exclude(
+                pk__in=user_corrected
+            ).prefetch_related(
                 models.Prefetch(
                     'transcript', queryset=self.defer('transcript_data_blob')
                 )
