@@ -67,7 +67,9 @@ class Profile(models.Model):
 
     def skip_transcript(self, data):
         if 'transcript' in data:
-            transcript_picks = TranscriptPicks.objects.get(user=self.user)
+            transcript_picks, created = TranscriptPicks.objects.get_or_create(
+                user=self.user
+            )
             picks = transcript_picks.picks
             if 'skipped_transcripts' not in picks:
                 picks['skipped_transcripts'] = []
@@ -87,7 +89,7 @@ class Profile(models.Model):
             transcript_picks.save()
 
     def __str__(self):
-        return self.user.username
+        return self.username
 
 
 class TranscriptPicks(models.Model):
