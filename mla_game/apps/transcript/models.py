@@ -38,19 +38,19 @@ class TranscriptManager(models.Manager):
                     pk=picks['partially_completed_transcripts'][0])
                 phrases = transcript.first().phrases.unseen(user)
                 return (transcript, phrases)
-            except:
+            except Exception:
                 pass
             try:
                 transcript = self.defer('transcript_data_blob').filter(
                     pk=random.choice(picks['ideal_transcripts']))
                 return (transcript, False)
-            except:
+            except Exception:
                 pass
             try:
                 transcript = self.defer('transcript_data_blob').filter(
                     pk=random.choice(picks['acceptable_transcripts']))
                 return (transcript, False)
-            except:
+            except Exception:
                 pass
             if 'skipped_transcripts' in picks:
                 return (self.random_transcript(in_progress=False), False)
