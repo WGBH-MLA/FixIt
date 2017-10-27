@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from django.db import migrations
 
 
-def create_upvotes(apps, schema_editor):
+def create_votes(apps, schema_editor):
     TranscriptPhraseDownvote = apps.get_model(
         'transcript', 'TranscriptPhraseDownvote'
     )
