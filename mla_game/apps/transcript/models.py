@@ -391,6 +391,15 @@ class TranscriptPhraseDownvote(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
+class TranscriptPhraseVote(models.Model):
+    transcript_phrase = models.ForeignKey(
+        TranscriptPhrase,
+        on_delete=models.CASCADE,
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    upvote = models.NullBooleanField()
+
+
 class TranscriptPhraseCorrection(models.Model):
     correction = models.CharField(max_length=500, blank=True, null=True)
     not_an_error = models.BooleanField(default=False)
