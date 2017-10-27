@@ -28,5 +28,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(create_upvotes)
+        migrations.RunPython(create_votes)
     ]
