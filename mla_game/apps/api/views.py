@@ -16,7 +16,9 @@ from ..transcript.models import (
     TranscriptPhraseCorrectionVote,
     Source, Topic,
 )
-from ..accounts.models import Profile, Score, Leaderboard, ContributionStatistics
+from ..accounts.models import (
+    Profile, Score, Leaderboard, ContributionStatistics
+)
 from ..game.models import LoadingScreenData
 from .serializers import (
     TranscriptSerializer,
