@@ -35,7 +35,7 @@ class TranscriptMetadataSerializer(serializers.ModelSerializer):
 class TranscriptPhraseSerializer(serializers.ModelSerializer):
     class Meta:
         model = TranscriptPhrase
-        fields = ('pk', 'start_time', 'end_time', 'text')
+        fields = ('pk', 'start_time', 'end_time', 'text', 'current_game')
 
 
 class TranscriptPhraseDetailSerializer(serializers.ModelSerializer):
