@@ -324,9 +324,8 @@ class TranscriptPhraseManager(models.Manager):
         return transcript_phrase
 
     def unseen(self, user):
-        profile = Profile.objects.get(user=user)
-        considered_phrases = [phrase.pk for phrase in
-                              profile.considered_phrases.all()]
+        considered_phrases = [vote.transcript_phrase.pk for vote in
+                              TranscriptPhraseVote.objects.filter(user=user)]
         return self.exclude(pk__in=considered_phrases)
 
 
