@@ -1,5 +1,5 @@
 -e git+https://github.com/WGBH/pua-sdk-python.git@36ecf63b3dda00110e396694d22a045583989cba#egg=popuparchive
-Django==1.11.3
+Django==1.11.6
 Jinja2==2.9.6
 MarkupSafe==1.0
 PyJWT==1.5.0
