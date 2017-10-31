@@ -134,7 +134,7 @@ class TranscriptPhraseVoteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TranscriptPhraseVote
-        fields = ('transcript_phrase', 'user')
+        fields = ('transcript_phrase', 'user', 'upvote')
 
     validators = [
         UniqueTogetherValidator(
