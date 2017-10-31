@@ -10,7 +10,7 @@ from django.db.models.expressions import RawSQL
 from django.db import models
 from localflavor.us.models import USStateField
 
-from mla_game.apps.accounts.models import TranscriptPicks, Profile
+from mla_game.apps.accounts.models import TranscriptPicks
 
 phrase_positive_limit = settings.TRANSCRIPT_PHRASE_POSITIVE_CONFIDENCE_LIMIT
 phrase_negative_limit = settings.TRANSCRIPT_PHRASE_NEGATIVE_CONFIDENCE_LIMIT
@@ -18,8 +18,6 @@ correction_lower_limit = settings.TRANSCRIPT_PHRASE_CORRECTION_LOWER_LIMIT
 correction_upper_limit = settings.TRANSCRIPT_PHRASE_CORRECTION_UPPER_LIMIT
 
 django_log = logging.getLogger('django')
-scraper_log = logging.getLogger('pua_scraper')
-error_log = logging.getLogger('pua_errors')
 
 
 class TranscriptManager(models.Manager):
@@ -294,7 +292,7 @@ class Transcript(models.Model):
                 self.data_blob_processed = True
                 self.save()
         else:
-            error_log.info(
+            django_log.info(
                 'Transcript {} has a malformed data blob.'.format(self.pk))
 
     def __str__(self):
@@ -479,13 +477,3 @@ class Topic(models.Model):
 
     def __str__(self):
         return self.topic
-
-
-class PopupPage(models.Model):
-    page = models.SmallIntegerField()
-    content = JSONField()
-
-
-class PopupCollection(models.Model):
-    collection = models.SmallIntegerField()
-    content = JSONField()

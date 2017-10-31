@@ -15,8 +15,6 @@ ALLOWED_HOSTS = ['fixit.americanarchive.org', 'fixit.wgbh-mla.org']
 
 LOG_DIRECTORY = '/home/wgbh/logs'
 
-PUA_CACHE_DIRECTORY = '/home/wgbh/pua_cache/'
-
 GA_CODE = os.environ['GA_CODE']
 
 AWS_HEADERS = {
@@ -67,21 +65,6 @@ LOGGING = {
             'class': 'logging.FileHandler',
             'filename': '{}/django.log'.format(LOG_DIRECTORY),
         },
-        'pua_scraper': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': '{}/pua_scraper.log'.format(LOG_DIRECTORY),
-        },
-        'pua_errors': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': '{}/pua_errors.log'.format(LOG_DIRECTORY),
-        },
-        'pua_stats': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': '{}/pua_stats.csv'.format(LOG_DIRECTORY),
-        },
         'metadata_errors': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
@@ -91,21 +74,6 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-        'pua_scraper': {
-            'handlers': ['pua_scraper'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-        'pua_errors': {
-            'handlers': ['pua_errors'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-        'pua_stats': {
-            'handlers': ['pua_stats'],
             'level': 'DEBUG',
             'propagate': True,
         },

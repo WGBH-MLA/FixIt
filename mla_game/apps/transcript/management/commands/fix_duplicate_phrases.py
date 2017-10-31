@@ -7,9 +7,6 @@ from ...models import (
 )
 
 django_log = logging.getLogger('django')
-logger = logging.getLogger('pua_scraper')
-stats = logging.getLogger('pua_stats')
-error_log = logging.getLogger('pua_errors')
 
 
 class Command(BaseCommand):

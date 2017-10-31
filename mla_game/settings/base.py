@@ -50,9 +50,6 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
   'fields': 'id, name, email'
 }
 
-PUA_KEY = os.environ['PUA_KEY']
-PUA_SECRET = os.environ['PUA_SECRET']
-
 pool = ConnectionPool(
     host='127.0.0.1',
     port=6379,

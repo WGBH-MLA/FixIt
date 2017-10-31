@@ -19,8 +19,7 @@ Once those basic requirements are present and running, follow these steps to get
 4. Choose a settings file to use, or create a new one. If you look at `mla_game/settings/vagrant.py`, you'll get an idea of the basic things you'll need for the app to run. At the most basic, you'll need to set a `SECRET_KEY` environment variable.
 5. Migrate your database using `./manage.py migrate`
 6. Ensure you have Huey running. See the [Huey documentation](https://huey.readthedocs.io/en/latest/ "Huey documentation") if you don't know how.
-7. If you have a Pop Up Archive account you want to use, make sure you've set the `PUA_KEY` and `PUA_SECRET` environment variables, then run `./manage.py scrape_archive`
-8. Run the server using `./manage.py runserver`
+7. Run the server using `./manage.py runserver`
 
 You should now have a running copy of Fix It.
 
@@ -42,8 +41,6 @@ Fix It has a few custom commands. Here's an overview:
 `get_aapb_metadata` scrapes transcript metadata from the AAPB.
 
 `fill_in_transcript_gaps` creates blank phrases during gaps in the transcript timecode.
-
-`fix_duplicate_phrases` removes duplicate phrases that might be created during PUA scraping.
 
 `recalculate_all` recalculates transcript statistics, phrase confidence, and correction confidence for all eligible transcripts, phrases, and corrections.
 

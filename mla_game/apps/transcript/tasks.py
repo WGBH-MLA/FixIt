@@ -1,4 +1,3 @@
-import requests
 import logging
 
 from django.conf import settings
@@ -6,7 +5,6 @@ from django.core.management import call_command
 from django.core.cache import cache
 from huey.contrib.djhuey import db_task, db_periodic_task
 from huey import crontab
-from popuparchive.client import Client
 
 from .models import (
     Transcript, TranscriptPhrase, TranscriptPhraseVote,
@@ -27,8 +25,6 @@ phrase_negative_limit = settings.TRANSCRIPT_PHRASE_NEGATIVE_CONFIDENCE_LIMIT
 correction_lower_limit = settings.TRANSCRIPT_PHRASE_CORRECTION_LOWER_LIMIT
 
 django_log = logging.getLogger('django')
-logger = logging.getLogger('pua_scraper')
-error_log = logging.getLogger('pua_errors')
 
 
 def calculate_confidence(upvotes, downvotes):
@@ -85,42 +81,8 @@ def calculate_correction_confidence(correction):
 
 
 @db_task()
-def process_transcript(item_id, collection_id):
-    client = Client(
-        settings.PUA_KEY,
-        settings.PUA_SECRET,
-    )
-    transcript_data = client.get_item(collection_id, item_id)
-    if transcript_data.status_code == requests.codes.ok:
-        try:
-            transcript_data = transcript_data.json()
-            new_transcript = Transcript(
-                name=transcript_data['title'],
-                id_number=transcript_data['id'],
-                asset_name='',
-                collection_id=transcript_data['collection_id'],
-                url=transcript_data['urls'],
-                transcript_data_blob=transcript_data
-            )
-            new_transcript.save()
-        except Exception:
-            error_log.info('=' * 80)
-            error_log.info(
-                'Could not make transcript from item {} in collection {}'.format(
-                    item_id, collection_id)
-            )
-    else:
-        error_log.info('=' * 80)
-        error_log.info(
-            'Failed to get item {} in collection {} - error code {}'.format(
-                item_id, collection_id, transcript_data.status_code
-            )
-        )
-
-
-@db_task()
 def process_blob(transcript):
-    logger.info(
+    django_log.info(
         'starting to process blob for {}'.format(
             transcript.name
         )
@@ -135,13 +97,13 @@ def create_process_blob_tasks():
         data_blob_processed=False
     )[:100]
     if unprocessed_transcripts:
-        logger.info(
+        django_log.info(
             'bulk processing {} transcript blobs'.format(
                 unprocessed_transcripts.count()
             )
         )
         for transcript in unprocessed_transcripts:
-            logger.info(
+            django_log.info(
                 'adding transcript {} to the queue'.format(
                     transcript.name
                 )
