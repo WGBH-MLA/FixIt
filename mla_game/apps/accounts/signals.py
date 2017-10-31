@@ -9,7 +9,6 @@ from mla_game.apps.transcript.models import TranscriptPhrase
 from .models import Profile
 from .tasks import (
     update_transcript_picks, update_partial_or_complete_transcripts,
-    create_explicit_upvotes_from_implied_upvotes,
 )
 
 django_log = logging.getLogger('django')
@@ -38,7 +37,6 @@ def considered_phrases_changed(sender, instance, action, reverse, model, pk_set,
         ]
         if phrases:
             update_partial_or_complete_transcripts(instance.user, phrases)
-            create_explicit_upvotes_from_implied_upvotes(instance.user, phrases)
             update_transcripts_awaiting_stats(phrases[0])
 
 

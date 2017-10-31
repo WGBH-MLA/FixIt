@@ -4,7 +4,7 @@ from django.db.models import Prefetch
 from mla_game.apps.transcript.tasks import update_transcript_stats
 
 from ...models import (
-    Transcript, TranscriptPhraseDownvote, TranscriptPhraseCorrection,
+    Transcript, TranscriptPhraseVote, TranscriptPhraseCorrection,
 )
 
 
@@ -15,9 +15,12 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         eligible_transcripts = set()
         transcript_qs = Transcript.objects.only('pk')
-        downvotes = TranscriptPhraseDownvote.objects.all().prefetch_related(
+        downvotes = TranscriptPhraseVote.objects.filter(
+            upvote=False
+        ).prefetch_related(
             Prefetch('transcript_phrase__transcript', queryset=transcript_qs)
         )
+
         upvotes = TranscriptPhraseCorrection.objects.all().prefetch_related(
             Prefetch('transcript_phrase__transcript', queryset=transcript_qs)
         )

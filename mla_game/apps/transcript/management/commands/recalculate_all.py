@@ -9,7 +9,7 @@ from mla_game.apps.transcript.tasks import (
 
 from ...models import (
     Transcript, TranscriptPhrase,
-    TranscriptPhraseDownvote, TranscriptPhraseCorrection,
+    TranscriptPhraseVote, TranscriptPhraseCorrection,
 )
 
 
@@ -25,7 +25,7 @@ class Command(BaseCommand):
             Prefetch('transcript', queryset=transcript_qs)
         )
 
-        all_phrase_downvotes = TranscriptPhraseDownvote.objects.all(
+        all_phrase_downvotes = TranscriptPhraseVote.objects.all(
             ).prefetch_related(Prefetch('transcript_phrase', queryset=phrase_qs))
 
         all_phrase_upvotes = TranscriptPhraseCorrection.objects.filter(

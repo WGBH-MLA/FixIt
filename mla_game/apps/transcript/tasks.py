@@ -9,7 +9,7 @@ from huey import crontab
 from popuparchive.client import Client
 
 from .models import (
-    Transcript, TranscriptPhrase, TranscriptPhraseDownvote,
+    Transcript, TranscriptPhrase, TranscriptPhraseVote,
     TranscriptPhraseCorrection, TranscriptPhraseCorrectionVote
 )
 
@@ -245,7 +245,7 @@ def update_transcript_stats(transcript):
             not_an_error=False
         )
         phrase_vote_count = 0
-        phrase_vote_count += TranscriptPhraseDownvote.objects.filter(
+        phrase_vote_count += TranscriptPhraseVote.objects.filter(
             transcript_phrase=phrase
         ).count()
         phrase_vote_count += TranscriptPhraseCorrection.objects.filter(

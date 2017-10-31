@@ -3,7 +3,7 @@ from rest_framework.validators import UniqueValidator, UniqueTogetherValidator
 
 from ..transcript.models import (
     Transcript, TranscriptPhrase, TranscriptMetadata,
-    TranscriptPhraseDownvote, TranscriptPhraseCorrection,
+    TranscriptPhraseVote, TranscriptPhraseCorrection,
     TranscriptPhraseCorrectionVote, Source, Topic
 )
 
@@ -128,18 +128,18 @@ class TranscriptPhraseCorrectionVoteSerializer(serializers.ModelSerializer):
         fields = ('transcript_phrase_correction', 'user', 'upvote')
 
 
-class TranscriptPhraseDownvoteSerializer(serializers.ModelSerializer):
+class TranscriptPhraseVoteSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(
         default=serializers.CurrentUserDefault()
     )
 
     class Meta:
-        model = TranscriptPhraseDownvote
+        model = TranscriptPhraseVote
         fields = ('transcript_phrase', 'user')
 
     validators = [
         UniqueTogetherValidator(
-            queryset=TranscriptPhraseDownvote.objects.all(),
+            queryset=TranscriptPhraseVote.objects.all(),
             fields=('user', 'transcript_phrase')
         )
     ]

@@ -6,7 +6,7 @@ from django.dispatch import receiver
 
 from .models import (
     TranscriptPhraseCorrection, TranscriptPhraseCorrectionVote,
-    TranscriptPhraseDownvote, TranscriptPhrase
+    TranscriptPhraseVote, TranscriptPhrase
 )
 from .tasks import (
     calculate_phrase_confidence, calculate_correction_confidence,
@@ -36,9 +36,11 @@ def self_vote_for_correction(sender, instance, **kwargs):
 
 @receiver(post_save)
 def update_phrase_confidence(sender, instance, **kwargs):
-    if sender.__name__ in ('TranscriptPhraseDownvote', 'TranscriptPhraseCorrection'):
-        downvotes = TranscriptPhraseDownvote.objects.filter(
-            transcript_phrase=instance.transcript_phrase).count()
+    if sender.__name__ in ('TranscriptPhraseVote', 'TranscriptPhraseCorrection'):
+        downvotes = TranscriptPhraseVote.objects.filter(
+            transcript_phrase=instance.transcript_phrase,
+            upvote=False
+        ).count()
         upvotes = TranscriptPhraseCorrection.objects.filter(
             transcript_phrase=instance.transcript_phrase, not_an_error=True).count()
         sample_size = downvotes + upvotes

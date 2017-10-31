@@ -355,8 +355,10 @@ class TranscriptPhrase(models.Model):
 
     @property
     def downvotes_count(self):
-        return TranscriptPhraseDownvote.objects.filter(
-            transcript_phrase=self.pk).count()
+        return TranscriptPhraseVote.objects.filter(
+            transcript_phrase=self.pk,
+            upvote=False
+        ).count()
 
     @property
     def considered_by_count(self):
@@ -381,14 +383,6 @@ class TranscriptPhrase(models.Model):
 
     def __str__(self):
         return str(self.transcript) + '_phrase_' + str(self.id)
-
-
-class TranscriptPhraseDownvote(models.Model):
-    transcript_phrase = models.ForeignKey(
-        TranscriptPhrase,
-        on_delete=models.CASCADE,
-    )
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class TranscriptPhraseVote(models.Model):

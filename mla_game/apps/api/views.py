@@ -11,7 +11,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAdminUser
 
 from ..transcript.models import (
-    Transcript, TranscriptPhrase, TranscriptPhraseDownvote,
+    Transcript, TranscriptPhrase, TranscriptPhraseVote,
     TranscriptPhraseCorrection,
     TranscriptPhraseCorrectionVote,
     Source, Topic,
@@ -26,7 +26,7 @@ from .serializers import (
     TranscriptStatsSerializer,
     TranscriptPhraseSerializer,
     TranscriptPhraseDetailSerializer,
-    TranscriptPhraseDownvoteSerializer,
+    TranscriptPhraseVoteSerializer,
     TranscriptPhraseCorrectionSerializer,
     TranscriptPhraseCorrectionVoteSerializer,
     ProfileSerializer, ProfilePatchSerializer,
@@ -171,12 +171,12 @@ class TranscriptPhraseDetailViewSet(viewsets.ReadOnlyModelViewSet):
     filter_class = TranscriptPhraseFilter
 
 
-class TranscriptPhraseDownvoteViewSet(mixins.ListModelMixin,
-                                      mixins.CreateModelMixin,
-                                      viewsets.GenericViewSet):
+class TranscriptPhraseVoteViewSet(mixins.ListModelMixin,
+                                  mixins.CreateModelMixin,
+                                  viewsets.GenericViewSet):
     permission_classes = (IsOwnerOrReadOnly,)
-    queryset = TranscriptPhraseDownvote.objects.all()
-    serializer_class = TranscriptPhraseDownvoteSerializer
+    queryset = TranscriptPhraseVote.objects.all()
+    serializer_class = TranscriptPhraseVoteSerializer
 
 
 class TranscriptPhraseCorrectionViewSet(mixins.ListModelMixin,

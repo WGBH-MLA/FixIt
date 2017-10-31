@@ -13,7 +13,7 @@ from .models import (
 )
 from mla_game.apps.transcript.models import (
     Transcript, TranscriptPhrase, TranscriptPhraseCorrection,
-    TranscriptPhraseCorrectionVote, TranscriptPhraseDownvote,
+    TranscriptPhraseCorrectionVote, TranscriptPhraseVote,
 )
 
 django_log = logging.getLogger('django')
@@ -83,31 +83,6 @@ def update_partial_or_complete_transcripts(user, pk_set, **kwargs):
 
     if picks['completed_transcripts'] != completed_transcripts_original:
         update_transcript_picks(user)
-
-
-@db_task()
-def create_explicit_upvotes_from_implied_upvotes(user, pk_set, **kwargs):
-    '''
-    When a user declines to downvote a phrase in game one, we infer that if
-    presented the same phrase in game two, she would choose 'not an error'.
-    Therefore, a 'not an error' correction is equivalent to an upvote for the
-    phrase.
-    '''
-    phrase_qs = TranscriptPhrase.objects.only('pk')
-    user_downvotes = TranscriptPhraseDownvote.objects.filter(
-        user=user).prefetch_related(
-            Prefetch('transcript_phrase', queryset=phrase_qs)
-        )
-    downvoted_phrases = [
-        downvote.transcript_phrase.pk for downvote in user_downvotes
-    ]
-    upvoted_phrases = [pk for pk in pk_set if pk not in downvoted_phrases]
-    for phrase in upvoted_phrases:
-        TranscriptPhraseCorrection.objects.get_or_create(
-            user=user,
-            not_an_error=True,
-            transcript_phrase=phrase
-        )
 
 
 @db_task()
@@ -355,7 +330,7 @@ def update_contribution_stats():
 
     players = Profile.objects.all().count()
 
-    phrase_downvotes_count = TranscriptPhraseDownvote.objects.all().count()
+    phrase_downvotes_count = TranscriptPhraseVote.objects.filter(upvote=False).count()
     phrase_upvotes_count = TranscriptPhraseCorrection.objects.filter(
         not_an_error=True).count()
     phrase_votes_count = phrase_downvotes_count + phrase_upvotes_count
@@ -392,8 +367,11 @@ def phrase_confidence_exceeds_positive_threshold(phrase):
                     not_an_error=True).defer('correction')
                 ]
     downvoters = [
-        downvote.user for downvote in
-        TranscriptPhraseDownvote.objects.filter(transcript_phrase=phrase)
+        vote.user for vote in
+        TranscriptPhraseVote.objects.filter(
+            transcript_phrase=phrase,
+            upvote=False
+        )
     ]
 
     for user in upvoters:
@@ -565,7 +543,10 @@ def correction_confidence_exceeds_positive_threshold(correction):
                 )
             )
 
-    for vote in TranscriptPhraseDownvote.objects.filter(transcript_phrase=original_phrase):
+    for vote in TranscriptPhraseVote.objects.filter(
+        transcript_phrase=original_phrase,
+        upvote=False
+    ):
         score, created = Score.objects.get_or_create(
             user=vote.user,
             score=10,

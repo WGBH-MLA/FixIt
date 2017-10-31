@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from mla_game.apps.accounts.models import Profile
 
 from ...models import (
-    Transcript, TranscriptPhraseDownvote
+    Transcript, TranscriptPhraseVote
 )
 from ...tasks import update_transcript_stats
 
@@ -25,9 +25,9 @@ class Command(BaseCommand):
             )
         for phrase in phrases:
             for user in users:
-                if random.choice([True, False]):
-                    TranscriptPhraseDownvote.objects.create(
-                        transcript_phrase=phrase,
-                        user=user
-                    )
+                TranscriptPhraseVote.objects.create(
+                    transcript_phrase=phrase,
+                    user=user,
+                    upvote=random.choice([True, False, None])
+                )
         update_transcript_stats(transcript)

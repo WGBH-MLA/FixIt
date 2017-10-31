@@ -2,7 +2,7 @@ from django.conf.urls import url, include
 from rest_framework import routers
 
 from .views import (
-    TranscriptViewSet, TranscriptCreateViewset, TranscriptPhraseDownvoteViewSet,
+    TranscriptViewSet, TranscriptCreateViewset, TranscriptPhraseVoteViewSet,
     TranscriptStatsViewSet, TranscriptPhraseDetailViewSet,
     TranscriptPhraseCorrectionViewSet, SourceViewSet,
     TranscriptPhraseCorrectionVoteViewSet,
@@ -17,7 +17,7 @@ router.register(r'transcript', TranscriptViewSet)
 router.register(r'add-transcript', TranscriptCreateViewset)
 router.register(r'statistics', TranscriptStatsViewSet)
 router.register(r'phrase', TranscriptPhraseDetailViewSet)
-router.register(r'transcriptphrasedownvote', TranscriptPhraseDownvoteViewSet)
+router.register(r'transcriptphrasevote', TranscriptPhraseVoteViewSet)
 router.register(r'transcriptphrasecorrection',
                 TranscriptPhraseCorrectionViewSet)
 router.register(r'transcriptphrasecorrectionvote',
