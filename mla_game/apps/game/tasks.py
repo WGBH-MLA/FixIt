@@ -34,9 +34,7 @@ def update_loading_screen_data():
         confidence__lte=phrase_negative_limit
     ).count()
 
-    data['suggested_corrections'] = TranscriptPhraseCorrection.objects.filter(
-        not_an_error=False,
-    ).count()
+    data['suggested_corrections'] = TranscriptPhraseCorrection.objects.all().count()
 
     data['validated_corrections'] = TranscriptPhraseCorrection.objects.filter(
         confidence__gte=correction_upper_limit

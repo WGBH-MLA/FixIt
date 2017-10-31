@@ -153,7 +153,6 @@ class TranscriptManager(models.Manager):
             elif phrase.num_corrections >= 2:
                 phrase_corrections = TranscriptPhraseCorrection.objects.filter(
                     transcript_phrase=phrase,
-                    not_an_error=False
                 )
                 if phrase_corrections.count() >= 2:
                     corrections.append(
@@ -361,12 +360,19 @@ class TranscriptPhrase(models.Model):
         ).count()
 
     @property
+    def upvotes_count(self):
+        return TranscriptPhraseVote.objects.filter(
+            transcript_phrase=self.pk,
+            upvote=True
+        ).count()
+
+    @property
     def considered_by_count(self):
         return self.profile_set.all().count()
 
     @property
     def corrections(self):
-        return self.transcript_phrase_correction.filter(not_an_error=False).count()
+        return self.transcript_phrase_correction.all().count()
 
     @property
     def total_length(self):
@@ -375,7 +381,7 @@ class TranscriptPhrase(models.Model):
     @property
     def best_correction(self):
         corrections = TranscriptPhraseCorrection.objects.filter(
-            transcript_phrase=self, not_an_error=False
+            transcript_phrase=self
         ).order_by('-confidence')
         if corrections.count() > 0:
             return corrections.first()
@@ -396,7 +402,6 @@ class TranscriptPhraseVote(models.Model):
 
 class TranscriptPhraseCorrection(models.Model):
     correction = models.CharField(max_length=500, blank=True, null=True)
-    not_an_error = models.BooleanField(default=False)
     no_words = models.BooleanField(default=False)
     confidence = models.FloatField(default=0)
     appearances = models.IntegerField(default=0)

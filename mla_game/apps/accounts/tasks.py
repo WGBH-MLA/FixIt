@@ -330,10 +330,7 @@ def update_contribution_stats():
 
     players = Profile.objects.all().count()
 
-    phrase_downvotes_count = TranscriptPhraseVote.objects.filter(upvote=False).count()
-    phrase_upvotes_count = TranscriptPhraseCorrection.objects.filter(
-        not_an_error=True).count()
-    phrase_votes_count = phrase_downvotes_count + phrase_upvotes_count
+    phrase_votes_count = TranscriptPhraseVote.objects.filter(upvote__in=[True, False]).count()
 
     correction_votes_count = TranscriptPhraseCorrectionVote.objects.all().count()
 
@@ -361,11 +358,12 @@ def phrase_confidence_exceeds_positive_threshold(phrase):
         +10 for users who upvoted
         -5 for users who downvoted
     '''
-    upvoters = [correction.user for correction in
-                TranscriptPhraseCorrection.objects.filter(
-                    transcript_phrase=phrase,
-                    not_an_error=True).defer('correction')
-                ]
+    upvoters = [
+        vote.user for vote in
+        TranscriptPhraseVote.objects.filter(
+            transcript_phrase=phrase, upvote=True
+        )
+    ]
     downvoters = [
         vote.user for vote in
         TranscriptPhraseVote.objects.filter(
@@ -432,11 +430,12 @@ def phrase_confidence_exceeds_negative_threshold(phrase):
     Points for users who contributed to negative confidence rating are awarded
     in correction_confidence_exceeds_positive_threshold.
     '''
-    upvoters = [correction.user for correction in
-                TranscriptPhraseCorrection.objects.filter(
-                    transcript_phrase=phrase,
-                    not_an_error=True)
-                ]
+    upvoters = [
+        vote.user for vote in
+        TranscriptPhraseVote.objects.filter(
+            transcript_phrase=phrase, upvote=True
+        )
+    ]
     for user in upvoters:
         Score.objects.get_or_create(
             user=user,
@@ -480,8 +479,7 @@ def correction_confidence_exceeds_positive_threshold(correction):
         transcript_phrase_correction=correction
     )
     competing_corrections = TranscriptPhraseCorrection.objects.filter(
-        transcript_phrase=original_phrase,
-        not_an_error=False,
+        transcript_phrase=original_phrase
     ).exclude(pk=correction.pk)
 
     author_score, created = Score.objects.get_or_create(
@@ -562,9 +560,9 @@ def correction_confidence_exceeds_positive_threshold(correction):
                 )
             )
 
-    for vote in TranscriptPhraseCorrection.objects.filter(
+    for vote in TranscriptPhraseVote.objects.filter(
         transcript_phrase=original_phrase,
-        not_an_error=True
+        upvote=True
     ):
         score, created = Score.objects.get_or_create(
             user=vote.user,

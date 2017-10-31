@@ -112,7 +112,6 @@ class TranscriptPhraseCorrectionSerializer(serializers.ModelSerializer):
         model = TranscriptPhraseCorrection
         fields = (
             'correction',
-            'not_an_error',
             'transcript_phrase',
             'user',
         )

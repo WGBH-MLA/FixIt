@@ -25,20 +25,14 @@ class Command(BaseCommand):
             Prefetch('transcript', queryset=transcript_qs)
         )
 
-        all_phrase_downvotes = TranscriptPhraseVote.objects.all(
-            ).prefetch_related(Prefetch('transcript_phrase', queryset=phrase_qs))
-
-        all_phrase_upvotes = TranscriptPhraseCorrection.objects.filter(
-            not_an_error=True
+        all_phrase_votes = TranscriptPhraseVote.objects.filter(
+            upvote__in=[True, False]
         ).prefetch_related(Prefetch('transcript_phrase', queryset=phrase_qs))
 
         phrases_to_recalculate = set(
-            [vote.transcript_phrase for vote in all_phrase_downvotes] +
-            [vote.transcript_phrase for vote in all_phrase_upvotes]
+            [vote.transcript_phrase for vote in all_phrase_votes]
         )
-        corrections_to_recalculate = TranscriptPhraseCorrection.objects.filter(
-            not_an_error=False
-        )
+        corrections_to_recalculate = TranscriptPhraseCorrection.objects.all()
 
         transcripts_to_recalculate = set(
             [phrase.transcript for phrase in phrases_to_recalculate] +

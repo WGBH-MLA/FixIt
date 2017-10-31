@@ -45,10 +45,7 @@ def calculate_confidence(upvotes, downvotes):
 @db_task()
 def calculate_phrase_confidence(phrase):
     downvotes = phrase.downvotes_count
-    upvotes = TranscriptPhraseCorrection.objects.filter(
-        transcript_phrase=phrase,
-        not_an_error=True
-    ).count()
+    upvotes = phrase.upvotes_count
     original_confidence = phrase.confidence
     new_confidence = calculate_confidence(upvotes, downvotes)
 
@@ -106,7 +103,7 @@ def process_transcript(item_id, collection_id):
                 transcript_data_blob=transcript_data
             )
             new_transcript.save()
-        except:
+        except Exception:
             error_log.info('=' * 80)
             error_log.info(
                 'Could not make transcript from item {} in collection {}'.format(
@@ -242,15 +239,9 @@ def update_transcript_stats(transcript):
     for phrase in transcript_phrases:
         phrase_corrections = TranscriptPhraseCorrection.objects.filter(
             transcript_phrase=phrase,
-            not_an_error=False
         )
-        phrase_vote_count = 0
-        phrase_vote_count += TranscriptPhraseVote.objects.filter(
-            transcript_phrase=phrase
-        ).count()
-        phrase_vote_count += TranscriptPhraseCorrection.objects.filter(
-            transcript_phrase=phrase,
-            not_an_error=True
+        phrase_vote_count = TranscriptPhraseVote.objects.filter(
+            upvote__in=[True, False]
         ).count()
         phrase_correction_count = phrase_corrections.count()
         if phrase_vote_count > 0:
