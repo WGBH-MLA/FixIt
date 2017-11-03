@@ -21,7 +21,7 @@ score_log = logging.getLogger('scores')
 
 
 @db_task()
-def update_partial_or_complete_transcripts(user, pk_set, **kwargs):
+def update_partial_or_complete_transcripts(user, **kwargs):
     '''
     This task gets triggered whenever Profile.considered_phrases is updated.
 
@@ -32,21 +32,22 @@ def update_partial_or_complete_transcripts(user, pk_set, **kwargs):
     If a transcript gets added to the completed transcripts, trigger
     update_transcript_picks so it gets removed from transcripts user will see.
     '''
-    profile = Profile.objects.get(user=user)
-
     transcript_picks, created = TranscriptPicks.objects.get_or_create(user=user)
     picks = transcript_picks.picks
 
     transcript_qs = Transcript.objects.only('pk').distinct()
 
+    considered_phrases = TranscriptPhrase.objects.filter(
+        pk__in=[vote.transcript_phrase.pk for vote in
+                TranscriptPhraseVote.objects.filter(user=user)]
+    )
+
     partial_transcripts = set(
         [phrase.transcript.pk for phrase in
-         profile.considered_phrases.all().prefetch_related(
+         considered_phrases.prefetch_related(
              Prefetch('transcript', queryset=transcript_qs)
          )]
     )
-    considered_phrases = [phrase.pk for phrase in
-                          profile.considered_phrases.all()]
 
     if 'completed_transcripts' in picks:
         completed_transcripts = picks['completed_transcripts']
@@ -56,22 +57,19 @@ def update_partial_or_complete_transcripts(user, pk_set, **kwargs):
     completed_transcripts_original = completed_transcripts[:]
 
     for transcript in partial_transcripts:
-        all_phrases = [
-            phrase.pk for phrase in
-            TranscriptPhrase.objects.filter(transcript=transcript).only('pk')
-        ]
+        all_phrases = TranscriptPhrase.objects.filter(
+            transcript=transcript
+        ).only('pk', 'current_game')
         seen = []
         unseen = []
         for phrase in all_phrases:
-            if phrase in considered_phrases:
+            if phrase in considered_phrases or phrase.current_game != 1:
                 seen.append(phrase)
             else:
                 unseen.append(phrase)
 
         if len(seen) == len(all_phrases):
             completed_transcripts.append(transcript)
-        else:
-            pass
 
     picks['partially_completed_transcripts'] = [
         transcript for transcript in partial_transcripts

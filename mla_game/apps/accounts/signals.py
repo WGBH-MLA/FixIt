@@ -2,10 +2,12 @@ import logging
 
 from django.contrib.auth.signals import user_logged_in
 from django.dispatch import receiver
-from django.db.models.signals import m2m_changed
+from django.db.models.signals import m2m_changed, post_save
 
 from mla_game.apps.transcript.tasks import update_transcripts_awaiting_stats
-from mla_game.apps.transcript.models import TranscriptPhrase
+from mla_game.apps.transcript.models import (
+    TranscriptPhrase, TranscriptPhraseVote,
+)
 from .models import Profile
 from .tasks import (
     update_transcript_picks, update_partial_or_complete_transcripts,
@@ -30,14 +32,11 @@ def create_update_transcript_picks_task(sender, instance, action, reverse, model
         update_transcript_picks(instance.user)
 
 
-def considered_phrases_changed(sender, instance, action, reverse, model, pk_set, using, **kwargs):
-    if action == 'post_add':
-        phrases = [
-            phrase for phrase in TranscriptPhrase.objects.filter(pk__in=pk_set)
-        ]
-        if phrases:
-            update_partial_or_complete_transcripts(instance.user, phrases)
-            update_transcripts_awaiting_stats(phrases[0])
+@receiver(post_save)
+def user_voted(sender, instance, created, raw, using, update_fields, **kwargs):
+    if sender.__name__ == 'TranscriptPhraseVote':
+        update_partial_or_complete_transcripts(instance.user)
+        update_transcripts_awaiting_stats(instance.phrase)
 
 
 m2m_changed.connect(
@@ -47,8 +46,4 @@ m2m_changed.connect(
 m2m_changed.connect(
     create_update_transcript_picks_task,
     sender=Profile.preferred_topics.through
-)
-m2m_changed.connect(
-    considered_phrases_changed,
-    sender=Profile.considered_phrases.through
 )
