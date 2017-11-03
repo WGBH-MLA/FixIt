@@ -16,7 +16,6 @@ class Profile(models.Model):
     username = models.CharField(max_length=50, default='')
     preferred_stations = models.ManyToManyField('transcript.Source')
     preferred_topics = models.ManyToManyField('transcript.Topic')
-    considered_phrases = models.ManyToManyField('transcript.TranscriptPhrase')
     completed_challenges = JSONField(
         default={
             'game_one': 0,

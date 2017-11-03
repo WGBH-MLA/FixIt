@@ -166,10 +166,9 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ('preferred_stations', 'preferred_topics', 'considered_phrases',
-                  'username', 'game_scores', 'pk', 'completed_challenges')
+        fields = ('preferred_stations', 'preferred_topics', 'username',
+                  'game_scores', 'pk', 'completed_challenges')
         extra_kwargs = {
-            'considered_phrases': {'write_only': True},
             'completed_challenges': {'read_only': True}
         }
 

@@ -24,7 +24,6 @@ from .serializers import (
     TranscriptSerializer,
     TranscriptCreateSerializer,
     TranscriptStatsSerializer,
-    TranscriptPhraseSerializer,
     TranscriptPhraseDetailSerializer,
     TranscriptPhraseVoteSerializer,
     TranscriptPhraseCorrectionSerializer,
@@ -242,15 +241,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
     @detail_route(methods=['patch'], serializer_class=ProfileTranscriptSkipSerializer)
     def skip_transcript(self, request, *args, **kwargs):
         self.get_object().skip_transcript(request.data)
-        return self.update(request, *args, **kwargs)
-
-    def partial_update(self, request, *args, **kwargs):
-        kwargs['partial'] = True
-        if 'considered_phrases' in request.data:
-            request.data['considered_phrases'] += [
-                phrase.pk for phrase in
-                self.get_object().considered_phrases.all()
-            ]
         return self.update(request, *args, **kwargs)
 
 
