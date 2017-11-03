@@ -70,7 +70,6 @@ class TranscriptViewSet(mixins.ListModelMixin,
             transcripts, many=True,
         )
         if phrases:
-            django_log.info(phrases)
             for transcript in serializer.data:
                 for phrase in transcript['phrases']:
                     if phrase['pk'] in phrases:
