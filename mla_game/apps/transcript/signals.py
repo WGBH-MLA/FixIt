@@ -19,7 +19,7 @@ min_samples = settings.MINIMUM_SAMPLE_SIZE
 
 
 @receiver(post_save, sender=TranscriptPhraseCorrection)
-def self_vote_for_correction(sender, instance, **kwargs):
+def correction_submitted(sender, instance, **kwargs):
     '''
     When a user submits a correction, we assume they'd vote for their own
     correction. So, we create a correction vote for the user.
@@ -36,6 +36,9 @@ def self_vote_for_correction(sender, instance, **kwargs):
         user=instance.user,
         upvote=True
     )
+    if instance.transcript_phrase.current_game != 3:
+        instance.transcript_phrase.current_game = 3
+        instance.transcript_phrase.save(update_fields=['current_game'])
     update_transcripts_awaiting_stats(instance)
 
 
