@@ -34,8 +34,9 @@ class TranscriptManager(models.Manager):
             try:
                 transcript = self.defer('transcript_data_blob').filter(
                     pk=picks['partially_completed_transcripts'][0])
-                phrases = transcript.first().phrases.unseen(user)
-                return (transcript, phrases)
+                voted_phrases = [vote.transcript_phrase.pk for vote in
+                                 TranscriptPhraseVote.objects.filter(user=user)]
+                return (transcript, voted_phrases)
             except Exception:
                 pass
             try:
@@ -325,6 +326,7 @@ class TranscriptPhraseManager(models.Manager):
         considered_phrases = [vote.transcript_phrase.pk for vote in
                               TranscriptPhraseVote.objects.filter(user=user)]
         return self.exclude(pk__in=considered_phrases)
+
 
 
 class TranscriptPhrase(models.Model):

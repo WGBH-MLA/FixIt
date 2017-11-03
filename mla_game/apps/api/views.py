@@ -71,8 +71,13 @@ class TranscriptViewSet(mixins.ListModelMixin,
             transcripts, many=True,
         )
         if phrases:
-            phrase_serializer = TranscriptPhraseSerializer(phrases, many=True)
-            serializer.data[0]['phrases'] = phrase_serializer.data
+            django_log.info(phrases)
+            for transcript in serializer.data:
+                for phrase in transcript['phrases']:
+                    if phrase['pk'] in phrases:
+                        phrase['user_can_vote'] = False
+                    else:
+                        phrase['user_can_vote'] = True
         return Response(serializer.data)
 
     @list_route()
