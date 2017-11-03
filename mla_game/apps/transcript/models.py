@@ -443,7 +443,7 @@ class TranscriptPhraseCorrectionVote(models.Model):
         TranscriptPhraseCorrection,
         on_delete=models.CASCADE,
     )
-    upvote = models.BooleanField(default=False)
+    upvote = models.NullBooleanField(default=None)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
