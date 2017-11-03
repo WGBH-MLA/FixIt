@@ -23,13 +23,13 @@ score_log = logging.getLogger('scores')
 @db_task()
 def update_partial_or_complete_transcripts(user, **kwargs):
     '''
-    This task gets triggered whenever Profile.considered_phrases is updated.
+    This task gets triggered whenever a user votes on a TranscriptPhrase
 
-    When a user considers a phrase in game one, the considered phrase is recorded
-    and the set of considered phrases is used to determine a list of partially
-    and fully completed transcripts.
+    When a user votes on a phrase in game one, the vote is recorded
+    and the set of votes and the current game of each phrase in the transcript
+    is used to determine a list of partially and fully completed transcripts.
 
-    If a transcript gets added to the completed transcripts, trigger
+    If a transcript gets added to the completed transcripts, we trigger
     update_transcript_picks so it gets removed from transcripts user will see.
     '''
     transcript_picks, created = TranscriptPicks.objects.get_or_create(user=user)

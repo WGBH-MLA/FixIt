@@ -328,7 +328,6 @@ class TranscriptPhraseManager(models.Manager):
         return self.exclude(pk__in=considered_phrases)
 
 
-
 class TranscriptPhrase(models.Model):
     id_number = models.IntegerField()
     text = models.TextField()

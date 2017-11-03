@@ -5,9 +5,7 @@ from django.dispatch import receiver
 from django.db.models.signals import m2m_changed, post_save
 
 from mla_game.apps.transcript.tasks import update_transcripts_awaiting_stats
-from mla_game.apps.transcript.models import (
-    TranscriptPhrase, TranscriptPhraseVote,
-)
+from mla_game.apps.transcript.models import TranscriptPhrase
 from .models import Profile
 from .tasks import (
     update_transcript_picks, update_partial_or_complete_transcripts,
