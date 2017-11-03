@@ -59,6 +59,11 @@ class TranscriptManager(models.Manager):
         '''
         Returns a tuple containing a queryset of Transcript objects and a list
         of phrase PKs to annotate.
+
+        Phrases are excluded under the following circumstances:
+            - User upvoted the original phrase
+            - User has submitted a correction for this phrase
+            - User has upvoted a submitted correction
         '''
         phrase_qs = TranscriptPhrase.objects.only('pk')
         correction_qs = TranscriptPhraseCorrection.objects.only(
@@ -68,7 +73,7 @@ class TranscriptManager(models.Manager):
                 'transcript_phrase', queryset=phrase_qs
             )
         )
-        user_corrected = [
+        ineligible_phrases = [
             correction.transcript_phrase.pk for correction in
             TranscriptPhraseCorrection.objects.filter(
                 user=user
@@ -80,18 +85,27 @@ class TranscriptManager(models.Manager):
         ] + [
             vote.transcript_phrase_correction.transcript_phrase.pk for vote in
             TranscriptPhraseCorrectionVote.objects.filter(
-                user=user
+                user=user,
+                upvote=True
             ).prefetch_related(
                 models.Prefetch(
                     'transcript_phrase_correction', queryset=correction_qs
                 )
             )
+        ] + [
+            vote.transcript_phrase.pk for vote in
+            TranscriptPhraseVote.objects.filter(
+                upvote=True
+            ).prefetch_related(
+                models.Prefetch(
+                    'transcript_phrase', queryset=phrase_qs
+                )
+            )
         ]
         eligible_phrases = TranscriptPhrase.objects.filter(
-                confidence__lte=phrase_negative_limit,
-                num_corrections__lt=3
+                current_game=2
             ).exclude(
-                pk__in=user_corrected
+                pk__in=ineligible_phrases
             ).prefetch_related(
                 models.Prefetch(
                     'transcript', queryset=self.defer('transcript_data_blob')
