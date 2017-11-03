@@ -18,11 +18,6 @@ class Command(BaseCommand):
         users = User.objects.all()
         transcript = Transcript.objects.random_transcript(in_progress=False).first()
         phrases = transcript.phrases.all()[:5]
-        for user in users:
-            profile = Profile.objects.get(user=user)
-            profile.considered_phrases.add(
-                *[phrase.pk for phrase in phrases]
-            )
         for phrase in phrases:
             for user in users:
                 TranscriptPhraseVote.objects.create(
