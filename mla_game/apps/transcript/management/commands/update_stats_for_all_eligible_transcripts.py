@@ -15,20 +15,20 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         eligible_transcripts = set()
         transcript_qs = Transcript.objects.only('pk')
-        downvotes = TranscriptPhraseVote.objects.filter(
-            upvote=False
+        votes = TranscriptPhraseVote.objects.filter(
+            upvote__in=[True, False]
         ).prefetch_related(
             Prefetch('transcript_phrase__transcript', queryset=transcript_qs)
         )
-
-        upvotes = TranscriptPhraseCorrection.objects.all().prefetch_related(
+        corrections = TranscriptPhraseCorrection.objects.all().prefetch_related(
             Prefetch('transcript_phrase__transcript', queryset=transcript_qs)
         )
+
         eligible_transcripts.update(
-            [vote.transcript_phrase.transcript.pk for vote in downvotes]
+            [vote.transcript_phrase.transcript.pk for vote in votes]
         )
         eligible_transcripts.update(
-            [vote.transcript_phrase.transcript.pk for vote in upvotes]
+            [correction.transcript_phrase.transcript.pk for correction in corrections]
         )
 
         transcripts_to_process = Transcript.objects.filter(
