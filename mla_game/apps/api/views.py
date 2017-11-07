@@ -112,7 +112,6 @@ class TranscriptViewSet(mixins.ListModelMixin,
                                 'corrected_text': correction.correction
                             } for correction in correction[phrase['pk']]
                         ]
-                        correction[phrase['pk']]
 
         return Response(serializer.data)
 
