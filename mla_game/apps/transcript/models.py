@@ -136,13 +136,16 @@ class TranscriptManager(models.Manager):
 
     def game_three(self, user):
         '''
-        Game three needs to present a transcript with all of the corrections
+        Game three needs to present a transcript with submitted corrections for
+        voting
 
         Returns a tuple containing a queryset of Transcript objects and a list
         of dicts containing corrections for phrases in the Transcripts
         '''
         transcript_qs = self.only('pk')
-        phrase_qs = TranscriptPhrase.objects.prefetch_related(
+        phrase_qs = TranscriptPhrase.objects.filter(
+            current_game=3
+        ).prefetch_related(
             models.Prefetch('transcript', queryset=transcript_qs))
         correction_qs = TranscriptPhraseCorrection.objects.prefetch_related(
             models.Prefetch('transcript_phrase', queryset=phrase_qs))
@@ -152,27 +155,28 @@ class TranscriptManager(models.Manager):
         )
         already_voted_phrases = set(
             [vote.original_phrase for vote in
-             TranscriptPhraseCorrectionVote.objects.prefetch_related(
+             TranscriptPhraseCorrectionVote.objects.filter(
+                 user=user
+             ).prefetch_related(
                  'transcript_phrase_correction'
-             ).filter(user=user)]
+             )]
         )
+        eligible_phrases = corrected_phrases - already_voted_phrases
 
         corrections = []
         associated_transcripts = []
 
-        for phrase in corrected_phrases:
-            if phrase in already_voted_phrases:
-                pass
-            elif phrase.num_corrections >= 2:
-                phrase_corrections = TranscriptPhraseCorrection.objects.filter(
-                    transcript_phrase=phrase,
+        for phrase in eligible_phrases:
+            phrase_corrections = TranscriptPhraseCorrection.objects.filter(
+                transcript_phrase=phrase,
+                confidence__gte=0.0
+            ).order_by('pk')
+            if phrase_corrections.count() >= 1:
+                corrections.append(
+                    {phrase.pk: [phrase_corrections.first()],
+                     'transcript': phrase.transcript.pk}
                 )
-                if phrase_corrections.count() >= 2:
-                    corrections.append(
-                        {phrase.pk: phrase_corrections,
-                         'transcript': phrase.transcript.pk}
-                    )
-                    associated_transcripts.append(phrase.transcript.pk)
+                associated_transcripts.append(phrase.transcript.pk)
 
         associated_transcripts.sort(
             key=Counter(associated_transcripts).get, reverse=True
