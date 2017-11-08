@@ -23,6 +23,7 @@ from mla_game.apps.accounts.tasks import (
 phrase_positive_limit = settings.TRANSCRIPT_PHRASE_POSITIVE_CONFIDENCE_LIMIT
 phrase_negative_limit = settings.TRANSCRIPT_PHRASE_NEGATIVE_CONFIDENCE_LIMIT
 correction_lower_limit = settings.TRANSCRIPT_PHRASE_CORRECTION_LOWER_LIMIT
+correction_ineligibility_limit = settings.TRANSCRIPT_PHRASE_CORRECTION_NEGATIVE_CONFIDENCE_LIMIT
 
 django_log = logging.getLogger('django')
 
@@ -36,6 +37,67 @@ def calculate_confidence(upvotes, downvotes):
     elif downvotes > upvotes:
         confidence = -(downvotes/total_votes)
     return confidence
+
+
+def phrase_is_corrected(phrase):
+    corrected = False
+    if phrase.confidence >= phrase_positive_limit:
+        corrected = True
+    else:
+        corrections = TranscriptPhraseCorrection.objects.filter(
+            transcript_phrase=phrase,
+            confidence__gte=correction_lower_limit
+        )
+        if corrections.count() > 0:
+            corrected = True
+    return corrected
+
+
+def game_two_eligible(phrase):
+    '''A phrase is in game two if the original phrase has a negative confidence
+    score and there are no submitted corrections or all submitted corrections
+    have a negative confidence score.'''
+    eligible = False
+    corrections = TranscriptPhraseCorrection.objects.filter(
+        transcript_phrase=phrase
+    )
+    if (corrections.count() == 0) or (corrections.count() == len(
+        [correction.pk for correction in corrections
+         if correction.confidence <= correction_ineligibility_limit]
+    )):
+        eligible = True
+    return eligible
+
+
+def game_three_eligible(phrase):
+    '''A phrase can be in game three if it has a correction under the positive
+    correction limit but not if a correction exceeds the limit'''
+    eligible = False
+    corrections = TranscriptPhraseCorrection.objects.filter(
+        transcript_phrase=phrase
+    )
+    votable_corrections = [
+        correction.pk for correction in corrections
+        if correction.confidence >= correction_ineligibility_limit
+        and correction.confidence < correction_lower_limit
+    ]
+    if len(votable_corrections) > 0:
+        eligible = True
+    return eligible
+
+
+@db_task()
+def assign_current_game(phrase):
+    if phrase_is_corrected(phrase):
+        current_game = 0
+    elif game_two_eligible(phrase):
+        current_game = 2
+    elif game_three_eligible(phrase):
+        current_game = 3
+
+    if current_game != phrase.current_game:
+        phrase.current_game = current_game
+        phrase.save()
 
 
 @db_task()

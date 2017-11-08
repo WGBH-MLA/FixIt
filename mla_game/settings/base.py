@@ -27,6 +27,9 @@ TRANSCRIPT_PHRASE_POSITIVE_CONFIDENCE_LIMIT = .75
 # original phrase needs correction
 TRANSCRIPT_PHRASE_NEGATIVE_CONFIDENCE_LIMIT = -.6
 
+# correction is no longer eligible for voting; we'll either collect more
+# corrections or use the next one in game three
+TRANSCRIPT_PHRASE_CORRECTION_NEGATIVE_CONFIDENCE_LIMIT = -.6
 # correction is good enough to award points and export data
 TRANSCRIPT_PHRASE_CORRECTION_LOWER_LIMIT = .6
 # correction no longer needs votes and can replace original phrase
