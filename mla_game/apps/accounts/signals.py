@@ -5,7 +5,6 @@ from django.dispatch import receiver
 from django.db.models.signals import m2m_changed, post_save
 
 from mla_game.apps.transcript.tasks import update_transcripts_awaiting_stats
-from mla_game.apps.transcript.models import TranscriptPhrase
 from .models import Profile
 from .tasks import (
     update_transcript_picks, update_partial_or_complete_transcripts,
@@ -34,7 +33,7 @@ def create_update_transcript_picks_task(sender, instance, action, reverse, model
 def user_voted(sender, instance, created, raw, using, update_fields, **kwargs):
     if sender.__name__ == 'TranscriptPhraseVote':
         update_partial_or_complete_transcripts(instance.user)
-        update_transcripts_awaiting_stats(instance.phrase)
+        update_transcripts_awaiting_stats(instance.transcript_phrase)
 
 
 m2m_changed.connect(
