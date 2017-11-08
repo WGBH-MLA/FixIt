@@ -3,8 +3,6 @@ import random
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 
-from mla_game.apps.accounts.models import Profile
-
 from ...models import (
     Transcript, TranscriptPhraseVote
 )
@@ -23,6 +21,6 @@ class Command(BaseCommand):
                 TranscriptPhraseVote.objects.create(
                     transcript_phrase=phrase,
                     user=user,
-                    upvote=random.choice([True, False, None])
+                    upvote=random.choice([True, False])
                 )
         update_transcript_stats(transcript)
