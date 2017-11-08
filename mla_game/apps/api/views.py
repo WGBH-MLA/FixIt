@@ -76,6 +76,13 @@ class TranscriptViewSet(mixins.ListModelMixin,
                         phrase['user_can_vote'] = False
                     else:
                         phrase['user_can_vote'] = True
+        else:
+            for transcript in serializer.data:
+                for phrase in transcript['phrases']:
+                    if phrase['current_game'] in [1, 2]:
+                        phrase['user_can_vote'] = True
+                    else:
+                        phrase['user_can_vote'] = False
         return Response(serializer.data)
 
     @list_route()
