@@ -24,9 +24,7 @@ class GameOne extends React.Component{
 
     this.state = {
       wrongPhrases:{},
-      consideredPhrases:[]
     }  
-
   }
 
   selectPhrase(phrase, pk, button){
@@ -50,26 +48,44 @@ class GameOne extends React.Component{
       // set button to higlighted state
       button.className = 'text highlighted'
     }
-  }
+  } 
 
   handleProgress() {
     const { gameone, setIsPlaying, setCurrentTime, playPhrase, wait, advanceSegment, updateTotalScore, updateGameScore } = this.props
     // copy state
     const wrongPhrases = {...this.state.wrongPhrases}
     let userPk = this.props.initialData.user[0].pk
-    let consideredPhrases = []
+    let phrasesNotPickedPlayable = []
     gameone.phrases.map(function(index, keys) {
       let active = gameone.segment,
+          key = `phrase-${index.pk}`,
+          inWrongList = key in wrongPhrases,
+          usercanVote = index.user_can_vote,
           currentSegment = active === keys || active === keys + 1 || active === keys -1
+      // check the current segment
       if(currentSegment) {
-        consideredPhrases.push(index.pk)
+        // check if all phrases in the current segment are not marked as incorrect and if the user can vote on it
+        if(!inWrongList && usercanVote) {
+          // console.log('not marked and can vote', index)
+          phrasesNotPickedPlayable.push(index.pk)
+        }
       }
     })
-    let considered_phrases = {
-      "considered_phrases":consideredPhrases
+
+    // POST phrases that that are in play and not marked with upvote true
+    for (var i = 0; i < phrasesNotPickedPlayable.length; i++) {
+      let data = {
+        upvote:true,
+        transcript_phrase: phrasesNotPickedPlayable[i]
+      }
+      // helper ajax function to post downvote
+      postData('/api/transcriptphrasevote/', data).then((response) =>{
+        console.log(response)
+      })
     }
+
     // patch considered phrases for game one    
-    patchData(`/api/profile/${userPk}/`, considered_phrases)
+    // patchData(`/api/profile/${userPk}/`, considered_phrases)
     
     // disable advance round for three seconds when round updates
     wait(3000)
@@ -100,20 +116,23 @@ class GameOne extends React.Component{
       return
     } else {
       for(let key in wrongPhrases){
-        // construct object for downvote
+        // construct object for upvote
+        // POST phrases that have been marked incorrect with upvote false
         let data = {
+          upvote: false,
           transcript_phrase: wrongPhrases[key].pk
         }
         // helper ajax function to post downvote
-        postData('/api/transcriptphrasedownvote/', data);
-        this.props.updateTotalScore(1);
-        this.props.updateGameScore(1);
-        
+        postData('/api/transcriptphrasevote/', data).then((response) =>{
+          console.log(response)
+        })
+
+        this.props.updateTotalScore(1)
+        this.props.updateGameScore(1)
         let phraseScore = {
           game:'1',
           score:1
         }
-        
         postData('/api/score/', phraseScore)
       }
       // clean state
