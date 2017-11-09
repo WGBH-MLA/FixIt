@@ -186,9 +186,13 @@ export function fetchGameOne(){
       .then(function(gameOneInfo){
         let phraseData = gameOneInfo.data[0].phrases,
             // get end time
-            transcriptEndTime = Number(gameOneInfo.data[0].phrases[0].start_time) + 300,
-            // filter based on 5 minutes from start time
-            phrases = phraseData.filter(phrase => (phrase.end_time <= transcriptEndTime))
+            transcriptEndTime = Number(phraseData.find(phrase => (phrase.user_can_vote)).start_time) + 300,
+            // find first workable phrase
+            startPoint = phraseData.findIndex(phrase => (phrase.user_can_vote)),
+            // slice phrases on first workable
+            slicedPhrases = phraseData.slice(startPoint),
+            // filter based on 5 minutes from first phrase found user can vote one
+            phrases = slicedPhrases.filter(phrase => (phrase.end_time <= transcriptEndTime))
 
         // store data for gameone
         dispatch(storeGameOne(gameOneInfo.data[0]))
