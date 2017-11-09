@@ -34,7 +34,7 @@ def correction_submitted(sender, instance, **kwargs):
     TranscriptPhraseCorrectionVote.objects.get_or_create(
         transcript_phrase_correction=instance,
         user=instance.user,
-        upvote=True
+        upvote=None
     )
     if instance.transcript_phrase.current_game != 3:
         instance.transcript_phrase.current_game = 3
