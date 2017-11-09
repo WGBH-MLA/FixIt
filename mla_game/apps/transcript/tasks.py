@@ -53,6 +53,17 @@ def phrase_is_corrected(phrase):
     return corrected
 
 
+def game_one_eligible(phrase):
+    '''A phrase is in game two if the confidence rating of the original phrase
+    does not exceed either relevant threshold'''
+    eligible = False
+    not_bad_enough = phrase.confidence > phrase_negative_limit
+    not_good_enough = phrase.confidence < phrase_positive_limit
+    if not_good_enough and not_bad_enough:
+        eligible = True
+    return eligible
+
+
 def game_two_eligible(phrase):
     '''A phrase is in game two if the original phrase has a negative confidence
     score and there are no submitted corrections or all submitted corrections
@@ -61,10 +72,12 @@ def game_two_eligible(phrase):
     corrections = TranscriptPhraseCorrection.objects.filter(
         transcript_phrase=phrase
     )
-    if (corrections.count() == 0) or (corrections.count() == len(
+    no_corrections = corrections.count() == 0
+    no_good_corrections = corrections.count() == len(
         [correction.pk for correction in corrections
          if correction.confidence <= correction_ineligibility_limit]
-    )):
+    )
+    if no_corrections or no_good_corrections:
         eligible = True
     return eligible
 
@@ -88,12 +101,22 @@ def game_three_eligible(phrase):
 
 @db_task()
 def assign_current_game(phrase):
+    '''This should get triggered when any of the relevant things happen:
+        - a phrase confidence changes
+        - a phrase correction is submitted
+        - a correction confidence changes'''
     if phrase_is_corrected(phrase):
         current_game = 0
+    elif game_one_eligible(phrase):
+        current_game = 1
     elif game_two_eligible(phrase):
         current_game = 2
     elif game_three_eligible(phrase):
         current_game = 3
+    else:
+        # By this point something clearly has gone wrong. Phrases should never
+        # have a game 4 state, so if they ever exist we can debug with them.
+        current_game = 4
 
     if current_game != phrase.current_game:
         phrase.current_game = current_game
@@ -107,7 +130,13 @@ def calculate_phrase_confidence(phrase):
     original_confidence = phrase.confidence
     new_confidence = calculate_confidence(upvotes, downvotes)
 
-    TranscriptPhrase.objects.filter(pk=phrase.pk).update(confidence=new_confidence)
+    if original_confidence != new_confidence:
+        TranscriptPhrase.objects.filter(
+            pk=phrase.pk
+        ).update(
+            confidence=new_confidence
+        )
+        assign_current_game(phrase)
 
     if new_confidence >= phrase_positive_limit:
         phrase_confidence_exceeds_positive_threshold(phrase)
@@ -129,11 +158,13 @@ def calculate_correction_confidence(correction):
         transcript_phrase_correction=correction
     )
     upvotes = votes.filter(upvote=True).count()
-    downvotes = votes.count() - upvotes
+    downvotes = votes.filter(upvote=False).count()
     new_confidence = calculate_confidence(upvotes, downvotes)
 
-    TranscriptPhraseCorrection.objects.filter(
-        pk=correction.pk).update(confidence=new_confidence)
+    if new_confidence != original_confidence:
+        TranscriptPhraseCorrection.objects.filter(
+            pk=correction.pk).update(confidence=new_confidence)
+        assign_current_game(correction.transcript_phrase)
 
     if new_confidence >= correction_lower_limit:
         correction_confidence_exceeds_positive_threshold(correction)

@@ -10,7 +10,7 @@ from .models import (
 )
 from .tasks import (
     calculate_phrase_confidence, calculate_correction_confidence,
-    update_transcripts_awaiting_stats,
+    update_transcripts_awaiting_stats, assign_current_game
 )
 
 django_log = logging.getLogger('django')
@@ -20,12 +20,14 @@ min_samples = settings.MINIMUM_SAMPLE_SIZE
 
 @receiver(post_save, sender=TranscriptPhraseCorrection)
 def correction_submitted(sender, instance, **kwargs):
-    '''
-    When a user submits a correction, we assume they'd vote for their own
-    correction. So, we create a correction vote for the user.
-    Also, add the corresponding transcript to the pool of transcripts that need
-    their stats updated.
-    '''
+    '''When a user submits a correction, we assume they'd also downvote the
+    original phrase, so we create that vote here.
+
+    We also add a placeholder null vote for the submitted correction. This makes
+    it easy to filter the user's own corrections from game three.
+
+    Also, assign the phrase to game three and add the corresponding transcript
+    to the pool of transcripts that need their stats updated.'''
     TranscriptPhraseVote.objects.get_or_create(
         transcript_phrase=instance.transcript_phrase,
         user=instance.user,
@@ -36,22 +38,24 @@ def correction_submitted(sender, instance, **kwargs):
         user=instance.user,
         upvote=None
     )
-    if instance.transcript_phrase.current_game != 3:
-        instance.transcript_phrase.current_game = 3
-        instance.transcript_phrase.save(update_fields=['current_game'])
+    assign_current_game(instance.transcript_phrase)
     update_transcripts_awaiting_stats(instance)
 
 
 @receiver(post_save)
 def update_phrase_confidence(sender, instance, **kwargs):
-    if sender.__name__ in ('TranscriptPhraseVote', 'TranscriptPhraseCorrection'):
+    if sender.__name__ == 'TranscriptPhraseVote':
         sample_size = TranscriptPhraseVote.objects.filter(
             transcript_phrase=instance.transcript_phrase.pk,
             upvote__in=[True, False]
         ).count()
         if sample_size != instance.transcript_phrase.num_votes:
             this_pk = instance.transcript_phrase.pk
-            TranscriptPhrase.objects.filter(pk=this_pk).update(num_votes=sample_size)
+            TranscriptPhrase.objects.filter(
+                pk=this_pk
+            ).update(
+                num_votes=sample_size
+            )
         if sample_size >= min_samples:
             calculate_phrase_confidence(instance.transcript_phrase)
 
