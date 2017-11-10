@@ -1,6 +1,7 @@
 import logging
 
 from django.conf import settings
+from django.shortcuts import get_object_or_404
 
 from django_filters import rest_framework as djfilters
 
@@ -293,8 +294,7 @@ class MessageView(generics.RetrieveAPIView):
     serializer_class = MessageSerializer
 
     def get_object(self):
-        obj = Message.objects.get(active=True)
-        self.check_object_permissions(self.request, obj)
+        obj = get_object_or_404(Message, active=True)
         return obj
 
 
