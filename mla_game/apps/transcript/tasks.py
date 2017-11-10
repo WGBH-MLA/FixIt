@@ -131,11 +131,8 @@ def calculate_phrase_confidence(phrase):
     new_confidence = calculate_confidence(upvotes, downvotes)
 
     if original_confidence != new_confidence:
-        TranscriptPhrase.objects.filter(
-            pk=phrase.pk
-        ).update(
-            confidence=new_confidence
-        )
+        phrase.confidence = new_confidence
+        phrase.save()
         assign_current_game(phrase)
 
     if new_confidence >= phrase_positive_limit:
