@@ -142,25 +142,20 @@ class TranscriptManager(models.Manager):
         Returns a tuple containing a queryset of Transcript objects and a list
         of dicts containing corrections for phrases in the Transcripts
         '''
-        transcript_qs = self.only('pk')
-        phrase_qs = TranscriptPhrase.objects.filter(
+        game_three_phrases = TranscriptPhrase.objects.filter(
             current_game=3
-        ).prefetch_related(
-            models.Prefetch('transcript', queryset=transcript_qs))
-        correction_qs = TranscriptPhraseCorrection.objects.prefetch_related(
-            models.Prefetch('transcript_phrase', queryset=phrase_qs))
-        corrected_phrases = set(
-            [phrase.transcript_phrase for phrase in
-             correction_qs.all()]
         )
-        already_voted_phrases = set(
-            [vote.original_phrase for vote in
-             TranscriptPhraseCorrectionVote.objects.filter(
-                 user=user
-             ).prefetch_related(
-                 'transcript_phrase_correction'
-             )]
-        )
+        corrected_phrases = {
+            phrase for phrase in game_three_phrases
+        }
+        already_voted_phrases = {
+            vote.original_phrase for vote in
+            TranscriptPhraseCorrectionVote.objects.filter(
+                user=user
+            ).prefetch_related(
+                'transcript_phrase_correction'
+            )
+        }
         eligible_phrases = corrected_phrases - already_voted_phrases
 
         corrections = []
