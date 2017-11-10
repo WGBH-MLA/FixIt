@@ -7,7 +7,7 @@ from .views import (
     TranscriptPhraseCorrectionViewSet, SourceViewSet,
     TranscriptPhraseCorrectionVoteViewSet,
     TopicViewSet, ProfileViewSet, ProfileStatsViewSet,
-    ScoreViewSet, LeaderboardView, LoadingScreenView,
+    ScoreViewSet, LeaderboardView, LoadingScreenView, MessageView,
     ContributionStatisticsView
 )
 
@@ -33,5 +33,6 @@ urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^leaderboard/$', LeaderboardView.as_view()),
     url(r'^loading/$', LoadingScreenView.as_view()),
+    url(r'^message/$', MessageView.as_view()),
     url(r'^contributions/$', ContributionStatisticsView.as_view()),
 ]

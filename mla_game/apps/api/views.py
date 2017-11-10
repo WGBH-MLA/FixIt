@@ -19,7 +19,7 @@ from ..transcript.models import (
 from ..accounts.models import (
     Profile, Score, Leaderboard, ContributionStatistics
 )
-from ..game.models import LoadingScreenData
+from ..game.models import LoadingScreenData, Message
 from .serializers import (
     TranscriptSerializer,
     TranscriptCreateSerializer,
@@ -32,7 +32,8 @@ from .serializers import (
     ProfilePreferenceClearSerializer, ProfileTranscriptSkipSerializer,
     SourceSerializer, TopicSerializer,
     ScoreSerializer, LeaderboardSerializer,
-    LoadingScreenSerializer, ContributionStatisticsSerializer
+    LoadingScreenSerializer, MessageSerializer,
+    ContributionStatisticsSerializer,
 )
 from .permissions import IsOwner, IsOwnerOrStaff, IsOwnerOrReadOnly
 
@@ -282,6 +283,17 @@ class LoadingScreenView(generics.RetrieveAPIView):
 
     def get_object(self):
         obj = LoadingScreenData.objects.latest('date')
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+
+class MessageView(generics.RetrieveAPIView):
+    permission_classes = (AllowAny,)
+    queryset = Message.objects.all()
+    serializer_class = MessageSerializer
+
+    def get_object(self):
+        obj = Message.objects.get(active=True)
         self.check_object_permissions(self.request, obj)
         return obj
 

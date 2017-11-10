@@ -11,7 +11,7 @@ from ..accounts.models import (
     Profile, Score, Leaderboard, ContributionStatistics,
 )
 
-from ..game.models import LoadingScreenData
+from ..game.models import LoadingScreenData, Message
 
 import logging
 django_log = logging.getLogger('django')
@@ -234,6 +234,12 @@ class LoadingScreenSerializer(serializers.ModelSerializer):
     class Meta:
         model = LoadingScreenData
         fields = ('data',)
+
+
+class MessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Message
+        fields = ('message',)
 
 
 class ContributionStatisticsSerializer(serializers.ModelSerializer):
