@@ -20,7 +20,8 @@ urlpatterns = [
     url(r'^api/', include('mla_game.apps.api.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^logout/$', logout, name='logout', kwargs={'next_page': '/'}),
-    url('', include('social_django.urls', namespace='social'))
+    url('', include('social_django.urls', namespace='social')),
+    url(r'^markdownx/', include('markdownx.urls')),
 ]
 
 if settings.DEBUG:
