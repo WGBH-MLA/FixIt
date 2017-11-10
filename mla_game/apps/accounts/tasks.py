@@ -464,7 +464,6 @@ def correction_confidence_exceeds_positive_threshold(correction):
 
     Awards points:
         10 points to user who authored the correction
-        -5 points to users who authored competing corrections
 
         10 points to users who upvoted the correction
         -5 points to users who downvoted the correction
@@ -476,9 +475,6 @@ def correction_confidence_exceeds_positive_threshold(correction):
     correction_votes = TranscriptPhraseCorrectionVote.objects.filter(
         transcript_phrase_correction=correction
     )
-    competing_corrections = TranscriptPhraseCorrection.objects.filter(
-        transcript_phrase=original_phrase
-    ).exclude(pk=correction.pk)
 
     author_score, created = Score.objects.get_or_create(
         user=correction.user,
@@ -521,21 +517,6 @@ def correction_confidence_exceeds_positive_threshold(correction):
             score_log.info(
                 '{} -5 points for voting against {} confidence'.format(
                     vote.user, correction
-                )
-            )
-
-    for competitor in competing_corrections:
-        score, created = Score.objects.get_or_create(
-            user=competitor.user,
-            score=-5,
-            game=2,
-            justification=1,
-            correction=correction
-        )
-        if created:
-            score_log.info(
-                '{} -5 points for submitting {} against {}'.format(
-                    competitor.user, competitor, correction
                 )
             )
 
