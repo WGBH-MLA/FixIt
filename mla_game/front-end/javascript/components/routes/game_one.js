@@ -21,9 +21,13 @@ class GameOne extends React.Component{
     this.handleProgress = this.handleProgress.bind(this)
     this.selectPhrase = this.selectPhrase.bind(this)
     this.reload = this.reload.bind(this)
+    this.addToPlayable = this.addToPlayable.bind(this)
+    this.removePlayable = this.removePlayable.bind(this)
+    this.skipUnplayable = this.skipUnplayable.bind(this)
 
     this.state = {
       wrongPhrases:{},
+      playablePhrases:{}
     }  
   }
 
@@ -40,7 +44,7 @@ class GameOne extends React.Component{
     if(keyExists){
       // remove item and set state
       delete wrongPhrases[key];
-      this.setState({ wrongPhrases });
+      this.setState({ wrongPhrases })
       // reset button to default state
       button.className = 'text'
     } else {
@@ -50,23 +54,55 @@ class GameOne extends React.Component{
     }
   } 
 
+  addToPlayable(phrase, index) {
+    const playablePhrases = {...this.state.playablePhrases};
+    // keys
+    let key = `can_vote-${index}`
+    let keyExists = key in playablePhrases;
+    playablePhrases[key] = phrase;
+
+     if(!keyExists){
+        this.setState({ playablePhrases })
+     } else {
+      return;
+     }
+  }
+
+  removePlayable() {
+    this.setState({ playablePhrases:{} })
+  }
+
+  skipUnplayable(){
+    const playablePhrases = {...this.state.playablePhrases};
+    const allFalse = (obj) => {
+      for(let value in obj) {
+        if(!obj[value]) return false;
+        return true;
+      }
+    }
+    const hasPlayable = allFalse(playablePhrases)
+  }
+
   handleProgress() {
     const { gameone, setIsPlaying, setCurrentTime, playPhrase, wait, advanceSegment, updateTotalScore, updateGameScore } = this.props
+    
     // copy state
     const wrongPhrases = {...this.state.wrongPhrases}
     let userPk = this.props.initialData.user[0].pk
     let phrasesNotPickedPlayable = []
+
+
     gameone.phrases.map(function(index, keys) {
       let active = gameone.segment,
           key = `phrase-${index.pk}`,
           inWrongList = key in wrongPhrases,
           usercanVote = index.user_can_vote,
           currentSegment = active === keys || active === keys + 1 || active === keys -1
+
       // check the current segment
       if(currentSegment) {
         // check if all phrases in the current segment are not marked as incorrect and if the user can vote on it
         if(!inWrongList && usercanVote) {
-          // console.log('not marked and can vote', index)
           phrasesNotPickedPlayable.push(index.pk)
         }
       }
@@ -85,7 +121,6 @@ class GameOne extends React.Component{
     }
 
     // patch considered phrases for game one    
-    // patchData(`/api/profile/${userPk}/`, considered_phrases)
     
     // disable advance round for three seconds when round updates
     wait(3000)
@@ -137,7 +172,8 @@ class GameOne extends React.Component{
       }
       // clean state
       this.setState({
-        wrongPhrases:{}
+        wrongPhrases:{},
+        playablePhrases:{}
       })
     }
   }
@@ -171,6 +207,11 @@ class GameOne extends React.Component{
     if(tipDismissed) {
       this.props.showTipTwo(false)
     }
+  }
+
+  shouldComponentUpdate() {
+    this.removePlayable()
+    return true
   }
   
   componentWillMount(){
@@ -217,6 +258,7 @@ class GameOne extends React.Component{
                 ''
               ) : (
                 <div>
+                  <pre>{JSON.stringify(this.state, null, 2)}</pre>
                   <Audio 
                     isPlaying={gameone.isPlaying}
                     src={gameone.media_url} 
@@ -271,7 +313,7 @@ class GameOne extends React.Component{
               </div>
             ) : (
               <div>
-                <ul className="game-phrase-list">
+                <ul className="game-phrase-list">                
                   {gameone.phrases.map((index, key) => {
                   let items = Number(key);
                   let currentRound = gameone.segment <= items + 4 && gameone.segment >= items -4;
@@ -282,6 +324,7 @@ class GameOne extends React.Component{
                       <li key={key} className={this.activePhrase(gameone.currentTime, index.start_time, index.end_time)}>
                         <Phrase
                            selectPhrase={this.selectPhrase}
+                           addToPlayable={this.addToPlayable}
                            playPhrase={this.playPhrase}
                            endOfRoundOne={this.props.endOfRoundOne}
                            time={gameone.currentTime} 
@@ -290,9 +333,10 @@ class GameOne extends React.Component{
                            keys={key}
                            details={index}
                            wrongPhrases={gameone.wrongPhrases}
+                           playablePhrases={this.state.playablePhrases}
                            setSegmentStart={setSegmentStart}
                            setSegmentEnd={setSegmentEnd}
-                           advanceSegment={advanceSegment}
+                           advanceSegment={advanceSegment}                      
                         />
                       </li>
                      )
