@@ -258,7 +258,7 @@ class GameOne extends React.Component{
                 ''
               ) : (
                 <div>
-                  <pre>{JSON.stringify(this.state, null, 2)}</pre>
+                  {/*<pre>{JSON.stringify(this.state, null, 2)}</pre> */}
                   <Audio 
                     isPlaying={gameone.isPlaying}
                     src={gameone.media_url} 
