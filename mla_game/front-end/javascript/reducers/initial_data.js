@@ -14,7 +14,8 @@ function initialData(state = {
       return {...state, 
         loading: false, 
         user:action.user,
-        score:action.score
+        score:action.score,
+        message:action.message
       }
     case 'SET_USERNAME':
       return {...state, 

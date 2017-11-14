@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router'
 import GameNav from '../partials/game_navigation'
 import MenuFooter from '../partials/menu_footer'
+import UserMessage from '../partials/user_message'
 
 class GameMenu extends React.Component {
 

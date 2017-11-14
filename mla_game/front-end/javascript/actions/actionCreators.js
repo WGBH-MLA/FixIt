@@ -111,11 +111,12 @@ function requestInitialData(bool){
   }
 }
 
-function storeInitialData(user, score) {
+function storeInitialData(user, score, message) {
   return {
     type: 'GET_INITIAL_DATA_SUCCESS',
     user,
-    score
+    score,
+    message
   }
 }
 
@@ -135,9 +136,10 @@ export function fetchData(){
         axios.get('/api/leaderboard/'),
         axios.get('/api/source/'),
         axios.get('/api/topic/'),
-        axios.get('/api/loading/')
+        axios.get('/api/loading/'),
+        axios.get('/api/message/')
       ])
-      .then(axios.spread(function (profile, score, leaders, source, topic, loading) {
+      .then(axios.spread(function (profile, score, leaders, source, topic, loading, message) {
         const { game_scores, username } = profile.data.results[0]
         const leaderData =  leaders.data.leaderboard
 
@@ -145,7 +147,7 @@ export function fetchData(){
         dispatch(storePreferenceOptions(source.data.results, topic.data.results))
 
         dispatch(setLeaderboard(leaderData.past_month, leaderData.past_week, leaderData.all_time, leaderData.game_one_all_time, leaderData.game_two_all_time, leaderData.game_three_all_time))
-        dispatch(storeInitialData(profile.data.results, score.data.results))
+        dispatch(storeInitialData(profile.data.results, score.data.results, message.data.message))
         // set username
         dispatch(setUsername(username))
         // set total score
@@ -197,7 +199,7 @@ export function fetchGameOne(){
         // store data for gameone
         dispatch(storeGameOne(gameOneInfo.data[0]))
         // set start time for for audio based on start time of first phrase
-        dispatch(setStartTime(Number(gameOneInfo.data[0].phrases[0].start_time)))
+        dispatch(setStartTime(Number(phraseData.find(phrase => (phrase.user_can_vote)).start_time)))
         // set end time based on forst phrase start time
         dispatch(setPhraseList(phrases))
 
