@@ -51,8 +51,15 @@ class TranscriptManager(models.Manager):
                 return (transcript, False)
             except Exception:
                 pass
-            if 'skipped_transcripts' in picks:
-                return (self.random_transcript(in_progress=False), False)
+
+            skipped = 'skipped_transcripts' in picks
+            auto_skipped = 'auto_skipped_transcripts' in picks
+            completed = 'completed_transcripts' in picks
+            if skipped or auto_skipped or completed:
+                return (
+                    self.random_transcript(in_progress=False, picks=picks),
+                    False
+                )
         return (self.random_transcript(), False)
 
     def game_two(self, user):
@@ -186,12 +193,35 @@ class TranscriptManager(models.Manager):
 
         return (transcripts, corrections)
 
-    def random_transcript(self, in_progress=True):
+    def random_transcript(self, in_progress=True, picks={}):
+        '''Returns a semi-random transcript.
+
+        If in_progress is True, we'll pick the transcript that has the most
+        phrases that are close to the minimum sample size, in order to move
+        the most transcripts from game one to game two.
+
+        If picks contain skipped or completed transcripts, we'll want to exclude
+        those transcripts from the set of transcripts to use.'''
+
+        excluded = []
+
+        if 'skipped_transcripts' in picks:
+            excluded += picks['skipped_transcripts']
+        if 'auto_skipped_transcripts' in picks:
+            excluded += picks['auto_skipped_transcripts']
+        if 'completed_transcripts' in picks:
+            excluded += picks['completed_transcripts']
+
+        if excluded:
+            qs = self.exclude(pk__in=excluded)
+        else:
+            qs = self.all()
+
         if in_progress is False:
             transcripts_in_progress = False
         else:
             transcripts_in_progress = [
-                transcript.pk for transcript in self.filter(
+                transcript.pk for transcript in qs.filter(
                     statistics__phrases_close_to_minimum_sample_size_percent__gt=0
                 ).only('pk', 'statistics').order_by(
                     RawSQL(
@@ -202,10 +232,10 @@ class TranscriptManager(models.Manager):
             ]
 
         if transcripts_in_progress:
-            return self.filter(
+            return qs.filter(
                 pk=transcripts_in_progress[-1]
             )
-        return self.filter(
+        return qs.filter(
             pk__in=[
                 random.choice(
                     [transcript.pk for transcript in self.all().only('pk')]
