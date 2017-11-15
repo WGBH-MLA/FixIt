@@ -1,0 +1,84 @@
+.user-message {
+  @include clearfix;
+  clear:both;
+  position:relative;
+  background:$progress;
+  color:$theme-primary;
+  padding:.75em 1em;
+  border-radius:.45em;
+  margin-bottom:1.5em;
+  @include susy-breakpoint($screen-sm-min, $map-sm) {
+    padding:2em 4em 1em 4em;
+  }
+  .notify-icon {
+    max-width:2.5em;
+    max-height:2.5em;
+    display:none;
+    @include susy-breakpoint($screen-sm-min, $map-sm) {
+      display:inline-block;
+      float:left;
+      margin-right:3em;
+    }
+  }
+  button {
+    @include plain-button;
+    position:absolute;
+    right:.65em;
+    top:.5em;
+    width:2em;
+    height:2em;
+    padding:0;
+    svg {
+      @include center;
+      width:2em;
+      height:2em;
+      stroke-width: 15;
+      stroke:$theme-primary;
+    }
+  }
+  & > div {
+    display:inline-block;
+    float:left;
+    width:calc(100% - 2.05em);
+    @include susy-breakpoint($screen-sm-min, $map-sm) {
+      width:calc(100% - 10em);
+    }
+  }
+}
+
+.message {
+  background:$progress;
+  .user-message {
+    padding:.75em 0;
+    @include susy-breakpoint($screen-sm-min, $map-sm) {
+      padding:2em 0 1em 0;
+    }
+    button {
+      right:0;
+      top:.75em;
+      svg {
+        stroke:white;
+        fill:white;
+      }
+      @include susy-breakpoint($screen-sm-min, $map-sm) {
+        @include center(false, true);
+        right:1.5em;
+        width:3em;
+        height:3em;
+        svg {
+          width:3em;
+          height:3em;
+        }
+      }
+    }
+    .notify-icon {
+      fill:white;
+    }
+    & > div {
+      max-width:55em;
+      @include susy-breakpoint($screen-sm-min, $map-sm) {
+        width:calc(100% - 12em);
+      }
+    }
+  }
+}

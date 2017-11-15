@@ -21,9 +21,6 @@ class GameOne extends React.Component{
     this.handleProgress = this.handleProgress.bind(this)
     this.selectPhrase = this.selectPhrase.bind(this)
     this.reload = this.reload.bind(this)
-    this.addToPlayable = this.addToPlayable.bind(this)
-    this.removePlayable = this.removePlayable.bind(this)
-    this.skipUnplayable = this.skipUnplayable.bind(this)
 
     this.state = {
       wrongPhrases:{},
@@ -53,36 +50,7 @@ class GameOne extends React.Component{
       button.className = 'text highlighted'
     }
   } 
-
-  addToPlayable(phrase, index) {
-    const playablePhrases = {...this.state.playablePhrases};
-    // keys
-    let key = `can_vote-${index}`
-    let keyExists = key in playablePhrases;
-    playablePhrases[key] = phrase;
-
-     if(!keyExists){
-        this.setState({ playablePhrases })
-     } else {
-      return;
-     }
-  }
-
-  removePlayable() {
-    this.setState({ playablePhrases:{} })
-  }
-
-  skipUnplayable(){
-    const playablePhrases = {...this.state.playablePhrases};
-    const allFalse = (obj) => {
-      for(let value in obj) {
-        if(!obj[value]) return false;
-        return true;
-      }
-    }
-    const hasPlayable = allFalse(playablePhrases)
-  }
-
+  
   handleProgress() {
     const { gameone, setIsPlaying, setCurrentTime, playPhrase, wait, advanceSegment, updateTotalScore, updateGameScore } = this.props
     
@@ -208,11 +176,6 @@ class GameOne extends React.Component{
       this.props.showTipTwo(false)
     }
   }
-
-  shouldComponentUpdate() {
-    this.removePlayable()
-    return true
-  }
   
   componentWillMount(){
     this.props.fetchGameOne()
@@ -324,7 +287,6 @@ class GameOne extends React.Component{
                       <li key={key} className={this.activePhrase(gameone.currentTime, index.start_time, index.end_time)}>
                         <Phrase
                            selectPhrase={this.selectPhrase}
-                           addToPlayable={this.addToPlayable}
                            playPhrase={this.playPhrase}
                            endOfRoundOne={this.props.endOfRoundOne}
                            time={gameone.currentTime} 
@@ -333,7 +295,6 @@ class GameOne extends React.Component{
                            keys={key}
                            details={index}
                            wrongPhrases={gameone.wrongPhrases}
-                           playablePhrases={this.state.playablePhrases}
                            setSegmentStart={setSegmentStart}
                            setSegmentEnd={setSegmentEnd}
                            advanceSegment={advanceSegment}                      
