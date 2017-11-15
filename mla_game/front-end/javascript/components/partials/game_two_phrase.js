@@ -56,7 +56,7 @@ class Phrase extends React.Component{
     this.span.contentEditable = false
     const notAnError = {
         transcript_phrase:details.pk,
-        not_an_error:true
+        upvote:true,
     }
     selectPhrase(notAnError, details.pk)
     disableProgress(false)
@@ -181,7 +181,7 @@ class Phrase extends React.Component{
                       ):(
                         <div>
                           <button className='fix-phrase' onClick={() => this.markPhrase()} >{this.state.corrected ? 'Edit' : 'Fix'}</button>
-                          <button className='fix-phrase not-error' onClick={() => this.notError()}>Not An Error</button>
+                          {/*<button className='fix-phrase not-error' onClick={() => this.notError()}>Not An Error</button>*/}
                         </div>
                       )}
                     </div>
