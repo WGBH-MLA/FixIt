@@ -1,6 +1,5 @@
 require('es6-promise').polyfill();
 import axios from 'axios'
-import { partition } from '../helpers'
 
 // score actions
 export function updateTotalScore(amount){
@@ -59,6 +58,21 @@ export function resetGameScoreThree(amount){
     amount
   }
 }
+
+export function setMenuMessage(bool) {
+  return {
+    type:'SET_MENU_MESSAGE',
+    messageMenu:bool
+  }
+}
+
+export function setPreferencesMessage(bool) {
+  return {
+    type:'SET_PREFERENCES_MESSAGE',
+    messagePreferences:bool
+  }
+}
+
 
 function setGameScores(gameone, gametwo, gamethree){
   return {
@@ -235,7 +249,7 @@ export function setSegmentEnd(segmentEnd){
   }
 }
 
-// for grabbing the first twent minutes for game round
+// for grabbing the first twenty minutes for game round
 function setPhraseList(newPhrases) {
   return {
     type: 'SET_PHRASE_LIST',
@@ -518,10 +532,6 @@ export function fetchGameTwo(){
         // store data for gametwo
         dispatch(storeGameTwo(data))
         // set start time for for audio based on start time of first phrase
-
-        // testing
-        // var split = partition(phrases, 3)        
-        // console.table(split)
 
       })
   }

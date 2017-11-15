@@ -1,98 +1,53 @@
 .menu-heading {
-  display:inline-block;
-  text-align:center;
   margin: .3em 1.5em .5em 0;
-  @include susy-breakpoint($screen-md-min, $map-md) {
-    width:calc(100% - 7em);
-    margin:.5em 0 .25em 0;
-    float:right;
-  }
-}
-
-.preferences-link {
-  @include transition(color, 300ms, ease-in);
-  background:$theme-primary;
-  border-radius:.35em;
-  text-align:center;
-  padding:.5em 1.5em;
-  margin-bottom:1.5em;
-  color:$icon-light;
-  display:inline-block;
-  @include susy-breakpoint($screen-md-min, $map-md) {
-    float:none;
-  }
-  svg {
-    @include transition(fill, 300ms, ease-in);
+  @include susy-breakpoint($screen-sm-min, $map-sm) {
     display:inline-block;
-    fill:$icon-light;
-    width:1.5em;
-    height:1.5em;
-    margin-right:.5em;
-  }
-  * {
-    vertical-align: middle;
-  }
-  &:hover {
-    color:$progress;
-    svg {
-      fill:$progress;
-    }
   }
 }
 
 .user-info {
-  @include clearfix;
-  background:$user;
+  display:inline-block;
+  * {
+    vertical-align:middle;
+  }
+  background:$theme-primary;
+  display:flex;
+  align-items:center;
+  padding:.65em 1.5em;
+  margin-bottom:1em;
   border-radius:.45em;
-  color:$icon-light;
-  fill:$icon-light;
-  padding:.75em;
-  margin-bottom:1.5em;
-  font-family:'Open Sans Condensed', sans-serif;
-  h2 {
-    text-align: center;
-    font-family:'Open Sans Condensed', sans-serif;
+  max-width:17em;
+  @include susy-breakpoint($screen-sm-min, $map-sm) {
+    float:right;
+  }
+  span {
+    display:inline-block;
     font-weight:700;
-    font-size: 1.5em;
-    margin:0; 
-    svg {
-      width:1.5em;
-      height:1.5em;
-    }
-    span {
-      margin-top:.15em;
-      display:block;
-    }
+  }
+  .icon {
+    fill:$icon-dark;
+    max-width:1em;
+    max-height:1em;
+    height:1em;
+    margin-right:.75em;
   }
   dl {
     @include clearfix;
-    font-size:1.25em;
-    text-align: center;
+    display:inline-block;
     margin:0;
+    margin-left:2em;
+    color:$progress;
+    font-weight:700;
     dt, dd {
       display:inline-block;
     }
+    dt {
+      float:right;
+    }
     dd {
-      margin-left:.5em;
-    }
-  }
-  @include susy-breakpoint($screen-md-min, $map-md) {
-    h2 {
-      @include span(2.66667);
-      @include first;
-    }
-    dl {
-      @include span(5.3333);
-      @include last;      
-      font-size:1.5em;
-      line-height: 1.25;
-      dt, dd {
-        vertical-align:middle;
-      }
-      dd {
-        font-size:2.5em;
-        margin-left:1.5em;
-      }
+      float:left;
+      margin:0;
+      margin-right:.25em;
     }
   }
 }

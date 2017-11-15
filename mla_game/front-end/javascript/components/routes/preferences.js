@@ -1,6 +1,7 @@
 import React from 'react'
 import UserForm from '../partials/user_form'
 import PreferencesForm from '../partials/preferences_form'
+import UserMessage from '../partials/user_message'
 
 class Preferences extends React.Component{
 
@@ -12,14 +13,21 @@ class Preferences extends React.Component{
     return (
       <div className="preferences">
         <div className="user-form">
-        <div className="grid user-form-message">
-        <p>Below, you can customize the username that other players see in FIX IT.</p>
-        </div>
+          <div className="grid user-form-message">
+            <p>Below, you can customize the username that other players see in FIX IT.</p>
+          </div>
           <div className="grid">
             <span className="user">{this.props.initialData.username}</span>
             <UserForm 
               data={this.props.initialData} 
               setUsername={this.props.setUsername}
+            />
+          </div>
+        </div>
+        <div className="message">
+          <div className="grid">
+            <UserMessage 
+              message={this.props.initialData.message}
             />
           </div>
         </div>

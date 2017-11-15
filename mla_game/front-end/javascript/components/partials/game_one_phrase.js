@@ -7,8 +7,6 @@ class Phrase extends React.Component{
     this.markPhrases = this.markPhrases.bind(this)
     this.getEndOfContext = this.getEndOfContext.bind(this)
     this.getStartofContext = this.getStartofContext.bind(this)
-    this.markPlayable = this.markPlayable.bind(this)
-    this.checkPlayable = this.checkPlayable.bind(this)
   }
   
   markPhrases(){
@@ -32,14 +30,6 @@ class Phrase extends React.Component{
     }
   }
 
-  markPlayable() {
-    const {details, addToPlayable} = this.props
-    const playable = {
-      user_can_vote:details.user_can_vote
-    }
-    addToPlayable(playable, details.pk)
-  }
-
   getEndOfContext(){
     const { active, details, keys, length } = this.props
     // set end time for segment
@@ -52,29 +42,6 @@ class Phrase extends React.Component{
     }
   }
 
-  checkPlayable(){
-    const { active, keys, advanceSegment, playablePhrases } = this.props
-    const currentSegment = active === keys || active === keys + 1 || active === keys -1
-    const allFalse = (obj) => {
-      for (let o in obj) {
-        if(obj[o] === false) return false
-      }
-      return true
-    }
-    if(currentSegment) {
-      let noPlayable = allFalse(playablePhrases)
-      if(!noPlayable) {
-        advanceSegment(3)
-      } 
-      else {
-        return
-      }
-    }
-  }
-
-  componentDidUpdate(){
-    this.checkPlayable()
-  }
   
   componentDidMount(){
     this.getEndOfContext()
@@ -83,11 +50,6 @@ class Phrase extends React.Component{
 
   shouldComponentUpdate(nextProps){
     const { active, length, keys, details } = nextProps
-    let currentSegment = active === keys || active === keys + 1 || active === keys -1
-    
-    if(currentSegment) {
-      this.markPlayable()
-    }
 
     if(length < active) {
       this.props.endOfRoundOne(true)

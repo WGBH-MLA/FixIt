@@ -21,7 +21,6 @@
 
 .user-form {
   background-color:$preferences-background;
-  border-bottom:1px solid black;
   padding:$v-rhythm*2 0;
   @include clearfix;
   .user {
