@@ -2,19 +2,10 @@ import os
 
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
-from django.core.cache import cache
-from django.db.models import Prefetch
-
-from mla_game.apps.transcript.tasks import (
-    calculate_phrase_confidence, calculate_correction_confidence,
-    process_transcripts_awaiting_stats_update,
-)
-from mla_game.apps.accounts.models import Profile
 
 from ...models import (
-    Transcript, TranscriptPhrase, TranscriptPhraseVote,
-    TranscriptPhraseVote, TranscriptPhraseCorrection,
-    TranscriptPhraseCorrectionVote
+    TranscriptPhrase, TranscriptPhraseVote,
+    TranscriptPhraseCorrection, TranscriptPhraseCorrectionVote
 )
 
 
