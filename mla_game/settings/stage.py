@@ -9,7 +9,10 @@ LOG_DIRECTORY = '/home/wgbh/logs'
 
 STATIC_ROOT = '/home/wgbh/webroot/static'
 
-ALLOWED_HOSTS = ['mlagame-dev.wgbhdigital.org', 'mlagame.wgbhdigital.org']
+ALLOWED_HOSTS = [
+    'mlagame-dev.wgbhdigital.org', 'mlagame.wgbhdigital.org',
+    'fixit.wgbhdigital.org',
+]
 
 DATABASES = {
     'default': {
