@@ -102,6 +102,7 @@ class TranscriptManager(models.Manager):
         ] + [
             vote.transcript_phrase.pk for vote in
             TranscriptPhraseVote.objects.filter(
+                user=user,
                 upvote=True
             ).prefetch_related(
                 models.Prefetch(
