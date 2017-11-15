@@ -559,6 +559,46 @@ button {
   }
 }
 
+.loading-area-action {
+  width:100%;
+  text-align:center;
+  & > div {
+    text-align: left;
+  }
+  @include susy-breakpoint($screen-md-min, $map-md) {
+    @include center;
+    &.gameone {
+      text-align:left;
+      button {
+        margin-left:6.5em;
+      }
+    }
+  }
+  .loading-message {
+    @include clearfix;
+    color:$icon-hover;
+    .notify-icon {
+      float:left;
+      max-width:2em;
+      max-height:2em;
+      margin-top:.35em;
+      fill:$progress;
+      margin-right:1.5em;
+      @include susy-breakpoint($screen-md-min, $map-md) {
+        margin-left:3em
+      }
+    }
+    & > div {
+      float:left;
+      width:calc(77% - 1.5em);
+      @include susy-breakpoint($screen-md-min, $map-md) {
+
+      }
+      max-width:45em;
+    }
+  }
+}
+
 .no-data-message {
   margin-bottom:1.5em;
   p {
@@ -583,7 +623,7 @@ button {
     }
   }
   @include susy-breakpoint($screen-md-min, $map-md) {
-    @include center;
+    // @include center;
     width:100%;
   }
   @include susy-breakpoint($screen-md-min, $map-md) {
@@ -593,7 +633,6 @@ button {
 
 .loading-game-ready-button {
   @include transition(all, .3s, ease-in-out);
-  @include center;
   @include call-button;
   background:$theme-secondary;
   font-size:.8em;

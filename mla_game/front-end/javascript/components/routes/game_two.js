@@ -1,4 +1,4 @@
-import React from 'react'
+    import React from 'react'
 import { Link } from 'react-router'
 import GameLoader from '../partials/game_loader'
 import GameMeta from '../partials/game_meta'
@@ -145,6 +145,7 @@ class GameTwo extends React.Component{
           firstGameLink={linkOne}
           secondGameLink={linkTwo}
           noDataMessage={'Please play Game 1 to identify transcript errors or Game 3 to validate transcript fixes.'}
+          message={initialData.message}
         />
       )
     } else {

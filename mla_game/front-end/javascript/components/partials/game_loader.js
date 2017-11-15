@@ -1,5 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router'
+import MarkdownRenderer from 'react-markdown-renderer'
+import classNames from 'classnames'
+
 
 class GameLoader extends React.Component {
 
@@ -15,14 +18,22 @@ playGame(){
 render(){
     const { loadingData, noDataMessage, firstGameLink, secondGameLink } = this.props
     let gameData = this.props.loadingData,
-        gameSpecificData = null,
+        gameSpecificData,
         gameNumber = this.props.gameNumber,
-        startUI = null,
-        noData = this.props.transcriptsData === 0
-    
+        startUI,
+        noData = this.props.transcriptsData === 0,
+        message,
+        icon,
+        gameClass = classNames({
+          'loading-area-action': true,
+          'gameone': gameNumber === 1
+        })        
+
     // return game specific data
     if(gameNumber === 1) {
       gameSpecificData = <div><dt>Phrases with errors</dt><dd>{gameData.phrases_with_errors}</dd></div>
+      message = <MarkdownRenderer markdown={this.props.message} />
+      icon = <svg className='notify-icon' viewBox="0 0 416 416"><title>Notification</title><path d="M208,416c23.573,0,42.667-19.093,42.667-42.667h-85.333C165.333,396.907,184.427,416,208,416z"/><path d="M336,288V181.333c0-65.6-34.88-120.32-96-134.827V32c0-17.707-14.293-32-32-32s-32,14.293-32,32v14.507 c-61.12,14.507-96,69.227-96,134.827V288l-42.667,42.667V352h341.333v-21.333L336,288z"/></svg>
     } 
     else if( gameNumber === 2) {
       gameSpecificData = <div><dt>Suggested corrections</dt><dd>{gameData.suggested_corrections}</dd></div>
@@ -36,6 +47,8 @@ render(){
     } else {
       startUI = <button onClick={()=> this.playGame()} className='loading-game-ready-button'>Play Game Now</button>
     }
+
+
     
     return(
       <div className="grid loading-screen">
@@ -55,7 +68,11 @@ render(){
               </path>
             </svg>
           ) : (
-            <div>
+            <div className={gameClass}>
+              <div className="loading-message">
+                {icon}
+                {message}
+              </div>
               {startUI}
             </div>
           )}

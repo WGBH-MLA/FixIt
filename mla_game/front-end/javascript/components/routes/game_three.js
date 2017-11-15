@@ -165,6 +165,7 @@ class GameThree extends React.Component{
           firstGameLink={linkOne}
           secondGameLink={linkTwo}
           noDataMessage={'Please play Game 1 to identify transcript errors or Game 2 to provide transcript fixes.'}
+          message={initialData.message}
         />        
       )
     } else {

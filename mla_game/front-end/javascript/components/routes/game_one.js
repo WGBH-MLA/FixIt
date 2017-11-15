@@ -210,6 +210,7 @@ class GameOne extends React.Component{
           firstGameLink={linkOne}
           secondGameLink={linkTwo}
           noDataMessage={'Please play Game 2 to provide transcript fixes or Game 3 to validate transcript fixes.'}
+          message={initialData.message}
         />
       )
     } else {
@@ -221,7 +222,6 @@ class GameOne extends React.Component{
                 ''
               ) : (
                 <div>
-                  {/*<pre>{JSON.stringify(this.state, null, 2)}</pre> */}
                   <Audio 
                     isPlaying={gameone.isPlaying}
                     src={gameone.media_url} 
