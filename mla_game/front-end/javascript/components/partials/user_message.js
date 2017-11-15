@@ -4,21 +4,15 @@ import MarkdownRenderer from 'react-markdown-renderer';
 class UserMessage extends React.Component {
   constructor(){
     super()
-    
     this.dismiss = this.dismiss.bind(this)
-
-    this.state = {
-      message_visible:true
-    }
-    
   }
   
   dismiss(){
-    console.log(this)
+    this.props.toggleMessage(false)
   }
   
   render(){
-    if(this.state.message_visible) {
+    if(this.props.isVisible) {
       return(
         <div className="user-message">
           <button className="dimiss" onClick={() => this.dismiss()}>

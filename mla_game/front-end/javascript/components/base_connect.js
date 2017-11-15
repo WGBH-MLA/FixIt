@@ -24,7 +24,8 @@ function mapStateToProps(state) {
     gameScores:state.gameScores,
     gameone:state.gameOne,
     gametwo:state.gameTwo,  
-    gamethree:state.gameThree
+    gamethree:state.gameThree,
+    userMessages:state.userMessages
   }
 }
 

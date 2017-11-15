@@ -62,14 +62,14 @@ export function resetGameScoreThree(amount){
 export function setMenuMessage(bool) {
   return {
     type:'SET_MENU_MESSAGE',
-    messageMenu:bool
+    bool
   }
 }
 
 export function setPreferencesMessage(bool) {
   return {
     type:'SET_PREFERENCES_MESSAGE',
-    messagePreferences:bool
+    bool
   }
 }
 

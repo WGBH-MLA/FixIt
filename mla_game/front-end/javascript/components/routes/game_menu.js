@@ -26,6 +26,8 @@ class GameMenu extends React.Component {
           </div>
           <UserMessage 
             message={initialData.message}
+            toggleMessage={this.props.setMenuMessage}
+            isVisible={this.props.userMessages.messageMenu}
           />
           <GameNav 
             gameScores={gameScores}

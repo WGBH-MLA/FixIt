@@ -28,6 +28,8 @@ class Preferences extends React.Component{
           <div className="grid">
             <UserMessage 
               message={this.props.initialData.message}
+              toggleMessage={this.props.setPreferencesMessage}
+              isVisible={this.props.userMessages.messagePreferences}
             />
           </div>
         </div>
