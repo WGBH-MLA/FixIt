@@ -252,11 +252,6 @@ def create_blank_phrases(transcript, phrase_pairs):
         TranscriptPhrase.objects.bulk_create(new_phrases)
 
 
-@db_periodic_task(crontab(minute='*/1'))
-def update_random_transcript_pool():
-    pass
-
-
 def percent(numerator, denominator):
     return round((numerator / denominator) * 100, 2)
 
