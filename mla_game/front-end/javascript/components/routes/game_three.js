@@ -18,46 +18,22 @@ class GameThree extends React.Component{
     this.activePhrase = this.activePhrase.bind(this)
     this.playPhrase = this.playPhrase.bind(this)
     this.selectPhrase = this.selectPhrase.bind(this)
-    this.selectDownVotes = this.selectDownVotes.bind(this)
-    this.setActive = this.setActive.bind(this)
-    this.removePhrase = this.removePhrase.bind(this)
     this.reload = this.reload.bind(this)
 
     this.state = {
       phrase:null,
-      active:null,
-      down_votes:[]
     }
 
   }
-
-  selectDownVotes(array){
-    this.setState({down_votes:array})
-  }
-
+  
   selectPhrase(phrase) {
     this.setState({phrase:phrase})
-  }
-
-  setActive(pk){
-    this.setState({active:pk})
-  }
-  
-  removePhrase() {
-    this.setState({
-      phrase:null,
-    })
   }
   
   handleProgress() {
     const { details, wait, advanceTranscript, advanceSegmentThree, gamethree, updateTotalScore, updateGameScore, updateGameProgressThree } = this.props
     let currentTranscriptLength = gamethree.transcripts[gamethree.currentTranscript].phrases_length - 1
     let noCorrectionExists = this.state.phrase == null
-    
-    // map and post down votes from state
-    this.state.down_votes.map((index, elem) => {
-      postData('/api/transcriptphrasecorrectionvote/', index)
-    })
 
     if(gamethree.segment <= currentTranscriptLength) {
       if(gamethree.skipPhrase) {
@@ -82,7 +58,9 @@ class GameThree extends React.Component{
         score:2
       }
       // post score and phrase
-      postData('/api/transcriptphrasecorrectionvote/', phraseData)
+      postData('/api/transcriptphrasecorrectionvote/', phraseData).then((response) =>{
+        console.log(response)
+      })
       postData('/api/score/', phraseScore)
       // update scores
       updateTotalScore(2)
@@ -211,7 +189,6 @@ class GameThree extends React.Component{
               if(transcript == gamethree.currentTranscript) {
                 return(
                   <div key={key}>              
-                    {/*<pre>{JSON.stringify(this.state, null, 2)}</pre>*/}     
                     <div className="game-meta">
                       <Audio 
                         isPlaying={gamethree.isPlaying}
@@ -238,9 +215,6 @@ class GameThree extends React.Component{
                             <Phrase
                              activeVote={this.state.active}
                              selectPhrase={this.selectPhrase}
-                             selectDownVotes={this.selectDownVotes}
-                             setActive={this.setActive}
-                             removePhrase={this.removePhrase}
                              playPhrase={this.playPhrase}
                              disableProgress={disableProgress}
                              time={gamethree.currentTime} 

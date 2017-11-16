@@ -441,21 +441,27 @@ button {
     }
   }
   .vote-options {
-    margin-left:1em;
+    margin:.5em 0 0 1em;
   }
   .vote-option {
+    margin-left:1em;
     text-align:left;
     border-radius:.5em;
     font-size:1em;
     background:$phrase-vote;
     color:$default;
     padding:.15em .75em;
-    &.none-of-above {
-      font-weight:700;
-      text-transform:uppercase;
+    &.corrected {
+      background:$transcript-corrected;
+      color:white;      
     }
-    &.vote {
-      background:white;
+  }
+  .vote-button {
+    @include border-button($theme-secondary, white);
+    font-size:.9em;
+    padding:.5em 1em;
+    &:first-of-type {
+      margin-right:1em;
     }
   }
 }

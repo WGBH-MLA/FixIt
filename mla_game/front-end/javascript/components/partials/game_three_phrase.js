@@ -5,21 +5,16 @@ import Corrections  from './corrections'
 class Phrase extends React.Component{
   constructor(){
     super()
-    this.markPhrase = this.markPhrase.bind(this)
     this.savePhrase = this.savePhrase.bind(this)
-    this.cancel = this.cancel.bind(this)
     this.getEndOfContext = this.getEndOfContext.bind(this)
     this.getStartofContext = this.getStartofContext.bind(this)
     this.setSkipPhrase = this.setSkipPhrase.bind(this)
     this.skipCurrentPhrase = this.skipCurrentPhrase.bind(this)
     this.skipLastPhrase = this.skipLastPhrase.bind(this)
-    this.noneVote = this.noneVote.bind(this);
-    this.removeNone = this.removeNone.bind(this);
     
     this.state = {
       editing:false,
       corrected:false,
-      no_correction:null,
     }
   }
 
@@ -30,22 +25,8 @@ class Phrase extends React.Component{
       this.setState({editing:true})
     }
   }
-
-  noneVote(pk){
-    this.props.selectPhrase(null)
-    this.props.setActive(null)
-    this.setState({
-      no_correction:true
-    })
-  }
-
-  removeNone(){
-    this.setState({
-      no_correction:null
-    })
-  }
   
-  savePhrase(){
+  savePhrase(bool){
     const { details, selectPhrase, disableProgress } = this.props
     this.setState({
       editing:false,
@@ -53,32 +34,16 @@ class Phrase extends React.Component{
     })
     disableProgress(false)
 
-    // setup downvotes on save
-    let downVotes = []
-    let self = this    
-    this.props.details.corrections.map(function(index, elem) {
-      let activeVote = Number(self.props.activeVote)
-      let voted = activeVote === index.pk
+    this.props.details.corrections.map((index, elem) => {
       let vote = {
+        upvote:bool,
         "transcript_phrase_correction":index.pk
       }
-      if(!voted) {
-        downVotes.push(vote)
-      }
+      this.props.selectPhrase(vote)
     })
-    this.props.selectDownVotes(downVotes)
   }
 
-  cancel(){
-    const { details, removePhrase, disableProgress, setActive } = this.props
-    this.setState({
-      editing:false,
-      corrected:false
-    })
-    removePhrase(details.pk)
-    disableProgress(true)
-    setActive(null)
-  }
+
   
   getStartofContext(){
     const { active, details, keys, setStartTime, setSegmentStart, startSegment, skipPhrase } = this.props
@@ -169,11 +134,6 @@ class Phrase extends React.Component{
       'editing': this.state.editing
     })
 
-    let voteState = classNames({
-      'vote-option none-of-above':true,
-      'vote':this.state.no_correction
-    })
-
     let phrase
     if(currentSegment) {
       phrase = <span className={phraseState} id={details.pk}>
@@ -186,30 +146,14 @@ class Phrase extends React.Component{
                           {details.corrections.map(function(index, key){
                             return(
                               <li key={key}>
-                                <Corrections
-                                  cancel={cancel}
-                                  savePhrase={savePhrase} 
-                                  removeNone={removeNone}
-                                  text={index.corrected_text}
-                                  pk={index.pk}
-                                  selectPhrase={selectPhrase}
-                                  setActive={setActive}
-                                  active={activeVote}           
-                                />
+                                <Corrections text={index.corrected_text} />
                               </li>
                               )
                           })}
                         </ul>
                         <div className="vote-options">
-                          <button className={voteState} onClick={()=> this.noneVote(details.pk)}>None of the Above</button>
-                          {this.state.no_correction ? (
-                            <div className='phrase-editing'>
-                              <button className='correct-phrase' onClick={() => this.savePhrase()}>Save</button>
-                              <button className='correct-phrase' onClick={() => this.cancel()}>Cancel</button>
-                            </div>
-                          ):(
-                            ''
-                          )}                      
+                          <button className='vote-button' onClick={()=> this.savePhrase(false)}>Acceptable</button>
+                          <button className='vote-button' onClick={()=> this.savePhrase(true)}>Not Acceptable</button>
                         </div>
                       </div>
                     ) : (
