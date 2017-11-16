@@ -42,22 +42,21 @@ def correction_submitted(sender, instance, **kwargs):
     update_transcripts_awaiting_stats(instance)
 
 
-@receiver(post_save)
+@receiver(post_save, sender=TranscriptPhraseVote)
 def update_phrase_confidence(sender, instance, **kwargs):
-    if sender.__name__ == 'TranscriptPhraseVote':
-        sample_size = TranscriptPhraseVote.objects.filter(
-            transcript_phrase=instance.transcript_phrase.pk,
-            upvote__in=[True, False]
-        ).count()
-        if sample_size != instance.transcript_phrase.num_votes:
-            this_pk = instance.transcript_phrase.pk
-            TranscriptPhrase.objects.filter(
-                pk=this_pk
-            ).update(
-                num_votes=sample_size
-            )
-        if sample_size >= min_samples:
-            calculate_phrase_confidence(instance.transcript_phrase)
+    sample_size = TranscriptPhraseVote.objects.filter(
+        transcript_phrase=instance.transcript_phrase.pk,
+        upvote__in=[True, False]
+    ).count()
+    if sample_size != instance.transcript_phrase.num_votes:
+        this_pk = instance.transcript_phrase.pk
+        TranscriptPhrase.objects.filter(
+            pk=this_pk
+        ).update(
+            num_votes=sample_size
+        )
+    if sample_size >= min_samples:
+        calculate_phrase_confidence(instance.transcript_phrase)
 
 
 @receiver(post_save, sender=TranscriptPhraseCorrection)
