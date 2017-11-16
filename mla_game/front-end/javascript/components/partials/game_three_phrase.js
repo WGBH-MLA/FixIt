@@ -152,8 +152,8 @@ class Phrase extends React.Component{
                           })}
                         </ul>
                         <div className="vote-options">
-                          <button className='vote-button' onClick={()=> this.savePhrase(false)}>Acceptable</button>
-                          <button className='vote-button' onClick={()=> this.savePhrase(true)}>Not Acceptable</button>
+                          <button className='vote-button' onClick={()=> this.savePhrase(true)}>Acceptable</button>
+                          <button className='vote-button' onClick={()=> this.savePhrase(false)}>Not Acceptable</button>
                         </div>
                       </div>
                     ) : (
