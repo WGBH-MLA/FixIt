@@ -18,6 +18,7 @@ class GameThree extends React.Component{
     this.activePhrase = this.activePhrase.bind(this)
     this.playPhrase = this.playPhrase.bind(this)
     this.selectPhrase = this.selectPhrase.bind(this)
+    this.removePhrase = this.removePhrase.bind(this)
     this.reload = this.reload.bind(this)
 
     this.state = {
@@ -28,6 +29,10 @@ class GameThree extends React.Component{
   
   selectPhrase(phrase) {
     this.setState({phrase:phrase})
+  }
+
+  removePhrase(){
+    this.setState({phrase:null})
   }
   
   handleProgress() {
@@ -65,7 +70,6 @@ class GameThree extends React.Component{
       // update scores
       updateTotalScore(2)
       updateGameScore(2)
-      this.setActive(null)
     } 
     // scrub state for phrase correction
     this.removePhrase()
