@@ -21,6 +21,41 @@ score_log = logging.getLogger('scores')
 
 
 @db_task()
+def update_partial_or_complete_transcripts_by_transcript(user, transcript, **kwargs):
+    transcript_picks, created = TranscriptPicks.objects.get_or_create(user=user)
+    picks = transcript_picks.picks
+
+    if 'completed_transcripts' in picks:
+        completed_transcripts = picks['completed_transcripts']
+    else:
+        completed_transcripts = []
+
+    if 'partially_completed_transcripts' in picks:
+        partial_transcripts = picks['partially_completed_transcripts']
+    else:
+        partial_transcripts = []
+
+    eligible_phrases = TranscriptPhrase.objects.filter(
+        transcript=transcript,
+        current_game=1,
+    )
+
+    user_votes = TranscriptPhraseVote.objects.filter(
+        transcript_phrase__in=eligible_phrases
+    )
+
+    if user_votes.count() == eligible_phrases.count():
+        if transcript.pk in partial_transcripts:
+            partial_transcripts.remove(transcript.pk)
+        completed_transcripts.append(transcript.pk)
+    else:
+        if transcript.pk not in partial_transcripts:
+            partial_transcripts.append(transcript.pk)
+
+    transcript_picks.save()
+
+
+@db_task()
 def update_partial_or_complete_transcripts(user, **kwargs):
     '''
     This task gets triggered whenever a user votes on a TranscriptPhrase
