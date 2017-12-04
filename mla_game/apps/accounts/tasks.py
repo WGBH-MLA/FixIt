@@ -28,12 +28,14 @@ def update_partial_or_complete_transcripts_by_transcript(user, transcript, **kwa
     if 'completed_transcripts' in picks:
         completed_transcripts = picks['completed_transcripts']
     else:
-        completed_transcripts = []
+        picks['completed_transcripts'] = []
+        completed_transcripts = picks['completed_transcripts']
 
     if 'partially_completed_transcripts' in picks:
         partial_transcripts = picks['partially_completed_transcripts']
     else:
-        partial_transcripts = []
+        picks['partially_completed_transcripts'] = []
+        partial_transcripts = picks['partially_completed_transcripts']
 
     eligible_phrases = TranscriptPhrase.objects.filter(
         transcript=transcript,
