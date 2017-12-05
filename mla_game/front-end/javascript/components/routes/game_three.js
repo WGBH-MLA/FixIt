@@ -52,18 +52,13 @@ class GameThree extends React.Component{
     
     // create on object for correction and push it if it exists 
     if(!noCorrectionExists) {
-      //phrase data from local state
-      let phraseData = {
-        upvote:true,
-        "transcript_phrase_correction":this.state.phrase.pk
-      }
       // score data
       let phraseScore = {
         game:'3',
         score:2
       }
       // post score and phrase
-      postData('/api/transcriptphrasecorrectionvote/', phraseData).then((response) =>{
+      postData('/api/transcriptphrasecorrectionvote/', this.state.phrase).then((response) =>{
         console.log(response)
       })
       postData('/api/score/', phraseScore)
@@ -209,7 +204,7 @@ class GameThree extends React.Component{
                         sources={index.source}
                       />
                     </div>
-                    <ul className="game-phrase-list">
+                    <ul className="game-phrase-list">                    
                     {index.phrases.map((phrase, key) => {
                       let phrases = Number(key)
                       let currentPhrase = gamethree.segment <= phrases + 1 && gamethree.segment >= phrases -1
