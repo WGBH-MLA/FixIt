@@ -1,0 +1,2 @@
+class TranscriptCompleteException(Exception):
+    pass

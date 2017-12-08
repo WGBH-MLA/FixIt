@@ -11,6 +11,7 @@ from django.db import models
 from localflavor.us.models import USStateField
 
 from mla_game.apps.accounts.models import TranscriptPicks
+from .exceptions import TranscriptCompleteException
 
 phrase_positive_limit = settings.TRANSCRIPT_PHRASE_POSITIVE_CONFIDENCE_LIMIT
 phrase_negative_limit = settings.TRANSCRIPT_PHRASE_NEGATIVE_CONFIDENCE_LIMIT
@@ -18,6 +19,22 @@ correction_lower_limit = settings.TRANSCRIPT_PHRASE_CORRECTION_LOWER_LIMIT
 correction_upper_limit = settings.TRANSCRIPT_PHRASE_CORRECTION_UPPER_LIMIT
 
 django_log = logging.getLogger('django')
+
+
+def usable_for_game_one(user, transcript):
+    eligible_phrases = TranscriptPhrase.objects.filter(
+        transcript=transcript,
+        current_game=1,
+    )
+
+    user_votes = TranscriptPhraseVote.objects.filter(
+        transcript_phrase__in=eligible_phrases
+    )
+
+    if user_votes.count() == eligible_phrases.count():
+        raise TranscriptCompleteException
+    else:
+        return
 
 
 class TranscriptManager(models.Manager):
@@ -34,6 +51,7 @@ class TranscriptManager(models.Manager):
             try:
                 transcript = self.defer('transcript_data_blob').filter(
                     pk=picks['partially_completed_transcripts'][0])
+                usable_for_game_one(user, transcript)
                 voted_phrases = [vote.transcript_phrase.pk for vote in
                                  TranscriptPhraseVote.objects.filter(user=user)]
                 return (transcript, voted_phrases)
