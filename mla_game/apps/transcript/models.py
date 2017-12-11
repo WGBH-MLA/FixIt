@@ -28,7 +28,8 @@ def usable_for_game_one(user, transcript):
     )
 
     user_votes = TranscriptPhraseVote.objects.filter(
-        transcript_phrase__in=eligible_phrases
+        transcript_phrase__in=eligible_phrases,
+        user=user
     )
 
     if user_votes.count() == eligible_phrases.count():
@@ -51,7 +52,7 @@ class TranscriptManager(models.Manager):
             try:
                 transcript = self.defer('transcript_data_blob').filter(
                     pk=picks['partially_completed_transcripts'][0])
-                usable_for_game_one(user, transcript)
+                usable_for_game_one(user, transcript.first())
                 voted_phrases = [vote.transcript_phrase.pk for vote in
                                  TranscriptPhraseVote.objects.filter(user=user)]
                 return (transcript, voted_phrases)
