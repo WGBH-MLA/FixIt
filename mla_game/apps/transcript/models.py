@@ -312,15 +312,18 @@ class Transcript(models.Model):
 
     @property
     def media_url(self):
-        media_request = requests.head(
-            'http://americanarchive.org/media/{}?part=1'.format(
-                self.asset_name
-            ),
-            headers={'referer': 'http://americanarchive.org/'}
-        )
-        if media_request.is_redirect:
-            return media_request.headers['Location']
-        else:
+        try:
+            media_request = requests.head(
+                'http://americanarchive.org/media/{}?part=1'.format(
+                    self.asset_name
+                ),
+                headers={'referer': 'http://americanarchive.org/'},
+            )
+            if media_request.is_redirect:
+                return media_request.headers['Location']
+            else:
+                return None
+        except requests.exceptions.ConnectionError:
             return None
 
     @property
