@@ -3,6 +3,7 @@ import logging
 from django.conf import settings
 from django.core.management import call_command
 from django.core.cache import cache
+from django.db.models import Prefetch
 from huey.contrib.djhuey import db_task, db_periodic_task
 from huey import crontab
 
@@ -273,7 +274,7 @@ def update_transcript_stats(transcript):
         return
 
     transcript_phrases = TranscriptPhrase.objects.filter(
-        transcript=transcript).only('pk', 'confidence')
+        transcript=transcript).only('pk', 'confidence', 'current_game')
     min_sample_size = settings.MINIMUM_SAMPLE_SIZE
     total_phrases_with_votes = 0
     phrases_approaching_min_sample_size = 0
@@ -302,15 +303,27 @@ def update_transcript_stats(transcript):
                 usable_corrections += 1
         total_corrections += phrase_correction_count
 
-    stats['phrases_with_votes_percent'] = percent(total_phrases_with_votes, stats['total_number_of_phrases'])
-    stats['phrases_close_to_minimum_sample_size_percent'] = percent(phrases_approaching_min_sample_size, stats['total_number_of_phrases'])
-    stats['phrases_not_needing_correction_percent'] = percent(positive_scored_phrases, stats['total_number_of_phrases'])
-    stats['phrases_needing_correction_percent'] = percent(negative_scored_phrases, stats['total_number_of_phrases'])
-    stats['phrases_with_corrections_percent'] = percent(phrases_with_corrections, stats['total_number_of_phrases'])
+    stats['phrases_with_votes_percent'] = percent(
+        total_phrases_with_votes, stats['total_number_of_phrases']
+    )
+    stats['phrases_close_to_minimum_sample_size_percent'] = percent(
+        phrases_approaching_min_sample_size, stats['total_number_of_phrases']
+    )
+    stats['phrases_not_needing_correction_percent'] = percent(
+        positive_scored_phrases, stats['total_number_of_phrases']
+    )
+    stats['phrases_needing_correction_percent'] = percent(
+        negative_scored_phrases, stats['total_number_of_phrases']
+    )
+    stats['phrases_with_corrections_percent'] = percent(
+        phrases_with_corrections, stats['total_number_of_phrases']
+    )
     stats['corrections_submitted'] = total_corrections
     stats['corrections_accepted'] = usable_corrections
     stats['phrases_ready_for_export'] = positive_scored_phrases + usable_corrections
-    stats['percent_complete'] = percent(stats['phrases_ready_for_export'], stats['total_number_of_phrases'])
+    stats['percent_complete'] = percent(
+        stats['phrases_ready_for_export'], stats['total_number_of_phrases']
+    )
 
     if stats['phrases_ready_for_export'] == stats['total_number_of_phrases']:
         transcript.complete = True
@@ -323,22 +336,24 @@ def update_transcript_stats(transcript):
     transcript.save()
 
 
-def update_transcripts_awaiting_stats(phrase_or_correction):
-    batch = cache.get('transcripts_awaiting_stats_update', set())
-    if type(phrase_or_correction) is TranscriptPhrase:
-        transcript = phrase_or_correction.transcript
-    elif type(phrase_or_correction) is TranscriptPhraseCorrection:
-        transcript = phrase_or_correction.transcript_phrase.transcript
-    else:
-        return
-    batch.add(transcript.pk)
-    cache.set('transcripts_awaiting_stats_update', batch, 60*120)
-
-
 @db_periodic_task(crontab(minute='0', hour='*'))
 def process_transcripts_awaiting_stats_update():
-    batch = cache.get('transcripts_awaiting_stats_update', set())
-    transcripts_to_process = Transcript.objects.filter(pk__in=batch)
+    transcripts = Transcript.objects.only('pk', 'complete')
+    phrases = TranscriptPhrase.objects.only(
+        'transcript'
+    ).prefetch_related(
+        Prefetch('transcript', queryset=transcripts)
+    )
+    votes = TranscriptPhraseVote.objects.only(
+        'transcript_phrase'
+    ).prefetch_related(
+        Prefetch('transcript_phrase', queryset=phrases)
+    )
+
+    transcripts_to_process = {
+        vote.transcript_phrase.transcript for vote in votes
+        if vote.transcript_phrase.transcript.complete is False
+    }
+
     for transcript in transcripts_to_process:
         update_transcript_stats(transcript)
-    cache.set('transcripts_awaiting_stats_update', set(), 60 * 120)

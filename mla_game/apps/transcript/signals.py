@@ -10,7 +10,7 @@ from .models import (
 )
 from .tasks import (
     calculate_phrase_confidence, calculate_correction_confidence,
-    update_transcripts_awaiting_stats, assign_current_game
+    assign_current_game
 )
 
 django_log = logging.getLogger('django')
@@ -39,7 +39,6 @@ def correction_submitted(sender, instance, **kwargs):
         upvote=None
     )
     assign_current_game(instance.transcript_phrase)
-    update_transcripts_awaiting_stats(instance)
 
 
 @receiver(post_save, sender=TranscriptPhraseVote)
@@ -94,4 +93,3 @@ def update_correction_confidence(sender, instance, **kwargs):
     ).count()
     if sample_size > min_samples:
         calculate_correction_confidence(instance.transcript_phrase_correction)
-    update_transcripts_awaiting_stats(instance.transcript_phrase_correction)

@@ -4,10 +4,9 @@ from django.contrib.auth.signals import user_logged_in
 from django.dispatch import receiver
 from django.db.models.signals import m2m_changed, post_save
 
-from mla_game.apps.transcript.tasks import update_transcripts_awaiting_stats
 from .models import Profile
 from .tasks import (
-    update_transcript_picks, update_partial_or_complete_transcripts,
+    update_transcript_picks,
     update_partial_or_complete_transcripts_by_transcript,
 )
 
@@ -36,7 +35,6 @@ def user_voted(sender, instance, created, raw, using, update_fields, **kwargs):
         update_partial_or_complete_transcripts_by_transcript(
             instance.user, instance.transcript_phrase.transcript
         )
-        update_transcripts_awaiting_stats(instance.transcript_phrase)
 
 
 m2m_changed.connect(
