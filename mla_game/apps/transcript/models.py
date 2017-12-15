@@ -76,7 +76,9 @@ class TranscriptManager(models.Manager):
             completed = 'completed_transcripts' in picks
             if skipped or auto_skipped or completed:
                 return (
-                    self.random_transcript(in_progress=False, picks=picks),
+                    self.random_transcript(
+                        in_progress=False, picks=picks, user=user
+                    ),
                     False
                 )
         return (self.random_transcript(), False)
@@ -213,7 +215,7 @@ class TranscriptManager(models.Manager):
 
         return (transcripts, corrections)
 
-    def random_transcript(self, in_progress=True, picks={}):
+    def random_transcript(self, in_progress=True, picks={}, user=None):
         '''Returns a semi-random transcript.
 
         If in_progress is True, we'll pick the transcript that has the most
@@ -255,13 +257,13 @@ class TranscriptManager(models.Manager):
             return qs.filter(
                 pk=transcripts_in_progress[-1]
             )
-        return qs.filter(
-            pk__in=[
-                random.choice(
-                    [transcript.pk for transcript in self.all().only('pk')]
-                )
-            ]
-        )
+
+        for transcript in qs.order_by('?'):
+            try:
+                usable_for_game_one(user, transcript)
+                return self.filter(pk=transcript.pk)
+            except TranscriptCompleteException:
+                pass
 
 
 class Transcript(models.Model):
