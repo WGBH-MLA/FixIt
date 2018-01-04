@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
-from ...models import TranscriptPhrase
+from ...models import TranscriptPhraseVote
 from ...tasks import assign_current_game
 
 phrase_positive_limit = settings.TRANSCRIPT_PHRASE_POSITIVE_CONFIDENCE_LIMIT
@@ -14,5 +14,8 @@ class Command(BaseCommand):
     help = '''Recalculate game eligiblity for all phrases'''
 
     def handle(self, *args, **options):
-        for phrase in TranscriptPhrase.objects.all():
+        to_assign = set()
+        for vote in TranscriptPhraseVote.objects.all():
+            to_assign.add(vote.transcript_phrase)
+        for phrase in to_assign:
             assign_current_game(phrase)
