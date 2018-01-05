@@ -135,6 +135,8 @@ class TranscriptManager(models.Manager):
                 current_game=2
             ).exclude(
                 pk__in=ineligible_phrases
+            ).only(
+                'current_game', 'transcript', 'pk'
             ).prefetch_related(
                 models.Prefetch(
                     'transcript', queryset=self.defer('transcript_data_blob')
