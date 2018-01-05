@@ -2,7 +2,6 @@ import logging
 
 from django.conf import settings
 from django.core.management import call_command
-from django.core.cache import cache
 from django.db.models import Prefetch
 from huey.contrib.djhuey import db_task, db_periodic_task
 from huey import crontab

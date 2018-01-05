@@ -470,9 +470,7 @@ class TranscriptPhraseVote(models.Model):
 
 class TranscriptPhraseCorrection(models.Model):
     correction = models.CharField(max_length=500, blank=True, null=True)
-    no_words = models.BooleanField(default=False)
     confidence = models.FloatField(default=0)
-    appearances = models.IntegerField(default=0)
     transcript_phrase = models.ForeignKey(
         TranscriptPhrase,
         related_name='transcript_phrase_correction',
