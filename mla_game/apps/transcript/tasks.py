@@ -289,7 +289,7 @@ def update_transcript_stats(transcript):
             transcript_phrase=phrase,
         )
         phrase_vote_count = TranscriptPhraseVote.objects.filter(
-            upvote__in=[True, False]
+            transcript_phrase=phrase,
         ).count()
         phrase_correction_count = phrase_corrections.count()
         if phrase_vote_count > 0:
