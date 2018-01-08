@@ -173,18 +173,15 @@ class TranscriptManager(models.Manager):
         Returns a tuple containing a queryset of Transcript objects and a list
         of dicts containing corrections for phrases in the Transcripts
         '''
-        game_three_phrases = TranscriptPhrase.objects.filter(
-            current_game=3
+        corrected_phrases = set(
+            TranscriptPhrase.objects.filter(current_game=3)
         )
-        corrected_phrases = {
-            phrase for phrase in game_three_phrases
-        }
         already_voted_phrases = {
             vote.original_phrase for vote in
             TranscriptPhraseCorrectionVote.objects.filter(
                 user=user
             ).prefetch_related(
-                'transcript_phrase_correction'
+                'original_phrase'
             )
         }
         eligible_phrases = corrected_phrases - already_voted_phrases
@@ -497,15 +494,21 @@ class TranscriptPhraseCorrectionVote(models.Model):
         TranscriptPhraseCorrection,
         on_delete=models.CASCADE,
     )
+    original_phrase = models.ForeignKey(
+        TranscriptPhrase,
+        null=True,
+        default=None
+    )
     upvote = models.NullBooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    def save(self, *args, **kwargs):
+        if self.original_phrase is None:
+            self.original_phrase = self.transcript_phrase_correction.transcript_phrase
+        super(TranscriptPhraseCorrectionVote, self).save(*args, **kwargs)
+
     class Meta:
         unique_together = ('user', 'transcript_phrase_correction')
-
-    @property
-    def original_phrase(self):
-        return self.transcript_phrase_correction.transcript_phrase
 
 
 class TranscriptMetadata(models.Model):
