@@ -47,8 +47,8 @@ def phrase_is_corrected(phrase):
         corrections = TranscriptPhraseCorrection.objects.filter(
             transcript_phrase=phrase,
             confidence__gte=correction_lower_limit
-        )
-        if corrections.count() > 0:
+        ).count()
+        if corrections > 0:
             corrected = True
     return corrected
 
@@ -105,18 +105,18 @@ def assign_current_game(phrase):
         - a phrase confidence changes
         - a phrase correction is submitted
         - a correction confidence changes'''
+    if game_one_eligible(phrase):
+        current_game = 1
+    if game_two_eligible(phrase):
+        current_game = 2
+    if game_three_eligible(phrase):
+        current_game = 3
     if phrase_is_corrected(phrase):
         current_game = 0
-    elif game_one_eligible(phrase):
-        current_game = 1
-    elif game_two_eligible(phrase):
-        current_game = 2
-    elif game_three_eligible(phrase):
-        current_game = 3
-    else:
-        # By this point something clearly has gone wrong. Phrases should never
-        # have a game 4 state, so if they ever exist we can debug with them.
-        current_game = 4
+    # else:
+    #     # By this point something clearly has gone wrong. Phrases should never
+    #     # have a game 4 state, so if they ever exist we can debug with them.
+    #     current_game = 4
 
     if current_game != phrase.current_game:
         phrase.current_game = current_game
