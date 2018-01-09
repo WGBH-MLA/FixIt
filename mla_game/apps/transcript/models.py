@@ -174,7 +174,12 @@ class TranscriptManager(models.Manager):
         of dicts containing corrections for phrases in the Transcripts
         '''
         corrected_phrases = set(
-            TranscriptPhrase.objects.filter(current_game=3)
+            TranscriptPhrase.objects.filter(
+                current_game=3
+            ).prefetch_related(models.Prefetch(
+                'transcript',
+                queryset=self.only('pk')
+            ))
         )
         already_voted_phrases = {
             vote.original_phrase for vote in
@@ -186,10 +191,19 @@ class TranscriptManager(models.Manager):
         }
         eligible_phrases = corrected_phrases - already_voted_phrases
 
+        counted_transcripts = Counter(
+            [phrase.transcript.pk for phrase in eligible_phrases]
+        )
+
+        eligible_phrases = sorted(
+            eligible_phrases,
+            key=lambda phrase: counted_transcripts[phrase.transcript.pk],
+        )
+
         corrections = []
         associated_transcripts = []
 
-        for phrase in eligible_phrases:
+        for phrase in eligible_phrases[:20]:
             phrase_corrections = TranscriptPhraseCorrection.objects.filter(
                 transcript_phrase=phrase,
                 confidence__gte=0.0
