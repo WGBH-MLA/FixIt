@@ -16,7 +16,6 @@
   padding:.65em 1.5em;
   margin-bottom:1em;
   border-radius:.45em;
-  max-width:17em;
   @include susy-breakpoint($screen-sm-min, $map-sm) {
     float:right;
   }

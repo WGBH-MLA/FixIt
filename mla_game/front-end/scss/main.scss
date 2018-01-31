@@ -573,11 +573,9 @@ button {
   }
   @include susy-breakpoint($screen-md-min, $map-md) {
     @include center;
-    &.gameone {
-      text-align:left;
-      button {
-        margin-left:6.5em;
-      }
+    text-align:left;
+    button {
+      margin-left:6.5em;
     }
   }
   .loading-message {
