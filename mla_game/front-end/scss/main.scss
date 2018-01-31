@@ -606,7 +606,13 @@ button {
 .no-data-message {
   margin-bottom:1.5em;
   p {
+    padding-left:3.4em; 
     margin-bottom:1em;
+    max-width:45em;
+    color:#939598;
+    @include susy-breakpoint($screen-md-min, $map-md) {
+      padding-left:6.4em;
+    }
   }
   .game-links {
     text-align:center;
@@ -623,7 +629,11 @@ button {
       background:$progress;
     }
     &:first-of-type {
-      margin-right:1.5em;
+      margin-bottom:1.5em;
+      @media (min-width: 23.9375em) {
+        margin-right:1.5em; 
+        margin-bottom:0;
+      }
     }
   }
   @include susy-breakpoint($screen-md-min, $map-md) {
