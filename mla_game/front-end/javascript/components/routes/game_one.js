@@ -83,9 +83,7 @@ class GameOne extends React.Component{
         transcript_phrase: phrasesNotPickedPlayable[i]
       }
       // helper ajax function to post downvote
-      postData('/api/transcriptphrasevote/', data).then((response) =>{
-        console.log(response)
-      })
+      postData('/api/transcriptphrasevote/', data)
     }
 
     // patch considered phrases for game one    
@@ -126,9 +124,7 @@ class GameOne extends React.Component{
           transcript_phrase: wrongPhrases[key].pk
         }
         // helper ajax function to post downvote
-        postData('/api/transcriptphrasevote/', data).then((response) =>{
-          console.log(response)
-        })
+        postData('/api/transcriptphrasevote/', data)
 
         this.props.updateTotalScore(1)
         this.props.updateGameScore(1)

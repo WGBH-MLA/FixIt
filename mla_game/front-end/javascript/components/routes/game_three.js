@@ -58,9 +58,7 @@ class GameThree extends React.Component{
         score:2
       }
       // post score and phrase
-      postData('/api/transcriptphrasecorrectionvote/', this.state.phrase).then((response) =>{
-        console.log(response)
-      })
+      postData('/api/transcriptphrasecorrectionvote/', this.state.phrase)
       postData('/api/score/', phraseScore)
       // update scores
       updateTotalScore(2)
