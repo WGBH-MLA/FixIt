@@ -29,6 +29,7 @@ from .serializers import (
     TranscriptPhraseVoteSerializer,
     TranscriptPhraseCorrectionSerializer,
     TranscriptPhraseCorrectionVoteSerializer,
+    TranscriptActiveDormantSerializer,
     ProfileSerializer, ProfilePatchSerializer,
     ProfilePreferenceClearSerializer, ProfileTranscriptSkipSerializer,
     SourceSerializer, TopicSerializer,
@@ -145,6 +146,15 @@ class TranscriptViewSet(mixins.ListModelMixin,
                 if phrase['pk'] == correction.transcript_phrase.pk:
                     phrase['text'] = correction.correction
         return Response(serializer.data)
+
+    @detail_route(
+        methods=['patch'],
+        serializer_class=TranscriptActiveDormantSerializer,
+        permission_classes=[IsAdminUser,]
+    )
+    def activate_or_deactivate(self, request, asset_name=None, *args, **kwargs):
+        self.get_object().activate_or_deactivate()
+        return self.update(request, *args, **kwargs)
 
 
 class TranscriptCreateViewset(mixins.CreateModelMixin,

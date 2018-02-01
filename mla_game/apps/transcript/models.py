@@ -51,7 +51,8 @@ class TranscriptManager(models.Manager):
         else:
             try:
                 transcript = self.defer('transcript_data_blob').filter(
-                    pk=picks['partially_completed_transcripts'][0])
+                    pk=picks['partially_completed_transcripts'][0],
+                )
                 usable_for_game_one(user, transcript.first())
                 voted_phrases = [vote.transcript_phrase.pk for vote in
                                  TranscriptPhraseVote.objects.filter(user=user)]
@@ -105,6 +106,8 @@ class TranscriptManager(models.Manager):
             correction.transcript_phrase.pk for correction in
             TranscriptPhraseCorrection.objects.filter(
                 user=user
+            ).only(
+                'transcript_phrase'
             ).prefetch_related(
                 models.Prefetch(
                     'transcript_phrase', queryset=phrase_qs
@@ -115,6 +118,8 @@ class TranscriptManager(models.Manager):
             TranscriptPhraseCorrectionVote.objects.filter(
                 user=user,
                 upvote=True
+            ).only(
+                'transcript_phrase_correction', 'user', 'upvote'
             ).prefetch_related(
                 models.Prefetch(
                     'transcript_phrase_correction', queryset=correction_qs
@@ -132,7 +137,8 @@ class TranscriptManager(models.Manager):
             )
         ]
         eligible_phrases = TranscriptPhrase.objects.filter(
-                current_game=2
+                current_game=2,
+                active=True
             ).exclude(
                 pk__in=ineligible_phrases
             ).only(
@@ -175,7 +181,8 @@ class TranscriptManager(models.Manager):
         '''
         corrected_phrases = set(
             TranscriptPhrase.objects.filter(
-                current_game=3
+                current_game=3,
+                active=True
             ).prefetch_related(models.Prefetch(
                 'transcript',
                 queryset=self.only('pk')
@@ -271,7 +278,7 @@ class TranscriptManager(models.Manager):
                 pk=transcripts_in_progress[-1]
             )
 
-        for transcript in qs.order_by('?'):
+        for transcript in qs.filter(active=True).order_by('?'):
             try:
                 usable_for_game_one(user, transcript)
                 return self.filter(pk=transcript.pk)
@@ -305,6 +312,7 @@ class Transcript(models.Model):
     })
     complete = models.BooleanField(default=False)
     in_progress = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
 
     objects = TranscriptManager()
 
@@ -377,6 +385,16 @@ class Transcript(models.Model):
             django_log.info(
                 'Transcript {} has a malformed data blob.'.format(self.pk))
 
+    def activate_or_deactivate(self):
+        if self.active is True:
+            self.active = False
+            TranscriptPhrase.objects.filter(transcript=self).update(active=False)
+            self.save()
+        else:
+            self.active = True
+            TranscriptPhrase.objects.filter(transcript=self).update(active=True)
+            self.save()
+
     def __str__(self):
         return self.name
 
@@ -425,6 +443,7 @@ class TranscriptPhrase(models.Model):
     num_corrections = models.SmallIntegerField(default=0)
     num_votes = models.SmallIntegerField(default=0)
     current_game = models.PositiveSmallIntegerField(default=1)
+    active = models.BooleanField(default=True)
 
     objects = TranscriptPhraseManager()
 

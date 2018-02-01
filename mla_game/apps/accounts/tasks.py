@@ -135,7 +135,7 @@ def update_transcript_picks(user, **kwargs):
 
     picks = transcript_picks.picks
 
-    transcript_qs = Transcript.objects.only('pk')
+    transcript_qs = Transcript.objects.filter(active=True).only('pk', 'active')
 
     if profile.preferred_stations.all():
         stations = profile.preferred_stations.all().prefetch_related(

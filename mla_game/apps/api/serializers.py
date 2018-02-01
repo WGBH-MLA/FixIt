@@ -94,6 +94,18 @@ class TranscriptCreateSerializer(serializers.ModelSerializer):
         return transcript
 
 
+class TranscriptActiveDormantSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Transcript
+        fields = (
+            'asset_name', 'active',
+        )
+        extra_kwargs = {
+            'asset_name': {'read_only': True},
+        }
+
+
 class TranscriptStatsSerializer(serializers.ModelSerializer):
     metadata = TranscriptMetadataSerializer()
 
