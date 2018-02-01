@@ -147,14 +147,18 @@ class TranscriptViewSet(mixins.ListModelMixin,
                     phrase['text'] = correction.correction
         return Response(serializer.data)
 
+    def perform_update(self, serializer):
+        serializer.save()
+
     @detail_route(
         methods=['patch'],
         serializer_class=TranscriptActiveDormantSerializer,
-        permission_classes=[IsAdminUser,]
+        permission_classes=(IsAdminUser,)
     )
     def activate_or_deactivate(self, request, asset_name=None, *args, **kwargs):
-        self.get_object().activate_or_deactivate()
-        return self.update(request, *args, **kwargs)
+        self.get_object().activate_or_deactivate_phrases(request.data['active'])
+        kwargs['partial'] = True
+        return mixins.UpdateModelMixin.update(self, request, *args, **kwargs)
 
 
 class TranscriptCreateViewset(mixins.CreateModelMixin,

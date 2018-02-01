@@ -385,15 +385,8 @@ class Transcript(models.Model):
             django_log.info(
                 'Transcript {} has a malformed data blob.'.format(self.pk))
 
-    def activate_or_deactivate(self):
-        if self.active is True:
-            self.active = False
-            TranscriptPhrase.objects.filter(transcript=self).update(active=False)
-            self.save()
-        else:
-            self.active = True
-            TranscriptPhrase.objects.filter(transcript=self).update(active=True)
-            self.save()
+    def activate_or_deactivate_phrases(self, state):
+        TranscriptPhrase.objects.filter(transcript=self).update(active=state)
 
     def __str__(self):
         return self.name
