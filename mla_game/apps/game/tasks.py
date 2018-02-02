@@ -26,7 +26,9 @@ def update_loading_screen_data():
         statistics__percent_complete=100
     ).count()
 
-    data['total_number_of_transcripts'] = Transcript.objects.all().count()
+    data['total_number_of_transcripts'] = Transcript.objects.filter(
+        active=True
+    ).count()
 
     data['total_number_of_players'] = Profile.objects.all().count()
 
