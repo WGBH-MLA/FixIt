@@ -11,7 +11,7 @@ from django.db import models
 from localflavor.us.models import USStateField
 
 from mla_game.apps.accounts.models import TranscriptPicks
-from .exceptions import TranscriptCompleteException
+from .exceptions import TranscriptCompleteException, GameOneCompleteException
 
 phrase_positive_limit = settings.TRANSCRIPT_PHRASE_POSITIVE_CONFIDENCE_LIMIT
 phrase_negative_limit = settings.TRANSCRIPT_PHRASE_NEGATIVE_CONFIDENCE_LIMIT
@@ -34,6 +34,8 @@ def usable_for_game_one(user, transcript):
 
     if user_votes.count() == eligible_phrases.count():
         raise TranscriptCompleteException
+    elif eligible_phrases.count() == 0:
+        raise GameOneCompleteException
     else:
         return
 
@@ -50,24 +52,48 @@ class TranscriptManager(models.Manager):
             return (self.random_transcript(), False)
         else:
             try:
-                transcript = self.defer('transcript_data_blob').filter(
-                    pk=picks['partially_completed_transcripts'][0],
+                transcripts = self.defer('transcript_data_blob').filter(
+                    pk__in=picks['partially_completed_transcripts'],
+                    active=True
                 )
-                usable_for_game_one(user, transcript.first())
+                usable_for_game_one(user, transcripts.first())
+                transcript = self.defer(
+                    'transcript_data_blob'
+                ).filter(
+                    pk=transcripts.first().pk
+                )
                 voted_phrases = [vote.transcript_phrase.pk for vote in
                                  TranscriptPhraseVote.objects.filter(user=user)]
                 return (transcript, voted_phrases)
             except Exception:
                 pass
             try:
+                ideal_transcripts = [
+                    transcript.pk for transcript in
+                    self.filter(
+                        pk__in=picks['ideal_transcripts'],
+                        active=True
+                    ).only('pk')
+                ]
                 transcript = self.defer('transcript_data_blob').filter(
-                    pk=random.choice(picks['ideal_transcripts']))
+                    pk=random.choice(ideal_transcripts))
+                usable_for_game_one(user, transcript.first())
                 return (transcript, False)
+            except GameOneCompleteException:
+                pass
             except Exception:
                 pass
             try:
+                acceptable_transcripts = [
+                    transcript.pk for transcript in
+                    self.filter(
+                        pk__in=picks['acceptable_transcripts'],
+                        active=True
+                    ).only('pk')
+                ]
                 transcript = self.defer('transcript_data_blob').filter(
-                    pk=random.choice(picks['acceptable_transcripts']))
+                    pk=random.choice(acceptable_transcripts))
+                usable_for_game_one(user, transcript.first())
                 return (transcript, False)
             except Exception:
                 pass
@@ -137,17 +163,17 @@ class TranscriptManager(models.Manager):
             )
         ]
         eligible_phrases = TranscriptPhrase.objects.filter(
-                current_game=2,
-                active=True
-            ).exclude(
-                pk__in=ineligible_phrases
-            ).only(
-                'current_game', 'transcript', 'pk'
-            ).prefetch_related(
-                models.Prefetch(
-                    'transcript', queryset=self.defer('transcript_data_blob')
-                )
+            current_game=2,
+            active=True
+        ).exclude(
+            pk__in=ineligible_phrases
+        ).only(
+            'current_game', 'transcript', 'pk'
+        ).prefetch_related(
+            models.Prefetch(
+                'transcript', queryset=self.defer('transcript_data_blob')
             )
+        )
 
         counter = Counter(
             phrase.transcript for phrase in eligible_phrases
@@ -255,9 +281,9 @@ class TranscriptManager(models.Manager):
             excluded += picks['completed_transcripts']
 
         if excluded:
-            qs = self.exclude(pk__in=excluded)
+            qs = self.exclude(pk__in=excluded, active=False)
         else:
-            qs = self.all()
+            qs = self.filter(active=True)
 
         if in_progress is False:
             transcripts_in_progress = False
@@ -402,7 +428,8 @@ class TranscriptPhraseManager(models.Manager):
         text = data_blob['text']
         speaker_id = data_blob['speaker_id']
         try:
-            transcript_phrase = TranscriptPhrase.objects.get(id_number=id_number)
+            transcript_phrase = TranscriptPhrase.objects.get(
+                id_number=id_number)
         except TranscriptPhrase.DoesNotExist:
             transcript_phrase = self.create(
                 id_number=id_number,
