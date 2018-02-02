@@ -478,7 +478,7 @@ The `game` key accepts the values `game_one`, `game_two`, `game_three`. The valu
 ```
 ----
 
-`/api/transcript/` is the endpoint for all data dealing with transcripts. A GET request to this endpoint will provide a paginated array of all transcripts in the game in their original, uncorrected form. Additionally, a single transcript can be retrieved by appending the asset name, e.g. `/api/transcript/cpb-aacip_500-xp6v2q58/`
+`/api/transcript/` is the endpoint for all data dealing with transcripts. A GET request to this endpoint will provide a paginated array of all transcripts in the game in their original, uncorrected form. A single transcript can be retrieved by appending the asset name, e.g. `/api/transcript/cpb-aacip_500-xp6v2q58/`. Transcripts can be made active or inactive using the `/api/transcript/{asset_name}/activate_or_deactivate/`
 
 `/api/transcript/random/` returns a single, random, uncorrected transcript. This endpoint only responds to GET requests.
 
@@ -592,6 +592,11 @@ There are endpoints associated with each of the three games: `/api/transcript/ga
 ```
 
 `/api/transcript/{asset_name}/corrected/` returns the corrected version of a transcript. This endpoint only responds to GET requests.
+
+`/api/transcript/{asset_name}/activate_or_deactivate/` allows admin users to flip the active state of transcripts. This endpoint only responds to PATCH requests. The request data should look like this:
+```javascript
+{"active": true}
+```
 
 ----
 `/api/add-transcript` provides a POST-only endpoint for adding transcripts to Fix It. The logged-in user must be a staff member to use this endpoint. The data should conform to the following example:
