@@ -6,6 +6,8 @@ from collections import Counter
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import JSONField
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.db.models.expressions import RawSQL
 from django.db import models
 from localflavor.us.models import USStateField
@@ -120,46 +122,11 @@ class TranscriptManager(models.Manager):
             - User has submitted a correction for this phrase
             - User has upvoted a submitted correction
         '''
-        phrase_qs = TranscriptPhrase.objects.only('pk')
-        correction_qs = TranscriptPhraseCorrection.objects.only(
-            'transcript_phrase'
-        ).prefetch_related(
-            models.Prefetch(
-                'transcript_phrase', queryset=phrase_qs
-            )
-        )
         ineligible_phrases = [
-            correction.transcript_phrase.pk for correction in
-            TranscriptPhraseCorrection.objects.filter(
-                user=user
-            ).only(
-                'transcript_phrase'
-            ).prefetch_related(
-                models.Prefetch(
-                    'transcript_phrase', queryset=phrase_qs
-                )
-            )
-        ] + [
-            vote.transcript_phrase_correction.transcript_phrase.pk for vote in
-            TranscriptPhraseCorrectionVote.objects.filter(
+            interaction.transcript_phrase.pk for interaction in
+            TranscriptPhraseInteraction.objects.filter(
                 user=user,
-                upvote=True
-            ).only(
-                'transcript_phrase_correction', 'user', 'upvote'
-            ).prefetch_related(
-                models.Prefetch(
-                    'transcript_phrase_correction', queryset=correction_qs
-                )
-            )
-        ] + [
-            vote.transcript_phrase.pk for vote in
-            TranscriptPhraseVote.objects.filter(
-                user=user,
-                upvote=True
-            ).prefetch_related(
-                models.Prefetch(
-                    'transcript_phrase', queryset=phrase_qs
-                )
+                preclude_from_game=2
             )
         ]
         eligible_phrases = TranscriptPhrase.objects.filter(
@@ -171,7 +138,7 @@ class TranscriptManager(models.Manager):
             'current_game', 'transcript', 'pk'
         ).prefetch_related(
             models.Prefetch(
-                'transcript', queryset=self.defer('transcript_data_blob')
+                'transcript', queryset=self.only('pk')
             )
         )
 
@@ -469,6 +436,9 @@ class TranscriptPhrase(models.Model):
 
     class Meta:
         ordering = ['start_time']
+        indexes = [
+            models.Index(fields=['current_game', 'active'])
+        ]
 
     @property
     def downvotes_count(self):
@@ -507,6 +477,34 @@ class TranscriptPhrase(models.Model):
 
     def __str__(self):
         return str(self.transcript) + '_phrase_' + str(self.id)
+
+
+class TranscriptPhraseInteraction(models.Model):
+    GAME_CHOICES = (
+        (1, 'one'),
+        (2, 'two'),
+        (3, 'three'),
+    )
+    transcript_phrase = models.ForeignKey(
+        TranscriptPhrase,
+        on_delete=models.CASCADE,
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+    preclude_from_game = models.IntegerField(
+        choices=GAME_CHOICES
+    )
+    content_type = models.ForeignKey(
+        ContentType,
+        on_delete=models.CASCADE,
+    )
+    object_id = models.PositiveIntegerField()
+    precluding_action = GenericForeignKey(
+        'content_type',
+        'object_id'
+    )
 
 
 class TranscriptPhraseVote(models.Model):
