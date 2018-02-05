@@ -436,6 +436,9 @@ class TranscriptPhrase(models.Model):
 
     class Meta:
         ordering = ['start_time']
+        indexes = [
+            models.Index(fields=['current_game', 'active'])
+        ]
 
     @property
     def downvotes_count(self):
