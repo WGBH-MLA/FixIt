@@ -54,6 +54,7 @@ class StandardResultsSetPagination(PageNumberPagination):
 
 
 class TranscriptViewSet(mixins.ListModelMixin,
+                        mixins.RetrieveModelMixin,
                         viewsets.GenericViewSet):
     permission_classes = (AllowAny,)
     queryset = Transcript.objects.all()
