@@ -3,10 +3,12 @@ import logging
 from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.contrib.contenttypes.models import ContentType
+
 
 from .models import (
     TranscriptPhraseCorrection, TranscriptPhraseCorrectionVote,
-    TranscriptPhraseVote, TranscriptPhrase
+    TranscriptPhraseVote, TranscriptPhrase, TranscriptPhraseInteraction,
 )
 from .tasks import (
     calculate_phrase_confidence, calculate_correction_confidence,
@@ -26,8 +28,12 @@ def correction_submitted(sender, instance, **kwargs):
     We also add a placeholder null vote for the submitted correction. This makes
     it easy to filter the user's own corrections from game three.
 
+    Also, create a TranscriptPhraseInteraction object for quick filtering in
+    game two data.
+
     Also, assign the phrase to game three and add the corresponding transcript
-    to the pool of transcripts that need their stats updated.'''
+    to the pool of transcripts that need their stats updated.
+    '''
     TranscriptPhraseVote.objects.get_or_create(
         transcript_phrase=instance.transcript_phrase,
         user=instance.user,
@@ -38,11 +44,33 @@ def correction_submitted(sender, instance, **kwargs):
         user=instance.user,
         upvote=None
     )
+    TranscriptPhraseInteraction.objects.get_or_create(
+        transcript_phrase=instance.transcript_phrase,
+        user=instance.user,
+        preclude_from_game=2,
+        content_type=ContentType.objects.get(
+            app_label='transcript',
+            model='transcriptphrasecorrection',
+        ),
+        object_id=instance.pk
+    )
     assign_current_game(instance.transcript_phrase)
 
 
 @receiver(post_save, sender=TranscriptPhraseVote)
 def update_phrase_confidence(sender, instance, **kwargs):
+    if instance.upvote is True:
+        TranscriptPhraseInteraction.objects.get_or_create(
+            transcript_phrase=instance.transcript_phrase,
+            user=instance.user,
+            preclude_from_game=2,
+            content_type=ContentType.objects.get(
+                app_label='transcript',
+                model='transcriptphrasevote',
+            ),
+            object_id=instance.pk
+        )
+
     sample_size = TranscriptPhraseVote.objects.filter(
         transcript_phrase=instance.transcript_phrase.pk,
         upvote__in=[True, False]
@@ -88,6 +116,18 @@ def update_num_corrections(sender, instance, **kwargs):
 
 @receiver(post_save, sender=TranscriptPhraseCorrectionVote)
 def update_correction_confidence(sender, instance, **kwargs):
+    if instance.upvote is True:
+        TranscriptPhraseInteraction.objects.get_or_create(
+            transcript_phrase=instance.transcript_phrase_correction.transcript_phrase,
+            user=instance.user,
+            preclude_from_game=2,
+            content_type=ContentType.objects.get(
+                app_label='transcript',
+                model='transcriptphrasecorrectionvote',
+            ),
+            object_id=instance.pk
+        )
+
     sample_size = TranscriptPhraseCorrectionVote.objects.filter(
         transcript_phrase_correction=instance.transcript_phrase_correction
     ).count()
