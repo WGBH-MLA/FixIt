@@ -81,6 +81,7 @@ INSTALLED_APPS = (
     'mla_game.apps.game',
     'huey.contrib.djhuey',
     'rest_framework',
+    'rest_framework.authtoken',
     'rest_framework_swagger',
     'django_filters',
     'markdownx',
